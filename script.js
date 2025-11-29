@@ -1,6 +1,6 @@
 /**
  * MERGE COMBINATOR — Landing Page JavaScript
- * Production-Grade Animations & Interactions
+ * Palantir-Inspired Production-Grade Interactions
  */
 
 (function() {
@@ -11,18 +11,15 @@
   // ============================================
   const CONFIG = {
     observerThreshold: 0.15,
-    observerRootMargin: '0px 0px -50px 0px',
-    heroDotsCount: 15,
-    heroDotsAnimationDuration: 20000
+    observerRootMargin: '0px 0px -80px 0px',
+    navScrollThreshold: 50,
+    canvasParticleCount: 50,
+    canvasConnectionDistance: 150
   };
 
   // ============================================
   // UTILITY FUNCTIONS
   // ============================================
-
-  /**
-   * Debounce function for performance optimization
-   */
   function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -35,17 +32,71 @@
     };
   }
 
-  /**
-   * Generate a random number between min and max
-   */
   function random(min, max) {
     return Math.random() * (max - min) + min;
+  }
+
+  function lerp(start, end, factor) {
+    return start + (end - start) * factor;
+  }
+
+  // ============================================
+  // NAVIGATION
+  // ============================================
+  function initNavigation() {
+    const nav = document.getElementById('nav');
+    if (!nav) return;
+
+    let lastScroll = 0;
+
+    const handleScroll = () => {
+      const currentScroll = window.pageYOffset;
+
+      // Add/remove scrolled class for background
+      if (currentScroll > CONFIG.navScrollThreshold) {
+        nav.classList.add('nav--scrolled');
+      } else {
+        nav.classList.remove('nav--scrolled');
+      }
+
+      lastScroll = currentScroll;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // Initial check
+  }
+
+  // ============================================
+  // PLATFORM TABS
+  // ============================================
+  function initPlatformTabs() {
+    const tabs = document.querySelectorAll('.platform__tab');
+    const panels = document.querySelectorAll('.platform__panel');
+
+    if (!tabs.length || !panels.length) return;
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const targetId = tab.dataset.tab;
+
+        // Update tabs
+        tabs.forEach(t => t.classList.remove('platform__tab--active'));
+        tab.classList.add('platform__tab--active');
+
+        // Update panels
+        panels.forEach(panel => {
+          panel.classList.remove('platform__panel--active');
+          if (panel.id === `panel-${targetId}`) {
+            panel.classList.add('platform__panel--active');
+          }
+        });
+      });
+    });
   }
 
   // ============================================
   // SCROLL ANIMATIONS (Intersection Observer)
   // ============================================
-
   function initScrollAnimations() {
     const animatedElements = document.querySelectorAll('.fade-up, .stagger-children');
 
@@ -56,8 +107,6 @@
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-            // Optionally unobserve after animation
-            // observer.unobserve(entry.target);
           }
         });
       },
@@ -71,50 +120,146 @@
   }
 
   // ============================================
-  // HERO FLOATING DOTS
+  // HERO CANVAS (Particle Network)
   // ============================================
+  function initHeroCanvas() {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas) return;
 
-  function initHeroDots() {
-    const dotsContainer = document.getElementById('hero-dots');
-    if (!dotsContainer) return;
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animationId;
+    let mouseX = 0;
+    let mouseY = 0;
 
-    // Create floating dots
-    for (let i = 0; i < CONFIG.heroDotsCount; i++) {
-      createDot(dotsContainer, i);
+    function resizeCanvas() {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
     }
-  }
 
-  function createDot(container, index) {
-    const dot = document.createElement('div');
-    dot.className = 'hero__dot';
+    class Particle {
+      constructor() {
+        this.reset();
+      }
 
-    // Random positioning and timing
-    const left = random(10, 90);
-    const delay = random(0, 15);
-    const duration = random(15, 25);
-    const size = random(2, 4);
+      reset() {
+        this.x = random(0, canvas.width);
+        this.y = random(0, canvas.height);
+        this.vx = random(-0.3, 0.3);
+        this.vy = random(-0.3, 0.3);
+        this.radius = random(1, 2);
+        this.opacity = random(0.2, 0.5);
+      }
 
-    dot.style.cssText = `
-      left: ${left}%;
-      width: ${size}px;
-      height: ${size}px;
-      animation-delay: ${delay}s;
-      animation-duration: ${duration}s;
-    `;
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
 
-    container.appendChild(dot);
+        // Boundary check
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
 
-    // Restart animation when complete (continuous effect)
-    dot.addEventListener('animationend', () => {
-      dot.remove();
-      createDot(container, index);
+        // Mouse interaction
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < 150) {
+          const force = (150 - distance) / 150;
+          this.vx -= (dx / distance) * force * 0.02;
+          this.vy -= (dy / distance) * force * 0.02;
+        }
+
+        // Limit velocity
+        const maxSpeed = 1;
+        const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+        if (speed > maxSpeed) {
+          this.vx = (this.vx / speed) * maxSpeed;
+          this.vy = (this.vy / speed) * maxSpeed;
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(42, 127, 219, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    function createParticles() {
+      particles = [];
+      const count = Math.min(CONFIG.canvasParticleCount, Math.floor(canvas.width * canvas.height / 15000));
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function drawConnections() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < CONFIG.canvasConnectionDistance) {
+            const opacity = (1 - distance / CONFIG.canvasConnectionDistance) * 0.15;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(42, 127, 219, ${opacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(particle => {
+        particle.update();
+        particle.draw();
+      });
+
+      drawConnections();
+      animationId = requestAnimationFrame(animate);
+    }
+
+    function handleMouseMove(e) {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+    }
+
+    function handleResize() {
+      resizeCanvas();
+      createParticles();
+    }
+
+    // Initialize
+    resizeCanvas();
+    createParticles();
+    animate();
+
+    // Event listeners
+    canvas.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('resize', debounce(handleResize, 200));
+
+    // Cleanup on page hide
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationId);
+      } else {
+        animate();
+      }
     });
   }
 
   // ============================================
-  // SMOOTH SCROLL FOR ANCHOR LINKS
+  // SMOOTH SCROLL
   // ============================================
-
   function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener('click', function(e) {
@@ -126,9 +271,9 @@
 
         e.preventDefault();
 
-        const headerOffset = 0; // Adjust if you add a sticky header
+        const navHeight = 72; // var(--nav-height)
         const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        const offsetPosition = elementPosition + window.pageYOffset - navHeight;
 
         window.scrollTo({
           top: offsetPosition,
@@ -141,9 +286,8 @@
   // ============================================
   // METRICS COUNTER ANIMATION
   // ============================================
-
   function initMetricsCounter() {
-    const metrics = document.querySelectorAll('.metric__number');
+    const metrics = document.querySelectorAll('.hero__stat-number, .bento-card__metric, .why-merge__stat-value');
     if (!metrics.length) return;
 
     const observer = new IntersectionObserver(
@@ -165,18 +309,16 @@
     const text = element.textContent;
     const match = text.match(/^(\d+)/);
 
-    if (!match) return; // Skip non-numeric values like "IP"
+    if (!match) return; // Skip non-numeric values
 
     const target = parseInt(match[1], 10);
-    const suffix = text.replace(/^\d+/, ''); // Get the suffix (like '+')
+    const suffix = text.replace(/^\d+/, '');
     const duration = 2000;
     const startTime = performance.now();
 
     function updateCounter(currentTime) {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-
-      // Easing function (ease-out cubic)
       const easeOut = 1 - Math.pow(1 - progress, 3);
       const current = Math.round(target * easeOut);
 
@@ -191,60 +333,83 @@
   }
 
   // ============================================
-  // PIPELINE NODE ANIMATIONS (Section 3)
+  // PROGRESS BAR ANIMATION
   // ============================================
-
-  function initPipelineAnimations() {
-    const pipeline = document.querySelector('.pipeline');
-    if (!pipeline) return;
+  function initProgressBars() {
+    const bars = document.querySelectorAll('.why-merge__stat-bar-fill');
+    if (!bars.length) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            pipeline.classList.add('animate');
+            entry.target.style.animation = 'fillBar 2s ease forwards';
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    bars.forEach((bar) => {
+      bar.style.width = '0';
+      observer.observe(bar);
+    });
+  }
+
+  // ============================================
+  // PIPELINE ANIMATION
+  // ============================================
+  function initPipelineAnimations() {
+    const stages = document.querySelectorAll('.pipeline-stage');
+    if (!stages.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, index * 200);
           }
         });
       },
       { threshold: 0.3 }
     );
 
-    observer.observe(pipeline);
+    stages.forEach((stage) => observer.observe(stage));
   }
 
   // ============================================
-  // CARD HOVER EFFECTS (Enhanced)
+  // CARD HOVER EFFECTS
   // ============================================
-
   function initCardHoverEffects() {
-    const cards = document.querySelectorAll('.program-card, .ecosystem-card, .engage-card');
+    const cards = document.querySelectorAll('.bento-card, .capability-card, .testimonial-card, .engage-card');
 
     cards.forEach((card) => {
       card.addEventListener('mouseenter', function() {
-        this.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+        this.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
       });
     });
   }
 
   // ============================================
-  // PARALLAX EFFECT FOR HERO BACKGROUND
+  // HERO PARALLAX
   // ============================================
-
   function initHeroParallax() {
-    const hero = document.querySelector('.hero');
     const heroGrid = document.querySelector('.hero__grid');
-    const heroMap = document.querySelector('.hero__map');
+    const heroGradient = document.querySelector('.hero__gradient');
 
-    if (!hero || !heroGrid) return;
+    if (!heroGrid) return;
 
     const handleScroll = debounce(() => {
       const scrolled = window.pageYOffset;
-      const rate = scrolled * 0.3;
 
       if (scrolled < window.innerHeight) {
-        heroGrid.style.transform = `translateY(${rate * 0.2}px)`;
-        if (heroMap) {
-          heroMap.style.transform = `translateY(calc(-50% + ${rate * 0.1}px))`;
+        const rate = scrolled * 0.15;
+        heroGrid.style.transform = `translateY(${rate}px)`;
+        if (heroGradient) {
+          heroGradient.style.transform = `translateY(${rate * 0.5}px)`;
         }
       }
     }, 10);
@@ -253,11 +418,24 @@
   }
 
   // ============================================
-  // KEYBOARD NAVIGATION ENHANCEMENTS
+  // MOBILE MENU TOGGLE
   // ============================================
+  function initMobileMenu() {
+    const toggle = document.getElementById('mobile-toggle');
+    const menu = document.querySelector('.nav__menu');
 
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('active');
+      menu.classList.toggle('active');
+    });
+  }
+
+  // ============================================
+  // KEYBOARD NAVIGATION
+  // ============================================
   function initKeyboardNav() {
-    // Add focus styles for accessibility
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Tab') {
         document.body.classList.add('keyboard-nav');
@@ -270,37 +448,93 @@
   }
 
   // ============================================
-  // PRELOADER (Optional)
+  // LOGO MARQUEE PAUSE ON HOVER
   // ============================================
+  function initLogoMarquee() {
+    const marquee = document.querySelector('.logo-marquee');
+    const track = document.querySelector('.logo-marquee__track');
 
-  function initPreloader() {
-    // Add a brief delay to ensure smooth initial animations
-    document.body.classList.add('loading');
+    if (!marquee || !track) return;
 
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        document.body.classList.remove('loading');
-        document.body.classList.add('loaded');
-      }, 100);
+    marquee.addEventListener('mouseenter', () => {
+      track.style.animationPlayState = 'paused';
+    });
+
+    marquee.addEventListener('mouseleave', () => {
+      track.style.animationPlayState = 'running';
+    });
+  }
+
+  // ============================================
+  // SVG LINE DRAW ANIMATION
+  // ============================================
+  function initSVGAnimations() {
+    const flowLines = document.querySelectorAll('.hero__flow-line');
+
+    if (!flowLines.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            flowLines.forEach((line, index) => {
+              line.style.animationDelay = `${index * 0.3}s`;
+              line.style.animationPlayState = 'running';
+            });
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const heroFlow = document.querySelector('.hero__flow');
+    if (heroFlow) {
+      observer.observe(heroFlow);
+    }
+  }
+
+  // ============================================
+  // SCROLL TO TOP ON LOGO CLICK
+  // ============================================
+  function initScrollToTop() {
+    const logos = document.querySelectorAll('.nav__logo, .footer__logo');
+
+    logos.forEach(logo => {
+      logo.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
     });
   }
 
   // ============================================
   // INITIALIZE ALL MODULES
   // ============================================
-
   function init() {
-    // Core animations
+    // Core functionality
+    initNavigation();
+    initPlatformTabs();
     initScrollAnimations();
-    initHeroDots();
     initSmoothScroll();
-    initMetricsCounter();
-    initPipelineAnimations();
+    initMobileMenu();
 
-    // Enhancements
+    // Visual enhancements
+    initHeroCanvas();
+    initMetricsCounter();
+    initProgressBars();
+    initPipelineAnimations();
+    initSVGAnimations();
+
+    // UX improvements
     initCardHoverEffects();
     initHeroParallax();
+    initLogoMarquee();
     initKeyboardNav();
+    initScrollToTop();
   }
 
   // Run on DOM ready
@@ -309,33 +543,5 @@
   } else {
     init();
   }
-
-  // ============================================
-  // FRAMER EXPORT HELPERS
-  // ============================================
-
-  /**
-   * When porting to Framer:
-   *
-   * 1. SCROLL ANIMATIONS:
-   *    - Use Framer's native "While in View" interactions
-   *    - Set entrance: opacity 0→1, translateY 30→0
-   *    - Transition: 0.6s ease
-   *
-   * 2. HERO DOTS:
-   *    - Create a code component with this logic
-   *    - Or use Framer's particle effects
-   *
-   * 3. COUNTER ANIMATIONS:
-   *    - Use Framer's "useInView" hook with useAnimation
-   *    - Or use a code override with animate() from motion
-   *
-   * 4. PIPELINE ANIMATIONS:
-   *    - Use staggerChildren in Framer variants
-   *    - staggerChildren: 0.2, delayChildren: 0.1
-   *
-   * 5. SMOOTH SCROLL:
-   *    - Framer handles this natively for page links
-   */
 
 })();
