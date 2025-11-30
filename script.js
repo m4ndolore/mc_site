@@ -426,9 +426,14 @@
 
     if (!toggle || !menu) return;
 
+    toggle.setAttribute('aria-expanded', 'false');
+
     toggle.addEventListener('click', () => {
       toggle.classList.toggle('active');
       menu.classList.toggle('active');
+
+      const expanded = toggle.classList.contains('active');
+      toggle.setAttribute('aria-expanded', String(expanded));
     });
   }
 
