@@ -1688,6 +1688,25 @@ h4, .h4 {
   font-size: 13px;
   color: var(--slate);
   opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.logo-marquee__item:hover {
+  opacity: 1;
+}
+
+.logo-marquee__logo {
+  height: 24px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.logo-marquee__item:hover .logo-marquee__logo {
+  opacity: 1;
 }
 
 .social-proof__disclaimer {
