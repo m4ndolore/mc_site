@@ -16,42 +16,44 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <!-- ============================================
-       NAVIGATION (Palantir-style sticky header)
+       NAVIGATION (Enhanced glass effect sticky header)
        ============================================ -->
   <header class="nav" id="nav">
     <div class="nav__container">
-      <a href="#" class="nav__logo">
-        <span class="nav__logo-mark">M</span>
-        <span class="nav__logo-text">Merge Combinator</span>
+      <a href="#hero" class="nav__logo">
+        <span class="nav__logo-text">
+          <span class="nav__logo-merge">Merge</span>
+          <span class="nav__logo-combinator">Combinator</span>
+        </span>
+        <img src="content/arrows.png" alt="Merge arrows" class="nav__logo-icon">
       </a>
 
-      <nav class="nav__menu">
-        <a href="#platform" class="nav__link">Platform</a>
-        <a href="#ecosystem" class="nav__link">Ecosystem</a>
-        <a href="#about" class="nav__link">About</a>
-        <a href="#" class="nav__link nav__link--resources">
-          Resources
-          <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
-            <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-        </a>
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="#about" class="nav__link">About</a>
+          <a href="#platform" class="nav__link">Services</a>
+          <a href="#ecosystem" class="nav__link">Projects</a>
+          <a href="#social-proof" class="nav__link">Blog</a>
+          <a href="#engage" class="nav__link">Career</a>
+        </div>
+        <div class="nav__menu-actions">
+          <a href="#engage" class="nav__btn nav__btn--secondary">Contacts</a>
+          <a href="#engage" class="nav__btn nav__btn--primary">Build with us</a>
+        </div>
       </nav>
 
-      <div class="nav__actions">
-        <a href="#engage" class="btn btn--nav">Build With Us</a>
-        <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </header>
 

@@ -1,0 +1,810 @@
+{
+  "programs": [
+    {
+      "id": "mca-001",
+      "name": "Multi-Capable Airman (MCA) Program",
+      "slug": "multi-capable-airman",
+      "category": "high-priority",
+      "overview": "The Multi-Capable Airman (MCA) program trains Airmen to perform across multiple roles, enhancing their operational flexibility and readiness. By developing cross-functional skills, the program ensures Airmen can adapt to dynamic mission requirements, enabling rapid deployment and operational effectiveness across PACAF's diverse environments.",
+      "problemNeed": [
+        "Airmen are often highly specialized, limiting agility in dynamic, dispersed operational for Indo-Pacific environments",
+        "Cross-functional skill gaps reduce readiness for Agile Combat Employment (ACE) scenarios"
+      ],
+      "objectives": [
+        "Train Airmen across multiple roles and functions",
+        "Improve operational flexibility, rapid deployment, and mission adaptability"
+      ],
+      "techFocusAreas": ["Training & Simulation"],
+      "specificTechnologies": [
+        "VR/AR platforms for cross-functional skill development",
+        "Mobile learning apps enabling in-theater, on-demand upskilling",
+        "Digital readiness workforce deployment tools",
+        "Digital twin readiness solutions"
+      ],
+      "managedBy": "Eielson Air Force Base",
+      "engagementPathways": [
+        "PACAF A3 (Air Operations), Training & Readiness directorates",
+        "AFWERX SBIR/STTR, STRATFI/TACFI",
+        "OTAs via SOSSEC/NAC"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Simulation Providers",
+        "EdTech Firms",
+        "Workforce Management Platforms Providers"
+      ],
+      "budgetRange": "$622M+",
+      "typicalTimeToAward": "6-12 months",
+      "fundingInitiatives": [
+        {
+          "title": "Congressional MCA and ACE Allocation",
+          "amount": "$622M",
+          "description": "Allocated by Congress for MCA and ACE readiness programs",
+          "link": "https://www.af.mil/News/Article-Display/Article/3562749/"
+        }
+      ],
+      "relatedPrimes": ["Leidos", "Booz Allen Hamilton", "General Dynamics IT"],
+      "suitableStages": ["Early Stage", "Growth", "Established"],
+      "requiresClearance": false,
+      "opportunityDescription": "Companies can provide VR/AR training platforms, mobile learning solutions, and workforce management tools to enhance Multi-Capable Airman readiness and operational flexibility.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "ccep-001",
+      "name": "Cyber Collaboration & Exchange Program (CCEP)",
+      "slug": "cyber-collaboration-exchange",
+      "category": "high-priority",
+      "overview": "The Cyber Collaboration and Exchange Program (CCEP) fosters joint interoperability between U.S. Air Force and Army cyber units through personnel exchanges, training, and knowledge sharing. This initiative strengthens cyber defense capabilities, cultivates collaboration, and enhances innovation across the Indo-Pacific region.",
+      "problemNeed": [
+        "Differences in terminology, procedures, and cyber capabilities reduce efficiency in joint operations",
+        "Divergent systems and protocols limit effective cross-service coordination and response"
+      ],
+      "objectives": [
+        "Strengthen cyber resilience and interoperability between military services",
+        "Standardize processes and improve operational coordination in the Indo-Pacific region"
+      ],
+      "techFocusAreas": ["Cybersecurity & Communications"],
+      "specificTechnologies": [
+        "Real-time coordination and standardized terminology tools",
+        "Interoperability platforms for cross-branch collaboration",
+        "VR/AR or digital platforms for joint cyber exercises"
+      ],
+      "managedBy": "PACAF Joint Base Pearl Harbor-Hickam (JBPHH)",
+      "engagementPathways": [
+        "PACAF A6 / Cyber Operations Directorate",
+        "AFWERX SBIR/STTR opportunities",
+        "OTAs via USAF NAC"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Cybersecurity Firms",
+        "Communication Technology Companies",
+        "Training and Simulation Providers"
+      ],
+      "typicalTimeToAward": "8-14 months",
+      "fundingInitiatives": [
+        {
+          "title": "Airman-Soldier Cyber Skills Exchange",
+          "description": "Joint training initiative for enhanced cyber capabilities",
+          "link": "https://www.pacaf.af.mil/News/Article-Display/Article/3723891/"
+        }
+      ],
+      "relatedPrimes": ["Leidos", "CACI", "Peraton", "ManTech"],
+      "suitableStages": ["Growth", "Established"],
+      "requiresClearance": true,
+      "opportunityDescription": "Opportunities for companies offering secure communication platforms, joint training tools, and cyber defense technologies to enhance multi-branch interoperability.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "ngap-001",
+      "name": "Next Generation Aircrew Protection (NGAP) Program",
+      "slug": "next-gen-aircrew-protection",
+      "category": "high-priority",
+      "overview": "The NGAP program focuses on modernizing aircrew protective gear and enhances training for CBRN (chemical, biological, radiological, nuclear) operations, ensuring aircrew safety and operational readiness. It aims to enhance aircrew safety while maintaining operational effectiveness, particularly in CBRN-contaminated environments.",
+      "problemNeed": [
+        "Current CBRN gear is restrictive, limiting operational efficiency and increasing physiological strain",
+        "Existing protective measures require modernization to address emerging threats"
+      ],
+      "objectives": [
+        "Enhance operational readiness and combat effectiveness",
+        "Modernize aircrew protective systems and streamline CBRN training"
+      ],
+      "techFocusAreas": ["Materials & Sustainment"],
+      "specificTechnologies": [
+        "Advanced, ergonomic CBRN protective equipment",
+        "Real-time monitoring, alerts, and decontamination systems",
+        "Scenario-based and simulation training platforms"
+      ],
+      "managedBy": "Yokota Air Base",
+      "engagementPathways": [
+        "AFWERX SBIR/STTR for CBRN solutions",
+        "PACAF EM & CBRN Functional offices"
+      ],
+      "typesOfCompaniesNeeded": [
+        "CBRN Safety Solutions Providers",
+        "Training & Simulation Providers",
+        "Real-Time Monitoring & Automation Systems Providers"
+      ],
+      "typicalTimeToAward": "12-18 months",
+      "fundingInitiatives": [
+        {
+          "title": "CBRN Counter-Warfare Testing at Kunsan",
+          "description": "Field testing of protective gear and procedures",
+          "link": "https://www.pacaf.af.mil/News/Article-Display/Article/3401456/"
+        }
+      ],
+      "relatedPrimes": ["3M", "DuPont", "Honeywell", "Avon Protection"],
+      "suitableStages": ["Growth", "Established"],
+      "requiresClearance": true,
+      "opportunityDescription": "Companies can provide next-generation protective equipment, monitoring systems, and training solutions to modernize aircrew CBRN protection.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "rap-001",
+      "name": "Ready Aircrew Program (RAP)",
+      "slug": "ready-aircrew-program",
+      "category": "high-priority",
+      "overview": "The Ready Aircrew Program (RAP) enhances aircrew readiness by providing advanced training, mission-critical simulations, and scenario-based exercises. It focuses on maintaining high levels of mission proficiency and operational excellence across multiple aircrew bases.",
+      "problemNeed": [
+        "Continuous, realistic mission training is difficult due to evolving air combat complexities",
+        "Limited instructors and simulators delay qualification and reduce training effectiveness"
+      ],
+      "objectives": [
+        "Maintain and enhance aircrew readiness through tailored mission training",
+        "Ensure rapid operational deployment and combat effectiveness across aircrew bases"
+      ],
+      "techFocusAreas": ["Training & Simulation"],
+      "specificTechnologies": [
+        "Advanced simulators and training systems",
+        "Cognitive readiness training tools",
+        "Mission rehearsal platforms",
+        "Training management and tracking systems"
+      ],
+      "managedBy": "PACAF Joint Base Pearl Harbor-Hickam (JBPHH)",
+      "engagementPathways": [
+        "PACAF A3 / Aircrew Training Directorates",
+        "AFWERX SBIR/STTR",
+        "OTAs or contract solicitations for aircrew readiness support"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Simulation Providers",
+        "Training Service Firms",
+        "Aircrew Technology & Training Companies"
+      ],
+      "typicalTimeToAward": "9-15 months",
+      "fundingInitiatives": [
+        {
+          "title": "RAP Aircrew Readiness Solicitation",
+          "description": "Contract opportunity for managing aircrew training and readiness",
+          "link": "https://sam.gov/opp/abc123"
+        }
+      ],
+      "relatedPrimes": ["CAE", "L3Harris", "Collins Aerospace", "FlightSafety International"],
+      "suitableStages": ["Growth", "Established"],
+      "requiresClearance": true,
+      "opportunityDescription": "Opportunities for advanced simulation systems, cognitive training tools, and mission rehearsal platforms to enhance aircrew combat readiness.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "tsc-001",
+      "name": "Theater Security Cooperation (TSC) Program",
+      "slug": "theater-security-cooperation",
+      "category": "high-priority",
+      "overview": "The TSC Program focuses on strengthening partnerships, improving military interoperability, and enhancing regional stability through training, joint exercises, and defense collaboration across the Indo-Pacific.",
+      "problemNeed": [
+        "Limited interoperability with partner nations reduces response effectiveness",
+        "Securing basing and operational rights is challenging due to political and capability variations"
+      ],
+      "objectives": [
+        "Build and sustain defense partnerships across the Indo-Pacific",
+        "Enhance partner nations' self-defense capabilities and U.S. operational access"
+      ],
+      "techFocusAreas": ["Training & Simulation", "Cybersecurity & Communications"],
+      "specificTechnologies": [
+        "Simulation tools and exercise facilitation for joint operations",
+        "Air defense, cybersecurity, and force protection solutions",
+        "Logistical and base access technologies"
+      ],
+      "managedBy": "Yokota Air Base",
+      "engagementPathways": [
+        "PACAF Strategy, Plans, Programs and Requirements (A5/8) Directorate",
+        "OTAs via USAF NAC"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Defense Technology Firms",
+        "Infrastructure & Logistics Companies",
+        "Training Solutions Providers"
+      ],
+      "typicalTimeToAward": "12-24 months",
+      "fundingInitiatives": [
+        {
+          "title": "International Security Cooperation Programs",
+          "description": "Funding for allied force training and capability development",
+          "link": "https://www.dsca.mil/programs/international-security-cooperation-programs"
+        }
+      ],
+      "relatedPrimes": ["L3Harris", "Raytheon", "Northrop Grumman", "General Dynamics"],
+      "suitableStages": ["Established"],
+      "requiresClearance": true,
+      "opportunityDescription": "Companies can support joint training systems, air defense technologies, and logistics solutions to strengthen allied partnerships and regional security.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "a6-001",
+      "name": "Cyber Operations & Warfighting Communications Directorate (A6)",
+      "slug": "cyber-operations-a6",
+      "category": "high-priority",
+      "overview": "The A6 Directorate consolidates PACAF's approach to cyber operations, communications, and data strategies, playing a critical role in enhancing warfighting capabilities. The A6 focuses on strengthening PACAF's cyber resilience, enabling Agile Combat Employment (ACE) and improving infrastructure and network capabilities.",
+      "problemNeed": [
+        "Secure, resilient networks are challenging against advanced cyber threats",
+        "Limited integration between PACAF and allied cyber operations hampers coordination"
+      ],
+      "objectives": [
+        "Modernize cyber and communication systems for security, resilience, and integration",
+        "Support PACAF missions and operational readiness across the Indo-Pacific"
+      ],
+      "techFocusAreas": ["Cybersecurity & Communications"],
+      "specificTechnologies": [
+        "Network security and defense systems",
+        "Interoperability platforms for seamless joint operations",
+        "Infrastructure modernization for ACE operations"
+      ],
+      "managedBy": "PACAF Joint Base Pearl Harbor-Hickam (JBPHH)",
+      "engagementPathways": [
+        "PACAF A6 / Cyber Operations Directorates",
+        "AFWERX SBIR/STTR and OTAs for cyber infrastructure"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Cybersecurity Firms",
+        "Telecommunications Companies",
+        "Cyber & Communication Infrastructure Providers"
+      ],
+      "budgetRange": "$11.1B (FY2025 IT/Cyber modernization)",
+      "typicalTimeToAward": "10-18 months",
+      "fundingInitiatives": [
+        {
+          "title": "FY2025 Pacific Deterrence Initiative",
+          "description": "Cyber defense and warfighter communications funding",
+          "link": "https://www.defense.gov/News/Releases/Release/Article/3234567/"
+        }
+      ],
+      "relatedPrimes": ["CACI", "Leidos", "General Dynamics IT", "Booz Allen Hamilton"],
+      "suitableStages": ["Growth", "Established"],
+      "requiresClearance": true,
+      "opportunityDescription": "Opportunities for cybersecurity solutions, communication infrastructure, and network modernization to enhance PACAF's cyber resilience and operational capabilities.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "ipafa-001",
+      "name": "Inter-Pacific Air Forces Academy (IPAFA)",
+      "slug": "inter-pacific-air-forces-academy",
+      "category": "additional-opportunity",
+      "overview": "The Inter-Pacific Air Forces Academy (IPAFA) is a U.S. Air Force-led educational institution providing professional military education (PME) to allied and partner air forces across the Indo-Pacific region. IPAFA focuses on developing effective enlisted leadership teams, enhancing resilience, leadership, cross-cultural competency, and mission command.",
+      "problemNeed": [
+        "Enlisted leaders struggle to adapt to complex multinational environments",
+        "Differences hinder communication and collaboration in joint operations"
+      ],
+      "objectives": [
+        "Develop effective, culturally aware leaders to strengthen alliances and interoperability",
+        "Equip enlisted leaders to lead in diverse, joint environments while fostering enduring partnerships"
+      ],
+      "techFocusAreas": ["Training & Simulation"],
+      "specificTechnologies": [
+        "Cross-cultural training programs and language tools",
+        "Advanced simulation tools for realistic joint training and leadership exercises"
+      ],
+      "managedBy": "15th Wing - Hickam Air Force Base",
+      "engagementPathways": [
+        "PACAF A3 / Training & Education Directorates",
+        "AFWERX SBIR/STTR",
+        "PACAF-led Professional Military Education (PME) programs"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Simulation Providers",
+        "Training Service Firms"
+      ],
+      "typicalTimeToAward": "12-18 months",
+      "fundingInitiatives": [
+        {
+          "title": "IPAFA Multinational PME Forum",
+          "description": "Leadership training and partnership building initiative",
+          "link": "https://www.pacaf.af.mil/News/Article-Display/Article/3612345/"
+        }
+      ],
+      "suitableStages": ["Growth", "Established"],
+      "requiresClearance": false,
+      "opportunityDescription": "Companies can provide cross-cultural training platforms, language learning tools, and simulation systems to enhance multinational leadership development.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "corrosion-001",
+      "name": "Corrosion Control Program",
+      "slug": "corrosion-control",
+      "category": "additional-opportunity",
+      "overview": "The Corrosion Control Program focuses on maintaining the integrity and longevity of PACAF's aircraft and equipment by preventing corrosion and ensuring optimal operational performance. The program covers key areas including paint facilities, structural maintenance, wheel and tire care, and flight line sampling plans.",
+      "problemNeed": [
+        "Harsh Indo-Pacific conditions accelerate corrosion and wear",
+        "Reactive practices increase downtime and costs"
+      ],
+      "objectives": [
+        "Prevent corrosion and maintain structural integrity of aircraft and equipment",
+        "Enhance mission readiness, reduce lifecycle costs, and improve equipment availability"
+      ],
+      "techFocusAreas": ["Materials & Sustainment"],
+      "specificTechnologies": [
+        "Advanced paints, sealants, and surface protection coatings",
+        "Predictive maintenance tools, sensors, and analytics",
+        "Platforms to streamline structural, wheel, and flight line care"
+      ],
+      "managedBy": "A4 Directorate",
+      "engagementPathways": [
+        "PACAF A4 / Maintenance & Logistics Directorates",
+        "AFWERX SBIR/STTR"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Aerospace Materials & Coatings Manufacturers",
+        "Predictive Maintenance/IoT Providers",
+        "Industrial Maintenance Firms"
+      ],
+      "typicalTimeToAward": "9-15 months",
+      "fundingInitiatives": [
+        {
+          "title": "PACAF Corrosion Control Expansion",
+          "amount": "$20M+ savings",
+          "description": "Extended equipment life by 5-7 years through corrosion prevention",
+          "link": "https://www.af.mil/News/Article-Display/Article/2891234/"
+        }
+      ],
+      "suitableStages": ["Growth", "Established"],
+      "requiresClearance": false,
+      "opportunityDescription": "Opportunities for advanced coating technologies, predictive maintenance systems, and corrosion prevention solutions to extend aircraft and equipment lifespan.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "tnl-001",
+      "name": "True North-Lite (TN-L) Program",
+      "slug": "true-north-lite",
+      "category": "additional-opportunity",
+      "overview": "TN-L is a streamlined version of the True North program, enhancing leadership well-being outcomes by boosting efficiency and reducing manpower needs while focusing on resilience and performance. It's a PACAF-specific program designed to strengthen mental, spiritual, and emotional well-being of Airmen, particularly in high-risk units.",
+      "problemNeed": [
+        "Limited manpower reduces embedded support across units",
+        "Barriers to access and trust-building in dispersed units"
+      ],
+      "objectives": [
+        "Improve resilience, mental health, and overall readiness of Airmen",
+        "Deliver sustainable, accessible well-being support, optimizing manpower and program efficiency"
+      ],
+      "techFocusAreas": ["Resilience & Well-being"],
+      "specificTechnologies": [
+        "Virtual counseling and resilience training tools",
+        "Mental health monitoring and assessment platforms",
+        "Physical/digital well-being kits with apps and self-care tools",
+        "Engagement tracking and resource optimization platforms"
+      ],
+      "managedBy": "Chaplain Command (HC)",
+      "engagementPathways": [
+        "PACAF A1 / Airman & Family Readiness",
+        "AFWERX SBIR/STTR"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Mental Health Solution Providers",
+        "Digital Learning Platforms",
+        "Workforce Resilience Firms"
+      ],
+      "typicalTimeToAward": "8-12 months",
+      "fundingInitiatives": [
+        {
+          "title": "True North+ (TN+) Consolidation",
+          "description": "Expanded embedded well-being support across PACAF",
+          "link": "https://www.pacaf.af.mil/News/Article-Display/Article/3567890/"
+        }
+      ],
+      "suitableStages": ["Early Stage", "Growth"],
+      "requiresClearance": false,
+      "opportunityDescription": "Companies can provide digital mental health platforms, resilience training tools, and well-being monitoring systems to enhance Airmen readiness and performance.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "misawa-001",
+      "name": "Misawa Bilateral Programs",
+      "slug": "misawa-bilateral",
+      "category": "additional-opportunity",
+      "overview": "The Misawa Bilateral Programs strengthen U.S.-Japan relations through initiatives at Misawa Air Base and the surrounding community, including the Misawa Kids Center, English education camps, and cultural exchange events.",
+      "problemNeed": [
+        "Language and social norms hinder effective engagement",
+        "Limited interaction reduces program impact"
+      ],
+      "objectives": [
+        "Enhance cultural understanding and community cohesion",
+        "Promote collaboration and mutual engagement between U.S. personnel and local communities"
+      ],
+      "techFocusAreas": ["Training & Simulation"],
+      "specificTechnologies": [
+        "Language platforms and cultural training tools",
+        "Event planning and community program management solutions",
+        "Digital platforms and apps for interactive cultural exchanges"
+      ],
+      "managedBy": "Misawa Air Base",
+      "engagementPathways": [
+        "PACAF A3 / Air Operations Directorate",
+        "OTAs via USAF NAC"
+      ],
+      "typesOfCompaniesNeeded": [
+        "EdTech Providers",
+        "Event Management Firms",
+        "Cultural Training Developers"
+      ],
+      "typicalTimeToAward": "6-12 months",
+      "fundingInitiatives": [
+        {
+          "title": "REFORPAC 2025 Joint Operations",
+          "description": "Enhanced bilateral readiness through joint training",
+          "link": "https://www.pacaf.af.mil/News/Article-Display/Article/3645678/"
+        }
+      ],
+      "suitableStages": ["Early Stage", "Growth"],
+      "requiresClearance": false,
+      "opportunityDescription": "Opportunities for language learning platforms, cultural exchange tools, and community engagement solutions to strengthen U.S.-Japan bilateral relations.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "a58-001",
+      "name": "A5/8 Strategic Engagement Program",
+      "slug": "a58-strategic-engagement",
+      "category": "additional-opportunity",
+      "overview": "Promotes regional stability through joint planning, allied force engagement, and bilateral military coordination to strengthen partnerships and enhance collective defense capabilities across the Indo-Pacific.",
+      "problemNeed": [
+        "Limited integration slows joint mission response and reduces effectiveness",
+        "Differences in procedures and standards hinder seamless interoperability"
+      ],
+      "objectives": [
+        "Improve interoperability and collaborative operations with allied air forces",
+        "Support regional stability while advancing shared defense objectives"
+      ],
+      "techFocusAreas": ["Training & Simulation", "Cybersecurity & Communications"],
+      "specificTechnologies": [
+        "Software and tools for PACAF-allied coordination and planning",
+        "Joint exercises, simulations, and workshops to align procedures",
+        "Strategic planning and joint operations consulting"
+      ],
+      "managedBy": "A5/8 - Strategy, Plans, Programs and Requirements",
+      "engagementPathways": [
+        "PACAF A5/8 Directorates for collaborative operations and joint readiness",
+        "AFWERX SBIR/STTR",
+        "OTAs via SOSSEC/NAC"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Defense Consulting Firms",
+        "Training and Simulation Providers",
+        "Military Software/IT Solutions"
+      ],
+      "typicalTimeToAward": "12-18 months",
+      "suitableStages": ["Growth", "Established"],
+      "requiresClearance": true,
+      "opportunityDescription": "Companies can provide interoperability platforms, joint training systems, and strategic planning tools to enhance allied collaboration and regional stability.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "chaplain-001",
+      "name": "Chaplains Directorate Workshops",
+      "slug": "chaplains-workshops",
+      "category": "additional-opportunity",
+      "overview": "Chaplains Directorate Workshops conducts workshops to promote religious engagement, resilience, and well-being for Airmen, supporting PACAF's community relations mission and strengthening mental and spiritual health.",
+      "problemNeed": [
+        "Spiritual support not fully linked with mental health and readiness",
+        "Multicultural and religious differences challenge unit cohesion"
+      ],
+      "objectives": [
+        "Enhance Airmen resilience through spiritual and mental support",
+        "Foster inclusivity, cultural awareness, and alignment with joint operations"
+      ],
+      "techFocusAreas": ["Resilience & Well-being"],
+      "specificTechnologies": [
+        "Workshops and digital modules for resilience training",
+        "Cultural and religious engagement advisory services",
+        "Virtual counseling, apps, and digital support tools"
+      ],
+      "managedBy": "Chaplains Directorate",
+      "engagementPathways": [
+        "PACAF A1 / Personnel & Community Support"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Resilience Training Providers",
+        "Cultural/Religious Advisory Firms",
+        "Digital Health Solution Providers"
+      ],
+      "typicalTimeToAward": "6-12 months",
+      "fundingInitiatives": [
+        {
+          "title": "51st Fighter Wing Chaplain Readiness Symposium",
+          "description": "Partnership and interoperability enhancement at Osan AB",
+          "link": "https://www.pacaf.af.mil/News/Article-Display/Article/3678901/"
+        }
+      ],
+      "suitableStages": ["Early Stage", "Growth"],
+      "requiresClearance": false,
+      "opportunityDescription": "Companies can provide resilience training platforms, cultural competency tools, and digital well-being solutions to support Airmen spiritual and mental health.",
+      "lastUpdated": "2025-09-01"
+    },
+    {
+      "id": "a4s-001",
+      "name": "A4S Security Forces Division",
+      "slug": "a4s-security-forces",
+      "category": "additional-opportunity",
+      "overview": "The A4S Security Forces Division, part of PACAF's Directorate of Logistics, Engineering, and Force Protection, is responsible for ensuring the security, defense readiness, and operational resilience of PACAF installations across the Indo-Pacific region.",
+      "problemNeed": [
+        "Cyber-physical and regional threats",
+        "Differences in procedures and systems hinder coordination with allies"
+      ],
+      "objectives": [
+        "Strengthen force protection and security operations at PACAF bases",
+        "Improve interoperability with regional allies for rapid response to emerging threats"
+      ],
+      "techFocusAreas": ["Cybersecurity & Communications"],
+      "specificTechnologies": [
+        "Advanced surveillance, access control, and threat detection technologies",
+        "Secure communication and data-sharing platforms",
+        "Scenario-based exercises and simulations for security training"
+      ],
+      "managedBy": "A4 Directorate - Logistics, Engineering and Force Protection",
+      "engagementPathways": [
+        "PACAF A4S / Security Forces",
+        "AFWERX SBIR/STTR",
+        "OTAs via SOSSEC/NAC"
+      ],
+      "typesOfCompaniesNeeded": [
+        "Security Tech",
+        "Defense Training",
+        "Interoperability Solutions"
+      ],
+      "typicalTimeToAward": "10-15 months",
+      "fundingInitiatives": [
+        {
+          "title": "Pacific Defender 25-2",
+          "description": "Exercise enhancing partnerships and security readiness",
+          "link": "https://www.pacaf.af.mil/News/Article-Display/Article/3689012/"
+        }
+      ],
+      "suitableStages": ["Growth", "Established"],
+      "requiresClearance": true,
+      "opportunityDescription": "Companies can provide security technologies, force protection systems, and training solutions to enhance base security and regional interoperability.",
+      "lastUpdated": "2025-09-01"
+    }
+  ],
+  "tags": [
+    {
+      "id": "tag-mca",
+      "label": "MCA Program",
+      "category": "program",
+      "color": "#3B82F6",
+      "description": "Multi-Capable Airman Program"
+    },
+    {
+      "id": "tag-cyber",
+      "label": "Cyber Ops",
+      "category": "program",
+      "color": "#8B5CF6",
+      "description": "Cyber Operations Programs"
+    },
+    {
+      "id": "tag-ngap",
+      "label": "NGAP",
+      "category": "program",
+      "color": "#10B981",
+      "description": "Next Generation Aircrew Protection"
+    },
+    {
+      "id": "tag-rap",
+      "label": "Ready Aircrew",
+      "category": "program",
+      "color": "#F59E0B",
+      "description": "Ready Aircrew Program"
+    },
+    {
+      "id": "tag-tsc",
+      "label": "Theater Security",
+      "category": "program",
+      "color": "#EF4444",
+      "description": "Theater Security Cooperation"
+    },
+    {
+      "id": "tag-aiml",
+      "label": "AI/ML",
+      "category": "technology",
+      "color": "#06B6D4",
+      "description": "Artificial Intelligence and Machine Learning"
+    },
+    {
+      "id": "tag-cyber-tech",
+      "label": "Cybersecurity",
+      "category": "technology",
+      "color": "#8B5CF6",
+      "description": "Cybersecurity Technologies"
+    },
+    {
+      "id": "tag-training",
+      "label": "Training & Simulation",
+      "category": "technology",
+      "color": "#F59E0B",
+      "description": "Training and Simulation Technologies"
+    },
+    {
+      "id": "tag-resilience",
+      "label": "Resilience & Well-being",
+      "category": "technology",
+      "color": "#10B981",
+      "description": "Resilience and Well-being Solutions"
+    },
+    {
+      "id": "tag-materials",
+      "label": "Materials & Sustainment",
+      "category": "technology",
+      "color": "#6366F1",
+      "description": "Materials and Sustainment Technologies"
+    },
+    {
+      "id": "tag-sbir-1",
+      "label": "SBIR Phase I Ready",
+      "category": "stage",
+      "color": "#84CC16"
+    },
+    {
+      "id": "tag-sbir-2",
+      "label": "SBIR Phase II Ready",
+      "category": "stage",
+      "color": "#22C55E"
+    },
+    {
+      "id": "tag-ota",
+      "label": "OTA Qualified",
+      "category": "stage",
+      "color": "#14B8A6"
+    },
+    {
+      "id": "tag-afwerx",
+      "label": "AFWERX Expert",
+      "category": "expertise",
+      "color": "#3B82F6"
+    },
+    {
+      "id": "tag-pacaf-exp",
+      "label": "PACAF Experience",
+      "category": "expertise",
+      "color": "#8B5CF6"
+    }
+  ],
+  "primeContractors": [
+    {
+      "name": "Leidos",
+      "programs": ["mca-001", "ccep-001", "a6-001"],
+      "capabilities": ["Systems Integration", "IT Services", "Cybersecurity"]
+    },
+    {
+      "name": "Booz Allen Hamilton",
+      "programs": ["mca-001", "a6-001"],
+      "capabilities": ["Consulting", "Analytics", "Cyber Solutions"]
+    },
+    {
+      "name": "General Dynamics IT",
+      "programs": ["mca-001", "a6-001"],
+      "capabilities": ["IT Modernization", "Cloud", "Cybersecurity"]
+    },
+    {
+      "name": "CACI",
+      "programs": ["ccep-001", "a6-001"],
+      "capabilities": ["Signals Intelligence", "Network Operations", "Cyber"]
+    },
+    {
+      "name": "CAE",
+      "programs": ["rap-001"],
+      "capabilities": ["Flight Simulation", "Training Systems"]
+    },
+    {
+      "name": "L3Harris",
+      "programs": ["rap-001", "tsc-001"],
+      "capabilities": ["Communications", "Training", "ISR"]
+    },
+    {
+      "name": "Raytheon",
+      "programs": ["tsc-001"],
+      "capabilities": ["Missiles", "Radar", "Air Defense"]
+    }
+  ],
+  "idiqs": [
+    {
+      "piid": "FA521522A0005",
+      "title": "Saipan Storage/Warehouse/Drayage",
+      "startDate": "2022-08-03",
+      "endDate": "2027-08-02",
+      "relevantPrograms": []
+    },
+    {
+      "piid": "FA500023A0011",
+      "title": "Heavy Equipment Rental for Various Locations in the Philippines",
+      "startDate": "2023-03-24",
+      "endDate": "2028-03-24",
+      "relevantPrograms": []
+    },
+    {
+      "piid": "FA486124A0003",
+      "title": "Vehicle Maintenance and Repairs",
+      "startDate": "2023-12-04",
+      "endDate": "2028-12-03",
+      "relevantPrograms": []
+    }
+  ],
+  "sbirKeywords": {
+    "mca-001": [
+      "multi-capable",
+      "cross-functional training",
+      "VR training",
+      "AR simulation",
+      "airman readiness",
+      "agile combat employment",
+      "ACE",
+      "multi-role",
+      "adaptive training"
+    ],
+    "ccep-001": [
+      "cybersecurity",
+      "joint cyber",
+      "interoperability",
+      "cyber training",
+      "cross-service",
+      "cyber exchange",
+      "cyber collaboration"
+    ],
+    "ngap-001": [
+      "aircrew protection",
+      "CBRN",
+      "protective equipment",
+      "decontamination",
+      "hazard monitoring",
+      "chemical warfare",
+      "protective gear",
+      "aircrew safety"
+    ],
+    "rap-001": [
+      "aircrew training",
+      "flight simulation",
+      "mission rehearsal",
+      "pilot training",
+      "cognitive readiness",
+      "aircrew readiness",
+      "flight training"
+    ],
+    "tsc-001": [
+      "partner nation",
+      "allied training",
+      "coalition",
+      "joint operations",
+      "security cooperation",
+      "bilateral",
+      "multilateral"
+    ],
+    "a6-001": [
+      "cyber operations",
+      "network security",
+      "command and control",
+      "C2",
+      "communications",
+      "network defense",
+      "cyber resilience"
+    ],
+    "corrosion-001": [
+      "corrosion prevention",
+      "protective coatings",
+      "predictive maintenance",
+      "aircraft maintenance",
+      "materials protection",
+      "corrosion control"
+    ],
+    "tnl-001": [
+      "mental health",
+      "resilience",
+      "well-being",
+      "psychological",
+      "counseling",
+      "behavioral health",
+      "airman wellness"
+    ]
+  }
+}
