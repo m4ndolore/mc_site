@@ -1,7 +1,24 @@
 {
-  "dependencies": {
-    "18": "^0.0.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
-  }
+  "name": "mc_site",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Merge Combinator Landing Page",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.17",
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17",
+    "vite": "^7.2.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m4ndolore/mc_site.git"
+  },
+  "author": "Merge Combinator",
+  "license": "ISC"
 }
