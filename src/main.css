@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+/* Your custom Merge Combinator design tokens */
+@theme {
+  --color-mc-black: #0B0E11;
+  --color-mc-charcoal: #1C232B;
+  --color-mc-slate: #2C3036;
+  --color-mc-blue: #2A7FDB;
+  --color-mc-blue-dark: #1E5FA8;
+  --color-mc-blue-light: #4A9FFF;
+  --color-mc-offwhite: #F2F5F7;
+  --color-mc-green: #5DA06F;
+  
+  --font-primary: 'Inter', 'Helvetica Neue', sans-serif;
+  --font-mono: 'Space Mono', 'SF Mono', monospace;
+}
