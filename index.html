@@ -61,6 +61,17 @@
        SECTION 1: HERO (Enhanced with node network)
        ============================================ -->
   <section class="hero" id="hero">
+    <!-- Video Background -->
+    <div class="video-bg">
+      <video class="video-bg__video" autoplay muted loop playsinline poster="assets/videos/hero-poster.jpg">
+        <source src="assets/videos/hero-carrier-ops.mp4" type="video/mp4">
+      </video>
+      <div class="video-bg__placeholder"></div>
+      <div class="video-bg__overlay"></div>
+      <div class="video-bg__tint"></div>
+    </div>
+
+    <!-- Legacy background elements (kept for fallback) -->
     <div class="hero__bg">
       <div class="hero__gradient"></div>
       <div class="hero__grid"></div>
@@ -69,17 +80,17 @@
     </div>
 
     <div class="container hero__content">
-      <div class="hero__text">
-        <div class="hero__badge">
+      <div class="hero__text reveal-stagger">
+        <div class="hero__badge reveal">
           <span class="hero__badge-dot"></span>
           National Security Innovation
         </div>
-        <h1 class="hero__title">Build What<br>Warfighters Need.</h1>
-        <p class="hero__subtitle">
+        <h1 class="hero__title reveal">Build What<br>Warfighters Need.</h1>
+        <p class="hero__subtitle reveal">
           Merge Combinator is the builder-led venture studio for national security.
           If you're building for the Indo-Pacific mission, build with us.
         </p>
-        <div class="hero__ctas">
+        <div class="hero__ctas reveal">
           <a href="https://app.mergecombinator.com/apply" class="btn btn--primary btn--glow">
             Build With Us
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -94,7 +105,7 @@
             Watch Overview
           </a>
         </div>
-        <div class="hero__stats">
+        <div class="hero__stats reveal">
           <div class="hero__stat">
             <span class="hero__stat-number">80+</span>
             <span class="hero__stat-label">Companies</span>
@@ -506,10 +517,20 @@
        SECTION 4: WHY MERGE EXISTS (Enhanced)
        ============================================ -->
   <section class="why-merge section--lg" id="why-merge">
+    <!-- Video Background -->
+    <div class="video-bg">
+      <video class="video-bg__video" autoplay muted loop playsinline data-src="assets/videos/mission-tactical.mp4">
+        <source data-src="assets/videos/mission-tactical.mp4" type="video/mp4">
+      </video>
+      <div class="video-bg__placeholder"></div>
+      <div class="video-bg__overlay"></div>
+      <div class="video-bg__tint"></div>
+    </div>
+
     <div class="container">
       <div class="why-merge__content">
-        <div class="why-merge__text fade-up">
-          <span class="section-label">The Mission</span>
+        <div class="why-merge__text reveal">
+          <span class="section-label section-label--light">The Mission</span>
           <h2 class="why-merge__title">Our national security demands better technology, faster.</h2>
           <div class="why-merge__body">
             <p>Operators face accelerating threats. Founders struggle to access real problems. Traditional acquisition moves slowly, trapped by legacy overhead and siloed processes.</p>
@@ -528,7 +549,7 @@
           </div>
         </div>
 
-        <div class="why-merge__visual fade-up">
+        <div class="why-merge__visual reveal">
           <div class="why-merge__stats-card">
             <div class="why-merge__stat-row">
               <div class="why-merge__stat-item">
@@ -1019,12 +1040,23 @@
        SECTION 11: FINAL CTA
        ============================================ -->
   <section class="final-cta" id="cta">
+    <!-- Video Background -->
+    <div class="video-bg">
+      <video class="video-bg__video" autoplay muted loop playsinline data-src="assets/videos/cta-deployment.mp4">
+        <source data-src="assets/videos/cta-deployment.mp4" type="video/mp4">
+      </video>
+      <div class="video-bg__placeholder"></div>
+      <div class="video-bg__overlay"></div>
+      <div class="video-bg__tint"></div>
+    </div>
+
+    <!-- Legacy background elements -->
     <div class="final-cta__bg">
       <div class="final-cta__grid"></div>
       <div class="final-cta__gradient"></div>
     </div>
     <div class="container">
-      <div class="final-cta__content fade-up">
+      <div class="final-cta__content reveal">
         <h2 class="final-cta__title">Build what warfighters need.</h2>
         <p class="final-cta__subtitle">
           Join Merge Combinator and become part of the next wave of national security innovation.
@@ -1118,6 +1150,6 @@
   </footer>
 
   <!-- Scripts -->
-  <script type="module" src="/script.js"></script>
+  <script src="js/scroll-reveal.js"></script>
 </body>
 </html>
