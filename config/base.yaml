@@ -1,0 +1,69 @@
+# Base Configuration - Shared Across All Environments
+# ==================================================
+# NO SECRETS ALLOWED IN THIS FILE
+# This file contains common non-secret defaults
+
+# Core Runtime
+NODE_ENV: development
+
+# Application
+PORT: 2000
+
+# Ghost CMS - Database
+GHOST_DB_CLIENT: sqlite3  # Overridden to mysql in production
+
+# MongoDB
+MONGODB_DB_NAME: sigmablox
+
+THEME_SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev  #theme?
+SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev  #(webhook/backend)
+
+# Cloudflare
+CF_ACCESS_TEAM_DOMAIN: https://mergecombinator.cloudflareaccess.com
+CF_ACCESS_AUDIENCE: 7cfb1b0d553a440a7fb79adb3055baad2a085613a432d25cd59132c650f2decc
+CF_ACCESS_CLIENT_ID: 9695c747a03a1e2c59db9f0f8b635fca.access
+
+# Auth Guard
+AUTH_GUARD_CF_CLIENT_ID: 9695c747a03a1e2c59db9f0f8b635fca.access
+
+# GCP
+GCP_PROJECT_ID: sigmablox
+
+# Airtable (non-secret IDs)
+AIRTABLE_COMPANIES_BASE_ID: appGFhooq5rKm7ZWQ
+AIRTABLE_COACHES_BASE_ID: apprWHSd3CtcD4ZOE
+AIRTABLE_COMPANIES_TABLE_NAME: Cohort 25-1
+AIRTABLE_COACHES_TABLE_NAME: Warfighter CRM
+
+# BigQuery
+BQ_DATASET: cohort251
+BQ_TABLE: companies
+
+# OAuth Endpoints (Production Authentik)
+OAUTH_AUTHORIZE_URL: https://auth.sigmablox.com/application/o/authorize/
+OAUTH_TOKEN_URL: https://auth.sigmablox.com/application/o/token/
+OAUTH_USERINFO_URL: https://auth.sigmablox.com/application/o/userinfo/
+OAUTH_JWKS_URL: https://auth.sigmablox.com/application/o/ghost-cms/jwks/
+OAUTH_LOGOUT_URL: https://auth.sigmablox.com/application/o/ghost-cms/end-session/
+OAUTH_SCOPES: openid email profile groups
+
+# OIDC
+OIDC_ISSUER_URL: https://auth.sigmablox.com
+
+# Admin Configuration
+ADMIN_EMAIL: gus@mergecombinator.com
+ADMIN_EMAILS: gus+2@mergecombinator.com
+ADMIN_TIERS: admin,operator,owner
+ADMIN_LABELS: admin,operator,owner
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS: 900000  # 15 minutes
+RATE_LIMIT_MAX_REQUESTS: 100
+
+# Session & Security
+SESSION_COOKIE_SECURE: true
+TRUST_PROXY: false
+
+# AI Content Assistant
+AI_PROVIDER: perplexity
+AI_MODEL: sonar-pro

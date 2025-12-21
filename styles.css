@@ -1351,12 +1351,12 @@ h4, .h4 {
 .why-merge__stat-arrow svg {
   width: 32px;
   height: 32px;
-  stroke: var(--blue);
+  stroke: var(--blue-light);
 }
 
 .why-merge__stat-bar {
   height: 8px;
-  background: var(--gray-light);
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 4px;
   overflow: hidden;
   position: relative;
