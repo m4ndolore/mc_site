@@ -1,0 +1,84 @@
+# Development Configuration - Public Mode (Cloudflare Tunnel)
+# ==================================================
+# For development with Cloudflare tunnel and full auth
+# Start with: docker compose --profile public up
+
+# Core Runtime
+APP_ENV: dev
+NODE_ENV: development
+
+# URLs - Public development domain
+PUBLIC_BASE_URL: https://dev.sigmablox.com
+WEBHOOK_UPSTREAM: webhook-service-768490904160.us-central1.run.app
+THEME_API_BASE_URL: https://api-dev.sigmablox.com
+THEME_SAM_VALIDATOR_URL: https://api-dev.sigmablox.com
+SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev
+
+# Ghost URLs (same for public mode - no Docker network with Cloudflare tunnel)
+GHOST_PUBLIC_URL: https://dev.sigmablox.com
+GHOST_INTERNAL_URL: https://dev.sigmablox.com
+
+# OIDC - Public development
+OIDC_CLIENT_ID: VsCbcc6DuDjFV5aKzXPpSc4UKACuonWOvk6O9iyc
+OIDC_REDIRECT_URI: https://dev.sigmablox.com/auth/callback
+
+# OAuth Client
+OAUTH_CLIENT_ID: VsCbcc6DuDjFV5aKzXPpSc4UKACuonWOvk6O9iyc
+OAUTH_REDIRECT_URI: https://dev.sigmablox.com/auth/callback
+
+# Authentik
+AUTHENTIK_BASE_URL: https://auth.sigmablox.com
+AUTHENTIK_ADMIN_GROUP_SLUGS: authentik Admins
+AUTHENTIK_LOGIN_FLOW_SLUG: sigmablox-auth-flow
+AUTHENTIK_OIDC_ISSUER: https://auth.sigmablox.com/application/o/sigmablox-ghost-dev/
+AUTHENTIK_REDIRECT_URI: https://dev.sigmablox.com/ghost/sso/callback
+
+# Ghost
+GHOST_DB_CLIENT: sqlite3  # Dev still uses SQLite
+GHOST_AUTHOR_DEFAULT_ROLE: Contributor
+
+# MongoDB
+MONGODB_DB_NAME: sigmablox_users_dev
+
+# SMTP - Development (could be real SMTP or Mailpit)
+SMTP_HOST: smtp.gmail.com
+SMTP_PORT: 587
+SMTP_USER: gus@mergecombinator.com
+SMTP_SECURE: true
+
+# Email Configuration
+AUTHENTIK_EMAIL__FROM: noreply@mergecombinator.com
+AUTHENTIK_EMAIL__HOST: smtp-relay.gmail.com
+AUTHENTIK_EMAIL__PORT: 587
+AUTHENTIK_EMAIL__USE_TLS: true
+AUTHENTIK_EMAIL__USE_SSL: false
+AUTHENTIK_EMAIL__TIMEOUT: 10
+AUTHENTIK_EMAIL_FROM_NAME: SigmaBlox Auth
+AUTHENTIK_EMAIL_USERNAME: gus@mergecombinator.com
+
+# CORS - Dev origins
+ALLOWED_ORIGINS: https://dev.sigmablox.com,https://api-dev.sigmablox.com,https://auth-dev.sigmablox.com
+
+# Security - Dev settings
+SESSION_COOKIE_SECURE: true
+SESSION_COOKIE_DOMAIN: .sigmablox.com
+TRUST_PROXY: true
+
+# Authentik Container Ports (if running in container)
+COMPOSE_PORT_HTTP: 9000
+COMPOSE_PORT_HTTPS: 9443
+
+# Authentik PostgreSQL
+PG_DB: authentik
+PG_USER: authentik
+
+# Authentik Image
+AUTHENTIK_IMAGE: ghcr.io/goauthentik/server
+AUTHENTIK_TAG: 2025.4.4
+
+# Authentik Runtime Flags
+AUTHENTIK_ERROR_REPORTING: false
+AUTHENTIK_LOG_LEVEL: info
+AUTHENTIK_DISABLE_EMBEDDED_OUTPOST: false
+AUTHENTIK_STORAGE__MEDIA__BACKEND: file
+AUTHENTIK_STORAGE__MEDIA__PATH: /opt/authentik/media
