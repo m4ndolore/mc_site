@@ -1242,7 +1242,9 @@ h4, .h4 {
    WHY MERGE SECTION
    ============================================ */
 .why-merge {
-  background: var(--white);
+  position: relative;
+  background: var(--black);
+  overflow: hidden;
 }
 
 .why-merge__content {
@@ -1253,12 +1255,12 @@ h4, .h4 {
 }
 
 .why-merge__title {
-  color: var(--black);
+  color: var(--white);
   margin-bottom: 24px;
 }
 
 .why-merge__body {
-  color: var(--slate);
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 32px;
 }
 
@@ -1267,7 +1269,7 @@ h4, .h4 {
 }
 
 .why-merge__emphasis {
-  color: var(--black);
+  color: var(--white);
   font-weight: 600;
   font-style: italic;
 }
@@ -1282,7 +1284,7 @@ h4, .h4 {
   font-family: var(--font-mono);
   font-size: 12px;
   text-transform: uppercase;
-  color: var(--slate);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .why-merge__logos-grid {
@@ -1293,16 +1295,16 @@ h4, .h4 {
 
 .why-merge__logo-text {
   font-weight: 600;
-  color: var(--charcoal);
+  color: var(--white);
   opacity: 0.7;
 }
 
 /* Stats Card */
 .why-merge__stats-card {
-  background: var(--offwhite);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-xl);
   padding: 48px;
-  border: 1px solid var(--gray-light);
 }
 
 .why-merge__stat-row {
@@ -1321,20 +1323,20 @@ h4, .h4 {
 .why-merge__stat-value {
   font-size: 48px;
   font-weight: 700;
-  color: var(--charcoal);
+  color: var(--white);
   line-height: 1;
 }
 
 .why-merge__stat-unit {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--slate);
+  color: rgba(255, 255, 255, 0.6);
   margin-top: 4px;
 }
 
 .why-merge__stat-desc {
   font-size: 13px;
-  color: var(--slate);
+  color: rgba(255, 255, 255, 0.5);
   margin-top: 8px;
 }
 
@@ -2220,45 +2222,114 @@ h4, .h4 {
 }
 
 /* ============================================
-   SCROLL ANIMATIONS
+   VIDEO BACKGROUNDS
    ============================================ */
+.video-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.video-bg__video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  filter: blur(2px) saturate(0.6) brightness(0.8);
+}
+
+.video-bg__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 14, 17, 0.65) 0%,
+    rgba(11, 14, 17, 0.75) 50%,
+    rgba(11, 14, 17, 0.85) 100%
+  );
+  z-index: 1;
+}
+
+.video-bg__tint {
+  position: absolute;
+  inset: 0;
+  background: rgba(42, 127, 219, 0.08);
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+
+/* Placeholder gradient animation for when video not loaded */
+.video-bg__placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--black) 0%,
+    rgba(42, 127, 219, 0.15) 50%,
+    var(--black) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .video-bg__video {
+    display: none;
+  }
+  .video-bg__placeholder {
+    animation: none;
+  }
+}
+
+/* ============================================
+   SCROLL REVEAL ANIMATIONS
+   ============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered reveal for children */
+.reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+.reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.1s; }
+.reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.2s; }
+.reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.3s; }
+.reveal-stagger > .reveal:nth-child(5) { transition-delay: 0.4s; }
+.reveal-stagger > .reveal:nth-child(6) { transition-delay: 0.5s; }
+.reveal-stagger > .reveal:nth-child(7) { transition-delay: 0.6s; }
+.reveal-stagger > .reveal:nth-child(8) { transition-delay: 0.7s; }
+
+/* Legacy fade-up support (visible by default) */
 .fade-up {
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-.fade-up.animate {
-  opacity: 0;
-  transform: translateY(40px);
-}
-
-.fade-up.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .stagger-children > * {
   opacity: 1;
   transform: translateY(0);
   transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.stagger-children.animate > * {
-  opacity: 0;
-  transform: translateY(30px);
-}
-
-.stagger-children.visible > *:nth-child(1) { transition-delay: 0.1s; }
-.stagger-children.visible > *:nth-child(2) { transition-delay: 0.2s; }
-.stagger-children.visible > *:nth-child(3) { transition-delay: 0.3s; }
-.stagger-children.visible > *:nth-child(4) { transition-delay: 0.4s; }
-.stagger-children.visible > *:nth-child(5) { transition-delay: 0.5s; }
-.stagger-children.visible > *:nth-child(6) { transition-delay: 0.6s; }
-
-.stagger-children.visible > * {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 /* ============================================

@@ -33,3 +33,4 @@ yarn-error.log\*
 # Packed plugin
 
 plugin.zip
+.vercel
