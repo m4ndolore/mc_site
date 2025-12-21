@@ -10,6 +10,15 @@
   // CONFIGURATION
   // ============================================
   const CONFIG = {
+    // URL Configuration - Update these before launch
+    urls: {
+      appUrl: 'https://app.mergecombinator.com',
+      applyUrl: 'https://app.mergecombinator.com/apply',
+      loginUrl: 'https://app.mergecombinator.com/login',
+      combineUrl: 'https://sigmablox.com'
+    },
+
+    // Animation & UI Configuration
     observerThreshold: 0.15,
     observerRootMargin: '0px 0px -80px 0px',
     navScrollThreshold: 50,
@@ -517,9 +526,40 @@
   }
 
   // ============================================
+  // UPDATE CTA LINKS
+  // ============================================
+  function updateCTALinks() {
+    // Update "Build With Us" buttons to apply URL
+    const buildWithUsButtons = document.querySelectorAll('a[href="#engage"]');
+    buildWithUsButtons.forEach(btn => {
+      if (btn.textContent.trim().includes('Build With Us') ||
+          btn.textContent.trim().includes('Build with us')) {
+        btn.href = CONFIG.urls.applyUrl;
+      }
+    });
+
+    // Update "The Combine" and "SigmaBlox" links
+    const combineLinks = document.querySelectorAll('a');
+    combineLinks.forEach(link => {
+      const text = link.textContent.trim();
+      if (text === 'Learn About The Combine' ||
+          text === 'The Combine' ||
+          text === 'Learn More') {
+        // Only update if it's not already linking somewhere specific
+        if (link.getAttribute('href') === '#') {
+          link.href = CONFIG.urls.combineUrl;
+        }
+      }
+    });
+  }
+
+  // ============================================
   // INITIALIZE ALL MODULES
   // ============================================
   function init() {
+    // Update CTA links with configured URLs
+    updateCTALinks();
+
     // Core functionality
     initNavigation();
     initPlatformTabs();
