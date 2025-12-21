@@ -1,7 +1,3 @@
-Perfect! Now let me search for Framer's official free starter templates:Excellent! Now let me get details on "The Bureau" template which seems perfect for your YC + Palantir aesthetic:Perfect! Now I have all the information I need. Let me create your comprehensive step-by-step guide:
-
----
-
 # 🎯 BUILDING MERGE COMBINATOR IN FRAMER FROM SCRATCH
 
 ## Your Perfect Free Starting Template: **"The Bureau" by Pixsellz**
