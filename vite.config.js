@@ -1,14 +1,22 @@
 import { defineConfig } from 'vite'
+import { resolve } from 'path'
 
 export default defineConfig({
   server: {
     port: 3000,
     open: true,
   },
-  // Only process the root index.html, ignore Framer exports
   build: {
     rollupOptions: {
-      input: './index.html'
-    }
-  }
+      input: {
+        main: resolve(__dirname, 'index.html'),
+        about: resolve(__dirname, 'about.html'),
+        blog: resolve(__dirname, 'blog.html'),
+        portfolio: resolve(__dirname, 'portfolio.html'),
+      }
+    },
+    // Copy script.js to output
+    copyPublicDir: false
+  },
+  publicDir: false
 })
