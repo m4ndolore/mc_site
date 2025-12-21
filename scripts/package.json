@@ -1,0 +1,18 @@
+{
+  "name": "mc-site-migration-scripts",
+  "version": "1.0.0",
+  "description": "Migration scripts for importing users from SigmaBlox to MC Platform",
+  "type": "commonjs",
+  "scripts": {
+    "migrate": "node migrate-sigmablox-users.js",
+    "migrate:dry-run": "node migrate-sigmablox-users.js --dry-run",
+    "import": "node import-to-mongodb.js",
+    "install-deps": "npm install sqlite3 mongodb"
+  },
+  "dependencies": {
+    "mongodb": "^6.0.0",
+    "sqlite3": "^5.1.7"
+  },
+  "author": "Merge Combinator",
+  "license": "ISC"
+}
