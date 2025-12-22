@@ -36,6 +36,10 @@
     {
       "source": "/portfolio",
       "destination": "/portfolio.html"
+    },
+    {
+      "source": "/builders",
+      "destination": "/builders.html"
     }
   ]
 }
