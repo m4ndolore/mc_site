@@ -8,6 +8,8 @@
 .yarn
 
 /unframer
+reference_theme/
+**/node_modules/
 
 # misc
 
