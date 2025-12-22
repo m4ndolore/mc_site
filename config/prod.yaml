@@ -1,104 +1,42 @@
 # Production Configuration - Non-Secret Values Only
 # ==================================================
-# SECRETS MUST BE IN Secret Manager, NOT HERE
+# SECRETS MUST BE IN Secret Manager or .env.local, NOT HERE
 
 # Core Runtime
 APP_ENV: prod
 NODE_ENV: production
 
-# URLs - Production domains
-PUBLIC_BASE_URL: https://www.sigmablox.com
-WEBHOOK_UPSTREAM: webhook-service-768490904160.us-central1.run.app
-THEME_API_BASE_URL: https://api.sigmablox.com
-THEME_SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev
-SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev
-
-# Ghost URLs
-GHOST_PUBLIC_URL: https://www.sigmablox.com
-GHOST_INTERNAL_URL: https://www.sigmablox.com
+# URLs - Production domains (CONFIGURE THESE)
+PUBLIC_BASE_URL: PLACEHOLDER_PROD_PUBLIC_URL
+API_BASE_URL: PLACEHOLDER_PROD_API_URL
 
 # OIDC - Production
-OIDC_CLIENT_ID: sigmablox-web-prod
-OIDC_REDIRECT_URI: https://www.sigmablox.com/auth/callback
+OIDC_CLIENT_ID: PLACEHOLDER_OIDC_CLIENT_ID_PROD
+OIDC_REDIRECT_URI: PLACEHOLDER_PROD_PUBLIC_URL/auth/callback
 
 # OAuth Client
-OAUTH_CLIENT_ID: VsCbcc6DuDjFV5aKzXPpSc4UKACuonWOvk6O9iyc
-OAUTH_REDIRECT_URI: https://www.sigmablox.com/auth/callback
-
-# Authentik
-AUTHENTIK_BASE_URL: https://auth.sigmablox.com
-AUTHENTIK_ADMIN_GROUP_SLUGS: authentik Admins
-AUTHENTIK_ADMIN_CLIENT_ID: EVmSA1Vv0WeKYxexG5noUQa4kMzSeMLwk2FxiZzJ
-AUTHENTIK_LOGIN_FLOW_SLUG: sigmablox-auth-flow
-AUTHENTIK_OIDC_ISSUER: https://auth.sigmablox.com/application/o/sigmablox-ghost/
-AUTHENTIK_REDIRECT_URI: https://www.sigmablox.com/ghost/sso/callback
-
-# Ghost - MUST use MySQL in production
-GHOST_DB_CLIENT: mysql
-GHOST_DB_HOST: 127.0.0.1  # Cloud SQL via proxy
-GHOST_DB_PORT: 3306
-GHOST_DB_NAME: ghost
-GHOST_DB_USER: ghost
-GHOST_AUTHOR_DEFAULT_ROLE: Contributor
+OAUTH_CLIENT_ID: PLACEHOLDER_OAUTH_CLIENT_ID_PROD
+OAUTH_REDIRECT_URI: PLACEHOLDER_PROD_PUBLIC_URL/auth/callback
 
 # MongoDB
-MONGODB_DB_NAME: sigmablox_users
+MONGODB_DB_NAME: defense_builders_mc
 
 # SMTP - Production
 SMTP_HOST: smtp.gmail.com
 SMTP_PORT: 587
-SMTP_USER: gus@mergecombinator.com
+SMTP_USER: PLACEHOLDER_SMTP_USER
 SMTP_SECURE: true
 
-# Ghost mail (Ghost expects mail__* keys)
-mail__transport: SMTP
-mail__options__host: smtp.gmail.com
-mail__options__port: 587
-mail__options__secure: "false"
-mail__from: gus@mergecombinator.com
-
-# Ensure Ghost does NOT try SMTP AUTH locally
-mail__options__auth__user: gus@mergecombinator.com
-
-# Email Configuration
-AUTHENTIK_EMAIL__FROM: noreply@sigmablox.com
-AUTHENTIK_EMAIL__HOST: smtp.gmail.com
-AUTHENTIK_EMAIL__PORT: 587
-AUTHENTIK_EMAIL__USE_TLS: true
-AUTHENTIK_EMAIL__USE_SSL: false
-AUTHENTIK_EMAIL__TIMEOUT: 10
-AUTHENTIK_EMAIL_FROM_NAME: SigmaBlox
-AUTHENTIK_EMAIL_USERNAME: gus@mergecombinator.com
-
-# CORS - Production origins
-ALLOWED_ORIGINS: https://www.sigmablox.com,https://sigmablox.com,https://api.sigmablox.com
+# CORS - Production origins (CONFIGURE THESE)
+ALLOWED_ORIGINS: PLACEHOLDER_PROD_PUBLIC_URL,PLACEHOLDER_PROD_API_URL
 
 # Security - Strict production settings
 SESSION_COOKIE_SECURE: true
-SESSION_COOKIE_DOMAIN: .sigmablox.com
-CSRF_TRUSTED_ORIGINS: https://www.sigmablox.com,https://sigmablox.com
+SESSION_COOKIE_DOMAIN: PLACEHOLDER_COOKIE_DOMAIN
+CSRF_TRUSTED_ORIGINS: PLACEHOLDER_PROD_PUBLIC_URL
 TRUST_PROXY: true
 
-# Authentik Container Ports (if running in container)
-COMPOSE_PORT_HTTP: 9000
-COMPOSE_PORT_HTTPS: 9443
-
-# Authentik PostgreSQL
-PG_DB: authentik
-PG_USER: authentik
-
-# Authentik Image
-AUTHENTIK_IMAGE: ghcr.io/goauthentik/server
-AUTHENTIK_TAG: 2025.4.4
-
-# Authentik Runtime Flags
-AUTHENTIK_ERROR_REPORTING: false
-AUTHENTIK_LOG_LEVEL: warning
-AUTHENTIK_DISABLE_EMBEDDED_OUTPOST: false
-AUTHENTIK_STORAGE__MEDIA__BACKEND: file
-AUTHENTIK_STORAGE__MEDIA__PATH: /opt/authentik/media
-
-# GCP / Cloud Run Settings
-PROJECT_ID: sigmablox
+# GCP / Cloud Run Settings (CONFIGURE THESE)
+PROJECT_ID: PLACEHOLDER_GCP_PROJECT_ID
 REGION: us-central1
 ZONE: us-central1-a
