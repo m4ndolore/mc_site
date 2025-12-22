@@ -1707,12 +1707,12 @@ h4, .h4 {
 
 .logo-marquee::before {
   left: 0;
-  background: linear-gradient(to right, var(--white), transparent);
+  background: linear-gradient(to right, var(--offwhite), transparent);
 }
 
 .logo-marquee::after {
   right: 0;
-  background: linear-gradient(to left, var(--white), transparent);
+  background: linear-gradient(to left, var(--offwhite), transparent);
 }
 
 .logo-marquee__track {
@@ -1728,17 +1728,28 @@ h4, .h4 {
 
 .logo-marquee__item {
   flex-shrink: 0;
-  height: 48px;
-  padding: 12px 32px;
-  background: var(--offwhite);
+  height: 56px;
+  padding: 8px 16px;
+  background: var(--white);
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--slate);
+}
+
+.logo-marquee__item img {
+  height: 40px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  filter: grayscale(100%);
   opacity: 0.7;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.logo-marquee__item:hover img {
+  filter: grayscale(0%);
+  opacity: 1;
 }
 
 .social-proof__disclaimer {
