@@ -583,6 +583,8 @@ h4, .h4 {
   inset: 0;
   width: 100%;
   height: 100%;
+  z-index: 1;
+  opacity: 1;
 }
 
 .hero__vignette {
@@ -2282,6 +2284,41 @@ h4, .h4 {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* Hide video-bg in hero (using canvas instead) */
+.hero .video-bg {
+  display: none;
+}
+
+/* ============================================
+   SECTION CANVAS BACKGROUNDS
+   ============================================ */
+.section-canvas-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.section-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.section-canvas-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 14, 17, 0.3) 0%,
+    rgba(11, 14, 17, 0.6) 50%,
+    rgba(11, 14, 17, 0.8) 100%
+  );
+  z-index: 1;
+  pointer-events: none;
 }
 
 /* Reduced motion preference */
