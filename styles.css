@@ -1619,13 +1619,17 @@ h4, .h4 {
   background: var(--offwhite);
   border-radius: var(--radius-lg);
   border: 1px solid transparent;
-  transition: all var(--transition-base);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.3s ease,
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
 }
 
 .capability-card:hover {
   background: var(--white);
   border-color: var(--gray-light);
   box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
 }
 
 .capability-card__icon {
@@ -1638,12 +1642,23 @@ h4, .h4 {
   justify-content: center;
   margin-bottom: 20px;
   box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.capability-card:hover .capability-card__icon {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
 }
 
 .capability-card__icon svg {
   width: 24px;
   height: 24px;
   stroke: var(--blue);
+  transition: stroke 0.3s ease;
+}
+
+.capability-card:hover .capability-card__icon svg {
+  stroke: var(--blue-dark, #1E5A9E);
 }
 
 .capability-card__title {
@@ -1717,8 +1732,8 @@ h4, .h4 {
 
 .logo-marquee__track {
   display: flex;
-  gap: 48px;
-  animation: marquee 30s linear infinite;
+  gap: 64px;
+  animation: marquee 40s linear infinite;
 }
 
 @keyframes marquee {
@@ -1728,8 +1743,8 @@ h4, .h4 {
 
 .logo-marquee__item {
   flex-shrink: 0;
-  height: 56px;
-  padding: 8px 16px;
+  height: 88px;
+  padding: 12px 24px;
   background: var(--white);
   border-radius: var(--radius-md);
   display: flex;
@@ -1738,9 +1753,9 @@ h4, .h4 {
 }
 
 .logo-marquee__item img {
-  height: 40px;
+  height: 64px;
   width: auto;
-  max-width: 120px;
+  max-width: 180px;
   object-fit: contain;
   filter: grayscale(100%);
   opacity: 0.7;
@@ -2042,15 +2057,82 @@ h4, .h4 {
 
 .about__image-cell--1 {
   grid-row: span 2;
-  background: linear-gradient(135deg, var(--charcoal), var(--black));
+  background:
+    linear-gradient(135deg, transparent 40%, rgba(42, 127, 219, 0.1) 100%),
+    linear-gradient(180deg, var(--charcoal) 0%, var(--black) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.about__image-cell--1::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(42, 127, 219, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(93, 160, 111, 0.1) 0%, transparent 40%);
+}
+
+.about__image-cell--1::after {
+  content: '';
+  position: absolute;
+  inset: 20px;
+  border: 1px solid rgba(42, 127, 219, 0.2);
+  border-radius: var(--radius-md);
 }
 
 .about__image-cell--2 {
-  background: var(--blue);
+  background: linear-gradient(135deg, var(--blue) 0%, #1E5A9E 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.about__image-cell--2::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
 }
 
 .about__image-cell--3 {
-  background: linear-gradient(135deg, var(--offwhite), var(--gray-light));
+  background: linear-gradient(135deg, var(--charcoal) 0%, #1C232B 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.about__image-cell--3::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 30px,
+      rgba(42, 127, 219, 0.03) 30px,
+      rgba(42, 127, 219, 0.03) 31px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 30px,
+      rgba(42, 127, 219, 0.03) 30px,
+      rgba(42, 127, 219, 0.03) 31px
+    );
+}
+
+.about__image-cell--3::after {
+  content: '';
+  position: absolute;
+  bottom: 20%;
+  left: 20%;
+  width: 60%;
+  height: 60%;
+  border: 1px solid rgba(93, 160, 111, 0.3);
+  border-radius: 50%;
 }
 
 .about__image-cell--4 {
@@ -2367,18 +2449,35 @@ h4, .h4 {
 .reveal-stagger > .reveal:nth-child(7) { transition-delay: 0.6s; }
 .reveal-stagger > .reveal:nth-child(8) { transition-delay: 0.7s; }
 
-/* Legacy fade-up support (visible by default) */
+/* Scroll-triggered fade-up animations */
 .fade-up {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(30px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-.stagger-children > * {
+.fade-up.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
+
+.stagger-children.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
+.stagger-children.visible > *:nth-child(2) { transition-delay: 0.1s; }
+.stagger-children.visible > *:nth-child(3) { transition-delay: 0.15s; }
+.stagger-children.visible > *:nth-child(4) { transition-delay: 0.2s; }
+.stagger-children.visible > *:nth-child(5) { transition-delay: 0.25s; }
+.stagger-children.visible > *:nth-child(6) { transition-delay: 0.3s; }
 
 /* ============================================
    RESPONSIVE STYLES
@@ -2501,7 +2600,8 @@ h4, .h4 {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: all var(--transition-base);
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease;
   }
 
   .nav__menu.active {
@@ -2528,7 +2628,21 @@ h4, .h4 {
     width: 100%;
     padding: 16px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transform: translateX(-10px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
+
+  .nav__menu.active .nav__link {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .nav__menu.active .nav__link:nth-child(1) { transition-delay: 0.05s; }
+  .nav__menu.active .nav__link:nth-child(2) { transition-delay: 0.1s; }
+  .nav__menu.active .nav__link:nth-child(3) { transition-delay: 0.15s; }
+  .nav__menu.active .nav__link:nth-child(4) { transition-delay: 0.2s; }
+  .nav__menu.active .nav__link:nth-child(5) { transition-delay: 0.25s; }
 
   .nav__link:last-child {
     border-bottom: none;
@@ -2536,7 +2650,18 @@ h4, .h4 {
 
   .nav__btn {
     width: 100%;
+    transform: translateY(10px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease, background 0.2s ease, border-color 0.2s ease;
   }
+
+  .nav__menu.active .nav__btn {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .nav__menu.active .nav__menu-actions .nav__btn:nth-child(1) { transition-delay: 0.3s; }
+  .nav__menu.active .nav__menu-actions .nav__btn:nth-child(2) { transition-delay: 0.35s; }
 
   .nav__mobile-toggle {
     display: flex;
