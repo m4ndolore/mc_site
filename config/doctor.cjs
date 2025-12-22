@@ -9,12 +9,12 @@
  * - External services reachable
  *
  * Usage:
- *     node config/doctor.js
+ *     node config/doctor.cjs
  *     npm run doctor
  */
 
-const { validateConfig, printConfigStatus, CONFIG_SCHEMA } = require('./schema');
-const urlHelpers = require('./url-helpers');
+const { validateConfig, printConfigStatus, CONFIG_SCHEMA } = require('./schema.cjs');
+const urlHelpers = require('./url-helpers.cjs');
 const https = require('https');
 const http = require('http');
 
@@ -46,7 +46,7 @@ function checkUrlReachable(url, timeout = 5000) {
         {
           timeout,
           headers: {
-            'User-Agent': 'SigmaBlox-Config-Doctor/1.0',
+            'User-Agent': 'MC-Platform-Config-Doctor/1.0',
           },
         },
         (res) => {
@@ -207,15 +207,11 @@ async function runDoctor() {
   try {
     const urls = urlHelpers.getAllUrls();
     console.log('Public Base URL:      ', urls.publicBaseUrl);
-    console.log('Internal Base URL:    ', urls.internalBaseUrl);
-    console.log('Ghost Public URL:     ', urls.ghostPublicUrl);
-    console.log('Ghost Internal URL:   ', urls.ghostInternalUrl);
-    console.log('Ghost URL:            ', urls.ghostUrl);
+    console.log('API Base URL:         ', urls.apiBaseUrl);
     console.log('OIDC Redirect URI:    ', urls.oidcRedirectUri);
     console.log('OAuth Redirect URI:   ', urls.oauthRedirectUri);
-    console.log('Ghost SSO Callback:   ', urls.ghostSsoCallbackUri);
     console.log('OIDC Issuer URL:      ', urls.oidcIssuerUrl);
-    console.log('Authentik Base URL:   ', urls.authentikBaseUrl);
+    console.log('CORS Origins:         ', Array.isArray(urls.corsOrigins) ? urls.corsOrigins.join(', ') : 'NOT SET');
 
     // Validate no localhost in production
     if (process.env.APP_ENV === 'prod') {

@@ -24,7 +24,7 @@
  * Environment variable groups matching the contract
  */
 const CONFIG_SCHEMA = {
-  // 🔹 Core Runtime
+  // Core Runtime
   coreRuntime: [
     {
       name: 'APP_ENV',
@@ -44,118 +44,33 @@ const CONFIG_SCHEMA = {
     },
   ],
 
-  // 🔹 URL & Proxy (NON-SECRET, CRITICAL)
+  // URL & Proxy
   urlAndProxy: [
     {
       name: 'PUBLIC_BASE_URL',
       required: true,
       secret: false,
       type: 'url',
-      description: 'Single source of truth for all public URLs',
+      description: 'Public URL of the frontend application',
     },
     {
-      name: 'THEME_API_BASE_URL',
+      name: 'API_BASE_URL',
       required: true,
       secret: false,
       type: 'url',
-      description: 'Public API base URL injected into Ghost theme runtime-config.js',
+      description: 'Public URL of the backend API',
     },
-    {
-      name: 'THEME_SAM_VALIDATOR_URL',
-      required: true,
-      secret: false,
-      type: 'url',
-      description: 'SAM validator base URL injected into Ghost theme runtime-config.js',
-    },
-    // DEPRECATED: INTERNAL_BASE_URL - do not use. Use PUBLIC_BASE_URL or GHOST_INTERNAL_URL instead.
-    // Kept for backward compatibility only - will be removed in future version.
     {
       name: 'TRUST_PROXY',
       required: false,
       secret: false,
       type: 'boolean',
       defaultValue: 'false',
-      description: 'Trust X-Forwarded-* headers (required for Cloudflare)',
+      description: 'Trust X-Forwarded-* headers (required for Cloudflare/Cloud Run)',
     },
   ],
 
-  // 🔹 Ghost CMS
-  ghostCms: [
-    {
-      name: 'GHOST_PUBLIC_URL',
-      required: false,
-      secret: false,
-      type: 'url',
-      description: 'Optional explicit Ghost public URL (defaults to PUBLIC_BASE_URL)',
-    },
-    {
-      name: 'GHOST_INTERNAL_URL',
-      required: false,
-      secret: false,
-      type: 'url',
-      description: 'Optional internal Ghost URL for server-to-server API calls (defaults to GHOST_PUBLIC_URL/PUBLIC_BASE_URL)',
-    },
-    {
-      name: 'GHOST_ADMIN_API_KEY',
-      required: true,
-      secret: true,
-      type: 'string',
-      description: 'Ghost Admin API key for integration',
-    },
-    {
-      name: 'GHOST_CONTENT_API_KEY',
-      required: false,
-      secret: false,
-      type: 'string',
-      description: 'Ghost Content API key (public)',
-    },
-    {
-      name: 'GHOST_DB_CLIENT',
-      required: true,
-      secret: false,
-      type: 'string',
-      validValues: ['sqlite3', 'mysql'],
-      description: 'Ghost database client (sqlite3 only for dev)',
-    },
-    {
-      name: 'GHOST_DB_HOST',
-      required: false,
-      secret: false,
-      type: 'string',
-      description: 'MySQL host (required if GHOST_DB_CLIENT=mysql)',
-    },
-    {
-      name: 'GHOST_DB_PORT',
-      required: false,
-      secret: false,
-      type: 'number',
-      defaultValue: '3306',
-      description: 'MySQL port',
-    },
-    {
-      name: 'GHOST_DB_NAME',
-      required: false,
-      secret: false,
-      type: 'string',
-      description: 'MySQL database name',
-    },
-    {
-      name: 'GHOST_DB_USER',
-      required: false,
-      secret: false,
-      type: 'string',
-      description: 'MySQL username',
-    },
-    {
-      name: 'GHOST_DB_PASSWORD',
-      required: false, // Only required if GHOST_DB_CLIENT=mysql
-      secret: true,
-      type: 'string',
-      description: 'MySQL password (only if using MySQL)',
-    },
-  ],
-
-  // 🔹 MongoDB (Managed, App Data Only)
+  // MongoDB
   mongodb: [
     {
       name: 'MONGODB_URI',
@@ -169,55 +84,18 @@ const CONFIG_SCHEMA = {
       required: true,
       secret: false,
       type: 'string',
-      description: 'MongoDB database name for app data',
-    },
-    // Transitional: MONGODB_PASSWORD is the new standard name
-    {
-      name: 'MONGODB_PASSWORD',
-      required: false,
-      secret: true,
-      type: 'string',
-      description: 'MongoDB password (alternative to full MONGODB_URI)',
-    },
-    // Legacy variables (for backward compatibility during migration)
-    {
-      name: 'DB_USERNAME',
-      required: false,
-      secret: false,
-      type: 'string',
-      description: 'LEGACY: MongoDB username (use MONGODB_URI instead)',
-    },
-    {
-      name: 'DB_PASSWORD',
-      required: false,
-      secret: true,
-      type: 'string',
-      description: 'DEPRECATED: Use MONGODB_PASSWORD or MONGODB_URI instead',
-    },
-    {
-      name: 'DB_HOST',
-      required: false,
-      secret: false,
-      type: 'string',
-      description: 'LEGACY: MongoDB host (use MONGODB_URI instead)',
-    },
-    {
-      name: 'DB_NAME',
-      required: false,
-      secret: false,
-      type: 'string',
-      description: 'LEGACY: MongoDB database name (use MONGODB_DB_NAME)',
+      description: 'MongoDB database name',
     },
   ],
 
-  // 🔹 Auth / OIDC (Authentik)
+  // Auth / OIDC (OpenPass/Authentik)
   authOidc: [
     {
       name: 'OIDC_ISSUER_URL',
       required: true,
       secret: false,
       type: 'url',
-      description: 'Authentik OIDC issuer URL',
+      description: 'OpenPass/Authentik OIDC issuer URL',
     },
     {
       name: 'OIDC_CLIENT_ID',
@@ -245,7 +123,7 @@ const CONFIG_SCHEMA = {
       required: false,
       secret: false,
       type: 'string',
-      description: 'Session cookie domain (must align with PUBLIC_BASE_URL)',
+      description: 'Session cookie domain',
     },
     {
       name: 'SESSION_COOKIE_SECURE',
@@ -262,60 +140,39 @@ const CONFIG_SCHEMA = {
       type: 'string',
       description: 'Comma-separated list of trusted origins',
     },
-    // Legacy Authentik variables
+    // OAuth endpoints
     {
-      name: 'AUTHENTIK_BASE_URL',
+      name: 'OAUTH_AUTHORIZE_URL',
       required: false,
       secret: false,
       type: 'url',
-      description: 'LEGACY: Use OIDC_ISSUER_URL instead',
+      description: 'OAuth2 authorize endpoint',
     },
     {
-      name: 'AUTHENTIK_ADMIN_TOKEN',
-      required: false,
-      secret: true,
-      type: 'string',
-      description: 'Authentik admin API token',
-    },
-    {
-      name: 'AUTHENTIK_WEBHOOK_SERVICE_TOKEN',
-      required: false,
-      secret: true,
-      type: 'string',
-      description: 'Webhook service token for Authentik',
-    },
-    {
-      name: 'OAUTH_CLIENT_ID',
+      name: 'OAUTH_TOKEN_URL',
       required: false,
       secret: false,
-      type: 'string',
-      description: 'LEGACY: Use OIDC_CLIENT_ID',
+      type: 'url',
+      description: 'OAuth2 token endpoint',
     },
     {
-      name: 'OAUTH_CLIENT_SECRET',
+      name: 'OAUTH_USERINFO_URL',
       required: false,
-      secret: true,
-      type: 'string',
-      description: 'LEGACY: Use OIDC_CLIENT_SECRET',
+      secret: false,
+      type: 'url',
+      description: 'OAuth2 userinfo endpoint',
+    },
+    {
+      name: 'OAUTH_JWKS_URL',
+      required: false,
+      secret: false,
+      type: 'url',
+      description: 'OAuth2 JWKS endpoint for token verification',
     },
   ],
 
-  // 🔹 Cloudflare (External Assets / Video)
+  // Cloudflare
   cloudflare: [
-    {
-      name: 'CLOUDFLARE_ACCOUNT_ID',
-      required: false,
-      secret: false,
-      type: 'string',
-      description: 'Cloudflare account ID',
-    },
-    {
-      name: 'CLOUDFLARE_STREAM_TOKEN',
-      required: false,
-      secret: true,
-      type: 'string',
-      description: 'Cloudflare Stream API token',
-    },
     {
       name: 'CF_ACCESS_AUDIENCE',
       required: false,
@@ -346,7 +203,7 @@ const CONFIG_SCHEMA = {
     },
   ],
 
-  // 🔹 Email / SMTP
+  // Email / SMTP
   emailSmtp: [
     {
       name: 'SMTP_HOST',
@@ -393,19 +250,19 @@ const CONFIG_SCHEMA = {
     },
   ],
 
-  // 🔹 Application Specific
+  // Application Specific
   application: [
     {
       name: 'PORT',
       required: false,
       secret: false,
       type: 'number',
-      defaultValue: '2000',
+      defaultValue: '3001',
       description: 'Application server port',
     },
     {
       name: 'JWT_SECRET',
-      required: false,
+      required: true,
       secret: true,
       type: 'string',
       description: 'JWT signing secret',
@@ -426,21 +283,21 @@ const CONFIG_SCHEMA = {
     },
   ],
 
-  // 🔹 Third-Party Services
+  // Third-Party Services
   thirdParty: [
     {
       name: 'SAM_VALIDATOR_URL',
-      required: true,
+      required: false,
       secret: false,
       type: 'url',
-      description: 'SAM validator base URL used by the webhook service',
+      description: 'SAM validator service URL',
     },
     {
       name: 'AIRTABLE_API_KEY',
       required: false,
       secret: true,
       type: 'string',
-      description: 'Airtable API key',
+      description: 'Airtable API key (if using Airtable)',
     },
     {
       name: 'AIRTABLE_COMPANIES_BASE_ID',
@@ -448,13 +305,6 @@ const CONFIG_SCHEMA = {
       secret: false,
       type: 'string',
       description: 'Airtable companies base ID',
-    },
-    {
-      name: 'AIRTABLE_COACHES_BASE_ID',
-      required: false,
-      secret: false,
-      type: 'string',
-      description: 'Airtable coaches base ID',
     },
     {
       name: 'GCP_PROJECT_ID',
@@ -468,8 +318,8 @@ const CONFIG_SCHEMA = {
       required: false,
       secret: false,
       type: 'string',
-      validValues: ['perplexity', 'openai', 'anthropic'],
-      description: 'AI content assistant provider',
+      validValues: ['openai', 'anthropic', 'perplexity'],
+      description: 'AI provider for content features',
     },
     {
       name: 'AI_API_KEY',
@@ -477,6 +327,13 @@ const CONFIG_SCHEMA = {
       secret: true,
       type: 'string',
       description: 'AI provider API key',
+    },
+    {
+      name: 'OPENAI_API_KEY',
+      required: false,
+      secret: true,
+      type: 'string',
+      description: 'OpenAI API key (for AI features)',
     },
   ],
 };
@@ -514,6 +371,12 @@ function validateConfig(env = process.env) {
 
     // Skip validation if not set and not required
     if (!value) {
+      continue;
+    }
+
+    // Check for PLACEHOLDER values
+    if (value.startsWith('PLACEHOLDER_')) {
+      errors.push(`${configVar.name} has placeholder value - must be configured: ${value}`);
       continue;
     }
 
@@ -556,11 +419,6 @@ function validateConfig(env = process.env) {
 
   // Environment-specific validation
   if (appEnv === 'prod') {
-    // Production must use MySQL for Ghost
-    if (env.GHOST_DB_CLIENT === 'sqlite3') {
-      errors.push('CRITICAL: Production must use MySQL for Ghost (GHOST_DB_CLIENT=mysql)');
-    }
-
     // Production must not have localhost URLs
     const urlVars = allVars.filter((v) => v.type === 'url');
     for (const configVar of urlVars) {
@@ -584,7 +442,7 @@ function validateConfig(env = process.env) {
  * @param {Object} env - Environment variables object (defaults to process.env)
  */
 function printConfigStatus(env = process.env) {
-  console.log('🔍 Configuration Validation');
+  console.log('Configuration Validation');
   console.log('==========================\n');
 
   const result = validateConfig(env);
@@ -595,19 +453,19 @@ function printConfigStatus(env = process.env) {
   console.log('');
 
   if (result.valid) {
-    console.log('✅ All required configuration is valid\n');
+    console.log('All required configuration is valid\n');
   } else {
-    console.error('❌ Configuration validation failed:\n');
+    console.error('Configuration validation failed:\n');
     result.errors.forEach((error) => {
-      console.error(`  • ${error}`);
+      console.error(`  - ${error}`);
     });
     console.error('');
   }
 
   if (result.warnings.length > 0) {
-    console.warn('⚠️  Warnings:\n');
+    console.warn('Warnings:\n');
     result.warnings.forEach((warning) => {
-      console.warn(`  • ${warning}`);
+      console.warn(`  - ${warning}`);
     });
     console.warn('');
   }
@@ -625,7 +483,7 @@ function requireValidConfig(env = process.env) {
 
   if (!result.valid) {
     printConfigStatus(env);
-    console.error('❌ FATAL: Invalid configuration. Application cannot start.\n');
+    console.error('FATAL: Invalid configuration. Application cannot start.\n');
     console.error('Please fix the configuration errors above and try again.\n');
     process.exit(1);
   }
