@@ -13,6 +13,7 @@ export default defineConfig({
         about: resolve(__dirname, 'about.html'),
         blog: resolve(__dirname, 'blog.html'),
         portfolio: resolve(__dirname, 'portfolio.html'),
+        builders: resolve(__dirname, 'builders.html'),
       }
     },
     // Copy script.js to output
