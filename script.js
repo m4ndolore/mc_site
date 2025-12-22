@@ -129,110 +129,275 @@
   }
 
   // ============================================
-  // HERO CANVAS (Particle Network)
+  // HERO CANVAS (Enhanced Node Network - OSINT Style)
   // ============================================
   function initHeroCanvas() {
     const canvas = document.getElementById('hero-canvas');
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
+    let nodes = [];
     let particles = [];
     let animationId;
-    let mouseX = 0;
-    let mouseY = 0;
+    let mouseX = -1000;
+    let mouseY = -1000;
+    let time = 0;
+
+    // Colors
+    const BLUE = { r: 42, g: 127, b: 219 };
+    const GREEN = { r: 93, g: 160, b: 111 };
+    const CYAN = { r: 56, g: 189, b: 248 };
 
     function resizeCanvas() {
-      canvas.width = canvas.offsetWidth;
-      canvas.height = canvas.offsetHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx.scale(dpr, dpr);
     }
 
-    class Particle {
-      constructor() {
+    // Large hub nodes that pulse
+    class Node {
+      constructor(isHub = false) {
+        this.isHub = isHub;
         this.reset();
       }
 
       reset() {
-        this.x = random(0, canvas.width);
-        this.y = random(0, canvas.height);
-        this.vx = random(-0.3, 0.3);
-        this.vy = random(-0.3, 0.3);
-        this.radius = random(1, 2);
-        this.opacity = random(0.2, 0.5);
+        const w = canvas.offsetWidth;
+        const h = canvas.offsetHeight;
+        this.x = random(50, w - 50);
+        this.y = random(50, h - 50);
+        this.baseRadius = this.isHub ? random(4, 8) : random(1.5, 3);
+        this.radius = this.baseRadius;
+        this.vx = random(-0.2, 0.2);
+        this.vy = random(-0.2, 0.2);
+        this.pulseOffset = random(0, Math.PI * 2);
+        this.pulseSpeed = random(0.02, 0.04);
+        this.color = Math.random() > 0.7 ? GREEN : (Math.random() > 0.5 ? CYAN : BLUE);
+        this.opacity = this.isHub ? random(0.6, 0.9) : random(0.3, 0.6);
       }
 
       update() {
+        const w = canvas.offsetWidth;
+        const h = canvas.offsetHeight;
+
         this.x += this.vx;
         this.y += this.vy;
 
-        // Boundary check
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        // Pulse effect
+        this.radius = this.baseRadius + Math.sin(time * this.pulseSpeed + this.pulseOffset) * (this.isHub ? 2 : 0.5);
 
-        // Mouse interaction
+        // Soft boundary
+        if (this.x < 30) this.vx += 0.01;
+        if (this.x > w - 30) this.vx -= 0.01;
+        if (this.y < 30) this.vy += 0.01;
+        if (this.y > h - 30) this.vy -= 0.01;
+
+        // Mouse repulsion
         const dx = mouseX - this.x;
         const dy = mouseY - this.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 150) {
-          const force = (150 - distance) / 150;
-          this.vx -= (dx / distance) * force * 0.02;
-          this.vy -= (dy / distance) * force * 0.02;
+        if (distance < 200 && distance > 0) {
+          const force = (200 - distance) / 200;
+          this.vx -= (dx / distance) * force * 0.03;
+          this.vy -= (dy / distance) * force * 0.03;
         }
 
-        // Limit velocity
-        const maxSpeed = 1;
+        // Damping
+        this.vx *= 0.99;
+        this.vy *= 0.99;
+
+        // Speed limit
         const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-        if (speed > maxSpeed) {
-          this.vx = (this.vx / speed) * maxSpeed;
-          this.vy = (this.vy / speed) * maxSpeed;
+        if (speed > 0.8) {
+          this.vx = (this.vx / speed) * 0.8;
+          this.vy = (this.vy / speed) * 0.8;
         }
       }
 
       draw() {
+        const { r, g, b } = this.color;
+
+        // Glow effect for hubs
+        if (this.isHub) {
+          const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius * 4);
+          gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${this.opacity * 0.3})`);
+          gradient.addColorStop(0.5, `rgba(${r}, ${g}, ${b}, ${this.opacity * 0.1})`);
+          gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius * 4, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
+        }
+
+        // Core
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(42, 127, 219, ${this.opacity})`;
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
         ctx.fill();
+
+        // Bright center for hubs
+        if (this.isHub) {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius * 0.4, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.8})`;
+          ctx.fill();
+        }
       }
     }
 
-    function createParticles() {
-      particles = [];
-      const count = Math.min(CONFIG.canvasParticleCount, Math.floor(canvas.width * canvas.height / 15000));
-      for (let i = 0; i < count; i++) {
-        particles.push(new Particle());
+    // Data stream particles
+    class DataParticle {
+      constructor(startNode, endNode) {
+        this.startNode = startNode;
+        this.endNode = endNode;
+        this.progress = 0;
+        this.speed = random(0.005, 0.015);
+        this.size = random(1, 2);
+        this.color = Math.random() > 0.5 ? BLUE : CYAN;
       }
-    }
 
-    function drawConnections() {
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
+      update() {
+        this.progress += this.speed;
+        return this.progress < 1;
+      }
 
-          if (distance < CONFIG.canvasConnectionDistance) {
-            const opacity = (1 - distance / CONFIG.canvasConnectionDistance) * 0.15;
+      draw() {
+        const x = lerp(this.startNode.x, this.endNode.x, this.progress);
+        const y = lerp(this.startNode.y, this.endNode.y, this.progress);
+        const { r, g, b } = this.color;
+
+        // Trail
+        const trailLength = 5;
+        for (let i = 0; i < trailLength; i++) {
+          const tp = this.progress - (i * 0.02);
+          if (tp > 0) {
+            const tx = lerp(this.startNode.x, this.endNode.x, tp);
+            const ty = lerp(this.startNode.y, this.endNode.y, tp);
             ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(42, 127, 219, ${opacity})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+            ctx.arc(tx, ty, this.size * (1 - i / trailLength), 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${0.8 - i * 0.15})`;
+            ctx.fill();
           }
         }
       }
     }
 
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function createNodes() {
+      nodes = [];
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      const area = w * h;
 
-      particles.forEach(particle => {
-        particle.update();
-        particle.draw();
+      // Hub nodes (larger, fewer)
+      const hubCount = Math.max(5, Math.floor(area / 80000));
+      for (let i = 0; i < hubCount; i++) {
+        nodes.push(new Node(true));
+      }
+
+      // Regular nodes
+      const nodeCount = Math.max(30, Math.floor(area / 12000));
+      for (let i = 0; i < nodeCount; i++) {
+        nodes.push(new Node(false));
+      }
+    }
+
+    function drawConnections() {
+      const connectionDist = 180;
+      const hubConnectionDist = 280;
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const maxDist = (nodes[i].isHub || nodes[j].isHub) ? hubConnectionDist : connectionDist;
+
+          if (distance < maxDist) {
+            const opacity = (1 - distance / maxDist) * (nodes[i].isHub || nodes[j].isHub ? 0.35 : 0.15);
+
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(42, 127, 219, ${opacity})`;
+            ctx.lineWidth = nodes[i].isHub && nodes[j].isHub ? 1.5 : 0.5;
+            ctx.stroke();
+
+            // Occasionally spawn data particles
+            if (Math.random() < 0.001 && particles.length < 20) {
+              particles.push(new DataParticle(nodes[i], nodes[j]));
+            }
+          }
+        }
+      }
+    }
+
+    function drawGrid() {
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      const gridSize = 60;
+
+      ctx.strokeStyle = 'rgba(42, 127, 219, 0.03)';
+      ctx.lineWidth = 1;
+
+      // Vertical lines
+      for (let x = 0; x < w; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+
+      // Horizontal lines
+      for (let y = 0; y < h; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+    }
+
+    function drawScanline() {
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+      const scanY = (time * 0.5) % (h + 100) - 50;
+
+      const gradient = ctx.createLinearGradient(0, scanY - 50, 0, scanY + 50);
+      gradient.addColorStop(0, 'rgba(42, 127, 219, 0)');
+      gradient.addColorStop(0.5, 'rgba(42, 127, 219, 0.05)');
+      gradient.addColorStop(1, 'rgba(42, 127, 219, 0)');
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, scanY - 50, w, 100);
+    }
+
+    function animate() {
+      const w = canvas.offsetWidth;
+      const h = canvas.offsetHeight;
+
+      ctx.clearRect(0, 0, w, h);
+      time++;
+
+      // Background elements
+      drawGrid();
+      drawScanline();
+
+      // Update and draw connections
+      drawConnections();
+
+      // Update and draw nodes
+      nodes.forEach(node => {
+        node.update();
+        node.draw();
       });
 
-      drawConnections();
+      // Update and draw data particles
+      particles = particles.filter(p => {
+        const alive = p.update();
+        if (alive) p.draw();
+        return alive;
+      });
+
       animationId = requestAnimationFrame(animate);
     }
 
@@ -242,18 +407,24 @@
       mouseY = e.clientY - rect.top;
     }
 
+    function handleMouseLeave() {
+      mouseX = -1000;
+      mouseY = -1000;
+    }
+
     function handleResize() {
       resizeCanvas();
-      createParticles();
+      createNodes();
     }
 
     // Initialize
     resizeCanvas();
-    createParticles();
+    createNodes();
     animate();
 
     // Event listeners
     canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
     window.addEventListener('resize', debounce(handleResize, 200));
 
     // Cleanup on page hide
@@ -554,6 +725,154 @@
   }
 
   // ============================================
+  // SECTION CANVASES (Mission & CTA)
+  // ============================================
+  function initSectionCanvases() {
+    const canvasIds = ['mission-canvas', 'cta-canvas'];
+
+    canvasIds.forEach(id => {
+      const canvas = document.getElementById(id);
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      let nodes = [];
+      let animationId;
+      let time = 0;
+      let isVisible = false;
+
+      const BLUE = { r: 42, g: 127, b: 219 };
+      const GREEN = { r: 93, g: 160, b: 111 };
+
+      function resizeCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = canvas.offsetWidth * dpr;
+        canvas.height = canvas.offsetHeight * dpr;
+        ctx.scale(dpr, dpr);
+      }
+
+      class Node {
+        constructor() {
+          this.reset();
+        }
+
+        reset() {
+          const w = canvas.offsetWidth;
+          const h = canvas.offsetHeight;
+          this.x = random(20, w - 20);
+          this.y = random(20, h - 20);
+          this.radius = random(1, 3);
+          this.vx = random(-0.15, 0.15);
+          this.vy = random(-0.15, 0.15);
+          this.pulseOffset = random(0, Math.PI * 2);
+          this.color = Math.random() > 0.7 ? GREEN : BLUE;
+          this.opacity = random(0.3, 0.6);
+        }
+
+        update() {
+          const w = canvas.offsetWidth;
+          const h = canvas.offsetHeight;
+
+          this.x += this.vx;
+          this.y += this.vy;
+
+          if (this.x < 10) this.vx += 0.01;
+          if (this.x > w - 10) this.vx -= 0.01;
+          if (this.y < 10) this.vy += 0.01;
+          if (this.y > h - 10) this.vy -= 0.01;
+
+          this.vx *= 0.99;
+          this.vy *= 0.99;
+        }
+
+        draw() {
+          const { r, g, b } = this.color;
+          const pulse = 1 + Math.sin(time * 0.03 + this.pulseOffset) * 0.3;
+
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius * pulse, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${this.opacity})`;
+          ctx.fill();
+        }
+      }
+
+      function createNodes() {
+        nodes = [];
+        const w = canvas.offsetWidth;
+        const h = canvas.offsetHeight;
+        const count = Math.max(15, Math.floor((w * h) / 20000));
+
+        for (let i = 0; i < count; i++) {
+          nodes.push(new Node());
+        }
+      }
+
+      function drawConnections() {
+        const maxDist = 150;
+
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const dx = nodes[i].x - nodes[j].x;
+            const dy = nodes[i].y - nodes[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < maxDist) {
+              const opacity = (1 - distance / maxDist) * 0.2;
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.strokeStyle = `rgba(42, 127, 219, ${opacity})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      function animate() {
+        if (!isVisible) return;
+
+        const w = canvas.offsetWidth;
+        const h = canvas.offsetHeight;
+
+        ctx.clearRect(0, 0, w, h);
+        time++;
+
+        drawConnections();
+        nodes.forEach(node => {
+          node.update();
+          node.draw();
+        });
+
+        animationId = requestAnimationFrame(animate);
+      }
+
+      function handleResize() {
+        resizeCanvas();
+        createNodes();
+      }
+
+      // Intersection observer to only animate when visible
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !animationId) {
+            animate();
+          } else if (!isVisible && animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+          }
+        });
+      }, { threshold: 0.1 });
+
+      // Initialize
+      resizeCanvas();
+      createNodes();
+      observer.observe(canvas);
+      window.addEventListener('resize', debounce(handleResize, 200));
+    });
+  }
+
+  // ============================================
   // INITIALIZE ALL MODULES
   // ============================================
   function init() {
@@ -569,6 +888,7 @@
 
     // Visual enhancements
     initHeroCanvas();
+    initSectionCanvases();
     initMetricsCounter();
     initProgressBars();
     initPipelineAnimations();
