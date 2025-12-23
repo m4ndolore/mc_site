@@ -228,7 +228,10 @@
   <!-- Platform Configuration -->
   <script>
     window.MCPlatformConfig = {
-      apiBase: 'https://webhook-667608980042.us-central1.run.app'
+      // Use proxy in local dev to avoid CORS, direct URL in production
+      apiBase: location.hostname === 'localhost'
+        ? '/api'
+        : 'https://webhook-667608980042.us-central1.run.app'
     };
   </script>
 
