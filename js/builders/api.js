@@ -2,6 +2,86 @@
 // API client for fetching builder data from webhook
 
 /**
+ * Mock data for local development when backend is unavailable
+ */
+const MOCK_DATA = {
+    cohorts: [
+        {
+            id: 'cohort-1',
+            name: 'Cohort 1 - Spring 2024',
+            companies: [
+                {
+                    id: 'company-1',
+                    name: 'ShieldAI',
+                    logo: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&h=200&fit=crop',
+                    tagline: 'AI-powered autonomous systems for defense',
+                    description: 'Building intelligent systems that protect service members and civilians.',
+                    website: 'https://shield.ai',
+                    missionAreas: ['Autonomous Systems', 'AI/ML'],
+                    ctas: ['Counter-UAS', 'ISR']
+                },
+                {
+                    id: 'company-2',
+                    name: 'Anduril Industries',
+                    logo: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=200&h=200&fit=crop',
+                    tagline: 'Transforming defense capabilities through technology',
+                    description: 'Bringing Silicon Valley innovation to national security.',
+                    website: 'https://anduril.com',
+                    missionAreas: ['Autonomous Systems', 'Border Security'],
+                    ctas: ['Counter-UAS', 'Surveillance']
+                },
+                {
+                    id: 'company-3',
+                    name: 'Palantir Technologies',
+                    logo: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=200&h=200&fit=crop',
+                    tagline: 'Data integration and analytics for defense',
+                    description: 'Empowering operators with actionable intelligence.',
+                    website: 'https://palantir.com',
+                    missionAreas: ['Data Analytics', 'AI/ML'],
+                    ctas: ['C2', 'Intelligence']
+                }
+            ]
+        },
+        {
+            id: 'cohort-2',
+            name: 'Cohort 2 - Fall 2024',
+            companies: [
+                {
+                    id: 'company-4',
+                    name: 'Rebellion Defense',
+                    logo: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=200&h=200&fit=crop',
+                    tagline: 'AI for national security decision-making',
+                    description: 'Accelerating mission-critical decisions with AI.',
+                    website: 'https://rebelliondefense.com',
+                    missionAreas: ['AI/ML', 'Cyber'],
+                    ctas: ['Decision Support', 'Cyber Defense']
+                },
+                {
+                    id: 'company-5',
+                    name: 'Hadrian',
+                    logo: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=200&h=200&fit=crop',
+                    tagline: 'Automated manufacturing for defense hardware',
+                    description: 'Rebuilding the defense industrial base with autonomy.',
+                    website: 'https://hadrian.co',
+                    missionAreas: ['Manufacturing', 'Supply Chain'],
+                    ctas: ['Precision Manufacturing', 'Defense Production']
+                },
+                {
+                    id: 'company-6',
+                    name: 'Epirus',
+                    logo: 'https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=200&h=200&fit=crop',
+                    tagline: 'High-power microwave systems',
+                    description: 'Directed energy for counter-drone and electronic warfare.',
+                    website: 'https://epirusinc.com',
+                    missionAreas: ['Directed Energy', 'Counter-UAS'],
+                    ctas: ['EW', 'Base Defense']
+                }
+            ]
+        }
+    ]
+};
+
+/**
  * Get the API base URL from config
  */
 function getApiBase() {
@@ -17,18 +97,28 @@ function getApiBase() {
  */
 export async function fetchCohorts() {
     const apiBase = getApiBase();
-    const response = await fetch(`${apiBase}/getCohorts`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
+
+    try {
+        const response = await fetch(`${apiBase}/getCohorts`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch cohorts: ${response.status}`);
         }
-    });
 
-    if (!response.ok) {
-        throw new Error(`Failed to fetch cohorts: ${response.status}`);
+        return response.json();
+    } catch (error) {
+        // In development, fall back to mock data if API is unavailable
+        if (location.hostname === 'localhost') {
+            console.warn('[Builders] API unavailable, using mock data:', error.message);
+            return MOCK_DATA;
+        }
+        throw error;
     }
-
-    return response.json();
 }
 
 /**

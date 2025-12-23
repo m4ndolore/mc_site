@@ -5,6 +5,14 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    proxy: {
+      '/api': {
+        target: 'https://webhook-667608980042.us-central1.run.app',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+        secure: true
+      }
+    }
   },
   build: {
     rollupOptions: {
