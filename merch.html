@@ -98,6 +98,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+    }
+
+    .merch-card__image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .merch-card__image-placeholder {
       font-size: 48px;
       color: rgba(255, 255, 255, 0.3);
     }
@@ -169,6 +179,37 @@
       margin-bottom: 24px;
     }
 
+    /* Loading State */
+    .merch-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 0;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .merch-loading__spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error State */
+    .merch-error {
+      text-align: center;
+      padding: 40px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
     @media (max-width: 768px) {
       .merch-grid__items {
         grid-template-columns: 1fr;
@@ -234,84 +275,12 @@
         <p>All proceeds support defense innovation programs</p>
       </header>
 
-      <div class="merch-grid__items">
-        <!-- Product 1 -->
-        <article class="merch-card">
-          <div class="merch-card__image">🧢</div>
-          <div class="merch-card__content">
-            <div class="merch-card__category">Headwear</div>
-            <h3 class="merch-card__name">Build What Warfighters Need</h3>
-            <div class="merch-card__price">$35.00</div>
-            <a href="https://merge-combinator-shop.fourthwall.com/" target="_blank" rel="noopener" class="merch-card__link">
-              View Product →
-            </a>
-          </div>
-        </article>
-
-        <!-- Product 2 -->
-        <article class="merch-card">
-          <div class="merch-card__image">👕</div>
-          <div class="merch-card__content">
-            <div class="merch-card__category">Apparel</div>
-            <h3 class="merch-card__name">Air Dominance is Back</h3>
-            <div class="merch-card__price">$28.00</div>
-            <a href="https://merge-combinator-shop.fourthwall.com/" target="_blank" rel="noopener" class="merch-card__link">
-              View Product →
-            </a>
-          </div>
-        </article>
-
-        <!-- Product 3 -->
-        <article class="merch-card">
-          <div class="merch-card__image">🧢</div>
-          <div class="merch-card__content">
-            <div class="merch-card__category">Headwear</div>
-            <h3 class="merch-card__name">Build Deterrence</h3>
-            <div class="merch-card__price">$35.00</div>
-            <a href="https://merge-combinator-shop.fourthwall.com/" target="_blank" rel="noopener" class="merch-card__link">
-              View Product →
-            </a>
-          </div>
-        </article>
-
-        <!-- Product 4 -->
-        <article class="merch-card">
-          <div class="merch-card__image">👕</div>
-          <div class="merch-card__content">
-            <div class="merch-card__category">Apparel</div>
-            <h3 class="merch-card__name">Rebuild</h3>
-            <div class="merch-card__price">$35.00</div>
-            <a href="https://merge-combinator-shop.fourthwall.com/" target="_blank" rel="noopener" class="merch-card__link">
-              View Product →
-            </a>
-          </div>
-        </article>
-
-        <!-- Product 5 -->
-        <article class="merch-card">
-          <div class="merch-card__image">☕</div>
-          <div class="merch-card__content">
-            <div class="merch-card__category">Coffee</div>
-            <h3 class="merch-card__name">Coffee with Builders</h3>
-            <div class="merch-card__price">$15.00</div>
-            <a href="https://merge-combinator-shop.fourthwall.com/" target="_blank" rel="noopener" class="merch-card__link">
-              View Product →
-            </a>
-          </div>
-        </article>
-
-        <!-- Product 6 -->
-        <article class="merch-card">
-          <div class="merch-card__image">👕</div>
-          <div class="merch-card__content">
-            <div class="merch-card__category">Apparel</div>
-            <h3 class="merch-card__name">Rebuild Air Dominance</h3>
-            <div class="merch-card__price">$29.00</div>
-            <a href="https://merge-combinator-shop.fourthwall.com/" target="_blank" rel="noopener" class="merch-card__link">
-              View Product →
-            </a>
-          </div>
-        </article>
+      <div class="merch-grid__items" id="products-grid">
+        <!-- Loading state -->
+        <div class="merch-loading" id="loading-state" style="grid-column: 1 / -1;">
+          <div class="merch-loading__spinner"></div>
+          <span>Loading products...</span>
+        </div>
       </div>
     </div>
   </section>
@@ -385,5 +354,6 @@
   </footer>
 
   <script src="script.js"></script>
+  <script type="module" src="/js/merch.js"></script>
 </body>
 </html>
