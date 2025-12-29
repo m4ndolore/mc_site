@@ -54,7 +54,7 @@ export function filterCompanies(companies, filters) {
  */
 export function populateFilters(options) {
     const missionSelect = document.getElementById('filter-mission');
-    const ctaSelect = document.getElementById('filter-cta');
+    const techSelect = document.getElementById('filter-tech');
     const cohortSelect = document.getElementById('filter-cohort');
 
     // Mission areas
@@ -63,9 +63,9 @@ export function populateFilters(options) {
             options.missionAreas.map(m => `<option value="${escapeAttr(m)}">${escapeHtml(m)}</option>`).join('');
     }
 
-    // CTAs
-    if (ctaSelect) {
-        ctaSelect.innerHTML = '<option value="">All Tech Areas</option>' +
+    // Tech areas (CTAs)
+    if (techSelect) {
+        techSelect.innerHTML = '<option value="">All Tech Areas</option>' +
             options.ctas.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
     }
 
@@ -84,7 +84,7 @@ export function getFilterState() {
     return {
         search: document.getElementById('search-input')?.value || '',
         missionArea: document.getElementById('filter-mission')?.value || '',
-        cta: document.getElementById('filter-cta')?.value || '',
+        cta: document.getElementById('filter-tech')?.value || '',
         cohort: document.getElementById('filter-cohort')?.value || ''
     };
 }
@@ -96,14 +96,14 @@ export function getFilterState() {
 export function updateStats(stats) {
     const elements = {
         builders: document.getElementById('stat-builders'),
-        missions: document.getElementById('stat-missions'),
-        ctas: document.getElementById('stat-ctas'),
+        missionAreas: document.getElementById('stat-mission-areas'),
+        techAreas: document.getElementById('stat-tech-areas'),
         cohorts: document.getElementById('stat-cohorts')
     };
 
     if (elements.builders) elements.builders.textContent = stats.builders;
-    if (elements.missions) elements.missions.textContent = stats.missionAreas;
-    if (elements.ctas) elements.ctas.textContent = stats.ctas;
+    if (elements.missionAreas) elements.missionAreas.textContent = stats.missionAreas;
+    if (elements.techAreas) elements.techAreas.textContent = stats.ctas;
     if (elements.cohorts) elements.cohorts.textContent = stats.cohorts;
 }
 
@@ -113,7 +113,7 @@ export function updateStats(stats) {
  */
 export function updateResultsCount(count) {
     const el = document.getElementById('results-count');
-    if (el) el.textContent = count;
+    if (el) el.textContent = `${count} builder${count !== 1 ? 's' : ''} active`;
 }
 
 // Utility functions
