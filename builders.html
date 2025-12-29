@@ -69,6 +69,17 @@
        MAIN CONTENT
        ============================================ -->
   <main class="builders-page">
+    <!-- Hero Section -->
+    <section class="builders-hero">
+      <div class="container">
+        <h1 class="builders-hero__title">Defense Builders</h1>
+        <p class="builders-hero__subtitle">
+          Companies building dual-use technology for national security.
+          Discover the next generation of defense innovation.
+        </p>
+      </div>
+    </section>
+
     <!-- Stats Bar -->
     <section class="builders-stats">
       <div class="container">
@@ -143,10 +154,12 @@
   <!-- ============================================
        BUILDER MODAL
        ============================================ -->
-  <div class="builder-modal" id="builder-modal" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="builder-modal__overlay" id="modal-overlay"></div>
-    <div class="builder-modal__content" id="modal-content">
-      <!-- Modal content will be populated by JavaScript -->
+  <div class="modal-overlay" id="builder-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+      <div id="modal-body">
+        <!-- Modal content will be populated by JavaScript -->
+      </div>
     </div>
   </div>
 
