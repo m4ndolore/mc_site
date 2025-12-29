@@ -169,10 +169,10 @@
         this.y = random(50, h - 50);
         this.baseRadius = this.isHub ? random(4, 8) : random(1.5, 3);
         this.radius = this.baseRadius;
-        this.vx = random(-0.2, 0.2);
-        this.vy = random(-0.2, 0.2);
+        this.vx = random(-0.08, 0.08);
+        this.vy = random(-0.08, 0.08);
         this.pulseOffset = random(0, Math.PI * 2);
-        this.pulseSpeed = random(0.02, 0.04);
+        this.pulseSpeed = random(0.008, 0.015);
         this.color = Math.random() > 0.7 ? GREEN : (Math.random() > 0.5 ? CYAN : BLUE);
         this.opacity = this.isHub ? random(0.6, 0.9) : random(0.3, 0.6);
       }
@@ -209,9 +209,9 @@
 
         // Speed limit
         const speed = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
-        if (speed > 0.8) {
-          this.vx = (this.vx / speed) * 0.8;
-          this.vy = (this.vy / speed) * 0.8;
+        if (speed > 0.3) {
+          this.vx = (this.vx / speed) * 0.3;
+          this.vy = (this.vy / speed) * 0.3;
         }
       }
 
@@ -252,7 +252,7 @@
         this.startNode = startNode;
         this.endNode = endNode;
         this.progress = 0;
-        this.speed = random(0.005, 0.015);
+        this.speed = random(0.002, 0.006);
         this.size = random(1, 2);
         this.color = Math.random() > 0.5 ? BLUE : CYAN;
       }
@@ -314,7 +314,7 @@
           const maxDist = (nodes[i].isHub || nodes[j].isHub) ? hubConnectionDist : connectionDist;
 
           if (distance < maxDist) {
-            const opacity = (1 - distance / maxDist) * (nodes[i].isHub || nodes[j].isHub ? 0.35 : 0.15);
+            const opacity = (1 - distance / maxDist) * (nodes[i].isHub || nodes[j].isHub ? 0.2 : 0.08);
 
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -360,11 +360,11 @@
     function drawScanline() {
       const w = canvas.offsetWidth;
       const h = canvas.offsetHeight;
-      const scanY = (time * 0.5) % (h + 100) - 50;
+      const scanY = (time * 0.15) % (h + 100) - 50;
 
       const gradient = ctx.createLinearGradient(0, scanY - 50, 0, scanY + 50);
       gradient.addColorStop(0, 'rgba(42, 127, 219, 0)');
-      gradient.addColorStop(0.5, 'rgba(42, 127, 219, 0.05)');
+      gradient.addColorStop(0.5, 'rgba(42, 127, 219, 0.03)');
       gradient.addColorStop(1, 'rgba(42, 127, 219, 0)');
 
       ctx.fillStyle = gradient;
@@ -761,11 +761,11 @@
           this.x = random(20, w - 20);
           this.y = random(20, h - 20);
           this.radius = random(1, 3);
-          this.vx = random(-0.15, 0.15);
-          this.vy = random(-0.15, 0.15);
+          this.vx = random(-0.06, 0.06);
+          this.vy = random(-0.06, 0.06);
           this.pulseOffset = random(0, Math.PI * 2);
           this.color = Math.random() > 0.7 ? GREEN : BLUE;
-          this.opacity = random(0.3, 0.6);
+          this.opacity = random(0.2, 0.4);
         }
 
         update() {
@@ -786,7 +786,7 @@
 
         draw() {
           const { r, g, b } = this.color;
-          const pulse = 1 + Math.sin(time * 0.03 + this.pulseOffset) * 0.3;
+          const pulse = 1 + Math.sin(time * 0.012 + this.pulseOffset) * 0.2;
 
           ctx.beginPath();
           ctx.arc(this.x, this.y, this.radius * pulse, 0, Math.PI * 2);
@@ -816,7 +816,7 @@
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < maxDist) {
-              const opacity = (1 - distance / maxDist) * 0.2;
+              const opacity = (1 - distance / maxDist) * 0.12;
               ctx.beginPath();
               ctx.moveTo(nodes[i].x, nodes[i].y);
               ctx.lineTo(nodes[j].x, nodes[j].y);
