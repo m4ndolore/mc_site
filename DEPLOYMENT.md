@@ -4,6 +4,42 @@
 
 This project has been prepared for deployment to Vercel. All necessary configuration files have been created and the build process has been verified.
 
+## Cloudflare Pages Deployment (Recommended)
+
+This site is a static Vite build and works on Cloudflare Pages without feature loss.
+
+### Quick Deploy (Dashboard)
+1. Push the repo to GitHub (already assumed by this project).
+2. In Cloudflare Dashboard → Pages → Create a project.
+3. Select the GitHub repo and configure:
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Environment: `Node 18+`
+4. Save and deploy.
+
+### CLI Deploy (Wrangler)
+1. Install Wrangler:
+   ```bash
+   npm install -g wrangler
+   ```
+2. Login:
+   ```bash
+   wrangler login
+   ```
+3. Build locally:
+   ```bash
+   npm run build
+   ```
+4. Publish:
+   ```bash
+   wrangler pages deploy dist --project-name mc_site
+   ```
+
+### Routing + Headers
+- `_headers` sets long-lived cache for assets and no-cache for HTML.
+- `_redirects` provides clean URLs for `/about`, `/blog`, and `/portfolio`.
+- `cloudflare/merge-router.js` can be deployed as a Worker to route `/combine`, `/builders`, `/opportunities`, `/knowledge`, and `/merch`.
+
 ## What Was Changed
 
 ### 1. Multi-Page Build Configuration

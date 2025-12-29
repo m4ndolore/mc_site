@@ -146,7 +146,7 @@ function setupEventListeners() {
     }
 
     // Filter dropdowns
-    ['filter-mission', 'filter-cta', 'filter-cohort'].forEach(id => {
+    ['filter-mission', 'filter-tech', 'filter-cohort'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('change', applyFilters);
     });
@@ -154,10 +154,12 @@ function setupEventListeners() {
     // Modal close button
     if (modalClose) modalClose.addEventListener('click', closeModal);
 
-    // Modal overlay click
+    // Modal overlay click (close when clicking outside modal-content)
     if (modal) {
         modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
+            if (e.target === modal || e.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
         });
     }
 

@@ -4035,6 +4035,35 @@ h4, .h4 {
   color: var(--black);
 }
 
+/* Blog Hero Image */
+.blog-article__hero-image {
+  margin: 32px 0 40px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.blog-article__hero-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.blog-article__hero-image figcaption {
+  padding: 16px 20px;
+  background: var(--offwhite);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--slate);
+}
+
+.blog-article__photo-credit {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--gray-medium);
+}
+
 /* Blog Callouts */
 .blog-callout {
   padding: 24px 28px;
