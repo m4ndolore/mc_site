@@ -28,8 +28,7 @@ export default defineConfig({
         'blog-eisenhower': resolve(__dirname, 'blog/uss-eisenhower-lessons.html'),
       }
     },
-    // Copy script.js to output
-    copyPublicDir: false
-  },
-  publicDir: false
+    // Copy public folder to output (includes _redirects, _headers for Cloudflare)
+    copyPublicDir: true
+  }
 })
