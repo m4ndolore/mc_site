@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Defense tech opportunities - contracts, grants, and partnership opportunities for builders in the national security space.">
+
+  <title>Opportunities — Merge Combinator</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="content/arrows.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="content/arrows.png">
+  <link rel="apple-touch-icon" href="content/arrows.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .coming-soon {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .coming-soon__hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--nav-height) + 80px) 20px 80px;
+      background: var(--black);
+      text-align: center;
+    }
+
+    .coming-soon__content {
+      max-width: 600px;
+    }
+
+    .coming-soon__badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--blue);
+      background: rgba(42, 127, 219, 0.1);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 24px;
+    }
+
+    .coming-soon__title {
+      font-size: clamp(40px, 6vw, 64px);
+      color: var(--white);
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+
+    .coming-soon__subtitle {
+      font-size: clamp(16px, 1.5vw, 20px);
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 40px;
+      line-height: 1.6;
+    }
+
+    .coming-soon__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--blue);
+      color: var(--white);
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      transition: all var(--transition-fast);
+    }
+
+    .coming-soon__cta:hover {
+      background: var(--blue-light);
+      transform: translateY(-2px);
+    }
+
+    .coming-soon__features {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      margin-top: 60px;
+      flex-wrap: wrap;
+    }
+
+    .coming-soon__feature {
+      text-align: center;
+    }
+
+    .coming-soon__feature-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      color: var(--blue);
+    }
+
+    .coming-soon__feature-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .coming-soon__feature-text {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  </style>
+</head>
+<body class="coming-soon">
+  <!-- Navigation -->
+  <header class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-text">
+          <span class="nav__logo-merge">Merge</span>
+          <span class="nav__logo-combinator">Combinator</span>
+        </span>
+        <img src="content/arrows.png" alt="Merge arrows" class="nav__logo-icon">
+      </a>
+
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="https://www.sigmablox.com" class="nav__link">Combine</a>
+          <a href="/builders" class="nav__link">Defense Builders</a>
+          <a href="/merch" class="nav__link">Merch</a>
+          <a href="/opportunities" class="nav__link nav__link--active">Opportunities</a>
+          <a href="/knowledge" class="nav__link">Knowledge</a>
+        </div>
+        <div class="nav__menu-actions">
+          <a href="https://app.mergecombinator.com/login" class="nav__btn nav__btn--outline">Login</a>
+          <a href="/builders" class="nav__btn nav__btn--primary">Apply</a>
+        </div>
+      </nav>
+
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="coming-soon__hero">
+    <div class="coming-soon__content">
+      <span class="coming-soon__badge">Coming Soon</span>
+      <h1 class="coming-soon__title">Opportunities</h1>
+      <p class="coming-soon__subtitle">
+        Discover defense contracts, grants, and partnership opportunities curated for builders in the national security space. We're building something special.
+      </p>
+      <a href="/builders" class="coming-soon__cta">
+        Join Defense Builders
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+      <div class="coming-soon__features">
+        <div class="coming-soon__feature">
+          <svg class="coming-soon__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          <div class="coming-soon__feature-title">Contracts</div>
+          <div class="coming-soon__feature-text">DoD & IC opportunities</div>
+        </div>
+        <div class="coming-soon__feature">
+          <svg class="coming-soon__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <div class="coming-soon__feature-title">Grants</div>
+          <div class="coming-soon__feature-text">SBIR, STTR & more</div>
+        </div>
+        <div class="coming-soon__feature">
+          <svg class="coming-soon__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+          </svg>
+          <div class="coming-soon__feature-title">Partnerships</div>
+          <div class="coming-soon__feature-text">Prime & government</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <span class="footer__logo-mark">M</span>
+            <span class="footer__logo-text">Merge Combinator</span>
+          </a>
+          <p class="footer__tagline">The builder-led venture studio for national security.</p>
+        </div>
+
+        <div class="footer__links">
+          <div class="footer__column">
+            <h4 class="footer__heading">Platform</h4>
+            <ul class="footer__list">
+              <li><a href="https://www.sigmablox.com">Combine</a></li>
+              <li><a href="/builders">Defense Builders</a></li>
+              <li><a href="/opportunities">Opportunities</a></li>
+              <li><a href="/merch">Merch</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Company</h4>
+            <ul class="footer__list">
+              <li><a href="/#hero">About</a></li>
+              <li><a href="/#engage">Contact</a></li>
+              <li><a href="/builders">Careers</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Resources</h4>
+            <ul class="footer__list">
+              <li><a href="/blog.html">Blog</a></li>
+              <li><a href="/portfolio.html">Case Studies</a></li>
+              <li><a href="/knowledge">Knowledge</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 Merge Combinator. All rights reserved.</p>
+        <p class="footer__location">San Francisco • Tokyo • Singapore</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
