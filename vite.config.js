@@ -22,6 +22,11 @@ export default defineConfig({
         portfolio: resolve(__dirname, 'portfolio.html'),
         builders: resolve(__dirname, 'builders.html'),
         merch: resolve(__dirname, 'merch.html'),
+        opportunities: resolve(__dirname, 'opportunities.html'),
+        knowledge: resolve(__dirname, 'knowledge.html'),
+        privacy: resolve(__dirname, 'privacy.html'),
+        terms: resolve(__dirname, 'terms.html'),
+        security: resolve(__dirname, 'security.html'),
         // Blog articles
         'blog-counter-drone': resolve(__dirname, 'blog/counter-drone-jiatf-401.html'),
         'blog-ndaa': resolve(__dirname, 'blog/ndaa-speed-act.html'),

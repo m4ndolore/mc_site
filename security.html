@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Security - Merge Combinator">
+
+  <title>Security — Merge Combinator</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="content/arrows.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="content/arrows.png">
+  <link rel="apple-touch-icon" href="content/arrows.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .legal-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--black);
+    }
+
+    .legal-content {
+      flex: 1;
+      padding: calc(var(--nav-height) + 60px) 20px 80px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .legal-content h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .legal-content .last-updated {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 40px;
+    }
+
+    .legal-content h2 {
+      font-size: 24px;
+      color: var(--white);
+      margin: 40px 0 16px;
+    }
+
+    .legal-content p,
+    .legal-content li {
+      font-size: 16px;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 16px;
+    }
+
+    .legal-content ul {
+      padding-left: 24px;
+      margin-bottom: 24px;
+    }
+
+    .legal-content a {
+      color: var(--blue);
+    }
+
+    .legal-content a:hover {
+      text-decoration: underline;
+    }
+
+    .security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      margin-bottom: 32px;
+    }
+
+    .security-badge svg {
+      width: 16px;
+      height: 16px;
+    }
+  </style>
+</head>
+<body class="legal-page">
+  <!-- Navigation -->
+  <header class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-text">
+          <span class="nav__logo-merge">Merge</span>
+          <span class="nav__logo-combinator">Combinator</span>
+        </span>
+        <img src="content/arrows.png" alt="Merge arrows" class="nav__logo-icon">
+      </a>
+
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="https://www.sigmablox.com" class="nav__link">Combine</a>
+          <a href="/builders" class="nav__link">Defense Builders</a>
+          <a href="/merch" class="nav__link">Merch</a>
+          <a href="/opportunities" class="nav__link">Opportunities</a>
+          <a href="/knowledge" class="nav__link">Knowledge</a>
+        </div>
+        <div class="nav__menu-actions">
+          <a href="https://app.mergecombinator.com/login" class="nav__btn nav__btn--outline">Login</a>
+          <a href="/builders" class="nav__btn nav__btn--primary">Apply</a>
+        </div>
+      </nav>
+
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="legal-content">
+    <h1>Security</h1>
+    <p class="last-updated">Last updated: January 2025</p>
+
+    <div class="security-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M9 12l2 2 4-4"/>
+      </svg>
+      Security First
+    </div>
+
+    <p>At Merge Combinator, security is foundational to everything we do. As a venture studio focused on national security, we maintain rigorous security practices to protect our partners, builders, and the sensitive work we do together.</p>
+
+    <h2>Our Security Principles</h2>
+    <ul>
+      <li><strong>Defense in Depth:</strong> Multiple layers of security controls protect our systems and data</li>
+      <li><strong>Least Privilege:</strong> Access is granted only as needed and regularly reviewed</li>
+      <li><strong>Continuous Monitoring:</strong> Our systems are monitored for suspicious activity</li>
+      <li><strong>Secure by Design:</strong> Security is built into our processes from the start</li>
+    </ul>
+
+    <h2>Data Protection</h2>
+    <p>We implement industry-standard security measures to protect your data:</p>
+    <ul>
+      <li>Encryption in transit (TLS 1.3) and at rest</li>
+      <li>Regular security assessments and penetration testing</li>
+      <li>Access controls and authentication mechanisms</li>
+      <li>Secure data handling and storage practices</li>
+    </ul>
+
+    <h2>Infrastructure Security</h2>
+    <p>Our infrastructure is hosted on enterprise-grade cloud platforms with:</p>
+    <ul>
+      <li>SOC 2 Type II certified data centers</li>
+      <li>DDoS protection and web application firewalls</li>
+      <li>Regular patching and vulnerability management</li>
+      <li>Incident response and disaster recovery procedures</li>
+    </ul>
+
+    <h2>Reporting Security Issues</h2>
+    <p>We appreciate the security research community's efforts to improve security. If you discover a security vulnerability, please report it responsibly:</p>
+    <ul>
+      <li>Email: <a href="mailto:security@mergecombinator.com">security@mergecombinator.com</a></li>
+      <li>Please provide detailed information about the vulnerability</li>
+      <li>Allow reasonable time for us to address the issue before disclosure</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>For security-related inquiries, please contact our security team at <a href="mailto:security@mergecombinator.com">security@mergecombinator.com</a>.</p>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <span class="footer__logo-mark">M</span>
+            <span class="footer__logo-text">Merge Combinator</span>
+          </a>
+          <p class="footer__tagline">The builder-led venture studio for national security.</p>
+        </div>
+
+        <div class="footer__links">
+          <div class="footer__column">
+            <h4 class="footer__heading">Platform</h4>
+            <ul class="footer__list">
+              <li><a href="https://www.sigmablox.com">Combine</a></li>
+              <li><a href="/builders">Defense Builders</a></li>
+              <li><a href="/opportunities">Opportunities</a></li>
+              <li><a href="/merch">Merch</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Legal</h4>
+            <ul class="footer__list">
+              <li><a href="/privacy.html">Privacy Policy</a></li>
+              <li><a href="/terms.html">Terms of Service</a></li>
+              <li><a href="/security.html">Security</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2025 Merge Combinator. All rights reserved.</p>
+        <p class="footer__location">San Francisco • Tokyo • Singapore</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

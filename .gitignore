@@ -38,4 +38,5 @@ yarn-error.log\*
 plugin.zip
 .vercel
 
-.playwright-mcp
+.playwright-mcp.wrangler/
+.playwright-mcp/
