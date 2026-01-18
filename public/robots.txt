@@ -1,0 +1,9 @@
+# Merge Combinator robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.mergecombinator.com/sitemap.xml
+
+# Disallow admin/API paths (when implemented)
+Disallow: /api/

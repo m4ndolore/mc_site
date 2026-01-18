@@ -27,6 +27,8 @@ export default defineConfig({
         privacy: resolve(__dirname, 'privacy.html'),
         terms: resolve(__dirname, 'terms.html'),
         security: resolve(__dirname, 'security.html'),
+        archive: resolve(__dirname, 'archive.html'),
+        '404': resolve(__dirname, '404.html'),
         // Blog articles
         'blog-counter-drone': resolve(__dirname, 'blog/counter-drone-jiatf-401.html'),
         'blog-ndaa': resolve(__dirname, 'blog/ndaa-speed-act.html'),
