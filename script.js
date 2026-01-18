@@ -27,6 +27,69 @@
   };
 
   // ============================================
+  // CLOUDFLARE IMAGE OPTIMIZATION
+  // ============================================
+  const CF_IMAGE_CONFIG = {
+    // Domains where CF Image Resizing is available
+    cfDomains: ['mergecombinator.com', 'pages.dev'],
+    // Default transform options
+    defaults: {
+      format: 'auto',  // Auto-selects WebP/AVIF based on browser
+      quality: 85,
+      fit: 'contain'
+    }
+  };
+
+  /**
+   * Check if current domain supports CF Image Resizing
+   */
+  function isCFDomain() {
+    const hostname = window.location.hostname;
+    return CF_IMAGE_CONFIG.cfDomains.some(domain => hostname.includes(domain));
+  }
+
+  /**
+   * Transform image URL to use CF Image Resizing
+   * @param {string} src - Original image path
+   * @param {object} options - Transform options (width, height, quality, format)
+   */
+  function cfImage(src, options = {}) {
+    if (!isCFDomain() || !src) return src;
+
+    // Skip if already transformed or external URL
+    if (src.includes('/cdn-cgi/image/') || src.startsWith('http')) return src;
+
+    const opts = { ...CF_IMAGE_CONFIG.defaults, ...options };
+    const transforms = [];
+
+    if (opts.format) transforms.push(`format=${opts.format}`);
+    if (opts.width) transforms.push(`width=${opts.width}`);
+    if (opts.height) transforms.push(`height=${opts.height}`);
+    if (opts.quality) transforms.push(`quality=${opts.quality}`);
+    if (opts.fit) transforms.push(`fit=${opts.fit}`);
+
+    // Ensure src starts with /
+    const cleanSrc = src.startsWith('/') ? src : `/${src}`;
+
+    return `/cdn-cgi/image/${transforms.join(',')}${cleanSrc}`;
+  }
+
+  /**
+   * Apply CF Image transforms to elements matching selector
+   */
+  function optimizeImages(selector, options = {}) {
+    if (!isCFDomain()) return;
+
+    const images = document.querySelectorAll(selector);
+    images.forEach(img => {
+      const originalSrc = img.getAttribute('src');
+      if (originalSrc) {
+        img.setAttribute('src', cfImage(originalSrc, options));
+      }
+    });
+  }
+
+  // ============================================
   // UTILITY FUNCTIONS
   // ============================================
   function debounce(func, wait) {
@@ -900,6 +963,9 @@
     initLogoMarquee();
     initKeyboardNav();
     initScrollToTop();
+
+    // CF Image Optimization - convert SVG logos to optimized WebP
+    optimizeImages('.logo-marquee__item img', { width: 200, format: 'auto' });
   }
 
   // Run on DOM ready
