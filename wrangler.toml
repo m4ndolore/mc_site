@@ -1,0 +1,17 @@
+name = "mc-router"
+main = "cloudflare/merge-router.js"
+compatibility_date = "2024-01-01"
+
+# Development settings
+[vars]
+# Non-secret vars go here
+
+# For local development, create a .dev.vars file with:
+# MC_OAUTH_CLIENT_ID=mc-web-prod
+# MC_OAUTH_CLIENT_SECRET=your-secret-here
+# SESSION_SECRET=generate-a-32-char-secret
+
+# Production secrets are set via:
+# wrangler secret put MC_OAUTH_CLIENT_ID
+# wrangler secret put MC_OAUTH_CLIENT_SECRET
+# wrangler secret put SESSION_SECRET
