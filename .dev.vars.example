@@ -1,0 +1,11 @@
+# Cloudflare Worker Secrets for Local Development
+# Copy to .dev.vars and fill in values
+
+# VIA OAuth Client ID (from Authentik MC application)
+MC_OAUTH_CLIENT_ID=mc-web-prod
+
+# VIA OAuth Client Secret (from Authentik MC application)
+MC_OAUTH_CLIENT_SECRET=your-client-secret-here
+
+# Session encryption secret (generate with: openssl rand -hex 32)
+SESSION_SECRET=your-32-character-secret-here

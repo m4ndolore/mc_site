@@ -1,3 +1,5 @@
+import { handleAuthRoute, isAuthRoute, getSession } from "./auth.js";
+
 const SIGMABLOX_ORIGIN = "https://www.sigmablox.com";
 const SIGMABLOX_HOSTNAMES = new Set(["www.sigmablox.com", "sigmablox.com"]);
 
@@ -190,8 +192,16 @@ function rewriteSigmabloxUrl(value) {
 }
 
 export default {
-  async fetch(request) {
+  async fetch(request, env) {
     const url = new URL(request.url);
+
+    // Handle auth routes first
+    if (isAuthRoute(url.pathname)) {
+      const authResponse = await handleAuthRoute(request, env);
+      if (authResponse) {
+        return authResponse;
+      }
+    }
 
     if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
       const redirectUrl = new URL("/combine/dashboard", url.origin);
