@@ -30,11 +30,78 @@ const BANNER_FOOTER_HTML = `
   </div>
 `;
 
+const SHIM_HTML = `
+  <script>
+    (function () {
+      if (!location.pathname.startsWith("/combine")) return;
+      var prefix = "/combine";
+      var localApiOrigin = null;
+      if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+        localApiOrigin = "http://localhost:2368";
+      }
+      function rewriteUrl(input) {
+        if (!input) return input;
+        try {
+          if (typeof input === "string") {
+            if (localApiOrigin && input.startsWith("https://api.sigmablox.com")) {
+              return localApiOrigin + input.slice("https://api.sigmablox.com".length);
+            }
+            if (input.startsWith("/") && !input.startsWith(prefix)) {
+              return prefix + input;
+            }
+            if (input.startsWith(location.origin)) {
+              var url = new URL(input);
+              if (!url.pathname.startsWith(prefix)) {
+                url.pathname = prefix + url.pathname;
+              }
+              return url.toString();
+            }
+            return input;
+          }
+          return input;
+        } catch (e) {
+          return input;
+        }
+      }
+
+      var originalFetch = window.fetch;
+      if (originalFetch) {
+        window.fetch = function (input, init) {
+          if (typeof input === "string") {
+            return originalFetch.call(this, rewriteUrl(input), init);
+          }
+          if (input instanceof Request) {
+            var rewritten = rewriteUrl(input.url);
+            if (rewritten !== input.url) {
+              var cloned = input.clone();
+              return originalFetch.call(this, new Request(rewritten, cloned), init);
+            }
+          }
+          return originalFetch.call(this, input, init);
+        };
+      }
+
+      var originalOpen = XMLHttpRequest.prototype.open;
+      XMLHttpRequest.prototype.open = function (method, url) {
+        var rewritten = rewriteUrl(url);
+        return originalOpen.apply(this, [method, rewritten].concat([].slice.call(arguments, 2)));
+      };
+
+      if (navigator.sendBeacon) {
+        var originalBeacon = navigator.sendBeacon.bind(navigator);
+        navigator.sendBeacon = function (url, data) {
+          return originalBeacon(rewriteUrl(url), data);
+        };
+      }
+    })();
+  </script>
+`;
+
 function resolveTarget(url, route) {
   const target = new URL(route.origin);
   if (route.stripPrefix) {
     if (route.preserveRoot && (url.pathname === route.prefix || url.pathname === `${route.prefix}/`)) {
-      target.pathname = `${route.prefix}/`;
+      target.pathname = "/";
     } else {
       const suffix = url.pathname === route.prefix ? "/" : url.pathname.slice(route.prefix.length);
       target.pathname = suffix || "/";
@@ -60,10 +127,7 @@ function rewriteSigmabloxLocation(value) {
   if (value.startsWith("//")) {
     const url = new URL(`https:${value}`);
     if (SIGMABLOX_HOSTNAMES.has(url.hostname)) {
-      const path = url.pathname.startsWith("/combine")
-        ? url.pathname.slice("/combine".length) || "/"
-        : url.pathname;
-      return `/combine${path}${url.search}${url.hash}`;
+      return `/combine${url.pathname}${url.search}${url.hash}`;
     }
     return null;
   }
@@ -71,10 +135,7 @@ function rewriteSigmabloxLocation(value) {
   if (value.startsWith("http://") || value.startsWith("https://")) {
     const url = new URL(value);
     if (SIGMABLOX_HOSTNAMES.has(url.hostname)) {
-      const path = url.pathname.startsWith("/combine")
-        ? url.pathname.slice("/combine".length) || "/"
-        : url.pathname;
-      return `/combine${path}${url.search}${url.hash}`;
+      return `/combine${url.pathname}${url.search}${url.hash}`;
     }
     return null;
   }
@@ -104,10 +165,7 @@ function rewriteSigmabloxUrl(value) {
   if (trimmed.startsWith("//")) {
     const url = new URL(`https:${trimmed}`);
     if (SIGMABLOX_HOSTNAMES.has(url.hostname)) {
-      const path = url.pathname.startsWith("/combine")
-        ? url.pathname.slice("/combine".length) || "/"
-        : url.pathname;
-      return `/combine${path}${url.search}${url.hash}`;
+      return `/combine${url.pathname}${url.search}${url.hash}`;
     }
     return null;
   }
@@ -115,16 +173,17 @@ function rewriteSigmabloxUrl(value) {
   if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
     const url = new URL(trimmed);
     if (SIGMABLOX_HOSTNAMES.has(url.hostname)) {
-      const path = url.pathname.startsWith("/combine")
-        ? url.pathname.slice("/combine".length) || "/"
-        : url.pathname;
-      return `/combine${path}${url.search}${url.hash}`;
+      return `/combine${url.pathname}${url.search}${url.hash}`;
     }
     return null;
   }
 
   if (trimmed.startsWith("/") && !trimmed.startsWith("/combine")) {
     return `/combine${trimmed}`;
+  }
+
+  if (trimmed === "/combine" || trimmed === "/combine/") {
+    return "/combine/combine/";
   }
 
   return null;
@@ -163,17 +222,32 @@ export default {
     }
 
     const targetUrl = resolveTarget(url, route);
-    const response = await fetch(new Request(targetUrl, request));
+    let response = await fetch(new Request(targetUrl, request));
 
     if (route.origin === SIGMABLOX_ORIGIN && isRedirectResponse(response)) {
       const location = response.headers.get("location");
-      const replacement = rewriteSigmabloxLocation(location);
-      if (replacement) {
-        const headers = new Headers(response.headers);
-        headers.set("location", replacement);
-        return new Response(null, { status: 302, headers });
+      let replacement = rewriteSigmabloxLocation(location);
+      const isCombineDeep =
+        url.pathname === "/combine/combine" || url.pathname === "/combine/combine/";
+      if (isCombineDeep && (replacement === "/combine" || replacement === "/combine/")) {
+        replacement = "/combine/combine/";
       }
-      return response;
+      if (replacement) {
+        const isCombineRoot =
+          route.prefix === "/combine" &&
+          (url.pathname === "/combine" || url.pathname === "/combine/");
+        if (isCombineRoot && replacement.startsWith("/combine")) {
+          const followUrl = new URL(replacement, url.origin);
+          const followTarget = resolveTarget(followUrl, route);
+          response = await fetch(new Request(followTarget, request));
+        } else {
+          const headers = new Headers(response.headers);
+          headers.set("location", replacement);
+          return new Response(null, { status: 302, headers });
+        }
+      } else {
+        return response;
+      }
     }
 
     if (route.origin !== SIGMABLOX_ORIGIN || !shouldRewriteBanner(response)) {
@@ -181,7 +255,15 @@ export default {
     }
 
     let headerAdjusted = false;
+    let shimInjected = false;
     return new HTMLRewriter()
+      .on("head", {
+        element(element) {
+          if (shimInjected) return;
+          element.append(SHIM_HTML, { html: true });
+          shimInjected = true;
+        },
+      })
       .on("header", {
         element(element) {
           if (headerAdjusted) return;
@@ -234,6 +316,13 @@ export default {
           if (replacement) {
             element.setAttribute("action", replacement);
           }
+        },
+      })
+      .on("body", {
+        element(element) {
+          if (shimInjected) return;
+          element.prepend(SHIM_HTML, { html: true });
+          shimInjected = true;
         },
       })
       .on("body", {

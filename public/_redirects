@@ -1,9 +1,6 @@
 # Cloudflare Pages redirects
 # Format: /source /destination [status]
 
-# Clean URL rewrites (200 = rewrite, not redirect)
-/about    /about.html    200
-/blog     /blog.html     200
-/portfolio /portfolio.html 200
-/builders /builders.html  200
-/merch    /merch.html    200
+# Note: Cloudflare Pages automatically serves .html files without extension
+# Only add redirects here for non-standard routing (external URLs, etc.)
+# DO NOT add rewrites like "/builders /builders.html 200" - this causes redirect loops
