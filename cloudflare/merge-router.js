@@ -1,5 +1,6 @@
 import { handleAuthRoute, isAuthRoute, getSession } from "./auth.js";
 
+const MC_PAGES_ORIGIN = "https://mc-site-dr4.pages.dev";
 const SIGMABLOX_ORIGIN = "https://www.sigmablox.com";
 const SIGMABLOX_HOSTNAMES = new Set(["www.sigmablox.com", "sigmablox.com"]);
 
@@ -11,12 +12,6 @@ const ROUTES = [
   { prefix: "/merch", origin: "https://merge-combinator-shop.fourthwall.com", stripPrefix: true },
 ];
 
-const SIGMABLOX_ASSET_PREFIXES = [
-  "/assets/",
-  "/public/",
-  "/content/",
-  "/ghost/",
-];
 
 const BANNER_HTML = `
   <div data-mc-banner="true" style="position: sticky; top: 0; z-index: 2147483647; font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; background: #0b1116; color: #e9f2ff; border-bottom: 1px solid rgba(233, 242, 255, 0.12); padding: 10px 16px; text-align: center; letter-spacing: 0.02em;">
@@ -214,21 +209,29 @@ export default {
     );
 
     if (!route) {
-      const isSigmabloxAsset = SIGMABLOX_ASSET_PREFIXES.some((prefix) =>
-        url.pathname.startsWith(prefix)
+      // Check if this is a SigmaBlox asset request (from /combine pages)
+      const referer = request.headers.get("referer") || "";
+      const refererUrl = referer ? new URL(referer) : null;
+      const isFromCombine = refererUrl && (
+        refererUrl.pathname.startsWith("/combine") ||
+        SIGMABLOX_HOSTNAMES.has(refererUrl.hostname)
       );
 
-      if (isSigmabloxAsset) {
-        const targetUrl = new URL(`${SIGMABLOX_ORIGIN}${url.pathname}`);
-        targetUrl.search = url.search;
-        return fetch(new Request(targetUrl, request));
+      if (isFromCombine) {
+        // Route to SigmaBlox for assets requested from /combine pages
+        const sigmabloxUrl = new URL(url.pathname, SIGMABLOX_ORIGIN);
+        sigmabloxUrl.search = url.search;
+        return fetch(new Request(sigmabloxUrl, request));
       }
 
-      if (url.hostname === "127.0.0.1" || url.hostname === "localhost") {
-        return new Response("Worker dev: no route match.", { status: 404 });
-      }
-
-      return fetch(request);
+      // Proxy unmatched routes to MC Pages origin (homepage, assets, etc.)
+      const mcPagesUrl = new URL(url.pathname, MC_PAGES_ORIGIN);
+      mcPagesUrl.search = url.search;
+      return fetch(new Request(mcPagesUrl, {
+        method: request.method,
+        headers: request.headers,
+        body: request.body,
+      }));
     }
 
     const targetUrl = resolveTarget(url, route);
