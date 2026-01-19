@@ -174,26 +174,38 @@ async function handleLogin(request, env) {
  * Handle /auth/callback - Exchange code for tokens
  */
 async function handleCallback(request, env) {
-  const url = new URL(request.url);
-  const code = url.searchParams.get("code");
-  const state = url.searchParams.get("state");
-  const error = url.searchParams.get("error");
+  try {
+    const url = new URL(request.url);
+    const code = url.searchParams.get("code");
+    const state = url.searchParams.get("state");
+    const error = url.searchParams.get("error");
 
-  if (error) {
-    return new Response(`Authentication error: ${error}`, { status: 400 });
-  }
+    if (error) {
+      return new Response(`Authentication error: ${error}`, { status: 400 });
+    }
 
-  if (!code || !state) {
-    return new Response("Missing code or state", { status: 400 });
-  }
+    if (!code || !state) {
+      return new Response("Missing code or state", { status: 400 });
+    }
 
-  // Retrieve and validate state
-  const cookies = parseCookies(request);
-  const stateData = await decryptSession(cookies.mc_auth_state, env.SESSION_SECRET);
+    // Check env vars
+    if (!env.SESSION_SECRET) {
+      console.error("SESSION_SECRET is not set");
+      return new Response("Server configuration error: missing SESSION_SECRET", { status: 500 });
+    }
 
-  if (!stateData || stateData.state !== state) {
-    return new Response("Invalid state", { status: 400 });
-  }
+    // Retrieve and validate state
+    const cookies = parseCookies(request);
+    if (!cookies.mc_auth_state) {
+      return new Response("Missing auth state cookie - try logging in again", { status: 400 });
+    }
+
+    const stateData = await decryptSession(cookies.mc_auth_state, env.SESSION_SECRET);
+
+    if (!stateData || stateData.state !== state) {
+      console.error("State validation failed", { hasStateData: !!stateData, expectedState: state, actualState: stateData?.state });
+      return new Response("Invalid state - try logging in again", { status: 400 });
+    }
 
   // Exchange code for tokens
   const redirectUri = `${url.origin}/auth/callback`;
@@ -214,8 +226,8 @@ async function handleCallback(request, env) {
 
   if (!tokenResponse.ok) {
     const errorText = await tokenResponse.text();
-    console.error("Token exchange failed:", errorText);
-    return new Response("Failed to exchange token", { status: 500 });
+    console.error("Token exchange failed:", tokenResponse.status, errorText);
+    return new Response(`Failed to exchange token: ${tokenResponse.status} - ${errorText}`, { status: 500 });
   }
 
   const tokens = await tokenResponse.json();
@@ -261,6 +273,10 @@ async function handleCallback(request, env) {
   );
 
   return new Response(null, { status: 302, headers });
+  } catch (err) {
+    console.error("Callback error:", err.message, err.stack);
+    return new Response(`Authentication callback failed: ${err.message}`, { status: 500 });
+  }
 }
 
 /**
