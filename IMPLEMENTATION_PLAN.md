@@ -11,6 +11,15 @@
 
 ### Bug Fixes
 
+#### Localhost Loading Delay on /builders Page (2026-01-20)
+- [x] Issue: /builders page took 10+ seconds to load on localhost due to CORS errors and retries
+- [x] Root cause: `fetchCompanies()` and `fetchFilterOptions()` tried live API first, causing CORS failures and exponential backoff retries before falling back to seeded data
+- [x] Fix: Changed data loading priority for localhost:
+  - `fetchCompanies()`: Prioritizes seeded data first on localhost, then mock data fallback
+  - `fetchFilterOptions()`: Uses mock filters directly on localhost (no API call)
+- [x] Production behavior unchanged: Still tries live API first with seeded data fallback
+- [x] Verification: /builders page now loads instantly on localhost
+
 #### Cohorts Stat Showing Zero on /builders Page (2026-01-20)
 - [x] Issue: Cohorts stat displayed 0 instead of actual count
 - [x] Root cause: `updateStats()` in `js/builders/index.js` was not passing `cohorts` property to display function
