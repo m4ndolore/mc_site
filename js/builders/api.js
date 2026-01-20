@@ -5,6 +5,100 @@
 import { handleApiResponse, clearAuthCache, redirectToLogin } from './auth.js';
 
 /**
+ * Default retry configuration for exponential backoff
+ */
+const DEFAULT_RETRY_CONFIG = {
+    maxRetries: 3,
+    baseDelayMs: 1000,
+    maxDelayMs: 10000,
+    retryableStatuses: [429, 500, 502, 503, 504]
+};
+
+/**
+ * Sleep for a specified duration
+ * @param {number} ms - Milliseconds to sleep
+ * @returns {Promise<void>}
+ */
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Calculate exponential backoff delay with jitter
+ * @param {number} attempt - Current attempt number (0-indexed)
+ * @param {number} baseDelayMs - Base delay in milliseconds
+ * @param {number} maxDelayMs - Maximum delay cap
+ * @returns {number} - Delay in milliseconds
+ */
+function calculateBackoffDelay(attempt, baseDelayMs, maxDelayMs) {
+    // Exponential backoff: baseDelay * 2^attempt
+    const exponentialDelay = baseDelayMs * Math.pow(2, attempt);
+    // Add jitter (0-25% of delay) to prevent thundering herd
+    const jitter = exponentialDelay * 0.25 * Math.random();
+    // Cap at maxDelay
+    return Math.min(exponentialDelay + jitter, maxDelayMs);
+}
+
+/**
+ * Fetch with exponential backoff retry logic for rate limiting
+ * @param {string} url - URL to fetch
+ * @param {Object} options - Fetch options
+ * @param {Object} retryConfig - Retry configuration
+ * @returns {Promise<Response>}
+ */
+async function fetchWithRetry(url, options = {}, retryConfig = {}) {
+    const config = { ...DEFAULT_RETRY_CONFIG, ...retryConfig };
+    let lastError = null;
+
+    for (let attempt = 0; attempt <= config.maxRetries; attempt++) {
+        try {
+            const response = await fetch(url, options);
+
+            // Check if we should retry this response
+            if (config.retryableStatuses.includes(response.status) && attempt < config.maxRetries) {
+                // Check for Retry-After header
+                const retryAfter = response.headers.get('Retry-After');
+                let delayMs;
+
+                if (retryAfter) {
+                    // Retry-After can be seconds or HTTP-date
+                    const retryAfterSeconds = parseInt(retryAfter, 10);
+                    if (!isNaN(retryAfterSeconds)) {
+                        delayMs = retryAfterSeconds * 1000;
+                    } else {
+                        // Parse HTTP-date
+                        const retryDate = new Date(retryAfter);
+                        delayMs = Math.max(0, retryDate.getTime() - Date.now());
+                    }
+                    // Cap at maxDelay
+                    delayMs = Math.min(delayMs, config.maxDelayMs);
+                } else {
+                    delayMs = calculateBackoffDelay(attempt, config.baseDelayMs, config.maxDelayMs);
+                }
+
+                console.log(`[Builders] Rate limited (${response.status}), retrying in ${Math.round(delayMs / 1000)}s (attempt ${attempt + 1}/${config.maxRetries})`);
+                await sleep(delayMs);
+                continue;
+            }
+
+            return response;
+        } catch (error) {
+            lastError = error;
+
+            // Network errors are retryable
+            if (attempt < config.maxRetries) {
+                const delayMs = calculateBackoffDelay(attempt, config.baseDelayMs, config.maxDelayMs);
+                console.log(`[Builders] Network error, retrying in ${Math.round(delayMs / 1000)}s (attempt ${attempt + 1}/${config.maxRetries})`);
+                await sleep(delayMs);
+                continue;
+            }
+        }
+    }
+
+    throw lastError || new Error('Max retries exceeded');
+}
+
+/**
  * Path to build-time seeded company data
  */
 const SEEDED_DATA_PATH = '/data/companies.json';
@@ -215,7 +309,7 @@ export async function fetchCompanies(options = {}) {
     const url = `${apiBase}/api/public/companies${queryString ? '?' + queryString : ''}`;
 
     try {
-        const response = await fetch(url, {
+        const response = await fetchWithRetry(url, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
@@ -272,7 +366,7 @@ export async function fetchFilterOptions() {
     const apiBase = getApiBase();
 
     try {
-        const response = await fetch(`${apiBase}/api/public/companies/filters`, {
+        const response = await fetchWithRetry(`${apiBase}/api/public/companies/filters`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
@@ -308,7 +402,7 @@ export async function fetchCompanyById(id) {
 
     const apiBase = getApiBase();
 
-    const response = await fetch(`${apiBase}/api/public/companies/${encodeURIComponent(id)}`, {
+    const response = await fetchWithRetry(`${apiBase}/api/public/companies/${encodeURIComponent(id)}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json'
@@ -325,6 +419,7 @@ export async function fetchCompanyById(id) {
 /**
  * Fetch from private API endpoint (requires authentication)
  * Handles 401/403 responses by redirecting to login
+ * Uses exponential backoff for rate limiting (excludes 401/403 from retry)
  *
  * @param {string} endpoint - API endpoint path (e.g., '/api/members')
  * @param {Object} options - Fetch options
@@ -334,7 +429,8 @@ export async function fetchPrivateApi(endpoint, options = {}) {
     const apiBase = getApiBase();
     const url = `${apiBase}${endpoint}`;
 
-    const response = await fetch(url, {
+    // Don't retry 401/403 for private endpoints - those need re-auth
+    const response = await fetchWithRetry(url, {
         method: 'GET',
         credentials: 'include',
         headers: {
@@ -342,6 +438,8 @@ export async function fetchPrivateApi(endpoint, options = {}) {
             ...options.headers
         },
         ...options
+    }, {
+        retryableStatuses: [429, 500, 502, 503, 504] // Exclude 401/403
     });
 
     // Handle auth errors - redirect to login on 401/403

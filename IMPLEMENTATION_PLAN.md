@@ -9,6 +9,15 @@
 
 ## Completed
 
+### Exponential Backoff for Rate Limiting (2026-01-20)
+- [x] Added `fetchWithRetry()` function in `js/builders/api.js` with configurable retry logic
+- [x] Exponential backoff: base delay * 2^attempt with 25% jitter to prevent thundering herd
+- [x] Respects `Retry-After` header when present (both seconds and HTTP-date formats)
+- [x] Retryable statuses: 429 (rate limit), 500, 502, 503, 504 (server errors)
+- [x] Updated `fetchCompanies()`, `fetchFilterOptions()`, `fetchCompanyById()`, `fetchPrivateApi()` to use retry logic
+- [x] Private API excludes 401/403 from retry (auth errors require re-authentication)
+- [x] Default config: 3 retries, 1s base delay, 10s max delay
+
 ### Phase 4 Homepage Stats Integration (2026-01-20)
 - [x] Created `js/homepage/index.js` - Client-side module for loading stats from seeded data
 - [x] Added `data-stat` attributes to stat elements in index.html (companies, operators, problem-sets)
@@ -75,9 +84,9 @@ Per spec, additional pages need API integration:
 
 **Note on /about:** The about page currently redirects to homepage. Previous static team content was intentionally removed and backlogged. Team member data requires either private Ghost CMS API access or static content to be provided. This is beyond the public API integration scope.
 
-### Error Handling Improvements (Partial)
+### Error Handling Improvements (Complete)
 - [x] 401/403 response redirects to login
-- [ ] Rate limiting handled with exponential backoff
+- [x] Rate limiting handled with exponential backoff
 - [x] No API keys exposed in client-side code (verified)
 - [x] Network errors show user-friendly message (C2UX compliant)
 
