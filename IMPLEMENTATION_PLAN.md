@@ -9,6 +9,14 @@
 
 ## Completed
 
+### Phase 4 Homepage Stats Integration (2026-01-20)
+- [x] Created `js/homepage/index.js` - Client-side module for loading stats from seeded data
+- [x] Added `data-stat` attributes to stat elements in index.html (companies, operators, problem-sets)
+- [x] Hero section stats dynamically update from seeded company data
+- [x] Ecosystem section company count dynamically updates
+- [x] Stats calculated: company count from data, problem sets from unique mission areas
+- [x] Operators stat preserved as static (not in company data)
+
 ### Phase 4 Portfolio API Integration (2026-01-20)
 - [x] Created `js/portfolio/index.js` - Client-side module for loading seeded company data
 - [x] Added filter functionality with category mapping (autonomy, isr, logistics, cyber, c2)
@@ -55,7 +63,7 @@
 Per spec, additional pages need API integration:
 - [x] `/portfolio` - Cohort showcase from public API (now uses seeded data)
 - [ ] `/about` - Team members (private API or static)
-- [ ] `/` (homepage) - Featured companies, stats from public API
+- [x] `/` (homepage) - Stats from seeded company data
 
 ### Error Handling Improvements (Not Started)
 - [ ] 401/403 response redirects to login
