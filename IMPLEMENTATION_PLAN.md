@@ -27,6 +27,12 @@
 - [x] Note: Data extraction was already working correctly in `extractFilterOptions()` from `api.js`
 - [x] Verification: Cohorts stat now displays correct count matching available filter options
 
+#### Build-time Seeding Empty Data Bug (2026-01-20)
+- [x] Issue: Build-time seeding script (`scripts/seed-companies.mjs`) wrote empty data when API returned empty array
+- [x] Root cause: API returns HTTP 200 with `{companies: []}` (empty array), which was treated as successful API response
+- [x] Fix: Added check for empty companies array in seed script - treats empty response as failure and falls back to cached data or mock data
+- [x] Verification: `npm run build` now correctly falls back to mock data (6 companies) when API returns empty data
+
 ### Exponential Backoff for Rate Limiting (2026-01-20)
 - [x] Added `fetchWithRetry()` function in `js/builders/api.js` with configurable retry logic
 - [x] Exponential backoff: base delay * 2^attempt with 25% jitter to prevent thundering herd
@@ -156,11 +162,13 @@ Per spec, additional pages need API integration:
 ## Discovered Issues
 
 ### API Backend Issues
-- **Issue:** Public API endpoints at `api.sigmablox.com` return application-level errors
-  - `/api/public/companies` returns `{"error":"Failed to fetch companies"}`
+- **Issue:** Public API endpoints at `api.sigmablox.com` return empty data or errors
+  - `/api/public/companies` returns `{companies: [], ...}` (empty array with HTTP 200)
   - `/api/public/companies/filters` returns `{"error":"Failed to fetch filter options"}`
-- **Status:** Endpoints are network-reachable but backend data source appears unavailable
-- **Workaround:** Mock data fallback is active for local development
+- **Status:** Endpoints are network-reachable but backend data source appears to have no data
+- **Workaround:**
+  - Build-time seeding treats empty API response as failure (falls back to mock data)
+  - Client-side: Localhost uses seeded data; production falls back to seeded data on API failure
 
 ### ~~Script Module Warnings~~ (RESOLVED)
 - **Issue:** Vite warns about scripts without `type="module"` attribute

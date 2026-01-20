@@ -107,10 +107,14 @@
     "offset": 0,
     "hasMore": false
   },
-  "filters": null,
+  "filters": {
+    "missionAreas": [],
+    "warfareDomains": [],
+    "fundingStages": []
+  },
   "metadata": {
-    "fetchedAt": "2026-01-20T17:41:58.529Z",
-    "buildAt": "2026-01-20T19:05:20.805Z",
+    "fetchedAt": "2026-01-20T19:49:29.428Z",
+    "buildAt": "2026-01-20T19:49:29.428Z",
     "source": "cache",
     "apiBase": "https://api.sigmablox.com"
   }

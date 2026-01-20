@@ -204,7 +204,13 @@ async function seed() {
         console.log('[seed] Fetching from API:', API_BASE);
         companiesData = await fetchCompanies();
         filtersData = await fetchFilters();
-        console.log('[seed] API fetch successful:', companiesData.companies?.length || 0, 'companies');
+
+        // Treat empty API response as a failure - use cache/fallback instead
+        if (!companiesData.companies || companiesData.companies.length === 0) {
+            throw new Error('API returned empty data');
+        }
+
+        console.log('[seed] API fetch successful:', companiesData.companies.length, 'companies');
     } catch (error) {
         console.warn('[seed] API unavailable:', error.message);
 
