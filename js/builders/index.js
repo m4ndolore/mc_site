@@ -76,6 +76,7 @@ async function init() {
             missionAreas: filterOptions.missionAreas?.length || 0,
             warfareDomains: filterOptions.warfareDomains?.length || 0,
             fundingStages: filterOptions.fundingStages?.length || 0,
+            cohorts: filterOptions.cohorts?.length || 0,
             // Legacy support
             ctas: filterOptions.warfareDomains?.length || filterOptions.ctas?.length || 0
         });
