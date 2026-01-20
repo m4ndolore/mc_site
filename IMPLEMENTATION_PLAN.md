@@ -5,7 +5,7 @@
 ## Status
 
 **Last Updated:** 2026-01-20
-**Current Phase:** Phase 4 - Additional Pages Seeding (In Progress)
+**Current Phase:** Phase 4 - Additional Pages Seeding (Public API Complete)
 
 ## Completed
 
@@ -59,11 +59,13 @@
 
 ## Prioritized Tasks
 
-### Phase 4: Additional Pages Seeding (In Progress)
+### Phase 4: Additional Pages Seeding (Public API Complete)
 Per spec, additional pages need API integration:
 - [x] `/portfolio` - Cohort showcase from public API (now uses seeded data)
-- [ ] `/about` - Team members (private API or static)
 - [x] `/` (homepage) - Stats from seeded company data
+- [ ] `/about` - Team members (DEFERRED - requires private Ghost CMS API or static content)
+
+**Note on /about:** The about page currently redirects to homepage. Previous static team content was intentionally removed and backlogged. Team member data requires either private Ghost CMS API access or static content to be provided. This is beyond the public API integration scope.
 
 ### Error Handling Improvements (Not Started)
 - [ ] 401/403 response redirects to login
