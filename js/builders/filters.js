@@ -14,6 +14,8 @@ export function filterCompanies(companies, filters) {
             const searchLower = filters.search.toLowerCase();
             const searchFields = [
                 company.name,
+                company.productName,
+                company.displayName,
                 company.tagline,
                 company.description
             ].filter(Boolean).join(' ').toLowerCase();
@@ -25,14 +27,23 @@ export function filterCompanies(companies, filters) {
 
         // Mission area filter
         if (filters.missionArea) {
-            if (!company.missionAreas || !company.missionAreas.includes(filters.missionArea)) {
+            const hasMission = company.missionAreas?.includes(filters.missionArea) ||
+                              company.primaryMission === filters.missionArea;
+            if (!hasMission) {
                 return false;
             }
         }
 
-        // CTA filter
-        if (filters.cta) {
-            if (!company.ctas || !company.ctas.includes(filters.cta)) {
+        // Warfare domain filter (replaces CTA)
+        if (filters.warfareDomain) {
+            if (company.warfareDomain !== filters.warfareDomain) {
+                return false;
+            }
+        }
+
+        // Funding stage filter
+        if (filters.fundingStage) {
+            if (company.fundingStage !== filters.fundingStage) {
                 return false;
             }
         }
@@ -44,18 +55,28 @@ export function filterCompanies(companies, filters) {
             }
         }
 
+        // Legacy CTA filter support
+        if (filters.cta && !filters.warfareDomain) {
+            if (company.warfareDomain !== filters.cta) {
+                return false;
+            }
+        }
+
         return true;
     });
 }
 
 /**
  * Populate filter dropdowns with options
- * @param {Object} options - {missionAreas, ctas, cohorts}
+ * @param {Object} options - {missionAreas, warfareDomains, fundingStages, cohorts}
  */
 export function populateFilters(options) {
     const missionSelect = document.getElementById('filter-mission');
-    const techSelect = document.getElementById('filter-tech');
+    const domainSelect = document.getElementById('filter-domain');
+    const fundingSelect = document.getElementById('filter-funding');
     const cohortSelect = document.getElementById('filter-cohort');
+    // Legacy support
+    const techSelect = document.getElementById('filter-tech');
 
     // Mission areas
     if (missionSelect) {
@@ -63,16 +84,29 @@ export function populateFilters(options) {
             options.missionAreas.map(m => `<option value="${escapeAttr(m)}">${escapeHtml(m)}</option>`).join('');
     }
 
-    // Tech areas (CTAs)
-    if (techSelect) {
-        techSelect.innerHTML = '<option value="">All Tech Areas</option>' +
-            options.ctas.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
+    // Warfare domains
+    if (domainSelect) {
+        domainSelect.innerHTML = '<option value="">All Domains</option>' +
+            options.warfareDomains.map(d => `<option value="${escapeAttr(d)}">${escapeHtml(d)}</option>`).join('');
+    }
+
+    // Funding stages
+    if (fundingSelect) {
+        fundingSelect.innerHTML = '<option value="">All Funding Stages</option>' +
+            options.fundingStages.map(f => `<option value="${escapeAttr(f)}">${escapeHtml(f)}</option>`).join('');
     }
 
     // Cohorts
     if (cohortSelect) {
         cohortSelect.innerHTML = '<option value="">All Cohorts</option>' +
             options.cohorts.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
+    }
+
+    // Legacy tech select (uses warfare domains)
+    if (techSelect) {
+        const domains = options.warfareDomains || options.ctas || [];
+        techSelect.innerHTML = '<option value="">All Domains</option>' +
+            domains.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
     }
 }
 
@@ -84,36 +118,44 @@ export function getFilterState() {
     return {
         search: document.getElementById('search-input')?.value || '',
         missionArea: document.getElementById('filter-mission')?.value || '',
-        cta: document.getElementById('filter-tech')?.value || '',
-        cohort: document.getElementById('filter-cohort')?.value || ''
+        warfareDomain: document.getElementById('filter-domain')?.value ||
+                       document.getElementById('filter-tech')?.value || '',
+        fundingStage: document.getElementById('filter-funding')?.value || '',
+        cohort: document.getElementById('filter-cohort')?.value || '',
+        // Legacy alias
+        cta: document.getElementById('filter-tech')?.value || ''
     };
 }
 
 /**
  * Update stats display
- * @param {Object} stats - {builders, missionAreas, ctas, cohorts}
+ * @param {Object} stats - {builders, missionAreas, warfareDomains, fundingStages, cohorts}
  */
 export function updateStats(stats) {
     const elements = {
         builders: document.getElementById('stat-builders'),
         missionAreas: document.getElementById('stat-mission-areas'),
+        domains: document.getElementById('stat-domains'),
         techAreas: document.getElementById('stat-tech-areas'),
+        fundingStages: document.getElementById('stat-funding'),
         cohorts: document.getElementById('stat-cohorts')
     };
 
     if (elements.builders) elements.builders.textContent = stats.builders;
     if (elements.missionAreas) elements.missionAreas.textContent = stats.missionAreas;
-    if (elements.techAreas) elements.techAreas.textContent = stats.ctas;
+    if (elements.domains) elements.domains.textContent = stats.warfareDomains || stats.ctas;
+    if (elements.techAreas) elements.techAreas.textContent = stats.warfareDomains || stats.ctas;
+    if (elements.fundingStages) elements.fundingStages.textContent = stats.fundingStages;
     if (elements.cohorts) elements.cohorts.textContent = stats.cohorts;
 }
 
 /**
- * Update results count
+ * Update results count - operational language per C2UX
  * @param {number} count - Number of results
  */
 export function updateResultsCount(count) {
     const el = document.getElementById('results-count');
-    if (el) el.textContent = `${count} builder${count !== 1 ? 's' : ''} active`;
+    if (el) el.textContent = `${count} record${count !== 1 ? 's' : ''}`;
 }
 
 // Utility functions
