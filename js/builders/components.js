@@ -14,33 +14,45 @@ export function renderBuilderCard(company) {
         ? `<img src="${escapeHtml(company.logo)}" alt="${escapeHtml(company.name)} logo" class="builder-card__logo">`
         : `<div class="builder-card__logo-placeholder">${escapeHtml(company.name.charAt(0))}</div>`;
 
+    // Mission area tags
     const missionTags = (company.missionAreas || []).slice(0, 2)
         .map(m => `<span class="builder-tag mission">${escapeHtml(m)}</span>`)
         .join('');
 
-    const techTags = (company.ctas || []).slice(0, 1)
-        .map(c => `<span class="builder-tag tech">${escapeHtml(c)}</span>`)
-        .join('');
+    // Warfare domain tag
+    const domainTag = company.warfareDomain
+        ? `<span class="builder-tag domain">${escapeHtml(company.warfareDomain)}</span>`
+        : '';
 
+    // TRL badge if available
+    const trlBadge = company.trlLevel
+        ? `<span class="builder-tag trl">TRL ${escapeHtml(company.trlLevel)}</span>`
+        : '';
+
+    // Cohort tag
     const cohortTag = company.cohort
         ? `<span class="builder-tag cohort">${escapeHtml(company.cohort)}</span>`
         : '';
 
+    // Use displayName if available, otherwise name
+    const displayName = company.displayName || company.name;
+
     return `
         <article class="builder-card" data-id="${escapeHtml(company.id)}" tabindex="0" role="button" aria-label="View ${escapeHtml(company.name)} details">
             <div class="builder-card__upvote">
-                <button class="builder-card__upvote-btn" onclick="event.stopPropagation(); this.classList.toggle('upvoted');" aria-label="Upvote ${escapeHtml(company.name)}">
-                    <span class="rocket-icon">🚀</span>
+                <button class="builder-card__upvote-btn" onclick="event.stopPropagation(); this.classList.toggle('upvoted');" aria-label="Track ${escapeHtml(company.name)}">
+                    <span class="track-icon">▲</span>
                 </button>
                 <span class="builder-card__upvote-count">${upvoteCount}</span>
             </div>
             ${logoHtml}
             <div class="builder-card__content">
-                <h3 class="builder-card__name">${escapeHtml(company.name)}</h3>
+                <h3 class="builder-card__name">${escapeHtml(displayName)}</h3>
                 <p class="builder-card__tagline">${escapeHtml(company.tagline)}</p>
                 <div class="builder-card__tags">
                     ${missionTags}
-                    ${techTags}
+                    ${domainTag}
+                    ${trlBadge}
                     ${cohortTag}
                 </div>
             </div>
@@ -71,13 +83,15 @@ export function renderBuilderModal(company) {
            </a>`
         : '';
 
+    // Mission area tags
     const missionTags = (company.missionAreas || [])
         .map(m => `<span class="builder-tag mission">${escapeHtml(m)}</span>`)
         .join('');
 
-    const techTags = (company.ctas || [])
-        .map(c => `<span class="builder-tag tech">${escapeHtml(c)}</span>`)
-        .join('');
+    // Domain tag
+    const domainTag = company.warfareDomain
+        ? `<span class="builder-tag domain">${escapeHtml(company.warfareDomain)}</span>`
+        : '';
 
     // Build sections
     const descriptionSection = `
@@ -94,87 +108,120 @@ export function renderBuilderModal(company) {
         </div>
     ` : '';
 
-    const techSection = techTags ? `
+    const domainSection = domainTag ? `
         <div class="modal-section">
-            <h4 class="modal-section-title">Technology Areas</h4>
-            <div class="modal-tags">${techTags}</div>
+            <h4 class="modal-section-title">Warfare Domain</h4>
+            <div class="modal-tags">${domainTag}</div>
         </div>
     ` : '';
 
-    // CTA box - always shown to drive logins
+    // Company details section
+    const detailItems = [];
+    if (company.trlLevel) detailItems.push(`<span class="modal-detail-item"><strong>TRL:</strong> ${escapeHtml(company.trlLevel)}</span>`);
+    if (company.fundingStage) detailItems.push(`<span class="modal-detail-item"><strong>Stage:</strong> ${escapeHtml(company.fundingStage)}</span>`);
+    if (company.teamSize) detailItems.push(`<span class="modal-detail-item"><strong>Team:</strong> ${escapeHtml(company.teamSize)}</span>`);
+    if (company.location) detailItems.push(`<span class="modal-detail-item"><strong>Location:</strong> ${escapeHtml(company.location)}</span>`);
+
+    const detailsSection = detailItems.length > 0 ? `
+        <div class="modal-section">
+            <h4 class="modal-section-title">Details</h4>
+            <div class="modal-details">${detailItems.join('')}</div>
+        </div>
+    ` : '';
+
+    // Video/Pitch links
+    const linksHtml = [];
+    if (company.videoUrl) {
+        linksHtml.push(`<a href="${escapeHtml(company.videoUrl)}" target="_blank" rel="noopener" class="modal-link">Watch Video</a>`);
+    }
+    if (company.pitchUrl) {
+        linksHtml.push(`<a href="${escapeHtml(company.pitchUrl)}" target="_blank" rel="noopener" class="modal-link">View Pitch</a>`);
+    }
+    const linksSection = linksHtml.length > 0 ? `
+        <div class="modal-section">
+            <h4 class="modal-section-title">Resources</h4>
+            <div class="modal-links">${linksHtml.join('')}</div>
+        </div>
+    ` : '';
+
+    // Access control box - operational language per C2UX
     const ctaBox = `
         <div class="modal-cta-box">
-            <div class="modal-cta-box__icon">🔒</div>
-            <h4 class="modal-cta-box__title">Want to learn more?</h4>
+            <h4 class="modal-cta-box__title">Restricted Access</h4>
             <p class="modal-cta-box__text">
-                Login to access pitch decks, team details, and connect directly with founders.
+                Authentication required for pitch materials, team roster, and direct coordination.
             </p>
             <div class="modal-cta-box__actions">
-                <a href="https://app.mergecombinator.com/login" class="modal-cta-btn modal-cta-btn--primary">
-                    Login to Access
+                <a href="/auth/login" class="modal-cta-btn modal-cta-btn--primary">
+                    Authenticate
                 </a>
                 ${websiteUrl ? `
                     <a href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener" class="modal-cta-btn modal-cta-btn--secondary">
-                        Visit Website →
+                        External Site
                     </a>
                 ` : ''}
             </div>
         </div>
     `;
 
+    // Use displayName if available
+    const displayName = company.displayName || company.name;
+
     return `
         <div class="modal-header">
             ${logoHtml}
             <div class="modal-title-section">
-                <h2 class="modal-title">${escapeHtml(company.name)}</h2>
+                <h2 class="modal-title">${escapeHtml(displayName)}</h2>
                 <div class="modal-cohort">${escapeHtml(company.cohort || '')}</div>
                 ${websiteHtml}
             </div>
         </div>
         <div class="modal-body">
             ${descriptionSection}
+            ${detailsSection}
             ${missionSection}
-            ${techSection}
+            ${domainSection}
+            ${linksSection}
         </div>
         ${ctaBox}
     `;
 }
 
 /**
- * Render empty state
+ * Render empty state - operational language per C2UX
  * @returns {string} - HTML string
  */
 export function renderEmptyState() {
     return `
         <div class="empty-state">
-            <h3>No matching builders</h3>
-            <p>Modify filters or clear search to see results.</p>
+            <h3>No results</h3>
+            <p>Adjust filter parameters.</p>
         </div>
     `;
 }
 
 /**
- * Render loading state
+ * Render loading state - operational language per C2UX
  * @returns {string} - HTML string
  */
 export function renderLoadingState() {
     return `
         <div class="loading-container">
             <div class="loading-spinner"></div>
-            <p>Loading builders...</p>
+            <p>Retrieving data...</p>
         </div>
     `;
 }
 
 /**
- * Render error state
+ * Render error state - operational language per C2UX
  * @param {string} message - Error message
  * @returns {string} - HTML string
  */
 export function renderErrorState(message) {
     return `
         <div class="empty-state">
-            <h3>Failed to load builders</h3>
+            <h3>Data unavailable</h3>
             <p>${escapeHtml(message)}</p>
         </div>
     `;
