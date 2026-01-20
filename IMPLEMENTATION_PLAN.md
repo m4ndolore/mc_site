@@ -9,6 +9,15 @@
 
 ## Completed
 
+### Bug Fixes
+
+#### Cohorts Stat Showing Zero on /builders Page (2026-01-20)
+- [x] Issue: Cohorts stat displayed 0 instead of actual count
+- [x] Root cause: `updateStats()` in `js/builders/index.js` was not passing `cohorts` property to display function
+- [x] Fix: Added `cohorts: filterOptions.cohorts?.length || 0` to the `updateStats()` call
+- [x] Note: Data extraction was already working correctly in `extractFilterOptions()` from `api.js`
+- [x] Verification: Cohorts stat now displays correct count matching available filter options
+
 ### Exponential Backoff for Rate Limiting (2026-01-20)
 - [x] Added `fetchWithRetry()` function in `js/builders/api.js` with configurable retry logic
 - [x] Exponential backoff: base delay * 2^attempt with 25% jitter to prevent thundering herd
