@@ -10,6 +10,11 @@ let authCacheTimestamp = null;
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
 /**
+ * Flag to prevent multiple simultaneous redirects
+ */
+let redirectInProgress = false;
+
+/**
  * Check if user is authenticated
  * @param {boolean} forceRefresh - Skip cache and fetch fresh
  * @returns {Promise<{authenticated: boolean, user: Object|null}>}
@@ -99,5 +104,68 @@ export function getLogoutUrl(returnTo = '/') {
  * @param {string} returnTo - Path to return to after login
  */
 export function redirectToLogin(returnTo = window.location.pathname) {
+    // Prevent multiple redirects
+    if (redirectInProgress) {
+        return;
+    }
+    redirectInProgress = true;
     window.location.href = getLoginUrl(returnTo);
+}
+
+/**
+ * Handle API response errors
+ * Checks for 401/403 and redirects to login if needed
+ *
+ * @param {Response} response - Fetch Response object
+ * @param {Object} options - Options
+ * @param {boolean} options.redirectOn401 - Redirect to login on 401 (default: true)
+ * @param {boolean} options.redirectOn403 - Redirect to login on 403 (default: false)
+ * @returns {Response} - The original response if no redirect needed
+ * @throws {Error} - If response is not ok and not handled
+ */
+export function handleApiResponse(response, options = {}) {
+    const { redirectOn401 = true, redirectOn403 = false } = options;
+
+    if (response.ok) {
+        return response;
+    }
+
+    // Handle 401 Unauthorized
+    if (response.status === 401 && redirectOn401) {
+        console.log('[Auth] 401 response - session expired or unauthorized');
+        clearAuthCache();
+        redirectToLogin();
+        // Throw to prevent further processing
+        throw new Error('Session expired. Redirecting to login.');
+    }
+
+    // Handle 403 Forbidden
+    if (response.status === 403 && redirectOn403) {
+        console.log('[Auth] 403 response - access denied');
+        clearAuthCache();
+        redirectToLogin();
+        throw new Error('Access denied. Redirecting to login.');
+    }
+
+    return response;
+}
+
+/**
+ * Wrapper for fetch that handles auth errors
+ * Use this for API calls that require authentication
+ *
+ * @param {string} url - URL to fetch
+ * @param {RequestInit} init - Fetch init options
+ * @param {Object} authOptions - Auth handling options
+ * @param {boolean} authOptions.redirectOn401 - Redirect on 401 (default: true)
+ * @param {boolean} authOptions.redirectOn403 - Redirect on 403 (default: false)
+ * @returns {Promise<Response>}
+ */
+export async function authFetch(url, init = {}, authOptions = {}) {
+    const response = await fetch(url, {
+        ...init,
+        credentials: 'same-origin'
+    });
+
+    return handleApiResponse(response, authOptions);
 }
