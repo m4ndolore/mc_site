@@ -133,20 +133,25 @@ export function renderBuilderModal(company, options = {}) {
         </div>
     ` : '';
 
-    // Video/Pitch links
-    const linksHtml = [];
-    if (company.videoUrl) {
-        linksHtml.push(`<a href="${escapeHtml(company.videoUrl)}" target="_blank" rel="noopener" class="modal-link">Watch Video</a>`);
+    // Video/Pitch links - private content, only shown to authenticated users
+    let linksSection = '';
+    if (authenticated && user) {
+        const linksHtml = [];
+        if (company.videoUrl) {
+            linksHtml.push(`<a href="${escapeHtml(company.videoUrl)}" target="_blank" rel="noopener" class="modal-link">Watch Video</a>`);
+        }
+        if (company.pitchUrl) {
+            linksHtml.push(`<a href="${escapeHtml(company.pitchUrl)}" target="_blank" rel="noopener" class="modal-link">View Pitch</a>`);
+        }
+        if (linksHtml.length > 0) {
+            linksSection = `
+                <div class="modal-section">
+                    <h4 class="modal-section-title">Resources</h4>
+                    <div class="modal-links">${linksHtml.join('')}</div>
+                </div>
+            `;
+        }
     }
-    if (company.pitchUrl) {
-        linksHtml.push(`<a href="${escapeHtml(company.pitchUrl)}" target="_blank" rel="noopener" class="modal-link">View Pitch</a>`);
-    }
-    const linksSection = linksHtml.length > 0 ? `
-        <div class="modal-section">
-            <h4 class="modal-section-title">Resources</h4>
-            <div class="modal-links">${linksHtml.join('')}</div>
-        </div>
-    ` : '';
 
     // Access control box - operational language per C2UX
     // Show different content based on authentication status
