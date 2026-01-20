@@ -2,6 +2,8 @@
 // API client for fetching builder data from SigmaBlox public API
 // Supports: 1) Live API, 2) Build-time seeded static JSON, 3) Mock data fallback
 
+import { handleApiResponse, clearAuthCache, redirectToLogin } from './auth.js';
+
 /**
  * Path to build-time seeded company data
  */
@@ -315,6 +317,38 @@ export async function fetchCompanyById(id) {
 
     if (!response.ok) {
         throw new Error(`Failed to fetch company: ${response.status}`);
+    }
+
+    return response.json();
+}
+
+/**
+ * Fetch from private API endpoint (requires authentication)
+ * Handles 401/403 responses by redirecting to login
+ *
+ * @param {string} endpoint - API endpoint path (e.g., '/api/members')
+ * @param {Object} options - Fetch options
+ * @returns {Promise<Object>}
+ */
+export async function fetchPrivateApi(endpoint, options = {}) {
+    const apiBase = getApiBase();
+    const url = `${apiBase}${endpoint}`;
+
+    const response = await fetch(url, {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+            'Accept': 'application/json',
+            ...options.headers
+        },
+        ...options
+    });
+
+    // Handle auth errors - redirect to login on 401/403
+    handleApiResponse(response, { redirectOn401: true, redirectOn403: true });
+
+    if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
     }
 
     return response.json();

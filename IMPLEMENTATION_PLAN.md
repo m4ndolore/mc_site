@@ -45,6 +45,14 @@
 - [x] Build completes without warnings
 - [x] Git tag `0.0.1` created
 
+### Error Handling: 401/403 Redirect to Login (2026-01-20)
+- [x] Added `handleApiResponse()` function in `js/builders/auth.js` for centralized error handling
+- [x] Added `authFetch()` wrapper for authenticated API calls with automatic 401/403 handling
+- [x] Auth cache invalidation on 401 response via `clearAuthCache()`
+- [x] Redirect prevention flag to avoid multiple simultaneous redirects
+- [x] Added `fetchPrivateApi()` in `js/builders/api.js` for private endpoint calls with auth error handling
+- [x] Return URL preserved in redirect for seamless post-login navigation
+
 ### C2UX Language Compliance (2026-01-20)
 - [x] Removed marketing subtitle "Discover the next generation of defense innovation" from /builders
 - [x] Updated modal CTA from "Want to learn more?" to "Restricted Access"
@@ -67,8 +75,8 @@ Per spec, additional pages need API integration:
 
 **Note on /about:** The about page currently redirects to homepage. Previous static team content was intentionally removed and backlogged. Team member data requires either private Ghost CMS API access or static content to be provided. This is beyond the public API integration scope.
 
-### Error Handling Improvements (Not Started)
-- [ ] 401/403 response redirects to login
+### Error Handling Improvements (Partial)
+- [x] 401/403 response redirects to login
 - [ ] Rate limiting handled with exponential backoff
 - [x] No API keys exposed in client-side code (verified)
 - [x] Network errors show user-friendly message (C2UX compliant)
