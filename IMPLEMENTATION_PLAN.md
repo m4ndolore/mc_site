@@ -5,9 +5,15 @@
 ## Status
 
 **Last Updated:** 2026-01-20
-**Current Phase:** Phase 1 - Public API Integration
+**Current Phase:** Phase 2 - Build-time Seeding
 
 ## Completed
+
+### Build-time Seeding (2026-01-20)
+- [x] Added `scripts/seed-companies.mjs` for build-time data fetching
+- [x] Updated `js/builders/api.js` to load from seeded static JSON
+- [x] Added CSS for modal details spacing fix
+- [x] Data fallback chain: Live API → Cached data → Mock data
 
 ### Script Module Fixes (2026-01-20)
 - [x] Added `type="module"` to script tags in 9 HTML files
@@ -37,11 +43,16 @@
 
 **Blocked:** Live API at `api.sigmablox.com` returns `{"error":"Failed to fetch companies"}` - backend data source issue on SigmaBlox side.
 
-### Phase 2: Build-time Seeding (Not Started)
-- [ ] `npm run build` fetches and caches company data
-- [ ] Static JSON written to `public/data/companies.json`
-- [ ] Build fails gracefully if API unreachable (uses cached data)
+### Phase 2: Build-time Seeding (COMPLETED)
+- [x] `npm run build` fetches and caches company data
+- [x] Static JSON written to `public/data/companies.json`
+- [x] Build fails gracefully if API unreachable (uses cached/fallback data)
 - [ ] Cache invalidation strategy documented
+
+**Implementation Notes:**
+- Added `scripts/seed-companies.mjs` build script
+- Script tries API first, falls back to cached data, then fallback mock data
+- Runs automatically before `vite build` via `npm run seed`
 
 ### Phase 3: Private API Integration (Not Started)
 - [ ] VIA OAuth login flow works (`/auth/login`)

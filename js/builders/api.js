@@ -1,114 +1,160 @@
 // js/builders/api.js
 // API client for fetching builder data from SigmaBlox public API
+// Supports: 1) Live API, 2) Build-time seeded static JSON, 3) Mock data fallback
+
+/**
+ * Path to build-time seeded company data
+ */
+const SEEDED_DATA_PATH = '/data/companies.json';
+
+/**
+ * Cached seeded data (loaded once)
+ */
+let seededDataCache = null;
+
+/**
+ * Load build-time seeded data from static JSON
+ * @returns {Promise<Object|null>}
+ */
+async function loadSeededData() {
+    if (seededDataCache !== null) {
+        return seededDataCache;
+    }
+
+    try {
+        const response = await fetch(SEEDED_DATA_PATH);
+        if (!response.ok) {
+            console.log('[Builders] No seeded data available');
+            seededDataCache = false; // Mark as unavailable
+            return null;
+        }
+
+        const data = await response.json();
+        if (data.companies && data.companies.length > 0) {
+            console.log('[Builders] Loaded seeded data:', data.companies.length, 'companies');
+            seededDataCache = data;
+            return data;
+        }
+
+        console.log('[Builders] Seeded data empty');
+        seededDataCache = false;
+        return null;
+    } catch (error) {
+        console.log('[Builders] Failed to load seeded data:', error.message);
+        seededDataCache = false;
+        return null;
+    }
+}
 
 /**
  * Mock data for local development when backend is unavailable
+ * Matches API spec format: id, name, productName, etc.
  */
 const MOCK_DATA = {
     companies: [
         {
-            airtableId: 'company-1',
-            companyName: 'ShieldAI',
+            id: 'mock-001',
+            name: 'ShieldAI',
             productName: 'Hivemind',
-            logoUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&h=200&fit=crop',
-            problemStatement: 'AI-powered autonomous systems for defense',
-            description: 'Building intelligent systems that protect service members and civilians.',
-            website: 'https://shield.ai',
-            missionArea: 'Autonomy',
-            secondaryMissions: ['ISR'],
+            logoUrl: null,
+            location: 'San Diego, CA',
+            missionArea: 'Intel and Battlespace Awareness',
             warfareDomain: 'Air',
-            trlLevel: '7',
-            fundingStage: 'Series C+',
-            cohort: 'Cohort 1'
+            description: 'AI-powered autonomous systems for defense. Building intelligent systems that protect service members and civilians.',
+            trlLevel: 7,
+            fundingStage: 'Series Funding',
+            teamSize: '500+'
         },
         {
-            airtableId: 'company-2',
-            companyName: 'Anduril Industries',
+            id: 'mock-002',
+            name: 'Anduril Industries',
             productName: 'Lattice',
-            logoUrl: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=200&h=200&fit=crop',
-            problemStatement: 'Transforming defense capabilities through technology',
-            description: 'Bringing Silicon Valley innovation to national security.',
-            website: 'https://anduril.com',
-            missionArea: 'Autonomy',
-            secondaryMissions: ['C2'],
-            warfareDomain: 'Multi-Domain',
-            trlLevel: '8',
-            fundingStage: 'Series C+',
-            cohort: 'Cohort 1'
+            logoUrl: null,
+            location: 'Costa Mesa, CA',
+            missionArea: 'Command and Control',
+            warfareDomain: 'Multi',
+            description: 'Transforming defense capabilities through technology. Bringing Silicon Valley innovation to national security.',
+            trlLevel: 8,
+            fundingStage: 'Series Funding',
+            teamSize: '1000+'
         },
         {
-            airtableId: 'company-3',
-            companyName: 'Palantir Technologies',
+            id: 'mock-003',
+            name: 'Palantir Technologies',
             productName: 'Gotham',
-            logoUrl: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=200&h=200&fit=crop',
-            problemStatement: 'Data integration and analytics for defense',
-            description: 'Empowering operators with actionable intelligence.',
-            website: 'https://palantir.com',
-            missionArea: 'Intelligence',
-            secondaryMissions: ['C2'],
+            logoUrl: null,
+            location: 'Denver, CO',
+            missionArea: 'Intel and Battlespace Awareness',
             warfareDomain: 'Cyber',
-            trlLevel: '9',
-            fundingStage: 'Series C+',
-            cohort: 'Cohort 1'
+            description: 'Data integration and analytics for defense. Empowering operators with actionable intelligence.',
+            trlLevel: 9,
+            fundingStage: 'Series Funding',
+            teamSize: '1000+'
         },
         {
-            airtableId: 'company-4',
-            companyName: 'Rebellion Defense',
+            id: 'mock-004',
+            name: 'Rebellion Defense',
             productName: 'Nova',
-            logoUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=200&h=200&fit=crop',
-            problemStatement: 'AI for national security decision-making',
-            description: 'Accelerating mission-critical decisions with AI.',
-            website: 'https://rebelliondefense.com',
-            missionArea: 'Intelligence',
-            secondaryMissions: ['Cyber'],
+            logoUrl: null,
+            location: 'Washington, DC',
+            missionArea: 'Intel and Battlespace Awareness',
             warfareDomain: 'Cyber',
-            trlLevel: '6',
-            fundingStage: 'Series B',
-            cohort: 'Cohort 2'
+            description: 'AI for national security decision-making. Accelerating mission-critical decisions with AI.',
+            trlLevel: 6,
+            fundingStage: 'Series Funding',
+            teamSize: '100-500'
         },
         {
-            airtableId: 'company-5',
-            companyName: 'Hadrian',
+            id: 'mock-005',
+            name: 'Hadrian',
             productName: 'Automated Manufacturing',
-            logoUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=200&h=200&fit=crop',
-            problemStatement: 'Automated manufacturing for defense hardware',
-            description: 'Rebuilding the defense industrial base with autonomy.',
-            website: 'https://hadrian.co',
+            logoUrl: null,
+            location: 'Torrance, CA',
             missionArea: 'Logistics',
-            secondaryMissions: [],
-            warfareDomain: 'Ground',
-            trlLevel: '7',
-            fundingStage: 'Series B',
-            cohort: 'Cohort 2'
+            warfareDomain: 'Land',
+            description: 'Automated manufacturing for defense hardware. Rebuilding the defense industrial base with autonomy.',
+            trlLevel: 7,
+            fundingStage: 'Series Funding',
+            teamSize: '100-500'
         },
         {
-            airtableId: 'company-6',
-            companyName: 'Epirus',
+            id: 'mock-006',
+            name: 'Epirus',
             productName: 'Leonidas',
-            logoUrl: 'https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=200&h=200&fit=crop',
-            problemStatement: 'High-power microwave systems for counter-drone',
-            description: 'Directed energy for counter-drone and electronic warfare.',
-            website: 'https://epirusinc.com',
-            missionArea: 'Fires',
-            secondaryMissions: ['C2'],
+            logoUrl: null,
+            location: 'Torrance, CA',
+            missionArea: 'Joint Fires (Offense)',
             warfareDomain: 'Air',
-            trlLevel: '8',
-            fundingStage: 'Series C+',
-            cohort: 'Cohort 2'
+            description: 'High-power microwave systems for counter-drone. Directed energy for counter-drone and electronic warfare.',
+            trlLevel: 8,
+            fundingStage: 'Series Funding',
+            teamSize: '100-500'
         }
     ],
-    pagination: {
-        total: 6,
-        limit: 100,
-        offset: 0,
-        hasMore: false
-    }
+    total: 6,
+    limit: 50,
+    offset: 0
 };
 
+/**
+ * Mock filter options matching API spec
+ */
 const MOCK_FILTERS = {
-    missionAreas: ['Autonomy', 'C2', 'Cyber', 'Fires', 'Intelligence', 'ISR', 'Logistics', 'Space'],
-    warfareDomains: ['Air', 'Cyber', 'Ground', 'Maritime', 'Multi-Domain', 'Space'],
-    fundingStages: ['Pre-Seed', 'Seed', 'Series A', 'Series B', 'Series C+']
+    missionAreas: [
+        'Administration',
+        'Command and Control',
+        'Comm',
+        'Cyber',
+        'Force Protection (Defense)',
+        'Information',
+        'Intel and Battlespace Awareness',
+        'Joint Fires (Offense)',
+        'Logistics',
+        'Maintenance',
+        'Planning'
+    ],
+    warfareDomains: ['Air', 'Cyber', 'Information', 'Land', 'Multi', 'Sea', 'Space'],
+    fundingStages: ['Angel / Private', 'Bootstrapped', 'Grant Funded', 'Series Funding']
 };
 
 /**
@@ -132,14 +178,21 @@ function shouldUseMockData() {
 
 /**
  * Fetch companies from public API
+ * Priority: 1) Live API (if configured), 2) Seeded static data, 3) Mock data
+ *
+ * API spec: https://api.sigmablox.com/api/public/companies
+ * Returns: { companies: [], total: number, limit: number, offset: number }
+ *
  * @param {Object} options - Query options
  * @param {string} options.missionArea - Filter by mission area
- * @param {string} options.search - Search query
- * @param {number} options.limit - Max results
+ * @param {string} options.warfareDomain - Filter by warfare domain
+ * @param {string} options.fundingStage - Filter by funding stage
+ * @param {number} options.limit - Max results (default 50, max 100)
  * @param {number} options.offset - Pagination offset
- * @returns {Promise<{companies: Array, pagination: Object}>}
+ * @returns {Promise<{companies: Array, total: number, limit: number, offset: number}>}
  */
 export async function fetchCompanies(options = {}) {
+    // In local development, use mock data
     if (shouldUseMockData()) {
         console.warn('[Builders] Using mock data for local development');
         return MOCK_DATA;
@@ -148,8 +201,10 @@ export async function fetchCompanies(options = {}) {
     const apiBase = getApiBase();
     const params = new URLSearchParams();
 
+    // Query parameters per API spec
     if (options.missionArea) params.set('missionArea', options.missionArea);
-    if (options.search) params.set('search', options.search);
+    if (options.warfareDomain) params.set('warfareDomain', options.warfareDomain);
+    if (options.fundingStage) params.set('fundingStage', options.fundingStage);
     if (options.limit) params.set('limit', options.limit.toString());
     if (options.offset) params.set('offset', options.offset.toString());
 
@@ -168,14 +223,35 @@ export async function fetchCompanies(options = {}) {
             throw new Error(`Failed to fetch companies: ${response.status}`);
         }
 
-        return response.json();
+        const data = await response.json();
+
+        // Check for application-level errors (API returns 200 but with error)
+        if (data.error) {
+            throw new Error(`API error: ${data.error}`);
+        }
+
+        return data;
     } catch (error) {
         console.error('[Builders] API error:', error.message);
-        // Fall back to mock data on error in development
+
+        // Try seeded static data first (build-time cached)
+        const seededData = await loadSeededData();
+        if (seededData && seededData.companies && seededData.companies.length > 0) {
+            console.log('[Builders] Falling back to seeded data');
+            return {
+                companies: seededData.companies,
+                total: seededData.total || seededData.companies.length,
+                limit: seededData.limit || 100,
+                offset: seededData.offset || 0
+            };
+        }
+
+        // Fall back to mock data on localhost
         if (location.hostname === 'localhost') {
             console.warn('[Builders] Falling back to mock data');
             return MOCK_DATA;
         }
+
         throw error;
     }
 }
@@ -245,11 +321,19 @@ export async function fetchCompanyById(id) {
 
 /**
  * Normalize company data from API to internal format
- * This maps API field names to the format expected by components
+ * Handles both API format (id, name) and legacy format (airtableId, companyName)
+ *
+ * API spec fields: id, name, productName, website, logoUrl, location,
+ * missionArea, warfareDomain, description, trlLevel, fundingStage, teamSize
+ *
  * @param {Object} company - Raw company from API
  * @returns {Object} - Normalized company object
  */
 export function normalizeCompany(company) {
+    // Handle both API format (id, name) and legacy format (airtableId, companyName)
+    const companyId = company.id || company.airtableId || company._id;
+    const companyName = company.name || company.companyName || 'Unknown';
+
     // Build mission areas array from primary + secondary
     const missionAreas = [];
     if (company.missionArea) missionAreas.push(company.missionArea);
@@ -259,22 +343,22 @@ export function normalizeCompany(company) {
 
     // Build display name (company: product if both exist)
     const displayName = company.productName
-        ? `${company.companyName}: ${company.productName}`
-        : company.companyName;
+        ? `${companyName}: ${company.productName}`
+        : companyName;
 
     return {
-        id: company.airtableId || company._id,
-        name: company.companyName || 'Unknown',
+        id: companyId,
+        name: companyName,
         productName: company.productName || '',
         displayName,
         logo: company.logoUrl || null,
-        tagline: company.problemStatement || company.description || '',
+        tagline: company.description || company.problemStatement || '',
         description: company.description || company.problemStatement || '',
         website: company.website || '',
         missionAreas,
         primaryMission: company.missionArea || '',
         warfareDomain: company.warfareDomain || '',
-        trlLevel: company.trlLevel || '',
+        trlLevel: company.trlLevel != null ? String(company.trlLevel) : '',
         fundingStage: company.fundingStage || '',
         teamSize: company.teamSize || '',
         videoUrl: company.videoLink || null,

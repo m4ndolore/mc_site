@@ -1,7 +1,12 @@
 // js/builders/index.js
 // Main entry point for builder directory
 
-import { fetchCohorts, extractCompanies, extractFilterOptions } from './api.js';
+import {
+    fetchCompanies,
+    fetchFilterOptions,
+    extractCompanies,
+    extractFilterOptions
+} from './api.js';
 import {
     renderBuilderCard,
     renderBuilderModal,
@@ -37,23 +42,32 @@ async function init() {
     if (grid) grid.innerHTML = renderLoadingState();
 
     try {
-        // Fetch data
-        const data = await fetchCohorts();
-        console.log('[Builders] Fetched cohorts:', data);
+        // Fetch companies from API
+        const data = await fetchCompanies({ limit: 100 });
+        console.log('[Builders] Fetched data:', data);
 
-        // Extract companies
-        allCompanies = extractCompanies(data.cohorts || data);
-        console.log('[Builders] Extracted companies:', allCompanies.length);
+        // Extract and normalize companies
+        allCompanies = extractCompanies(data);
+        console.log('[Builders] Processed companies:', allCompanies.length);
 
-        // Extract filter options
-        const filterOptions = extractFilterOptions(allCompanies);
+        // Try to get filter options from API, fall back to extracting from data
+        let filterOptions;
+        try {
+            filterOptions = await fetchFilterOptions();
+            console.log('[Builders] Fetched filter options from API');
+        } catch (filterError) {
+            console.warn('[Builders] Filter API unavailable, extracting from data');
+            filterOptions = extractFilterOptions(allCompanies);
+        }
 
         // Update stats
         updateStats({
-            builders: allCompanies.length,
-            missionAreas: filterOptions.missionAreas.length,
-            ctas: filterOptions.ctas.length,
-            cohorts: filterOptions.cohorts.length
+            builders: data.total || allCompanies.length,
+            missionAreas: filterOptions.missionAreas?.length || 0,
+            warfareDomains: filterOptions.warfareDomains?.length || 0,
+            fundingStages: filterOptions.fundingStages?.length || 0,
+            // Legacy support
+            ctas: filterOptions.warfareDomains?.length || filterOptions.ctas?.length || 0
         });
 
         // Populate filter dropdowns
@@ -145,8 +159,15 @@ function setupEventListeners() {
         });
     }
 
-    // Filter dropdowns
-    ['filter-mission', 'filter-tech', 'filter-cohort'].forEach(id => {
+    // Filter dropdowns - support both new and legacy IDs
+    const filterIds = [
+        'filter-mission',
+        'filter-domain',
+        'filter-funding',
+        'filter-cohort',
+        'filter-tech'  // Legacy
+    ];
+    filterIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('change', applyFilters);
     });

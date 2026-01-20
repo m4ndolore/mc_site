@@ -1,0 +1,117 @@
+{
+  "companies": [
+    {
+      "airtableId": "company-1",
+      "companyName": "ShieldAI",
+      "productName": "Hivemind",
+      "logoUrl": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&h=200&fit=crop",
+      "problemStatement": "AI-powered autonomous systems for defense",
+      "description": "Building intelligent systems that protect service members and civilians.",
+      "website": "https://shield.ai",
+      "missionArea": "Autonomy",
+      "secondaryMissions": [
+        "ISR"
+      ],
+      "warfareDomain": "Air",
+      "trlLevel": "7",
+      "fundingStage": "Series C+",
+      "cohort": "Cohort 1"
+    },
+    {
+      "airtableId": "company-2",
+      "companyName": "Anduril Industries",
+      "productName": "Lattice",
+      "logoUrl": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=200&h=200&fit=crop",
+      "problemStatement": "Transforming defense capabilities through technology",
+      "description": "Bringing Silicon Valley innovation to national security.",
+      "website": "https://anduril.com",
+      "missionArea": "Autonomy",
+      "secondaryMissions": [
+        "C2"
+      ],
+      "warfareDomain": "Multi-Domain",
+      "trlLevel": "8",
+      "fundingStage": "Series C+",
+      "cohort": "Cohort 1"
+    },
+    {
+      "airtableId": "company-3",
+      "companyName": "Palantir Technologies",
+      "productName": "Gotham",
+      "logoUrl": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=200&h=200&fit=crop",
+      "problemStatement": "Data integration and analytics for defense",
+      "description": "Empowering operators with actionable intelligence.",
+      "website": "https://palantir.com",
+      "missionArea": "Intelligence",
+      "secondaryMissions": [
+        "C2"
+      ],
+      "warfareDomain": "Cyber",
+      "trlLevel": "9",
+      "fundingStage": "Series C+",
+      "cohort": "Cohort 1"
+    },
+    {
+      "airtableId": "company-4",
+      "companyName": "Rebellion Defense",
+      "productName": "Nova",
+      "logoUrl": "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=200&h=200&fit=crop",
+      "problemStatement": "AI for national security decision-making",
+      "description": "Accelerating mission-critical decisions with AI.",
+      "website": "https://rebelliondefense.com",
+      "missionArea": "Intelligence",
+      "secondaryMissions": [
+        "Cyber"
+      ],
+      "warfareDomain": "Cyber",
+      "trlLevel": "6",
+      "fundingStage": "Series B",
+      "cohort": "Cohort 2"
+    },
+    {
+      "airtableId": "company-5",
+      "companyName": "Hadrian",
+      "productName": "Automated Manufacturing",
+      "logoUrl": "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=200&h=200&fit=crop",
+      "problemStatement": "Automated manufacturing for defense hardware",
+      "description": "Rebuilding the defense industrial base with autonomy.",
+      "website": "https://hadrian.co",
+      "missionArea": "Logistics",
+      "secondaryMissions": [],
+      "warfareDomain": "Ground",
+      "trlLevel": "7",
+      "fundingStage": "Series B",
+      "cohort": "Cohort 2"
+    },
+    {
+      "airtableId": "company-6",
+      "companyName": "Epirus",
+      "productName": "Leonidas",
+      "logoUrl": "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?w=200&h=200&fit=crop",
+      "problemStatement": "High-power microwave systems for counter-drone",
+      "description": "Directed energy for counter-drone and electronic warfare.",
+      "website": "https://epirusinc.com",
+      "missionArea": "Fires",
+      "secondaryMissions": [
+        "C2"
+      ],
+      "warfareDomain": "Air",
+      "trlLevel": "8",
+      "fundingStage": "Series C+",
+      "cohort": "Cohort 2"
+    }
+  ],
+  "pagination": {
+    "total": 6,
+    "limit": 100,
+    "offset": 0,
+    "hasMore": false
+  },
+  "filters": null,
+  "metadata": {
+    "fetchedAt": "2026-01-20T17:41:58.529Z",
+    "buildAt": "2026-01-20T17:41:58.530Z",
+    "source": "cache",
+    "apiBase": "https://api.sigmablox.com"
+  }
+}

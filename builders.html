@@ -248,12 +248,15 @@
   <!-- Builders Configuration -->
   <script>
     window.MCBuildersConfig = {
-      // API endpoint for public companies data
-      apiBase: location.hostname === 'localhost'
-        ? 'https://api.sigmablox.com'  // Can use local proxy if needed
-        : 'https://api.sigmablox.com',
-      // Set to true to use mock data (for local dev when API is unavailable)
-      useMockData: location.hostname === 'localhost'
+      // SigmaBlox Public API endpoint
+      // See: /docs/API-INTEGRATION-GUIDE.md
+      apiBase: 'https://api.sigmablox.com',
+
+      // Data loading strategy:
+      // 1. Try live API first
+      // 2. Fall back to /data/companies.json (seeded at build time)
+      // 3. Fall back to mock data (localhost only)
+      useMockData: false
     };
   </script>
 
