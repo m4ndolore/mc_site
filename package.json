@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "seed": "node scripts/seed-companies.mjs",
+    "build": "npm run seed && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

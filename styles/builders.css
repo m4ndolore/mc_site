@@ -607,6 +607,22 @@
     gap: 8px;
 }
 
+.modal-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.modal-detail-item {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+}
+
+.modal-detail-item strong {
+    color: var(--text-primary);
+    margin-right: 4px;
+}
+
 /* CTA Box */
 .modal-cta-box {
     margin: 0 32px 32px;
