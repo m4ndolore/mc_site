@@ -9,6 +9,11 @@
 
 ## Completed
 
+### Script Module Fixes (2026-01-20)
+- [x] Added `type="module"` to script tags in 9 HTML files
+- [x] Build completes without warnings
+- [x] Git tag `0.0.1` created
+
 ### C2UX Language Compliance (2026-01-20)
 - [x] Removed marketing subtitle "Discover the next generation of defense innovation" from /builders
 - [x] Updated modal CTA from "Want to learn more?" to "Restricted Access"
@@ -53,11 +58,10 @@
 - **Status:** Endpoints are network-reachable but backend data source appears unavailable
 - **Workaround:** Mock data fallback is active for local development
 
-### Script Module Warnings
+### ~~Script Module Warnings~~ (RESOLVED)
 - **Issue:** Vite warns about scripts without `type="module"` attribute
-- **Files affected:** `script.js`, `js/scroll-reveal.js` across multiple HTML files
-- **Impact:** Non-blocking, build succeeds
-- **Fix:** Add `type="module"` to script tags (low priority)
+- **Resolution:** Added `type="module"` to all script tags in commit `ac00516`
+- **Files fixed:** 404.html, knowledge.html, merch.html, opportunities.html, privacy.html, security.html, terms.html, builders.html, index.html
 
 ## Technical Notes
 
