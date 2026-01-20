@@ -21,10 +21,12 @@ import {
     updateStats,
     updateResultsCount
 } from './filters.js';
+import { checkAuth } from './auth.js';
 
 // State
 let allCompanies = [];
 let currentCompany = null;
+let authState = { authenticated: false, user: null };
 
 // DOM Elements
 const grid = document.getElementById('builders-grid');
@@ -40,6 +42,14 @@ async function init() {
 
     // Show loading state
     if (grid) grid.innerHTML = renderLoadingState();
+
+    // Check auth status in parallel with data fetch
+    checkAuth().then(state => {
+        authState = state;
+        console.log('[Builders] Auth state:', authState.authenticated ? 'authenticated' : 'anonymous');
+    }).catch(err => {
+        console.warn('[Builders] Auth check failed:', err.message);
+    });
 
     try {
         // Fetch companies from API
@@ -131,7 +141,13 @@ function openModal(companyId) {
     currentCompany = allCompanies.find(c => c.id === companyId);
     if (!currentCompany) return;
 
-    if (modalBody) modalBody.innerHTML = renderBuilderModal(currentCompany);
+    // Pass auth state to modal renderer
+    if (modalBody) {
+        modalBody.innerHTML = renderBuilderModal(currentCompany, {
+            authenticated: authState.authenticated,
+            user: authState.user
+        });
+    }
     if (modal) modal.classList.add('active');
     document.body.style.overflow = 'hidden';
 }

@@ -63,9 +63,13 @@ export function renderBuilderCard(company) {
 /**
  * Render the modal content for a company
  * @param {Object} company - Company data
+ * @param {Object} options - Render options
+ * @param {boolean} options.authenticated - Whether user is authenticated
+ * @param {Object} options.user - Current user info (if authenticated)
  * @returns {string} - HTML string
  */
-export function renderBuilderModal(company) {
+export function renderBuilderModal(company, options = {}) {
+    const { authenticated = false, user = null } = options;
     const logoHtml = company.logo
         ? `<img src="${escapeHtml(company.logo)}" alt="${escapeHtml(company.name)} logo" class="modal-logo">`
         : `<div class="modal-logo" style="display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;background:linear-gradient(135deg,#667eea,#764ba2);">${escapeHtml(company.name.charAt(0))}</div>`;
@@ -145,24 +149,54 @@ export function renderBuilderModal(company) {
     ` : '';
 
     // Access control box - operational language per C2UX
-    const ctaBox = `
-        <div class="modal-cta-box">
-            <h4 class="modal-cta-box__title">Restricted Access</h4>
-            <p class="modal-cta-box__text">
-                Authentication required for pitch materials, team roster, and direct coordination.
-            </p>
-            <div class="modal-cta-box__actions">
-                <a href="/auth/login" class="modal-cta-btn modal-cta-btn--primary">
-                    Authenticate
-                </a>
-                ${websiteUrl ? `
-                    <a href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener" class="modal-cta-btn modal-cta-btn--secondary">
-                        External Site
+    // Show different content based on authentication status
+    let ctaBox;
+    if (authenticated && user) {
+        // Authenticated user: show contact/coordination options
+        ctaBox = `
+            <div class="modal-cta-box modal-cta-box--authenticated">
+                <h4 class="modal-cta-box__title">Authorized Access</h4>
+                <p class="modal-cta-box__text">
+                    Authenticated as ${escapeHtml(user.email || user.name || 'user')}. Contact and coordination available.
+                </p>
+                <div class="modal-cta-box__actions">
+                    ${company.founders ? `
+                        <button class="modal-cta-btn modal-cta-btn--primary" onclick="navigator.clipboard.writeText('${escapeHtml(company.founders)}')">
+                            Copy Contact
+                        </button>
+                    ` : ''}
+                    ${websiteUrl ? `
+                        <a href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener" class="modal-cta-btn modal-cta-btn--secondary">
+                            External Site
+                        </a>
+                    ` : ''}
+                    <a href="/auth/logout?return_to=/builders" class="modal-cta-btn modal-cta-btn--tertiary">
+                        Sign Out
                     </a>
-                ` : ''}
+                </div>
             </div>
-        </div>
-    `;
+        `;
+    } else {
+        // Not authenticated: show login prompt
+        ctaBox = `
+            <div class="modal-cta-box">
+                <h4 class="modal-cta-box__title">Restricted Access</h4>
+                <p class="modal-cta-box__text">
+                    Authentication required for pitch materials, team roster, and direct coordination.
+                </p>
+                <div class="modal-cta-box__actions">
+                    <a href="/auth/login?return_to=${encodeURIComponent(window.location.pathname)}" class="modal-cta-btn modal-cta-btn--primary">
+                        Authenticate
+                    </a>
+                    ${websiteUrl ? `
+                        <a href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener" class="modal-cta-btn modal-cta-btn--secondary">
+                            External Site
+                        </a>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }
 
     // Use displayName if available
     const displayName = company.displayName || company.name;

@@ -692,6 +692,28 @@
     border-color: #9ca3af;
 }
 
+.modal-cta-btn--tertiary {
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    padding: 8px 16px;
+}
+
+.modal-cta-btn--tertiary:hover {
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.04);
+}
+
+/* Authenticated state styling */
+.modal-cta-box--authenticated {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(59, 130, 246, 0.08));
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.modal-cta-box--authenticated .modal-cta-box__title {
+    color: #059669;
+}
+
 /* ============================================
    RESPONSIVE
    ============================================ */

@@ -5,9 +5,16 @@
 ## Status
 
 **Last Updated:** 2026-01-20
-**Current Phase:** Phase 2 - Build-time Seeding
+**Current Phase:** Phase 3 - Private API Integration (In Progress)
 
 ## Completed
+
+### Phase 3 Client-side Auth Integration (2026-01-20)
+- [x] Created `js/builders/auth.js` - Client-side auth service
+- [x] Auth service checks `/auth/me` endpoint for session status
+- [x] Modal content changes based on authentication state
+- [x] Return URL preserved in login link for seamless redirect
+- [x] CSS styling for authenticated state modal
 
 ### Build-time Seeding (2026-01-20)
 - [x] Added `scripts/seed-companies.mjs` for build-time data fetching
@@ -62,11 +69,13 @@
 - **Manual invalidation**: Delete `public/data/companies.json` before build to force fresh fetch
 - **Graceful degradation**: If API fails, cached data serves until next successful fetch
 
-### Phase 3: Private API Integration (Not Started)
-- [ ] VIA OAuth login flow works (`/auth/login`)
-- [ ] Authenticated requests include Bearer token
-- [ ] Private content only shown to logged-in users
-- [ ] Session persists across page navigation
+### Phase 3: Private API Integration (In Progress)
+- [x] VIA OAuth login flow works (`/auth/login`) - Cloudflare Worker handles OAuth PKCE flow
+- [x] Authenticated requests include Bearer token - Token stored in encrypted session cookie
+- [ ] Private content only shown to logged-in users (in progress)
+- [x] Session persists across page navigation - 7-day encrypted cookie
+
+**Note:** Auth endpoints require Cloudflare Worker (production/staging). On localhost, auth check returns 404 and falls back to unauthenticated state gracefully.
 
 ## Discovered Issues
 
