@@ -5,7 +5,7 @@
 ## Status
 
 **Last Updated:** 2026-01-20
-**Current Phase:** Phase 3 - Private API Integration (COMPLETED)
+**Current Phase:** Phase 4 - Additional Pages Seeding (Not Started)
 
 ## Completed
 
@@ -42,25 +42,39 @@
 
 ## Prioritized Tasks
 
-### Phase 1: Public API Integration (In Progress)
+### Phase 4: Additional Pages Seeding (Not Started)
+Per spec, additional pages need API integration:
+- [ ] `/portfolio` - Cohort showcase from public API
+- [ ] `/about` - Team members (private API or static)
+- [ ] `/` (homepage) - Featured companies, stats from public API
+
+### Error Handling Improvements (Not Started)
+- [ ] 401/403 response redirects to login
+- [ ] Rate limiting handled with exponential backoff
+- [x] No API keys exposed in client-side code (verified)
+- [x] Network errors show user-friendly message (C2UX compliant)
+
+### Phase 5: Real-time Updates (Not Started)
+- [ ] WebSocket or polling for live data updates
+
+---
+
+## Completed Phases
+
+### Phase 1: Public API Integration (COMPLETED)
 - [x] Companies load on `/builders` page (mock data working, live API returns errors)
 - [x] Filters populate from data
 - [x] Company modals show full detail
 - [x] Graceful fallback when API unavailable (mock data fallback implemented)
 - [x] API base URL configurable via `window.MCBuildersConfig.apiBase`
 
-**Blocked:** Live API at `api.sigmablox.com` returns `{"error":"Failed to fetch companies"}` - backend data source issue on SigmaBlox side.
+**Note:** Live API at `api.sigmablox.com` returns `{"error":"Failed to fetch companies"}` - backend data source issue on SigmaBlox side. Workaround: seeded/mock data fallback is active.
 
 ### Phase 2: Build-time Seeding (COMPLETED)
 - [x] `npm run build` fetches and caches company data
 - [x] Static JSON written to `public/data/companies.json`
 - [x] Build fails gracefully if API unreachable (uses cached/fallback data)
 - [x] Cache invalidation strategy documented
-
-**Implementation Notes:**
-- Added `scripts/seed-companies.mjs` build script
-- Script tries API first, falls back to cached data, then fallback mock data
-- Runs automatically before `vite build` via `npm run seed`
 
 **Cache Invalidation Strategy:**
 - **Automatic invalidation**: Every `npm run build` attempts fresh API fetch
@@ -75,12 +89,6 @@
 - [x] Authenticated requests include Bearer token - Token stored in encrypted session cookie
 - [x] Private content only shown to logged-in users - Video/pitch URLs restricted to authenticated users
 - [x] Session persists across page navigation - 7-day encrypted cookie
-
-**Implementation Notes:**
-- `videoUrl` and `pitchUrl` links in the modal Resources section are now conditionally rendered based on auth state
-- Unauthenticated users see "Restricted Access" CTA with Authenticate button
-- Authenticated users see "Authorized Access" CTA with Copy Contact and Resources section
-- Auth check gracefully falls back to unauthenticated state on localhost (404 expected)
 
 **Note:** Auth endpoints require Cloudflare Worker (production/staging). On localhost, auth check returns 404 and falls back to unauthenticated state gracefully.
 
