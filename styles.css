@@ -3228,6 +3228,27 @@ h4, .h4 {
   border-color: var(--blue);
 }
 
+.portfolio-filters__count {
+  text-align: center;
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-medium);
+}
+
+.portfolio-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--gray-medium);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 /* Featured Case Study */
 .featured-case {
   background: var(--offwhite);

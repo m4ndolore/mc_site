@@ -5,9 +5,18 @@
 ## Status
 
 **Last Updated:** 2026-01-20
-**Current Phase:** Phase 4 - Additional Pages Seeding (Not Started)
+**Current Phase:** Phase 4 - Additional Pages Seeding (In Progress)
 
 ## Completed
+
+### Phase 4 Portfolio API Integration (2026-01-20)
+- [x] Created `js/portfolio/index.js` - Client-side module for loading seeded company data
+- [x] Added filter functionality with category mapping (autonomy, isr, logistics, cyber, c2)
+- [x] Updated `portfolio.html` to include portfolio module script
+- [x] Added `portfolio-filters__count` CSS styling for results counter
+- [x] Portfolio page dynamically renders companies from `/data/companies.json`
+- [x] Filter buttons show/hide companies by mission area category
+- [x] Results count updates dynamically ("X of Y records")
 
 ### Phase 3 Client-side Auth Integration (2026-01-20)
 - [x] Created `js/builders/auth.js` - Client-side auth service
@@ -42,9 +51,9 @@
 
 ## Prioritized Tasks
 
-### Phase 4: Additional Pages Seeding (Not Started)
+### Phase 4: Additional Pages Seeding (In Progress)
 Per spec, additional pages need API integration:
-- [ ] `/portfolio` - Cohort showcase from public API
+- [x] `/portfolio` - Cohort showcase from public API (now uses seeded data)
 - [ ] `/about` - Team members (private API or static)
 - [ ] `/` (homepage) - Featured companies, stats from public API
 
