@@ -5,7 +5,7 @@
 ## Status
 
 **Last Updated:** 2026-01-20
-**Current Phase:** Phase 3 - Private API Integration (In Progress)
+**Current Phase:** Phase 3 - Private API Integration (COMPLETED)
 
 ## Completed
 
@@ -15,6 +15,7 @@
 - [x] Modal content changes based on authentication state
 - [x] Return URL preserved in login link for seamless redirect
 - [x] CSS styling for authenticated state modal
+- [x] Private content (videoUrl, pitchUrl) restricted to authenticated users only
 
 ### Build-time Seeding (2026-01-20)
 - [x] Added `scripts/seed-companies.mjs` for build-time data fetching
@@ -69,11 +70,17 @@
 - **Manual invalidation**: Delete `public/data/companies.json` before build to force fresh fetch
 - **Graceful degradation**: If API fails, cached data serves until next successful fetch
 
-### Phase 3: Private API Integration (In Progress)
+### Phase 3: Private API Integration (COMPLETED)
 - [x] VIA OAuth login flow works (`/auth/login`) - Cloudflare Worker handles OAuth PKCE flow
 - [x] Authenticated requests include Bearer token - Token stored in encrypted session cookie
-- [ ] Private content only shown to logged-in users (in progress)
+- [x] Private content only shown to logged-in users - Video/pitch URLs restricted to authenticated users
 - [x] Session persists across page navigation - 7-day encrypted cookie
+
+**Implementation Notes:**
+- `videoUrl` and `pitchUrl` links in the modal Resources section are now conditionally rendered based on auth state
+- Unauthenticated users see "Restricted Access" CTA with Authenticate button
+- Authenticated users see "Authorized Access" CTA with Copy Contact and Resources section
+- Auth check gracefully falls back to unauthenticated state on localhost (404 expected)
 
 **Note:** Auth endpoints require Cloudflare Worker (production/staging). On localhost, auth check returns 404 and falls back to unauthenticated state gracefully.
 
