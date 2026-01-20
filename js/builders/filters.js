@@ -78,35 +78,43 @@ export function populateFilters(options) {
     // Legacy support
     const techSelect = document.getElementById('filter-tech');
 
+    // Extract arrays with fallbacks for missing properties
+    const missionAreas = options?.missionAreas || [];
+    const warfareDomains = options?.warfareDomains || [];
+    const fundingStages = options?.fundingStages || [];
+    const cohorts = options?.cohorts || [];
+
     // Mission areas
-    if (missionSelect) {
+    if (missionSelect && missionAreas.length > 0) {
         missionSelect.innerHTML = '<option value="">All Mission Areas</option>' +
-            options.missionAreas.map(m => `<option value="${escapeAttr(m)}">${escapeHtml(m)}</option>`).join('');
+            missionAreas.map(m => `<option value="${escapeAttr(m)}">${escapeHtml(m)}</option>`).join('');
     }
 
     // Warfare domains
-    if (domainSelect) {
+    if (domainSelect && warfareDomains.length > 0) {
         domainSelect.innerHTML = '<option value="">All Domains</option>' +
-            options.warfareDomains.map(d => `<option value="${escapeAttr(d)}">${escapeHtml(d)}</option>`).join('');
+            warfareDomains.map(d => `<option value="${escapeAttr(d)}">${escapeHtml(d)}</option>`).join('');
     }
 
     // Funding stages
-    if (fundingSelect) {
+    if (fundingSelect && fundingStages.length > 0) {
         fundingSelect.innerHTML = '<option value="">All Funding Stages</option>' +
-            options.fundingStages.map(f => `<option value="${escapeAttr(f)}">${escapeHtml(f)}</option>`).join('');
+            fundingStages.map(f => `<option value="${escapeAttr(f)}">${escapeHtml(f)}</option>`).join('');
     }
 
     // Cohorts
-    if (cohortSelect) {
+    if (cohortSelect && cohorts.length > 0) {
         cohortSelect.innerHTML = '<option value="">All Cohorts</option>' +
-            options.cohorts.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
+            cohorts.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
     }
 
     // Legacy tech select (uses warfare domains)
     if (techSelect) {
-        const domains = options.warfareDomains || options.ctas || [];
-        techSelect.innerHTML = '<option value="">All Domains</option>' +
-            domains.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
+        const domains = warfareDomains.length > 0 ? warfareDomains : (options?.ctas || []);
+        if (domains.length > 0) {
+            techSelect.innerHTML = '<option value="">All Domains</option>' +
+                domains.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
+        }
     }
 }
 

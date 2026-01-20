@@ -154,7 +154,8 @@ const MOCK_FILTERS = {
         'Planning'
     ],
     warfareDomains: ['Air', 'Cyber', 'Information', 'Land', 'Multi', 'Sea', 'Space'],
-    fundingStages: ['Angel / Private', 'Bootstrapped', 'Grant Funded', 'Series Funding']
+    fundingStages: ['Angel / Private', 'Bootstrapped', 'Grant Funded', 'Series Funding'],
+    cohorts: ['Cohort 1', 'Cohort 2', 'Cohort 3']
 };
 
 /**

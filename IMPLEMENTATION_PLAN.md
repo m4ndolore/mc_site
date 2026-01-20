@@ -47,12 +47,20 @@
 - [x] `npm run build` fetches and caches company data
 - [x] Static JSON written to `public/data/companies.json`
 - [x] Build fails gracefully if API unreachable (uses cached/fallback data)
-- [ ] Cache invalidation strategy documented
+- [x] Cache invalidation strategy documented
 
 **Implementation Notes:**
 - Added `scripts/seed-companies.mjs` build script
 - Script tries API first, falls back to cached data, then fallback mock data
 - Runs automatically before `vite build` via `npm run seed`
+
+**Cache Invalidation Strategy:**
+- **Automatic invalidation**: Every `npm run build` attempts fresh API fetch
+- **Data staleness tracking**: `metadata.fetchedAt` records last successful API fetch
+- **Source tracking**: `metadata.source` indicates data origin (api/cache/fallback)
+- **Build frequency**: Cloudflare Pages rebuilds on git push, refreshing cache
+- **Manual invalidation**: Delete `public/data/companies.json` before build to force fresh fetch
+- **Graceful degradation**: If API fails, cached data serves until next successful fetch
 
 ### Phase 3: Private API Integration (Not Started)
 - [ ] VIA OAuth login flow works (`/auth/login`)
@@ -73,6 +81,13 @@
 - **Issue:** Vite warns about scripts without `type="module"` attribute
 - **Resolution:** Added `type="module"` to all script tags in commit `ac00516`
 - **Files fixed:** 404.html, knowledge.html, merch.html, opportunities.html, privacy.html, security.html, terms.html, builders.html, index.html
+
+### ~~Filter Dropdown Crash~~ (RESOLVED)
+- **Issue:** `populateFilters()` crashed with "Cannot read properties of undefined (reading 'map')" when `cohorts` property was missing from filter options
+- **Root cause:** `MOCK_FILTERS` in `api.js` didn't include `cohorts` array, and `populateFilters()` in `filters.js` didn't handle missing properties defensively
+- **Resolution:**
+  - Added `cohorts` to `MOCK_FILTERS` in `js/builders/api.js`
+  - Made `populateFilters()` defensive with null-safe property access and length checks
 
 ## Technical Notes
 
