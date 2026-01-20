@@ -275,7 +275,9 @@ function shouldUseMockData() {
 
 /**
  * Fetch companies from public API
- * Priority: 1) Live API (if configured), 2) Seeded static data, 3) Mock data
+ * Priority:
+ *   - Localhost: 1) Seeded data, 2) Mock data, 3) Live API
+ *   - Production: 1) Live API, 2) Seeded data
  *
  * API spec: https://api.sigmablox.com/api/public/companies
  * Returns: { companies: [], total: number, limit: number, offset: number }
@@ -289,12 +291,30 @@ function shouldUseMockData() {
  * @returns {Promise<{companies: Array, total: number, limit: number, offset: number}>}
  */
 export async function fetchCompanies(options = {}) {
-    // In local development, use mock data
+    // In local development with useMockData=true, use mock data directly
     if (shouldUseMockData()) {
         console.warn('[Builders] Using mock data for local development');
         return MOCK_DATA;
     }
 
+    // On localhost, prioritize seeded data to avoid CORS/network delays
+    if (location.hostname === 'localhost') {
+        const seededData = await loadSeededData();
+        if (seededData && seededData.companies && seededData.companies.length > 0) {
+            console.log('[Builders] Using seeded data (localhost)');
+            return {
+                companies: seededData.companies,
+                total: seededData.total || seededData.companies.length,
+                limit: seededData.limit || 100,
+                offset: seededData.offset || 0
+            };
+        }
+        // No seeded data on localhost, use mock data
+        console.warn('[Builders] No seeded data, using mock data');
+        return MOCK_DATA;
+    }
+
+    // Production: try live API first
     const apiBase = getApiBase();
     const params = new URLSearchParams();
 
@@ -331,7 +351,7 @@ export async function fetchCompanies(options = {}) {
     } catch (error) {
         console.error('[Builders] API error:', error.message);
 
-        // Try seeded static data first (build-time cached)
+        // Try seeded static data (build-time cached)
         const seededData = await loadSeededData();
         if (seededData && seededData.companies && seededData.companies.length > 0) {
             console.log('[Builders] Falling back to seeded data');
@@ -343,18 +363,15 @@ export async function fetchCompanies(options = {}) {
             };
         }
 
-        // Fall back to mock data on localhost
-        if (location.hostname === 'localhost') {
-            console.warn('[Builders] Falling back to mock data');
-            return MOCK_DATA;
-        }
-
         throw error;
     }
 }
 
 /**
  * Fetch available filter options from API
+ * Priority:
+ *   - Localhost: Use mock filters (no API call)
+ *   - Production: 1) Live API, 2) Mock filters fallback
  * @returns {Promise<{missionAreas: Array, warfareDomains: Array, fundingStages: Array}>}
  */
 export async function fetchFilterOptions() {
@@ -363,6 +380,13 @@ export async function fetchFilterOptions() {
         return MOCK_FILTERS;
     }
 
+    // On localhost, use mock filters to avoid CORS/network delays
+    if (location.hostname === 'localhost') {
+        console.log('[Builders] Using mock filters (localhost)');
+        return MOCK_FILTERS;
+    }
+
+    // Production: try live API
     const apiBase = getApiBase();
 
     try {
@@ -381,10 +405,7 @@ export async function fetchFilterOptions() {
     } catch (error) {
         console.error('[Builders] Failed to fetch filters:', error.message);
         // Fall back to mock filters
-        if (location.hostname === 'localhost') {
-            return MOCK_FILTERS;
-        }
-        throw error;
+        return MOCK_FILTERS;
     }
 }
 
