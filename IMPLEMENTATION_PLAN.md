@@ -11,6 +11,13 @@
 
 ### Bug Fixes
 
+#### Portfolio Page Company Names Showing 'undefined' (2026-01-20)
+- [x] Issue: Portfolio page displayed company names as "undefined: [Product Name]" instead of "[Company Name]: [Product Name]"
+- [x] Root cause: API returns company names in `name` field, but `js/portfolio/index.js` was looking for `companyName`
+- [x] Fix: Updated `renderPortfolioCard()` and `renderFeaturedCard()` to use `company.name || company.companyName || 'Unknown'`
+- [x] Files modified: `js/portfolio/index.js`
+- [x] Verification: Portfolio page now correctly displays company names (e.g., "300 Below Inc.: Deep Cryogenic Proceesing")
+
 #### Seed Script Missing Directory Bug (2026-01-20)
 - [x] Issue: Build failed with `ENOENT: no such file or directory, open 'public/data/companies.json'`
 - [x] Root cause: `public/data/` directory was deleted (tracked in git as deleted), and seed script assumed directory existed
