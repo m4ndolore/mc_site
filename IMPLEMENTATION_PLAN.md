@@ -11,6 +11,23 @@
 
 ### Bug Fixes
 
+#### Seed Script Missing Directory Bug (2026-01-20)
+- [x] Issue: Build failed with `ENOENT: no such file or directory, open 'public/data/companies.json'`
+- [x] Root cause: `public/data/` directory was deleted (tracked in git as deleted), and seed script assumed directory existed
+- [x] Fix: Added `mkdirSync()` with `recursive: true` to create directory if it doesn't exist at module load time
+- [x] Files modified: `scripts/seed-companies.mjs`
+- [x] Verification: `npm run build` now creates directory and writes seeded data successfully
+
+#### Localhost fetchCompanies() Not Using Seeded Data (2026-01-20)
+- [x] Issue: /builders page showed "Data unavailable" on localhost with CORS errors and retry delays
+- [x] Root cause: `fetchCompanies()` in `js/builders/api.js` was calling live API on localhost (only `shouldUseMockData()` case used local data)
+- [x] Fix: Added explicit localhost check in `fetchCompanies()` to prioritize seeded data:
+  1. On localhost: Load from `/data/companies.json` first, fall back to mock data (no live API)
+  2. In production: Try live API first, fall back to seeded data on failure
+- [x] Added `loadSeededData()` helper function to load and validate seeded JSON
+- [x] Files modified: `js/builders/api.js`
+- [x] Verification: /builders page now loads instantly on localhost using seeded data (6 companies)
+
 #### Localhost Loading Delay on /builders Page (2026-01-20)
 - [x] Issue: /builders page took 10+ seconds to load on localhost due to CORS errors and retries
 - [x] Root cause: `fetchCompanies()` and `fetchFilterOptions()` tried live API first, causing CORS failures and exponential backoff retries before falling back to seeded data

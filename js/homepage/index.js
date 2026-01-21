@@ -1,10 +1,10 @@
 // js/homepage/index.js
-// Homepage - loads stats from seeded company data
+// Homepage - loads stats from live API
 
 /**
- * Path to build-time seeded company data
+ * API base URL
  */
-const SEEDED_DATA_PATH = '/data/companies.json';
+const API_BASE = 'https://api.sigmablox.com';
 
 /**
  * DOM selectors for stat elements
@@ -26,28 +26,28 @@ const DEFAULT_STATS = {
 };
 
 /**
- * Load company data from seeded JSON
+ * Fetch company stats from live API
  * @returns {Promise<Object|null>}
  */
-async function loadSeededData() {
+async function fetchCompanyStats() {
     try {
-        const response = await fetch(SEEDED_DATA_PATH);
+        const response = await fetch(`${API_BASE}/api/public/companies?limit=100`);
         if (!response.ok) {
-            console.log('[Homepage] No seeded data available');
+            console.log('[Homepage] API unavailable');
             return null;
         }
 
         const data = await response.json();
         return data;
     } catch (error) {
-        console.log('[Homepage] Failed to load seeded data:', error.message);
+        console.log('[Homepage] Failed to fetch stats:', error.message);
         return null;
     }
 }
 
 /**
  * Calculate stats from company data
- * @param {Object} data - Seeded data object
+ * @param {Object} data - API response data
  * @returns {Object} Stats object with companies, operators, problemSets
  */
 function calculateStats(data) {
@@ -104,11 +104,11 @@ function updateStatElements(stats) {
 async function init() {
     console.log('[Homepage] Initializing...');
 
-    // Load seeded data
-    const data = await loadSeededData();
+    // Fetch stats from live API
+    const data = await fetchCompanyStats();
 
     if (data) {
-        // Calculate and update stats from real data
+        // Calculate and update stats from API data
         const stats = calculateStats(data);
         updateStatElements(stats);
     } else {
