@@ -8,12 +8,18 @@
  * Usage: node scripts/seed-companies.js
  */
 
-import { writeFileSync, readFileSync, existsSync } from 'fs';
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const OUTPUT_PATH = join(__dirname, '..', 'public', 'data', 'companies.json');
+const OUTPUT_DIR = join(__dirname, '..', 'public', 'data');
+const OUTPUT_PATH = join(OUTPUT_DIR, 'companies.json');
+
+// Ensure output directory exists
+if (!existsSync(OUTPUT_DIR)) {
+    mkdirSync(OUTPUT_DIR, { recursive: true });
+}
 const API_BASE = 'https://api.sigmablox.com';
 
 /**

@@ -1,10 +1,10 @@
 // js/portfolio/index.js
-// Portfolio page - displays companies from seeded data with category filtering
+// Portfolio page - displays companies from live API with category filtering
 
 /**
- * Path to build-time seeded company data
+ * API base URL
  */
-const SEEDED_DATA_PATH = '/data/companies.json';
+const API_BASE = 'https://api.sigmablox.com';
 
 /**
  * State
@@ -223,12 +223,12 @@ function setupFilters() {
 }
 
 /**
- * Load company data from seeded JSON
+ * Load company data from live API
  * @returns {Promise<Array>}
  */
 async function loadCompanies() {
     try {
-        const response = await fetch(SEEDED_DATA_PATH);
+        const response = await fetch(`${API_BASE}/api/public/companies?limit=100`);
         if (!response.ok) {
             throw new Error(`Failed to load data: ${response.status}`);
         }

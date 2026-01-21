@@ -98,49 +98,6 @@ async function fetchWithRetry(url, options = {}, retryConfig = {}) {
     throw lastError || new Error('Max retries exceeded');
 }
 
-/**
- * Path to build-time seeded company data
- */
-const SEEDED_DATA_PATH = '/data/companies.json';
-
-/**
- * Cached seeded data (loaded once)
- */
-let seededDataCache = null;
-
-/**
- * Load build-time seeded data from static JSON
- * @returns {Promise<Object|null>}
- */
-async function loadSeededData() {
-    if (seededDataCache !== null) {
-        return seededDataCache;
-    }
-
-    try {
-        const response = await fetch(SEEDED_DATA_PATH);
-        if (!response.ok) {
-            console.log('[Builders] No seeded data available');
-            seededDataCache = false; // Mark as unavailable
-            return null;
-        }
-
-        const data = await response.json();
-        if (data.companies && data.companies.length > 0) {
-            console.log('[Builders] Loaded seeded data:', data.companies.length, 'companies');
-            seededDataCache = data;
-            return data;
-        }
-
-        console.log('[Builders] Seeded data empty');
-        seededDataCache = false;
-        return null;
-    } catch (error) {
-        console.log('[Builders] Failed to load seeded data:', error.message);
-        seededDataCache = false;
-        return null;
-    }
-}
 
 /**
  * Mock data for local development when backend is unavailable
@@ -274,10 +231,31 @@ function shouldUseMockData() {
 }
 
 /**
+ * Load seeded data from build-time generated JSON
+ * @returns {Promise<Object|null>} Seeded data or null if unavailable
+ */
+async function loadSeededData() {
+    try {
+        const response = await fetch('/data/companies.json');
+        if (!response.ok) return null;
+        const data = await response.json();
+        // Validate seeded data has companies
+        if (data.companies && data.companies.length > 0) {
+            console.log(`[Builders] Loaded seeded data: ${data.companies.length} companies`);
+            return data;
+        }
+        return null;
+    } catch (error) {
+        console.log('[Builders] No seeded data available');
+        return null;
+    }
+}
+
+/**
  * Fetch companies from public API
  * Priority:
- *   - Localhost: 1) Seeded data, 2) Mock data, 3) Live API
- *   - Production: 1) Live API, 2) Seeded data
+ *   - Localhost: 1) Seeded data, 2) Mock data fallback (no live API)
+ *   - Production: 1) Live API, 2) Seeded data fallback
  *
  * API spec: https://api.sigmablox.com/api/public/companies
  * Returns: { companies: [], total: number, limit: number, offset: number }
@@ -297,20 +275,14 @@ export async function fetchCompanies(options = {}) {
         return MOCK_DATA;
     }
 
-    // On localhost, prioritize seeded data to avoid CORS/network delays
+    // On localhost, prioritize seeded data to avoid CORS errors
     if (location.hostname === 'localhost') {
-        const seededData = await loadSeededData();
-        if (seededData && seededData.companies && seededData.companies.length > 0) {
-            console.log('[Builders] Using seeded data (localhost)');
-            return {
-                companies: seededData.companies,
-                total: seededData.total || seededData.companies.length,
-                limit: seededData.limit || 100,
-                offset: seededData.offset || 0
-            };
+        const seeded = await loadSeededData();
+        if (seeded) {
+            return seeded;
         }
-        // No seeded data on localhost, use mock data
-        console.warn('[Builders] No seeded data, using mock data');
+        // Fall back to mock data if no seeded data
+        console.warn('[Builders] No seeded data, using mock data fallback');
         return MOCK_DATA;
     }
 
@@ -347,22 +319,21 @@ export async function fetchCompanies(options = {}) {
             throw new Error(`API error: ${data.error}`);
         }
 
-        return data;
-    } catch (error) {
-        console.error('[Builders] API error:', error.message);
-
-        // Try seeded static data (build-time cached)
-        const seededData = await loadSeededData();
-        if (seededData && seededData.companies && seededData.companies.length > 0) {
-            console.log('[Builders] Falling back to seeded data');
-            return {
-                companies: seededData.companies,
-                total: seededData.total || seededData.companies.length,
-                limit: seededData.limit || 100,
-                offset: seededData.offset || 0
-            };
+        // Check for empty data - use seeded fallback
+        if (!data.companies || data.companies.length === 0) {
+            console.warn('[Builders] API returned empty data, trying seeded fallback');
+            const seeded = await loadSeededData();
+            if (seeded) return seeded;
         }
 
+        return data;
+    } catch (error) {
+        // Live API failed, try seeded data fallback
+        console.warn('[Builders] API failed, trying seeded fallback:', error.message);
+        const seeded = await loadSeededData();
+        if (seeded) return seeded;
+
+        // No seeded data, throw original error
         throw error;
     }
 }
