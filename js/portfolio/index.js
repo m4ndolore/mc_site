@@ -69,10 +69,11 @@ function renderPortfolioCard(company) {
     const categoryAttr = categories.join(' ');
     const primaryCategory = categories[0] || 'autonomy';
 
-    // Build display name
+    // Build display name - handle both API format (name) and legacy format (companyName)
+    const companyName = company.name || company.companyName || 'Unknown';
     const displayName = company.productName
-        ? `${company.companyName}: ${company.productName}`
-        : company.companyName;
+        ? `${companyName}: ${company.productName}`
+        : companyName;
 
     // Build tags HTML
     const tagsHtml = categories.map(cat =>
@@ -124,10 +125,13 @@ function renderFeaturedCard(company) {
     const descEl = featuredCard.querySelector('.featured-card__description');
     const tagsEl = featuredCard.querySelector('.featured-card__tags');
 
+    // Handle both API format (name) and legacy format (companyName)
+    const companyName = company.name || company.companyName || 'Unknown';
+
     if (titleEl) {
         titleEl.textContent = company.productName
-            ? `${company.companyName}: ${company.productName}`
-            : company.companyName;
+            ? `${companyName}: ${company.productName}`
+            : companyName;
     }
 
     if (descEl) {
