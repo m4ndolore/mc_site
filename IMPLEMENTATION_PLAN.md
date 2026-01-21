@@ -61,6 +61,17 @@
 - [x] Files modified: `js/portfolio/index.js`
 - [x] Verification: /portfolio page now loads instantly on localhost with 6 companies from seeded data
 
+#### Homepage CORS Errors on Localhost (2026-01-20)
+- [x] Issue: Homepage stats fetching caused CORS errors on localhost
+- [x] Root cause: `fetchCompanyStats()` in `js/homepage/index.js` was making direct API calls to `api.sigmablox.com` without localhost handling
+- [x] Fix: Added localhost detection and seeded data priority (same pattern as portfolio):
+  1. Added `isLocalhost()` helper function
+  2. Added `loadSeededData()` to fetch from `/data/companies.json`
+  3. On localhost: Load seeded data only (no live API calls)
+  4. In production: Try live API first, fall back to seeded data on failure
+- [x] Files modified: `js/homepage/index.js`
+- [x] Verification: Homepage now loads stats from seeded data on localhost (6 companies, 7 problem sets)
+
 ### Exponential Backoff for Rate Limiting (2026-01-20)
 - [x] Added `fetchWithRetry()` function in `js/builders/api.js` with configurable retry logic
 - [x] Exponential backoff: base delay * 2^attempt with 25% jitter to prevent thundering herd
