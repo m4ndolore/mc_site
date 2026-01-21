@@ -223,10 +223,51 @@ function setupFilters() {
 }
 
 /**
- * Load company data from live API
+ * Check if running on localhost
+ * @returns {boolean}
+ */
+function isLocalhost() {
+    return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+}
+
+/**
+ * Load seeded data from build-time JSON
+ * @returns {Promise<Array|null>}
+ */
+async function loadSeededData() {
+    try {
+        const response = await fetch('/data/companies.json');
+        if (!response.ok) {
+            return null;
+        }
+        const data = await response.json();
+        if (data.companies && Array.isArray(data.companies) && data.companies.length > 0) {
+            console.log('[Portfolio] Loaded seeded data:', data.companies.length, 'companies');
+            return data.companies;
+        }
+        return null;
+    } catch (error) {
+        console.warn('[Portfolio] Failed to load seeded data:', error.message);
+        return null;
+    }
+}
+
+/**
+ * Load company data - prioritizes seeded data on localhost, tries live API in production
  * @returns {Promise<Array>}
  */
 async function loadCompanies() {
+    // On localhost, prioritize seeded data to avoid CORS errors
+    if (isLocalhost()) {
+        const seededData = await loadSeededData();
+        if (seededData) {
+            return seededData;
+        }
+        console.warn('[Portfolio] No seeded data available on localhost');
+        return [];
+    }
+
+    // In production, try live API first, fall back to seeded data
     try {
         const response = await fetch(`${API_BASE}/api/public/companies?limit=100`);
         if (!response.ok) {
@@ -234,9 +275,18 @@ async function loadCompanies() {
         }
 
         const data = await response.json();
-        return data.companies || [];
+        if (data.companies && data.companies.length > 0) {
+            return data.companies;
+        }
+        // API returned empty, try seeded data
+        throw new Error('API returned empty data');
     } catch (error) {
-        console.error('[Portfolio] Failed to load companies:', error.message);
+        console.warn('[Portfolio] Live API failed:', error.message, '- trying seeded data');
+        const seededData = await loadSeededData();
+        if (seededData) {
+            return seededData;
+        }
+        console.error('[Portfolio] No data available');
         return [];
     }
 }
