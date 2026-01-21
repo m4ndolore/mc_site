@@ -26,22 +26,61 @@ const DEFAULT_STATS = {
 };
 
 /**
- * Fetch company stats from live API
+ * Check if running on localhost
+ * @returns {boolean}
+ */
+function isLocalhost() {
+    return window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+}
+
+/**
+ * Load seeded data from build-time JSON
+ * @returns {Promise<Object|null>}
+ */
+async function loadSeededData() {
+    try {
+        const response = await fetch('/data/companies.json');
+        if (!response.ok) {
+            return null;
+        }
+        const data = await response.json();
+        if (data.companies && Array.isArray(data.companies) && data.companies.length > 0) {
+            console.log('[Homepage] Loaded seeded data:', data.companies.length, 'companies');
+            return data;
+        }
+        return null;
+    } catch (error) {
+        console.warn('[Homepage] Failed to load seeded data:', error.message);
+        return null;
+    }
+}
+
+/**
+ * Fetch company stats - prioritizes seeded data on localhost, tries live API in production
  * @returns {Promise<Object|null>}
  */
 async function fetchCompanyStats() {
+    // On localhost, prioritize seeded data to avoid CORS errors
+    if (isLocalhost()) {
+        return await loadSeededData();
+    }
+
+    // In production, try live API first, fall back to seeded data
     try {
         const response = await fetch(`${API_BASE}/api/public/companies?limit=100`);
         if (!response.ok) {
-            console.log('[Homepage] API unavailable');
-            return null;
+            throw new Error(`API returned ${response.status}`);
         }
 
         const data = await response.json();
-        return data;
+        if (data.companies && data.companies.length > 0) {
+            return data;
+        }
+        // API returned empty, try seeded data
+        throw new Error('API returned empty data');
     } catch (error) {
-        console.log('[Homepage] Failed to fetch stats:', error.message);
-        return null;
+        console.warn('[Homepage] Live API failed:', error.message, '- trying seeded data');
+        return await loadSeededData();
     }
 }
 
