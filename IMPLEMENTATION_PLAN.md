@@ -50,6 +50,17 @@
 - [x] Fix: Added check for empty companies array in seed script - treats empty response as failure and falls back to cached data or mock data
 - [x] Verification: `npm run build` now correctly falls back to mock data (6 companies) when API returns empty data
 
+#### Portfolio Page CORS Errors on Localhost (2026-01-20)
+- [x] Issue: /portfolio page showed CORS errors and failed to load data on localhost
+- [x] Root cause: `loadCompanies()` in `js/portfolio/index.js` was making direct API calls to `api.sigmablox.com` without localhost handling
+- [x] Fix: Added localhost detection and seeded data priority:
+  1. Added `isLocalhost()` helper function
+  2. Added `loadSeededData()` to fetch from `/data/companies.json`
+  3. On localhost: Load seeded data only (no live API calls)
+  4. In production: Try live API first, fall back to seeded data on failure
+- [x] Files modified: `js/portfolio/index.js`
+- [x] Verification: /portfolio page now loads instantly on localhost with 6 companies from seeded data
+
 ### Exponential Backoff for Rate Limiting (2026-01-20)
 - [x] Added `fetchWithRetry()` function in `js/builders/api.js` with configurable retry logic
 - [x] Exponential backoff: base delay * 2^attempt with 25% jitter to prevent thundering herd
