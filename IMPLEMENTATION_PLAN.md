@@ -72,6 +72,16 @@
 - [x] Files modified: `js/homepage/index.js`
 - [x] Verification: Homepage now loads stats from seeded data on localhost (6 companies, 7 problem sets)
 
+#### Portfolio Page Link Inconsistencies (2026-01-20)
+- [x] Issue: Portfolio page had inconsistent navigation and footer links compared to index.html and builders.html
+- [x] Root cause: Portfolio.html used different linking patterns - `index.html#...` paths instead of `/#...`, and external `app.mergecombinator.com` URLs for footer Company section
+- [x] Fix: Updated portfolio.html for consistency:
+  1. Header nav: Changed "Contact" and "Build with us" to "Join Combine" and "Apply" (matching other pages)
+  2. Footer Company section: Changed `/about.html`, `app.mergecombinator.com/careers`, `app.mergecombinator.com/contact` to `/#hero`, `/builders`, `/#engage`
+  3. Logo and CTA links: Changed `index.html` to `/` and `index.html#engage` to `/#engage`
+- [x] Files modified: `portfolio.html`
+- [x] Verification: Visual verification via Playwright shows consistent header and footer across all pages
+
 ### Exponential Backoff for Rate Limiting (2026-01-20)
 - [x] Added `fetchWithRetry()` function in `js/builders/api.js` with configurable retry logic
 - [x] Exponential backoff: base delay * 2^attempt with 25% jitter to prevent thundering herd
