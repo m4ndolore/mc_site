@@ -5,7 +5,8 @@ import {
     fetchCompanies,
     fetchFilterOptions,
     extractCompanies,
-    extractFilterOptions
+    extractFilterOptions,
+    upvoteCompany
 } from './api.js';
 import {
     renderBuilderCard,
@@ -120,6 +121,35 @@ function renderBuilders(companies) {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
                 openModal(card.dataset.id);
+            }
+        });
+    });
+
+    // Add upvote button handlers
+    grid.querySelectorAll('.builder-card__upvote-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            e.stopPropagation(); // Prevent card click
+            const companyId = btn.dataset.companyId;
+            if (!companyId) return;
+
+            // Optimistically update UI
+            btn.classList.add('upvoted');
+            const countEl = btn.parentElement.querySelector('.builder-card__upvote-count');
+            const currentCount = parseInt(countEl.textContent, 10) || 0;
+            countEl.textContent = currentCount + 1;
+
+            try {
+                const result = await upvoteCompany(companyId);
+                // Update with actual count from server
+                countEl.textContent = result.upvoteCount;
+                // Update local state
+                const company = allCompanies.find(c => c.id === companyId);
+                if (company) company.upvoteCount = result.upvoteCount;
+            } catch (error) {
+                console.error('Failed to upvote:', error);
+                // Revert optimistic update on error
+                btn.classList.remove('upvoted');
+                countEl.textContent = currentCount;
             }
         });
     });

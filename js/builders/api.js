@@ -491,6 +491,7 @@ export function normalizeCompany(company) {
         cohort: company.cohort || '',
         cohortId: company.cohortId || '',
         tulsaAttended: company.tulsaAttended || '',
+        upvoteCount: company.upvoteCount || 0,
         founders: company.founders || '',
         location: company.location || ''
     };
@@ -574,4 +575,25 @@ export function extractFilterOptions(companies) {
         // Legacy alias
         ctas: Array.from(warfareDomains).sort()
     };
+}
+
+/**
+ * Upvote a company
+ * @param {string} companyId - Company ID to upvote
+ * @returns {Promise<{id: string, name: string, upvoteCount: number}>}
+ */
+export async function upvoteCompany(companyId) {
+    const apiBase = getApiBase();
+    const response = await fetch(`${apiBase}/api/public/companies/${encodeURIComponent(companyId)}/upvote`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`Failed to upvote: ${response.status}`);
+    }
+
+    return response.json();
 }

@@ -7,8 +7,8 @@
  * @returns {string} - HTML string
  */
 export function renderBuilderCard(company) {
-    // Random upvote count for demo (will be replaced with real data)
-    const upvoteCount = company.upvotes || Math.floor(Math.random() * 50) + 5;
+    // Use real upvote count from API
+    const upvoteCount = company.upvoteCount || 0;
 
     const logoHtml = company.logo
         ? `<img src="${escapeHtml(company.logo)}" alt="${escapeHtml(company.name)} logo" class="builder-card__logo">`
@@ -40,7 +40,7 @@ export function renderBuilderCard(company) {
     return `
         <article class="builder-card" data-id="${escapeHtml(company.id)}" tabindex="0" role="button" aria-label="View ${escapeHtml(company.name)} details">
             <div class="builder-card__upvote">
-                <button class="builder-card__upvote-btn" onclick="event.stopPropagation(); this.classList.toggle('upvoted');" aria-label="Track ${escapeHtml(company.name)}">
+                <button class="builder-card__upvote-btn" data-company-id="${escapeHtml(company.id)}" aria-label="Upvote ${escapeHtml(company.name)}">
                     <span class="track-icon">▲</span>
                 </button>
                 <span class="builder-card__upvote-count">${upvoteCount}</span>
