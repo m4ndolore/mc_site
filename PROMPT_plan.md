@@ -1,22 +1,58 @@
-# Ralph Planning Mode - mc_site
+# Ralph Planning Mode - mc_site (RTMX Integration)
 
-0a. Study `specs/*` with up to 250 parallel Sonnet subagents to learn the site specifications and feature requirements.
-0b. Study @IMPLEMENTATION_PLAN.md (if present) to understand the plan so far.
-0c. Study `docs/ai/RULES.md` and `docs/theme/ux.md` to understand design doctrine (C2UX principles).
-0d. For reference, the site source code structure:
+0a. Study the RTMX requirements database at `.rtmx/database.csv` to understand all tracked requirements.
+0b. Study `.rtmx/requirements/` with parallel subagents to understand detailed specs for each requirement.
+0c. Study `docs/theme/ux.md` and `docs/ai/RULES.md` to understand design doctrine (C2UX principles).
+0d. Study `docs/` for domain knowledge and past implementations.
+0e. For VIA/Authentik work, study `~/.claude/skills/via-configuration/SKILL.md` for API patterns.
+0f. For reference, the site source code structure:
     - Root HTML files: `*.html` (index.html, builders.html, blog.html, etc.)
     - JavaScript: `script.js`, `js/*`
     - Styles: `styles.css`, `styles/*`
     - Assets: `assets/*`, `public/*`
 
-1. Study @IMPLEMENTATION_PLAN.md (if present; it may be incorrect) and use up to 500 Sonnet subagents to study existing source code and compare it against `specs/*`. Use an Opus subagent to analyze findings, prioritize tasks, and create/update @IMPLEMENTATION_PLAN.md as a bullet point list sorted in priority of items yet to be implemented. Ultrathink. Consider searching for TODO, minimal implementations, placeholders, broken links, accessibility issues, and inconsistent patterns. Study @IMPLEMENTATION_PLAN.md to determine starting point for research and keep it up to date with items considered complete/incomplete using subagents.
+1. Analyze the current state of the codebase against RTMX requirements:
+   - Use up to 500 Sonnet subagents to study existing source code
+   - Compare implementation against `.rtmx/requirements/` specs
+   - Identify gaps between requirements and current implementation
+   - Use an Opus subagent to analyze findings and update `.rtmx/database.csv`:
+     - Update `status` field (PENDING → PARTIAL → COMPLETE)
+     - Add `notes` for discovered issues
+     - Set `started_date` for work in progress
+   - Ultrathink.
+
+2. For any NEW requirements discovered:
+   - Create requirement file in `.rtmx/requirements/[CATEGORY]/REQ-XXX-NNN.md`
+   - Add row to `.rtmx/database.csv` with appropriate priority and phase
+   - Document dependencies and blockers
 
 IMPORTANT: Plan only. Do NOT implement anything. Do NOT assume functionality is missing; confirm with code search first.
 
-ULTIMATE GOAL: We want to achieve a production-ready marketing site for Merge Combinator that:
+## RTMX Database Schema
+
+When updating `.rtmx/database.csv`, use these fields:
+- `status`: PENDING | PARTIAL | COMPLETE | BLOCKED
+- `priority`: CRITICAL | HIGH | MEDIUM | LOW
+- `phase`: 1 | 2 | 3 | 4 (lower = sooner)
+- `assignee`: claude-YYYY-MM-DD (for claimed work)
+- `started_date`: YYYY-MM-DD
+- `completed_date`: YYYY-MM-DD
+
+## Current Focus Areas
+
+Based on `.rtmx/database.csv`:
+1. Phase 1: AUTH - VIA integration (REQ-AUTH-*)
+2. Phase 2: CONTENT - Protected builder content (REQ-CONTENT-*)
+3. Phase 3: DOCS - Knowledge base integration (REQ-DOCS-*)
+4. Phase 4: C2UX - Command center evolution (REQ-C2UX-*)
+
+Prioritize CRITICAL and HIGH items in Phase 1 first.
+
+## ULTIMATE GOAL
+
+We want to evolve mc_site from a marketing site to a defense ecosystem command center that:
+- Uses VIA authentication (shared with SigmaBlox)
+- Has protected content for authenticated users
+- Integrates with docs.mergecombinator.com knowledge base
 - Follows C2UX design doctrine (operational, not marketing-y)
 - Works flawlessly on Cloudflare Pages
-- Has proper SEO, accessibility, and performance
-- Integrates with existing SigmaBlox/VIA ecosystem
-
-Consider missing elements and plan accordingly. If an element is missing, search first to confirm it doesn't exist, then if needed author the specification at specs/FILENAME.md. If you create a new element then document the plan to implement it in @IMPLEMENTATION_PLAN.md using a subagent.

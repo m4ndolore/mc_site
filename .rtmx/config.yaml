@@ -1,0 +1,35 @@
+# RTMX Configuration for MC_Site
+project: mc_site
+description: Merge Combinator marketing site evolving to defense ecosystem command center
+
+# Category definitions
+categories:
+  AUTH:
+    description: VIA authentication integration
+    prefix: REQ-AUTH
+  CONTENT:
+    description: Protected content and access control
+    prefix: REQ-CONTENT
+  DOCS:
+    description: Documentation site integration
+    prefix: REQ-DOCS
+  C2UX:
+    description: Command center UX evolution
+    prefix: REQ-C2UX
+  BUGS:
+    description: Bug fixes and issues
+    prefix: REQ-BUG
+
+# Phase definitions
+phases:
+  1: Foundation - VIA auth setup
+  2: Protected Content - Restricted builder data
+  3: Docs Integration - Knowledge base SSO
+  4: Command Center - Operational UX evolution
+
+# Priority levels
+priorities:
+  - CRITICAL
+  - HIGH
+  - MEDIUM
+  - LOW
