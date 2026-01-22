@@ -489,6 +489,8 @@ export function normalizeCompany(company) {
         videoUrl: company.videoLink || null,
         pitchUrl: company.pitchLink || null,
         cohort: company.cohort || '',
+        cohortId: company.cohortId || '',
+        tulsaAttended: company.tulsaAttended || '',
         founders: company.founders || '',
         location: company.location || ''
     };
@@ -506,13 +508,16 @@ export function normalizeCompanies(companies) {
 // Legacy exports for backwards compatibility
 export { fetchCompanies as fetchCohorts };
 
-export function extractCompanies(data) {
+export function extractCompanies(data, options = {}) {
+    const { filterAttended = true } = options;
+
+    let companies = [];
+
     // Handle both old cohorts format and new companies format
     if (data.companies) {
-        return normalizeCompanies(data.companies);
-    }
-    // Legacy cohorts format
-    if (Array.isArray(data)) {
+        companies = normalizeCompanies(data.companies);
+    } else if (Array.isArray(data)) {
+        // Legacy cohorts format
         const companiesMap = new Map();
         for (const cohort of data) {
             if (!cohort.companies && !cohort.participants) continue;
@@ -526,9 +531,15 @@ export function extractCompanies(data) {
                 }));
             }
         }
-        return Array.from(companiesMap.values());
+        companies = Array.from(companiesMap.values());
     }
-    return [];
+
+    // Filter to only show companies that attended SigmaBlox 25-1 by default
+    if (filterAttended) {
+        companies = companies.filter(c => c.tulsaAttended === 'Attended');
+    }
+
+    return companies;
 }
 
 export function extractFilterOptions(companies) {
