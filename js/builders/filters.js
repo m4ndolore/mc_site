@@ -102,10 +102,14 @@ export function populateFilters(options) {
             fundingStages.map(f => `<option value="${escapeAttr(f)}">${escapeHtml(f)}</option>`).join('');
     }
 
-    // Cohorts
+    // Cohorts - handle both object format {id, name} and string format
     if (cohortSelect && cohorts.length > 0) {
         cohortSelect.innerHTML = '<option value="">All Cohorts</option>' +
-            cohorts.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
+            cohorts.map(c => {
+                const value = typeof c === 'object' ? c.id : c;
+                const label = typeof c === 'object' ? c.name : c;
+                return `<option value="${escapeAttr(value)}">${escapeHtml(label)}</option>`;
+            }).join('');
     }
 
     // Legacy tech select (uses warfare domains)
@@ -168,13 +172,14 @@ export function updateResultsCount(count) {
 
 // Utility functions
 function escapeHtml(str) {
-    if (!str) return '';
+    if (str == null) return '';
     const div = document.createElement('div');
-    div.textContent = str;
+    div.textContent = String(str);
     return div.innerHTML;
 }
 
 function escapeAttr(str) {
-    if (!str) return '';
-    return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    if (str == null) return '';
+    const s = String(str);
+    return s.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
