@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Apply to join Merge Combinator - the builder-led venture studio for national security.">
+  <meta name="keywords" content="defense tech, national security, apply, join, venture studio">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
+  <link rel="apple-touch-icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Apply — Merge Combinator">
+  <meta property="og:description" content="Join the builder-led venture studio for national security.">
+  <meta property="og:type" content="website">
+
+  <title>Apply — Merge Combinator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .apply-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--black);
+    }
+
+    @media (max-width: 968px) {
+      .apply-page {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .apply-hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px;
+      background: linear-gradient(135deg, rgba(11, 17, 22, 0.95), rgba(11, 17, 22, 0.8));
+      overflow: hidden;
+    }
+
+    .apply-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/pentagon/public');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .apply-hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 500px;
+    }
+
+    .apply-hero__logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .apply-hero__logo-text {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .apply-hero__logo-icon {
+      height: 28px;
+      width: auto;
+    }
+
+    .apply-hero__title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .apply-hero__subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .apply-hero__features {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .apply-hero__feature {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--offwhite);
+      font-size: 0.95rem;
+    }
+
+    .apply-hero__feature-icon {
+      width: 24px;
+      height: 24px;
+      background: rgba(127, 209, 255, 0.15);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue-light);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 968px) {
+      .apply-hero {
+        padding: 40px 24px;
+        min-height: auto;
+      }
+    }
+
+    .apply-form-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+      background: var(--dark);
+    }
+
+    @media (max-width: 968px) {
+      .apply-form-section {
+        padding: 40px 24px;
+      }
+    }
+
+    .apply-card {
+      width: 100%;
+      max-width: 420px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 40px;
+    }
+
+    .apply-card__header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .apply-card__via-logo {
+      width: 120px;
+      height: auto;
+      margin-bottom: 24px;
+      opacity: 0.9;
+    }
+
+    .apply-card__title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .apply-card__subtitle {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .apply-card__actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .apply-card__btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .apply-card__btn--primary {
+      background: var(--blue);
+      color: var(--black);
+      border: none;
+    }
+
+    .apply-card__btn--primary:hover {
+      background: var(--blue-light);
+      transform: translateY(-2px);
+    }
+
+    .apply-card__btn--outline {
+      background: transparent;
+      color: var(--offwhite);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .apply-card__btn--outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .apply-card__divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 24px 0;
+      color: var(--text-tertiary);
+      font-size: 0.85rem;
+    }
+
+    .apply-card__divider::before,
+    .apply-card__divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .apply-card__social {
+      display: flex;
+      gap: 12px;
+    }
+
+    .apply-card__social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      color: var(--offwhite);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all var(--transition-fast);
+    }
+
+    .apply-card__social-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .apply-card__social-btn img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .apply-card__footer {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .apply-card__footer-text {
+      color: var(--text-tertiary);
+      font-size: 0.9rem;
+    }
+
+    .apply-card__footer-link {
+      color: var(--blue-light);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .apply-card__footer-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <main class="apply-page">
+    <!-- Left: Hero Section -->
+    <section class="apply-hero">
+      <div class="apply-hero__content">
+        <a href="/" class="apply-hero__logo">
+          <span class="apply-hero__logo-text">Merge Combinator</span>
+          <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public" alt="" class="apply-hero__logo-icon">
+        </a>
+
+        <h1 class="apply-hero__title">Build What Warfighters Need</h1>
+        <p class="apply-hero__subtitle">
+          Join the builder-led venture studio for national security. Connect with operators,
+          access resources, and build technology that matters.
+        </p>
+
+        <div class="apply-hero__features">
+          <div class="apply-hero__feature">
+            <span class="apply-hero__feature-icon">&#10003;</span>
+            <span>Access to defense operators and advisors</span>
+          </div>
+          <div class="apply-hero__feature">
+            <span class="apply-hero__feature-icon">&#10003;</span>
+            <span>Exclusive events and cohort programs</span>
+          </div>
+          <div class="apply-hero__feature">
+            <span class="apply-hero__feature-icon">&#10003;</span>
+            <span>Resources for dual-use technology builders</span>
+          </div>
+          <div class="apply-hero__feature">
+            <span class="apply-hero__feature-icon">&#10003;</span>
+            <span>Indo-Pacific focused network</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: Login/Apply Card -->
+    <section class="apply-form-section">
+      <div class="apply-card">
+        <div class="apply-card__header">
+          <img src="https://auth.sigmablox.com/static/dist/assets/icons/icon.png" alt="VIA" class="apply-card__via-logo">
+          <h2 class="apply-card__title">Request Access</h2>
+          <p class="apply-card__subtitle">Sign in or create an account to continue</p>
+        </div>
+
+        <div class="apply-card__actions">
+          <a href="/auth/login" class="apply-card__btn apply-card__btn--primary">
+            Continue with VIA
+          </a>
+          <a href="/combine" class="apply-card__btn apply-card__btn--outline">
+            Learn About Combine
+          </a>
+        </div>
+
+        <div class="apply-card__divider">or continue with</div>
+
+        <div class="apply-card__social">
+          <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://www.mergecombinator.com/" class="apply-card__social-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Google
+          </a>
+        </div>
+
+        <div class="apply-card__footer">
+          <p class="apply-card__footer-text">
+            Already have an account? <a href="/auth/login" class="apply-card__footer-link">Sign in</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

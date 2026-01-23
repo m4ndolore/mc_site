@@ -43,15 +43,25 @@
 
       <nav class="nav__menu" aria-label="Primary navigation">
         <div class="nav__menu-links">
-          <a href="/combine" class="nav__link">Combine</a>
           <a href="/builders" class="nav__link">Defense Builders</a>
+          <a href="/combine" class="nav__link">Combine</a>
           <a href="/merch" class="nav__link">Merch</a>
           <a href="/opportunities" class="nav__link">Opportunities</a>
           <a href="/knowledge" class="nav__link">Knowledge</a>
         </div>
         <div class="nav__menu-actions">
-          <a href="/combine" class="nav__btn nav__btn--outline">Join Combine</a>
-          <a href="/combine" class="nav__btn nav__btn--primary">Apply</a>
+          <div class="nav__dropdown" id="auth-nav">
+            <button class="nav__btn nav__btn--primary nav__dropdown-trigger">
+              Apply
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="nav__dropdown-menu">
+              <a href="/apply" class="nav__dropdown-item">Learn More</a>
+              <a href="/auth/login" class="nav__dropdown-item">Login</a>
+            </div>
+          </div>
         </div>
       </nav>
 
@@ -1064,5 +1074,6 @@
   <script type="module" src="js/scroll-reveal.js"></script>
   <script type="module" src="js/homepage/index.js"></script>
   <script type="module" src="script.js"></script>
+  <script src="js/auth-nav.js"></script>
 </body>
 </html>
