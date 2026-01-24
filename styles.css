@@ -647,26 +647,31 @@ h4, .h4 {
   cursor: pointer;
   position: relative;
   z-index: 2;
+  background: transparent;
+  border: none;
 }
 
 .nav__mobile-toggle span {
-  width: 26px;
+  display: block;
+  width: 24px;
   height: 2px;
   background: var(--offwhite);
   border-radius: 2px;
-  transition: all var(--transition-fast);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+  transform-origin: center center;
 }
 
 .nav__mobile-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(6px, 6px);
+  transform: translateY(8px) rotate(45deg);
 }
 
 .nav__mobile-toggle.active span:nth-child(2) {
   opacity: 0;
+  transform: scaleX(0);
 }
 
 .nav__mobile-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* ============================================
@@ -3093,13 +3098,21 @@ h4, .h4 {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s ease;
+                opacity 0.3s ease,
+                visibility 0s 0.4s;
   }
 
   .nav__menu.active {
     max-height: 520px;
     opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                visibility 0s 0s;
   }
 
   .nav__menu-links {
