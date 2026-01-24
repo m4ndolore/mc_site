@@ -719,7 +719,14 @@
    ============================================ */
 @media (max-width: 768px) {
     .container {
-        padding: 0 20px;
+        padding: 0 16px;
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    .builders-page {
+        padding-top: 80px;
+        overflow-x: hidden;
     }
 
     .builders-hero__title {
@@ -728,22 +735,50 @@
 
     .builders-stats__grid {
         flex-wrap: wrap;
-        gap: 24px;
+        gap: 16px;
+        padding: 16px;
     }
 
     .builders-stats__item {
         flex: 1 1 45%;
     }
 
+    .builders-stats__value {
+        font-size: 1.5rem;
+    }
+
+    .builders-stats__label {
+        font-size: 0.75rem;
+    }
+
     .builders-filters__bar {
         flex-direction: column;
         align-items: stretch;
+        padding: 16px;
+        gap: 12px;
     }
 
     .builders-filters__search,
     .builders-filters__select {
         width: 100%;
         min-width: unset;
+    }
+
+    /* Fix for iOS select styling and touch */
+    .builders-filters__select {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+        min-height: 48px;
+        padding: 12px 40px 12px 16px;
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 8px;
+        touch-action: manipulation;
+    }
+
+    .builders-filters__input {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+        min-height: 48px;
+        padding: 12px 14px 12px 44px;
     }
 
     /* Card mobile layout */
@@ -800,5 +835,101 @@
     .modal-cta-btn {
         width: 100%;
         justify-content: center;
+    }
+}
+
+/* iPhone SE, iPhone 8 and smaller (375px and below) */
+@media (max-width: 375px) {
+    .container {
+        padding: 0 12px;
+    }
+
+    .builders-page {
+        padding-top: 64px;
+    }
+
+    .builders-hero {
+        padding: 32px 0 24px;
+    }
+
+    .builders-hero__title {
+        font-size: 1.75rem;
+    }
+
+    .builders-hero__subtitle {
+        font-size: 1rem;
+    }
+
+    .builders-stats__grid {
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .builders-stats__value {
+        font-size: 1.25rem;
+    }
+
+    .builders-stats__label {
+        font-size: 0.6875rem;
+    }
+
+    .builders-filters__bar {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .builder-card {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .builder-card__logo,
+    .builder-card__logo-placeholder {
+        width: 48px;
+        height: 48px;
+    }
+
+    .builder-card__name {
+        font-size: 1rem;
+    }
+
+    .builder-card__tagline {
+        font-size: 0.875rem;
+    }
+
+    .builder-tag {
+        font-size: 0.75rem;
+        padding: 4px 8px;
+    }
+
+    /* Modal small screen */
+    .modal-overlay {
+        padding: 12px 8px;
+    }
+
+    .modal-content {
+        border-radius: 12px;
+    }
+
+    .modal-header {
+        padding: 20px 16px;
+    }
+
+    .modal-logo {
+        width: 56px;
+        height: 56px;
+    }
+
+    .modal-title {
+        font-size: 1.25rem;
+    }
+
+    .modal-section {
+        padding: 16px;
+    }
+
+    .modal-cta-box {
+        margin: 0 16px 20px;
+        padding: 16px;
     }
 }

@@ -416,31 +416,36 @@ h4, .h4 {
 .nav__mobile-toggle {
   display: none;
   flex-direction: column;
-  gap: 5px;
-  padding: 8px;
+  gap: 6px;
+  padding: 10px;
   cursor: pointer;
   position: relative;
   z-index: 2;
+  background: transparent;
+  border: none;
 }
 
 .nav__mobile-toggle span {
-  width: 26px;
+  display: block;
+  width: 24px;
   height: 2px;
   background: var(--offwhite);
   border-radius: 2px;
-  transition: all var(--transition-fast);
+  transition: transform var(--transition-fast), opacity var(--transition-fast);
+  transform-origin: center center;
 }
 
 .nav__mobile-toggle.active span:nth-child(1) {
-  transform: rotate(45deg) translate(6px, 6px);
+  transform: translateY(8px) rotate(45deg);
 }
 
 .nav__mobile-toggle.active span:nth-child(2) {
   opacity: 0;
+  transform: scaleX(0);
 }
 
 .nav__mobile-toggle.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(6px, -6px);
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* ============================================
@@ -2600,13 +2605,21 @@ h4, .h4 {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s ease;
+                opacity 0.3s ease,
+                visibility 0s 0.4s;
   }
 
   .nav__menu.active {
     max-height: 520px;
     opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s ease,
+                visibility 0s 0s;
   }
 
   .nav__menu-links {
@@ -4278,4 +4291,171 @@ h4, .h4 {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ============================================
+   MOBILE FIXES (iPhone optimization)
+   ============================================ */
+
+/* Prevent horizontal overflow on mobile */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Mobile Navigation Fixes */
+@media (max-width: 1024px) {
+  /* Fix nav container layout for mobile */
+  .nav__container {
+    justify-content: space-between;
+    padding: 0 16px;
+  }
+
+  /* Ensure hamburger is always visible and tappable */
+  .nav__mobile-toggle {
+    display: flex;
+    position: relative;
+    z-index: 1001;
+    padding: 12px;
+    margin-right: -12px;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Fix mobile menu positioning and z-index */
+  .nav__menu {
+    z-index: 999;
+    padding: 24px 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Ensure buttons in mobile menu are clickable */
+  .nav__menu.active {
+    pointer-events: auto;
+  }
+
+  .nav__menu-actions {
+    gap: 12px;
+    padding-top: 16px;
+  }
+
+  /* Make nav buttons full width and tappable */
+  .nav__btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 14px 24px;
+    text-align: center;
+    pointer-events: auto;
+  }
+
+  /* Ensure links are tappable */
+  .nav__link {
+    display: block;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    pointer-events: auto;
+  }
+}
+
+/* iPhone SE, iPhone 8 and smaller (375px and below) */
+@media (max-width: 375px) {
+  :root {
+    --padding-x: 16px;
+    --nav-height: 64px;
+  }
+
+  .nav__container {
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .nav__logo-combinator {
+    font-size: 18px;
+  }
+
+  .nav__logo-merge {
+    font-size: 9px;
+  }
+
+  .nav__logo-icon {
+    height: 18px;
+  }
+
+  .nav__menu {
+    padding: 20px 12px;
+  }
+
+  .nav__link {
+    font-size: 16px;
+    padding: 14px 0;
+  }
+
+  .nav__btn {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+
+  .hero__title {
+    font-size: 28px;
+  }
+
+  .hero__subtitle {
+    font-size: 15px;
+  }
+
+  .hero__badge {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  .section-label {
+    font-size: 10px;
+  }
+
+  /* Container fixes for small screens */
+  .container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* iPhone 12/13/14 Pro Max and similar (428px) */
+@media (max-width: 428px) and (min-width: 376px) {
+  :root {
+    --padding-x: 20px;
+  }
+
+  .nav__container {
+    padding: 0 16px;
+  }
+
+  .hero__title {
+    font-size: 32px;
+  }
+}
+
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  .nav__menu {
+    max-height: calc(100vh - var(--nav-height) - env(safe-area-inset-bottom));
+  }
+}
+
+/* Ensure touch targets are at least 44px */
+@media (max-width: 1024px) {
+  .nav__link,
+  .nav__btn,
+  .btn {
+    min-height: 44px;
+  }
 }
