@@ -41,6 +41,27 @@ Use this file only. All other AI docs in this folder defer here.
 - `docker-compose.authentik.yaml` consumes env via `env_file` (runtime + secrets) while environment entries resolve from those vars. Hyphenated env names must be normalized (e.g., `CF-Access-Client-Id` → `CF_ACCESS_CLIENT_ID`).
 - Provide `config/schema.js`, `config/doctor.js`, and `.env.local.example` (secrets only); `.runtime/` and `.env.local` stay gitignored.
 
+## Static Sites & Cloudflare Workers
+
+Static sites with Cloudflare Workers (e.g., mc_site) use a simplified config pattern:
+
+- **Non-secrets** in `wrangler.toml [vars]`, with `[env.dev.vars]` for local overrides. Align var names with `config/base.yaml` (e.g., `OIDC_ISSUER_URL`).
+- **Secrets** use existing `.env.local` (template: `.env.example`). Symlink for wrangler: `ln -s .env.local .dev.vars`. Production uses `wrangler secret put`.
+- **No yaml→render pipeline** for Workers. The full render pipeline is for backend services.
+- **Worker code reads from `env` parameter**, not `process.env`:
+  ```js
+  export default {
+    async fetch(request, env) {
+      const issuer = env.OIDC_ISSUER_URL; // from [vars] or [env.dev.vars]
+    }
+  }
+  ```
+
+### Tripwires (Revisit This Decision If)
+- Worker needs >10 config vars → add `scripts/render-wrangler.js` to generate from yaml
+- Multiple workers share config → extract to shared yaml with render script
+- Config drift between wrangler.toml and `config/base.yaml` causes bugs → unify with render pipeline
+
 ## Deployment & CI/CD Guardrails
 - Cloud Run: use rendered env file for non-secrets and `--set-secrets` for GSM secrets. No inline heredocs or duplicated CI jobs. Fix the render pipeline instead of patching runtime values.
 - Ghost VM: docker-compose must use

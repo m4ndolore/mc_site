@@ -40,7 +40,7 @@ OAUTH_JWKS_URL: https://auth.sigmablox.com/application/o/defense-builders/jwks/
 OAUTH_LOGOUT_URL: https://auth.sigmablox.com/application/o/defense-builders/end-session/
 OAUTH_SCOPES: openid email profile groups
 
-# OIDC
+# OIDC (also used by Cloudflare Worker - keep wrangler.toml [vars] in sync)
 OIDC_ISSUER_URL: https://auth.sigmablox.com
 
 # Admin Configuration - MUST BE CONFIGURED
