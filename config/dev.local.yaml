@@ -11,7 +11,9 @@ NODE_ENV: development
 PUBLIC_BASE_URL: http://localhost:3000
 API_BASE_URL: http://localhost:3001
 
-# OIDC - Local development (uses production Authentik for now)
+# OIDC - Local development (local VIA instance at port 9000)
+# Also used by Cloudflare Worker - keep wrangler.toml [env.dev.vars] in sync
+OIDC_ISSUER_URL: http://localhost:9000
 OIDC_CLIENT_ID: PLACEHOLDER_OIDC_CLIENT_ID_DEV
 OIDC_REDIRECT_URI: http://localhost:3000/auth/callback
 

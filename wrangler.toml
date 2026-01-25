@@ -1,17 +1,42 @@
+# =============================================================================
+# Cloudflare Worker Configuration for mc-router
+# =============================================================================
+#
+# CONFIGURATION PATTERN:
+#   - Non-secrets: Values here MUST align with config/*.yaml (source of truth)
+#   - Secrets: Stored in .env.local, symlinked to .dev.vars for wrangler
+#
+# LOCAL DEVELOPMENT:
+#   1. Ensure .dev.vars symlink exists: ln -s .env.local .dev.vars
+#   2. Run: wrangler dev --env dev
+#
+# PRODUCTION DEPLOYMENT:
+#   1. Set secrets: wrangler secret put MC_OAUTH_CLIENT_ID
+#                   wrangler secret put MC_OAUTH_CLIENT_SECRET
+#                   wrangler secret put SESSION_SECRET
+#   2. Deploy: wrangler deploy
+#
+# See docs/ai/RULES.md "Static Sites & Cloudflare Workers" for full details.
+# =============================================================================
+
 name = "mc-router"
 main = "cloudflare/merge-router.js"
 compatibility_date = "2024-01-01"
 
-# Development settings
+# -----------------------------------------------------------------------------
+# Production non-secrets (source of truth: config/base.yaml)
+# -----------------------------------------------------------------------------
 [vars]
-# Non-secret vars go here
+OIDC_ISSUER_URL = "https://auth.sigmablox.com"  # Must match config/base.yaml line 44
+OAUTH_LOGOUT_URL = "https://auth.sigmablox.com/application/o/defense-builders/end-session/"  # Must match config/base.yaml line 40
 
-# For local development, create a .dev.vars file with:
-# MC_OAUTH_CLIENT_ID=mc-web-prod
-# MC_OAUTH_CLIENT_SECRET=your-secret-here
-# SESSION_SECRET=generate-a-32-char-secret
+# -----------------------------------------------------------------------------
+# Local development overrides (source of truth: config/dev.local.yaml)
+# Run with: wrangler dev --env dev
+# -----------------------------------------------------------------------------
+[env.dev]
+name = "mc-router-dev"
 
-# Production secrets are set via:
-# wrangler secret put MC_OAUTH_CLIENT_ID
-# wrangler secret put MC_OAUTH_CLIENT_SECRET
-# wrangler secret put SESSION_SECRET
+[env.dev.vars]
+OIDC_ISSUER_URL = "http://localhost:9000"  # Must match config/dev.local.yaml line 16
+OAUTH_LOGOUT_URL = "http://localhost:9000/application/o/defense-builders/end-session/"

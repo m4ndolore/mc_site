@@ -2,13 +2,32 @@
  * VIA OAuth Authentication Module for Cloudflare Workers
  *
  * Handles OAuth 2.0 PKCE flow with VIA/Authentik
+ *
+ * Configuration:
+ *   - OIDC_ISSUER_URL: from wrangler.toml (must align with config/*.yaml)
+ *   - MC_OAUTH_CLIENT_ID, MC_OAUTH_CLIENT_SECRET, SESSION_SECRET: from .dev.vars (symlink to .env.local)
+ *
+ * See wrangler.toml header and docs/ai/RULES.md for configuration pattern.
  */
 
-// VIA/Authentik OAuth endpoints
-const VIA_ISSUER = "https://auth.sigmablox.com";
-const VIA_AUTHORIZE_URL = `${VIA_ISSUER}/application/o/authorize/`;
-const VIA_TOKEN_URL = `${VIA_ISSUER}/application/o/token/`;
-const VIA_USERINFO_URL = `${VIA_ISSUER}/application/o/userinfo/`;
+/**
+ * Get OAuth URLs from environment config
+ *
+ * OIDC_ISSUER_URL source of truth:
+ *   - Production: config/base.yaml → wrangler.toml [vars]
+ *   - Local dev:  config/dev.local.yaml → wrangler.toml [env.dev.vars]
+ */
+function getOAuthUrls(env) {
+  const issuer = env.OIDC_ISSUER_URL;
+  if (!issuer) {
+    throw new Error("Missing required env var: OIDC_ISSUER_URL");
+  }
+  return {
+    authorize: `${issuer}/application/o/authorize/`,
+    token: `${issuer}/application/o/token/`,
+    userinfo: `${issuer}/application/o/userinfo/`,
+  };
+}
 
 // Cookie settings
 const SESSION_COOKIE_NAME = "mc_session";
@@ -151,8 +170,9 @@ async function handleLogin(request, env) {
     env.SESSION_SECRET
   );
 
+  const viaUrls = getOAuthUrls(env);
   const redirectUri = `${url.origin}/auth/callback`;
-  const authUrl = new URL(VIA_AUTHORIZE_URL);
+  const authUrl = new URL(viaUrls.authorize);
   authUrl.searchParams.set("client_id", env.MC_OAUTH_CLIENT_ID);
   authUrl.searchParams.set("response_type", "code");
   authUrl.searchParams.set("redirect_uri", redirectUri);
@@ -212,8 +232,9 @@ async function handleCallback(request, env) {
     }
 
   // Exchange code for tokens
+  const viaUrls = getOAuthUrls(env);
   const redirectUri = `${url.origin}/auth/callback`;
-  const tokenResponse = await fetch(VIA_TOKEN_URL, {
+  const tokenResponse = await fetch(viaUrls.token, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -237,7 +258,7 @@ async function handleCallback(request, env) {
   const tokens = await tokenResponse.json();
 
   // Fetch user info
-  const userResponse = await fetch(VIA_USERINFO_URL, {
+  const userResponse = await fetch(viaUrls.userinfo, {
     headers: {
       Authorization: `Bearer ${tokens.access_token}`,
     },
@@ -284,18 +305,33 @@ async function handleCallback(request, env) {
 }
 
 /**
- * Handle /auth/logout - Clear session
+ * Handle /auth/logout - Clear local session AND end Authentik SSO session
+ *
+ * Without redirecting to Authentik's end-session endpoint, the user remains
+ * logged into SSO and will be auto-authenticated on next login attempt.
  */
 async function handleLogout(request, env) {
   const url = new URL(request.url);
-  const returnTo = url.searchParams.get("return_to") || "/";
+  const returnTo = url.searchParams.get("return_to") || url.origin;
 
+  // Clear local session cookie
   const headers = new Headers();
-  headers.set("Location", returnTo);
   headers.append(
     "Set-Cookie",
     createCookieHeader(SESSION_COOKIE_NAME, "", 0, url.protocol === "https:")
   );
+
+  // Redirect to Authentik end-session to fully log out of SSO
+  // post_logout_redirect_uri brings user back to our site after SSO logout
+  const logoutUrl = env.OAUTH_LOGOUT_URL;
+  if (logoutUrl) {
+    const endSessionUrl = new URL(logoutUrl);
+    endSessionUrl.searchParams.set("post_logout_redirect_uri", returnTo);
+    headers.set("Location", endSessionUrl.toString());
+  } else {
+    // Fallback if OAUTH_LOGOUT_URL not configured
+    headers.set("Location", returnTo);
+  }
 
   return new Response(null, { status: 302, headers });
 }

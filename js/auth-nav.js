@@ -30,17 +30,9 @@
 })();
 
 function showLoggedOutDropdown(container) {
+  // Direct link to /access (no dropdown when logged out)
   container.innerHTML = `
-    <button class="nav__btn nav__btn--primary nav__dropdown-trigger">
-      Apply
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-        <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-    <div class="nav__dropdown-menu">
-      <a href="/apply" class="nav__dropdown-item">Learn More</a>
-      <a href="/auth/login" class="nav__dropdown-item">Login</a>
-    </div>
+    <a href="/access" class="nav__btn nav__btn--primary">Access</a>
   `;
 }
 
