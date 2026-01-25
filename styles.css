@@ -532,20 +532,21 @@ h4, .h4 {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 6px 12px 6px 6px;
+  color: var(--offwhite);
 }
 
 .nav__dropdown--user .nav__user-avatar {
   width: 28px;
   height: 28px;
+  min-width: 28px;
   border-radius: 50%;
   background: var(--blue);
   color: var(--black);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
   font-size: 0.8rem;
-  margin-right: 6px;
 }
 
 .nav__mobile-toggle {
