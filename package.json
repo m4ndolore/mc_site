@@ -8,9 +8,13 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:worker": "wrangler dev --env dev",
     "seed": "node scripts/seed-companies.mjs",
     "build": "npm run seed && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run deploy:worker",
+    "deploy:worker": "wrangler deploy",
+    "deploy:status": "wrangler pages deployment list --project-name mc-site | head -10"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.17",
