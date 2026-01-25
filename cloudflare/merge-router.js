@@ -134,7 +134,7 @@ function getCorsHeaders(request) {
   return null;
 }
 
-async function handleApiRoute(request, targetUrl) {
+async function handleApiRoute(request, targetUrl, env) {
   // Handle CORS preflight
   if (request.method === "OPTIONS") {
     const corsHeaders = getCorsHeaders(request);
@@ -147,10 +147,22 @@ async function handleApiRoute(request, targetUrl) {
     return new Response(null, { status: 204 });
   }
 
+  // Build headers for upstream request
+  const upstreamHeaders = new Headers(request.headers);
+
+  // Check for authenticated session and pass token to SigmaBlox
+  const session = await getSession(request, env);
+  if (session && session.accessToken) {
+    upstreamHeaders.set("Authorization", `Bearer ${session.accessToken}`);
+  }
+
+  // Remove cookie header (don't leak MC session to upstream)
+  upstreamHeaders.delete("Cookie");
+
   // Proxy the request to SigmaBlox API
   const proxyRequest = new Request(targetUrl, {
     method: request.method,
-    headers: request.headers,
+    headers: upstreamHeaders,
     body: request.body,
   });
 
@@ -299,9 +311,9 @@ export default {
 
     const targetUrl = resolveTarget(url, route);
 
-    // Handle API routes with CORS
+    // Handle API routes with CORS and auth passthrough
     if (route.isApi) {
-      return handleApiRoute(request, targetUrl);
+      return handleApiRoute(request, targetUrl, env);
     }
 
     let response = await fetch(new Request(targetUrl, request));
