@@ -8,7 +8,6 @@ const ROUTES = [
   { prefix: "/combine", origin: SIGMABLOX_ORIGIN, stripPrefix: true, preserveRoot: true },
   // /builders is served from MC Pages (default origin), no route entry needed
   { prefix: "/opportunities", origin: "https://sbir.mergecombinator.com", stripPrefix: true },
-  { prefix: "/knowledge", origin: "https://irregularpedia.org", stripPrefix: true },
   { prefix: "/merch", origin: "https://merge-combinator-shop.fourthwall.com", stripPrefix: true },
 ];
 
