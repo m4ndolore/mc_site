@@ -28,7 +28,7 @@ export default defineConfig({
         terms: resolve(__dirname, 'terms.html'),
         security: resolve(__dirname, 'security.html'),
         archive: resolve(__dirname, 'archive.html'),
-        apply: resolve(__dirname, 'apply.html'),
+        access: resolve(__dirname, 'access.html'),
         '404': resolve(__dirname, '404.html'),
         // Blog articles
         'blog-counter-drone': resolve(__dirname, 'blog/counter-drone-jiatf-401.html'),
