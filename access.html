@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Apply to join Merge Combinator - the builder-led venture studio for national security.">
-  <meta name="keywords" content="defense tech, national security, apply, join, venture studio">
+  <meta name="description" content="Access Defense Builders - your portal to the defense tech community. Connect with operators, access resources, and track opportunities.">
+  <meta name="keywords" content="defense tech, defense builders, national security, portal, community">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
@@ -12,363 +12,536 @@
   <link rel="apple-touch-icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Apply — Merge Combinator">
-  <meta property="og:description" content="Join the builder-led venture studio for national security.">
+  <meta property="og:title" content="Access Defense Builders — Merge Combinator">
+  <meta property="og:description" content="Your portal to the defense tech community. Connect with operators, access resources, and track opportunities.">
   <meta property="og:type" content="website">
 
-  <title>Apply — Merge Combinator</title>
+  <title>Access Defense Builders — Merge Combinator</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles.css">
   <style>
-    .apply-page {
+    :root {
+      --bg-primary: #0b0f14;
+      --bg-card: rgba(17,24,39,0.85);
+      --bg-input: rgba(0,0,0,0.30);
+      --border-subtle: rgba(255,255,255,0.10);
+      --border-hover: rgba(255,255,255,0.25);
+      --text-primary: #e5e7eb;
+      --text-secondary: rgba(229,231,235,0.70);
+      --text-tertiary: rgba(229,231,235,0.45);
+      --accent: #0ea5e9;
+      --accent-hover: #0284c7;
+      --accent-subtle: rgba(14,165,233,0.12);
+      --accent-border: rgba(14,165,233,0.35);
+      --success: rgba(16,185,129,0.25);
+      --success-border: rgba(16,185,129,0.50);
+      --success-text: rgba(209,250,229,0.95);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
       min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: var(--black);
     }
 
-    @media (max-width: 968px) {
-      .apply-page {
-        grid-template-columns: 1fr;
-      }
+    .access-page {
+      display: flex;
+      min-height: 100vh;
     }
 
-    .apply-hero {
+    /* Left: Hero Section */
+    .access-hero {
+      flex: 1;
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
       padding: 60px;
-      background: linear-gradient(135deg, rgba(11, 17, 22, 0.95), rgba(11, 17, 22, 0.8));
       overflow: hidden;
     }
 
-    .apply-hero::before {
+    .access-hero::before {
       content: '';
       position: absolute;
       inset: 0;
       background-image: url('https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/pentagon/public');
       background-size: cover;
       background-position: center;
-      opacity: 0.3;
+      opacity: 0.2;
       z-index: 0;
     }
 
-    .apply-hero__content {
+    .access-hero__content {
       position: relative;
       z-index: 1;
-      max-width: 500px;
+      max-width: 520px;
     }
 
-    .apply-hero__logo {
+    .access-hero__logo {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 40px;
+      margin-bottom: 48px;
+      text-decoration: none;
     }
 
-    .apply-hero__logo-text {
-      font-family: var(--font-mono);
-      font-size: 1.2rem;
-      color: var(--white);
+    .access-hero__logo-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.1rem;
+      color: var(--text-primary);
       font-weight: 700;
+      display: flex;
+      gap: 8px;
     }
 
-    .apply-hero__logo-icon {
-      height: 28px;
+    .access-hero__logo-merge { color: var(--text-primary); }
+    .access-hero__logo-combinator { color: var(--text-secondary); }
+
+    .access-hero__logo-icon {
+      height: 24px;
       width: auto;
     }
 
-    .apply-hero__title {
-      font-size: clamp(2rem, 4vw, 3rem);
+    .access-hero__title {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
       font-weight: 700;
-      color: var(--white);
+      color: var(--text-primary);
       line-height: 1.2;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
-    .apply-hero__subtitle {
-      font-size: 1.1rem;
+    .access-hero__subtitle {
+      font-size: 14px;
       color: var(--text-secondary);
       line-height: 1.6;
       margin-bottom: 32px;
     }
 
-    .apply-hero__features {
+    .access-hero__features {
       display: flex;
       flex-direction: column;
-      gap: 16px;
-    }
-
-    .apply-hero__feature {
-      display: flex;
-      align-items: center;
       gap: 12px;
-      color: var(--offwhite);
-      font-size: 0.95rem;
     }
 
-    .apply-hero__feature-icon {
-      width: 24px;
-      height: 24px;
-      background: rgba(127, 209, 255, 0.15);
-      border-radius: 6px;
+    .access-hero__feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .access-hero__feature-icon {
+      width: 22px;
+      height: 22px;
+      background: var(--success);
+      border: 1px solid var(--success-border);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--blue-light);
-      font-size: 0.8rem;
-    }
-
-    @media (max-width: 968px) {
-      .apply-hero {
-        padding: 40px 24px;
-        min-height: auto;
-      }
-    }
-
-    .apply-form-section {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 40px;
-      background: var(--dark);
-    }
-
-    @media (max-width: 968px) {
-      .apply-form-section {
-        padding: 40px 24px;
-      }
-    }
-
-    .apply-card {
-      width: 100%;
-      max-width: 420px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 40px;
-    }
-
-    .apply-card__header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .apply-card__via-logo {
-      width: 120px;
-      height: auto;
-      margin-bottom: 24px;
-      opacity: 0.9;
-    }
-
-    .apply-card__title {
-      font-size: 1.4rem;
+      color: var(--success-text);
+      font-size: 11px;
       font-weight: 700;
-      color: var(--white);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 8px;
+      flex-shrink: 0;
     }
 
-    .apply-card__subtitle {
-      font-size: 0.95rem;
+    .access-hero__feature-text {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .access-hero__feature-text strong {
+      color: var(--text-primary);
+    }
+
+    /* Right: Card Section */
+    .access-card-section {
+      width: 520px;
+      max-width: 100%;
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(17,24,39,0.25);
+      border-left: 1px solid var(--border-subtle);
+    }
+
+    .access-card {
+      width: 100%;
+      max-width: 400px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 28px;
+    }
+
+    .access-card__header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .access-card__title {
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 6px;
+    }
+
+    .access-card__subtitle {
+      font-size: 13px;
       color: var(--text-secondary);
     }
 
-    .apply-card__actions {
+    /* Method buttons (matching via-login) */
+    .access-card__methods {
       display: flex;
       flex-direction: column;
-      gap: 12px;
-      margin-bottom: 24px;
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .apply-card__btn {
+    .access-card__method {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(0,0,0,0.25);
+      text-decoration: none;
+      color: var(--text-primary);
+      transition: border-color 100ms, background 100ms;
+    }
+
+    .access-card__method:hover {
+      border-color: rgba(14,165,233,0.5);
+      background: rgba(14,165,233,0.10);
+    }
+
+    .access-card__method--primary {
+      border-color: var(--accent-border);
+      background: var(--accent-subtle);
+    }
+
+    .access-card__method--primary:hover {
+      border-color: rgba(14,165,233,0.65);
+      background: rgba(14,165,233,0.20);
+    }
+
+    .access-card__method-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      padding: 14px 24px;
-      border-radius: 10px;
-      font-size: 1rem;
+      flex-shrink: 0;
+      color: var(--text-secondary);
+    }
+
+    .access-card__method--primary .access-card__method-icon {
+      background: rgba(14,165,233,0.18);
+      border-color: var(--accent-border);
+      color: #38bdf8;
+    }
+
+    .access-card__method-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .access-card__method-title {
+      font-size: 14px;
       font-weight: 600;
-      text-decoration: none;
-      transition: all var(--transition-fast);
-      cursor: pointer;
     }
 
-    .apply-card__btn--primary {
-      background: var(--blue);
-      color: var(--black);
-      border: none;
+    .access-card__method-desc {
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--text-tertiary);
     }
 
-    .apply-card__btn--primary:hover {
-      background: var(--blue-light);
-      transform: translateY(-2px);
+    .access-card__method-arrow {
+      font-size: 16px;
+      color: var(--text-tertiary);
+      transition: color 100ms;
     }
 
-    .apply-card__btn--outline {
-      background: transparent;
-      color: var(--offwhite);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+    .access-card__method:hover .access-card__method-arrow {
+      color: var(--text-secondary);
     }
 
-    .apply-card__btn--outline:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
-
-    .apply-card__divider {
+    /* Secured by VIA badge */
+    .access-card__secured {
       display: flex;
       align-items: center;
-      gap: 16px;
-      margin: 24px 0;
-      color: var(--text-tertiary);
-      font-size: 0.85rem;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
     }
 
-    .apply-card__divider::before,
-    .apply-card__divider::after {
-      content: '';
+    .access-card__via-badge {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+
+    .access-card__secured-text {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-tertiary);
+    }
+
+    /* Divider */
+    .access-card__divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .access-card__divider-line {
       flex: 1;
       height: 1px;
-      background: rgba(255, 255, 255, 0.1);
+      background: var(--border-subtle);
     }
 
-    .apply-card__social {
+    .access-card__divider-text {
+      font-size: 10px;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* SSO buttons (matching sigmablox/join) */
+    .access-card__sso {
       display: flex;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .apply-card__social-btn {
+    .access-card__sso-btn {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      color: var(--offwhite);
+      padding: 12px 14px;
+      border: 1px solid var(--border-subtle);
+      background: rgba(0,0,0,0.25);
       text-decoration: none;
-      font-size: 0.9rem;
+      color: var(--text-primary);
+      font-size: 12px;
       font-weight: 500;
-      transition: all var(--transition-fast);
+      transition: border-color 100ms, background 100ms;
     }
 
-    .apply-card__social-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
+    .access-card__sso-btn:hover {
+      border-color: rgba(14,165,233,0.5);
+      background: rgba(14,165,233,0.10);
     }
 
-    .apply-card__social-btn img {
+    .access-card__sso-btn--disabled {
+      opacity: 0.50;
+      pointer-events: none;
+      border-style: dashed;
+    }
+
+    .access-card__sso-icon {
       width: 20px;
       height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .apply-card__footer {
+    .access-card__sso-badge {
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 6px;
+      background: rgba(245,158,11,0.20);
+      border: 1px solid rgba(245,158,11,0.40);
+      color: #fbbf24;
+    }
+
+    /* Footer */
+    .access-card__footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-subtle);
       text-align: center;
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .apply-card__footer-text {
+    .access-card__footer-text {
+      font-size: 12px;
       color: var(--text-tertiary);
-      font-size: 0.9rem;
     }
 
-    .apply-card__footer-link {
-      color: var(--blue-light);
+    .access-card__footer-link {
+      color: rgba(56,189,248,0.90);
       text-decoration: none;
       font-weight: 500;
     }
 
-    .apply-card__footer-link:hover {
+    .access-card__footer-link:hover {
       text-decoration: underline;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 968px) {
+      .access-page {
+        flex-direction: column;
+      }
+
+      .access-hero {
+        padding: 40px 24px;
+        min-height: auto;
+      }
+
+      .access-card-section {
+        width: 100%;
+        border-left: 0;
+        border-top: 1px solid var(--border-subtle);
+        padding: 32px 24px;
+      }
+
+      .access-card__sso {
+        flex-direction: column;
+      }
+
+      .access-card__method {
+        min-height: 44px;
+      }
+
+      .access-card__sso-btn {
+        min-height: 44px;
+      }
     }
   </style>
 </head>
 <body>
-  <main class="apply-page">
+  <main class="access-page">
     <!-- Left: Hero Section -->
-    <section class="apply-hero">
-      <div class="apply-hero__content">
-        <a href="/" class="apply-hero__logo">
-          <span class="apply-hero__logo-text">Merge Combinator</span>
-          <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public" alt="" class="apply-hero__logo-icon">
+    <section class="access-hero">
+      <div class="access-hero__content">
+        <a href="/" class="access-hero__logo">
+          <span class="access-hero__logo-text">
+            <span class="access-hero__logo-merge">Merge</span>
+            <span class="access-hero__logo-combinator">Combinator</span>
+          </span>
+          <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public" alt="" class="access-hero__logo-icon">
         </a>
 
-        <h1 class="apply-hero__title">Build What Warfighters Need</h1>
-        <p class="apply-hero__subtitle">
-          Join the builder-led venture studio for national security. Connect with operators,
-          access resources, and build technology that matters.
+        <h1 class="access-hero__title">Defense Builders Portal</h1>
+        <p class="access-hero__subtitle">
+          Your gateway to the defense tech community. This is not an application to an incubator—it's
+          access to a members-only portal where you can connect, learn, and find opportunities.
         </p>
 
-        <div class="apply-hero__features">
-          <div class="apply-hero__feature">
-            <span class="apply-hero__feature-icon">&#10003;</span>
-            <span>Access to defense operators and advisors</span>
+        <div class="access-hero__features">
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#10003;</span>
+            <span class="access-hero__feature-text">Browse and track defense tech opportunities</span>
           </div>
-          <div class="apply-hero__feature">
-            <span class="apply-hero__feature-icon">&#10003;</span>
-            <span>Exclusive events and cohort programs</span>
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#10003;</span>
+            <span class="access-hero__feature-text">Connect with operators, founders, and advisors</span>
           </div>
-          <div class="apply-hero__feature">
-            <span class="apply-hero__feature-icon">&#10003;</span>
-            <span>Resources for dual-use technology builders</span>
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#10003;</span>
+            <span class="access-hero__feature-text">Match with champions and mission owners and get to work</span>
           </div>
-          <div class="apply-hero__feature">
-            <span class="apply-hero__feature-icon">&#10003;</span>
-            <span>Indo-Pacific focused network</span>
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#10003;</span>
+            <span class="access-hero__feature-text">Access exclusive resources and events</span>
+          </div>
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#127881;</span>
+            <span class="access-hero__feature-text"><strong>SigmaBlox alumni:</strong> 1 year free access included</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Right: Login/Apply Card -->
-    <section class="apply-form-section">
-      <div class="apply-card">
-        <div class="apply-card__header">
-          <img src="https://auth.sigmablox.com/static/dist/assets/icons/icon.png" alt="VIA" class="apply-card__via-logo">
-          <h2 class="apply-card__title">Request Access</h2>
-          <p class="apply-card__subtitle">Sign in or create an account to continue</p>
+    <!-- Right: Login Card -->
+    <section class="access-card-section">
+      <div class="access-card">
+        <div class="access-card__header">
+          <h2 class="access-card__title">Sign In</h2>
+          <p class="access-card__subtitle">New here? You'll create an account during sign in.</p>
         </div>
 
-        <div class="apply-card__actions">
-          <a href="/auth/login" class="apply-card__btn apply-card__btn--primary">
-            Continue with VIA
-          </a>
-          <a href="/combine" class="apply-card__btn apply-card__btn--outline">
-            Learn About Combine
-          </a>
-        </div>
-
-        <div class="apply-card__divider">or continue with</div>
-
-        <div class="apply-card__social">
-          <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://www.mergecombinator.com/" class="apply-card__social-btn">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-            </svg>
-            Google
+        <div class="access-card__methods">
+          <a href="/auth/login" class="access-card__method access-card__method--primary">
+            <div class="access-card__method-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="access-card__method-content">
+              <div class="access-card__method-title">Continue with Email</div>
+              <div class="access-card__method-desc">Email, magic link, or passkey</div>
+            </div>
+            <div class="access-card__method-arrow">&#8594;</div>
           </a>
         </div>
 
-        <div class="apply-card__footer">
-          <p class="apply-card__footer-text">
-            Already have an account? <a href="/auth/login" class="apply-card__footer-link">Sign in</a>
+        <div class="access-card__secured">
+          <img src="/assets/logos/vi-icon.jpg" alt="VIA" class="access-card__via-badge">
+          <span class="access-card__secured-text">Secured by VIA</span>
+        </div>
+
+        <div class="access-card__divider">
+          <span class="access-card__divider-line"></span>
+          <span class="access-card__divider-text">or continue with</span>
+          <span class="access-card__divider-line"></span>
+        </div>
+
+        <div class="access-card__sso">
+          <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://www.mergecombinator.com/" class="access-card__sso-btn">
+            <div class="access-card__sso-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+            </div>
+            <span>Google</span>
+          </a>
+          <a href="#" class="access-card__sso-btn access-card__sso-btn--disabled">
+            <div class="access-card__sso-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="16" rx="2"/>
+                <circle cx="9" cy="10" r="2"/>
+                <path d="M15 8h2M15 12h2"/>
+                <path d="M7 16h10"/>
+              </svg>
+            </div>
+            <span>CAC / PIV</span>
+            <span class="access-card__sso-badge">Pending</span>
+          </a>
+        </div>
+
+        <div class="access-card__footer">
+          <p class="access-card__footer-text">
+            Questions? <a href="/" class="access-card__footer-link">Learn more about Merge Combinator</a>
           </p>
         </div>
       </div>
