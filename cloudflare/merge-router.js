@@ -2,9 +2,21 @@ import { handleAuthRoute, isAuthRoute, getSession } from "./auth.js";
 
 const MC_PAGES_ORIGIN = "https://mc-site-dr4.pages.dev";
 const SIGMABLOX_ORIGIN = "https://www.sigmablox.com";
+const SIGMABLOX_API_ORIGIN = "https://api.sigmablox.com";
 const SIGMABLOX_HOSTNAMES = new Set(["www.sigmablox.com", "sigmablox.com"]);
 
+// Allowed origins for CORS on /api/* routes
+const API_CORS_ORIGINS = new Set([
+  "https://console.mergecombinator.com",
+  "https://mergecombinator.com",
+  "https://www.mergecombinator.com",
+  "http://localhost:3000",
+  "http://localhost:3002",
+  "http://localhost:5173",
+]);
+
 const ROUTES = [
+  { prefix: "/api", origin: SIGMABLOX_API_ORIGIN, stripPrefix: false, isApi: true },
   { prefix: "/combine", origin: SIGMABLOX_ORIGIN, stripPrefix: true, preserveRoot: true },
   // /builders is served from MC Pages (default origin), no route entry needed
   { prefix: "/opportunities", origin: "https://sbir.mergecombinator.com", stripPrefix: true },
@@ -107,6 +119,58 @@ function resolveTarget(url, route) {
   }
   target.search = url.search;
   return target;
+}
+
+function getCorsHeaders(request) {
+  const origin = request.headers.get("Origin");
+  if (origin && API_CORS_ORIGINS.has(origin)) {
+    return {
+      "Access-Control-Allow-Origin": origin,
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Credentials": "true",
+    };
+  }
+  return null;
+}
+
+async function handleApiRoute(request, targetUrl) {
+  // Handle CORS preflight
+  if (request.method === "OPTIONS") {
+    const corsHeaders = getCorsHeaders(request);
+    if (corsHeaders) {
+      return new Response(null, {
+        status: 204,
+        headers: corsHeaders,
+      });
+    }
+    return new Response(null, { status: 204 });
+  }
+
+  // Proxy the request to SigmaBlox API
+  const proxyRequest = new Request(targetUrl, {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
+  });
+
+  const response = await fetch(proxyRequest);
+
+  // Add CORS headers to response
+  const corsHeaders = getCorsHeaders(request);
+  if (corsHeaders) {
+    const newHeaders = new Headers(response.headers);
+    for (const [key, value] of Object.entries(corsHeaders)) {
+      newHeaders.set(key, value);
+    }
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: newHeaders,
+    });
+  }
+
+  return response;
 }
 
 function shouldRewriteBanner(response) {
@@ -234,6 +298,12 @@ export default {
     }
 
     const targetUrl = resolveTarget(url, route);
+
+    // Handle API routes with CORS
+    if (route.isApi) {
+      return handleApiRoute(request, targetUrl);
+    }
+
     let response = await fetch(new Request(targetUrl, request));
 
     if (route.origin === SIGMABLOX_ORIGIN && isRedirectResponse(response)) {
