@@ -156,13 +156,49 @@
 
 ## Prioritized Tasks
 
-### Phase 4: Additional Pages Seeding (Public API Complete)
-Per spec, additional pages need API integration:
-- [x] `/portfolio` - Cohort showcase from public API (now uses seeded data)
-- [x] `/` (homepage) - Stats from seeded company data
-- [ ] `/about` - Team members (DEFERRED - requires private Ghost CMS API or static content)
+### HIGH PRIORITY - Ready to Implement
 
-**Note on /about:** The about page currently redirects to homepage. Previous static team content was intentionally removed and backlogged. Team member data requires either private Ghost CMS API access or static content to be provided. This is beyond the public API integration scope.
+#### About Page Implementation
+Per `specs/about-page.md`:
+- [ ] Remove redirect, create full about.html page structure
+- [ ] Add hero section with mission statement (C2UX compliant language)
+- [ ] Add mission section (brief, operational)
+- [ ] Implement partner logo grid using assets from `assets/logos/partners/`
+- [ ] Make partner logos responsive (6-8 desktop, 3-4 tablet, 2 mobile)
+- [ ] Add hover effect for partner logos (grayscale to color)
+- [ ] Link partner logos to external sites
+- [ ] Ensure C2UX compliance (no marketing language)
+- [ ] Visual verification at all breakpoints
+
+**Data:** Partner logos are static assets. Team section omitted until data source available.
+
+#### Knowledge Page Enhancement
+Per `specs/knowledge-page.md`:
+- [ ] Review current knowledge.html structure
+- [ ] Organize content by categories (Getting Started, For Builders, For Operators, Technical)
+- [ ] Add resource cards with consistent styling
+- [ ] Ensure links to docs.mergecombinator.com work
+- [ ] C2UX language audit
+- [ ] Responsive layout verification
+
+### MEDIUM PRIORITY - Phase 1 Auth (Blocked on VIA Config)
+
+Per `.rtmx/database.csv`:
+- [ ] REQ-AUTH-001: Configure VIA OAuth for mergecombinator.com
+- [ ] REQ-AUTH-002: Client-side auth service (`js/auth/via-service.js`)
+
+**Note:** These require VIA/Authentik admin access. If blocked, proceed with page improvements.
+
+### LOWER PRIORITY - Dependent on Auth
+
+- [ ] REQ-CONTENT-001: Builder modal auth gating (requires REQ-AUTH-002)
+- [ ] REQ-CONTENT-002: Auth UI in header (requires REQ-AUTH-002)
+
+### Phase 4: Additional Pages (Status Update)
+- [x] `/portfolio` - Cohort showcase from public API (uses seeded data)
+- [x] `/` (homepage) - Stats from seeded company data
+- [ ] `/about` - NOW READY (see specs/about-page.md)
+- [ ] `/knowledge` - Enhancement needed (see specs/knowledge-page.md)
 
 ### Error Handling Improvements (Complete)
 - [x] 401/403 response redirects to login
