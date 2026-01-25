@@ -125,6 +125,10 @@ function createCookieHeader(name, value, maxAge, secure = true) {
     `SameSite=Lax`,
     `Max-Age=${maxAge}`,
   ];
+  // For deletion (maxAge=0), also set explicit expired date for browser compatibility
+  if (maxAge <= 0) {
+    parts.push("Expires=Thu, 01 Jan 1970 00:00:00 GMT");
+  }
   if (secure) {
     parts.push("Secure");
   }
