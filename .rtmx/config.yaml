@@ -2,6 +2,10 @@
 project: mc_site
 description: Merge Combinator marketing site evolving to defense ecosystem command center
 
+# Database location
+database: .rtmx/database.csv
+requirements_dir: .rtmx/requirements
+
 # Category definitions
 categories:
   AUTH:
@@ -16,6 +20,9 @@ categories:
   C2UX:
     description: Command center UX evolution
     prefix: REQ-C2UX
+  LEGAL:
+    description: Privacy policies and legal compliance
+    prefix: REQ-LEGAL
   BUGS:
     description: Bug fixes and issues
     prefix: REQ-BUG
