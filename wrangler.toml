@@ -27,8 +27,8 @@ compatibility_date = "2024-01-01"
 # Production non-secrets (source of truth: config/base.yaml)
 # -----------------------------------------------------------------------------
 [vars]
-OIDC_ISSUER_URL = "https://auth.sigmablox.com"  # Must match config/base.yaml line 44
-OAUTH_LOGOUT_URL = "https://auth.sigmablox.com/application/o/defense-builders/end-session/"  # Must match config/base.yaml line 40
+OIDC_ISSUER_URL = "https://via.mergecombinator.com"
+OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/defense-builders/end-session/"
 
 # -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
