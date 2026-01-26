@@ -133,21 +133,48 @@ export function renderBuilderModal(company, options = {}) {
         </div>
     ` : '';
 
-    // Video/Pitch links - private content, only shown to authenticated users
+    // Video/Pitch links - private content, requires authentication
+    // Show placeholder for unauthenticated users to indicate restricted content
     let linksSection = '';
-    if (authenticated && user) {
-        const linksHtml = [];
-        if (company.videoUrl) {
-            linksHtml.push(`<a href="${escapeHtml(company.videoUrl)}" target="_blank" rel="noopener" class="modal-link">Watch Video</a>`);
-        }
-        if (company.pitchUrl) {
-            linksHtml.push(`<a href="${escapeHtml(company.pitchUrl)}" target="_blank" rel="noopener" class="modal-link">View Pitch</a>`);
-        }
-        if (linksHtml.length > 0) {
+    const hasPrivateResources = company.videoUrl || company.pitchUrl;
+
+    if (hasPrivateResources) {
+        if (authenticated && user) {
+            // Authenticated: show actual resource links
+            const linksHtml = [];
+            if (company.videoUrl) {
+                linksHtml.push(`<a href="${escapeHtml(company.videoUrl)}" target="_blank" rel="noopener" class="modal-link">Watch Video</a>`);
+            }
+            if (company.pitchUrl) {
+                linksHtml.push(`<a href="${escapeHtml(company.pitchUrl)}" target="_blank" rel="noopener" class="modal-link">View Pitch</a>`);
+            }
             linksSection = `
                 <div class="modal-section">
                     <h4 class="modal-section-title">Resources</h4>
                     <div class="modal-links">${linksHtml.join('')}</div>
+                </div>
+            `;
+        } else {
+            // Unauthenticated: show restricted access placeholder
+            // C2UX: operational language, no consumer terms
+            const resourceCount = (company.videoUrl ? 1 : 0) + (company.pitchUrl ? 1 : 0);
+            const resourceText = resourceCount === 1
+                ? (company.videoUrl ? 'Demo video' : 'Pitch materials')
+                : 'Demo video and pitch materials';
+            linksSection = `
+                <div class="modal-section modal-section--restricted">
+                    <h4 class="modal-section-title">Resources</h4>
+                    <div class="modal-restricted-placeholder">
+                        <span class="modal-restricted-placeholder__icon" aria-hidden="true">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </span>
+                        <span class="modal-restricted-placeholder__text">
+                            ${escapeHtml(resourceText)} available after authentication
+                        </span>
+                    </div>
                 </div>
             `;
         }
