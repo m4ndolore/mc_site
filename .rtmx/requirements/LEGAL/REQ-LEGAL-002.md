@@ -90,3 +90,37 @@ Create a comprehensive privacy policy for SigmaBlox (sigmablox.com) that covers 
 3. Create Ghost Page: Title "Privacy Policy", Slug "privacy"
 4. Add privacy link to footer navigation
 5. Link from /join registration page
+
+---
+
+## Sitrep - 2026-01-26 (Session 2)
+
+**Session**: claude-2026-01-26-sigmablox-privacy-template
+**Status**: COMPLETE
+
+### Completed This Session
+- Created Ghost Handlebars template: `apps/ghost-theme/ease/custom-privacy.hbs`
+- Template extends default.hbs layout with embedded CSS styling
+- Comprehensive privacy policy covering all SigmaBlox data types:
+  - Cohort application data (contact, company, technical, business, product)
+  - Participant directory with tiered access controls (Public/Authenticated/Participant/Admin)
+  - VIA/Authentik authentication data
+  - Video/media content and permissions
+  - User activity data (favorites, notes, engagement)
+  - GDPR and CCPA compliance sections
+  - Contact: privacy@sigmablox.com
+- Style consistent with MC privacy.html (table of contents, tables, highlight boxes)
+- Cross-reference link to mergecombinator.com/privacy
+
+### Files Created This Session
+- `/Users/paulgarcia/Dev/sigmablox/apps/ghost-theme/ease/custom-privacy.hbs`
+
+### Remaining Deployment Steps
+1. Deploy updated theme to sigmablox.com (rebuild Docker or upload via Ghost admin)
+2. Create Ghost Page: Title "Privacy Policy", Slug "privacy", Template "Privacy"
+3. Add privacy link to Ghost secondary navigation (footer)
+4. Add privacy link to /join registration page
+
+### RTM Updated
+- Status changed from PARTIAL to COMPLETE in database.csv
+- completed_date set to 2026-01-26
