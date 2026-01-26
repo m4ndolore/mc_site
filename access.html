@@ -21,7 +21,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -87,26 +87,44 @@
     .access-hero__logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 8px;
       margin-bottom: 48px;
       text-decoration: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .access-hero__logo:hover {
+      opacity: 0.85;
     }
 
     .access-hero__logo-text {
-      font-family: 'Space Mono', monospace;
-      font-size: 1.1rem;
-      color: var(--text-primary);
-      font-weight: 700;
       display: flex;
-      gap: 8px;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1;
     }
 
-    .access-hero__logo-merge { color: var(--text-primary); }
-    .access-hero__logo-combinator { color: var(--text-secondary); }
+    .access-hero__logo-merge {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 11px;
+      font-weight: 400;
+      font-style: italic;
+      color: rgba(242, 245, 247, 0.7);
+    }
+
+    .access-hero__logo-combinator {
+      font-family: 'Helvetica Neue', 'Inter', Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
 
     .access-hero__logo-icon {
-      height: 24px;
+      height: 22px;
       width: auto;
+      display: block;
+      margin-left: 2px;
     }
 
     .access-hero__title {
@@ -177,10 +195,10 @@
 
     .access-card {
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      padding: 28px;
+      padding: 36px;
     }
 
     .access-card__header {
@@ -199,6 +217,49 @@
     .access-card__subtitle {
       font-size: 13px;
       color: var(--text-secondary);
+    }
+
+    .access-card__secured {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .access-card__secured-icon {
+      height: 16px;
+      width: auto;
+      object-fit: contain;
+      border-radius: 2px;
+    }
+
+    .access-card__secured-text {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-tertiary);
+    }
+
+    .access-card__new-here {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .access-card__new-here a {
+      color: rgba(56,189,248,0.90);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .access-card__new-here a:hover {
+      text-decoration: underline;
     }
 
     /* Method buttons (matching via-login) */
@@ -280,32 +341,6 @@
       color: var(--text-secondary);
     }
 
-    /* Secured by VIA badge */
-    .access-card__secured {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 12px;
-      padding: 8px 12px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border-subtle);
-    }
-
-    .access-card__via-badge {
-      width: 18px;
-      height: 18px;
-      object-fit: contain;
-    }
-
-    .access-card__secured-text {
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-tertiary);
-    }
-
     /* Divider */
     .access-card__divider {
       display: flex;
@@ -377,6 +412,62 @@
       background: rgba(245,158,11,0.20);
       border: 1px solid rgba(245,158,11,0.40);
       color: #fbbf24;
+    }
+
+    /* Requirements section */
+    .access-card__requirements {
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .access-card__requirements-header {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .access-card__requirements-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .access-card__requirements-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .access-card__requirements-check {
+      color: var(--success-text);
+      font-size: 11px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .access-card__requirements-legal {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .access-card__requirements-legal a {
+      color: rgba(56,189,248,0.90);
+      text-decoration: none;
+    }
+
+    .access-card__requirements-legal a:hover {
+      text-decoration: underline;
     }
 
     /* Footer */
@@ -460,18 +551,18 @@
           </div>
           <div class="access-hero__feature">
             <span class="access-hero__feature-icon">&#10003;</span>
-            <span class="access-hero__feature-text">Connect with operators, founders, and advisors</span>
+            <span class="access-hero__feature-text">Meet our trusted operators, founders, and advisors</span>
           </div>
           <div class="access-hero__feature">
             <span class="access-hero__feature-icon">&#10003;</span>
-            <span class="access-hero__feature-text">Match with champions and mission owners and get to work</span>
+            <span class="access-hero__feature-text"><strong>Get to work:</strong> Match with champions, mission owners, and problem solvers</span>
           </div>
           <div class="access-hero__feature">
             <span class="access-hero__feature-icon">&#10003;</span>
             <span class="access-hero__feature-text">Access exclusive resources and events</span>
           </div>
           <div class="access-hero__feature">
-            <span class="access-hero__feature-icon">&#127881;</span>
+            <span class="access-hero__feature-icon">&#128640;</span>
             <span class="access-hero__feature-text"><strong>SigmaBlox alumni:</strong> 1 year free access included</span>
           </div>
         </div>
@@ -483,7 +574,10 @@
       <div class="access-card">
         <div class="access-card__header">
           <h2 class="access-card__title">Sign In</h2>
-          <p class="access-card__subtitle">New here? You'll create an account during sign in.</p>
+          <div class="access-card__secured">
+            <img src="/assets/logos/via2_rect_backed.jpg" alt="VIA" class="access-card__secured-icon">
+            <span class="access-card__secured-text">Secured by VIA</span>
+          </div>
         </div>
 
         <div class="access-card__methods">
@@ -495,17 +589,16 @@
               </svg>
             </div>
             <div class="access-card__method-content">
-              <div class="access-card__method-title">Continue with Email</div>
+              <div class="access-card__method-title">Continue with Email or Username</div>
               <div class="access-card__method-desc">Email, magic link, or passkey</div>
             </div>
             <div class="access-card__method-arrow">&#8594;</div>
           </a>
         </div>
 
-        <div class="access-card__secured">
-          <img src="/assets/logos/vi-icon.jpg" alt="VIA" class="access-card__via-badge">
-          <span class="access-card__secured-text">Secured by VIA</span>
-        </div>
+        <p class="access-card__new-here">
+          New here? <a href="/access">Apply for access</a>
+        </p>
 
         <div class="access-card__divider">
           <span class="access-card__divider-line"></span>
@@ -537,6 +630,23 @@
             <span>CAC / PIV</span>
             <span class="access-card__sso-badge">Pending</span>
           </a>
+        </div>
+
+        <div class="access-card__requirements">
+          <div class="access-card__requirements-header">Requirements</div>
+          <div class="access-card__requirements-list">
+            <div class="access-card__requirements-item">
+              <span class="access-card__requirements-check">&#10003;</span>
+              <span>A valid individual or company email</span>
+            </div>
+            <div class="access-card__requirements-item">
+              <span class="access-card__requirements-check">&#10003;</span>
+              <span>A validated proof of identity (VIA, trusted government ID, or partner login)</span>
+            </div>
+          </div>
+          <p class="access-card__requirements-legal">
+            By continuing, you acknowledge our <a href="/privacy.html">Privacy Policy</a> and agree to the <a href="/terms.html">terms of service</a>.
+          </p>
         </div>
 
         <div class="access-card__footer">
