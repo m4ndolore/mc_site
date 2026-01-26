@@ -3,6 +3,11 @@
  *
  * Handles OAuth 2.0 PKCE flow with VIA/Authentik
  *
+ * STATE MANAGEMENT:
+ *   OAuth state is stored in the URL state parameter (encrypted), NOT in cookies.
+ *   This avoids cookie loss during cross-site OAuth redirects (SameSite issues).
+ *   Pattern borrowed from SigmaBlox VIA integration.
+ *
  * Configuration:
  *   - OIDC_ISSUER_URL: from wrangler.toml (must align with config/*.yaml)
  *   - MC_OAUTH_CLIENT_ID, MC_OAUTH_CLIENT_SECRET, SESSION_SECRET: from .dev.vars (symlink to .env.local)
@@ -156,19 +161,27 @@ function createCookieHeader(name, value, maxAge, secure = true) {
 
 /**
  * Handle /auth/login - Redirect to VIA OAuth
+ *
+ * State is stored in the OAuth state parameter itself (encrypted), not in a cookie.
+ * This survives cross-site redirects where cookies may be blocked.
  */
 async function handleLogin(request, env) {
   const url = new URL(request.url);
   const returnTo = url.searchParams.get("return_to") || "/";
 
   const { verifier, challenge } = await generatePKCE();
-  const state = generateRandomString(16);
+  const nonce = generateRandomString(16);
 
-  // Store PKCE verifier and state in a temporary cookie
-  const stateData = await encryptSession(
-    { verifier, state, returnTo },
-    env.SESSION_SECRET
-  );
+  // Encode ALL state data into the OAuth state parameter (encrypted)
+  // This survives cross-site redirects where cookies are blocked
+  const statePayload = {
+    nonce,
+    verifier,
+    returnTo,
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + 600, // 10 minute expiry
+  };
+  const encryptedState = await encryptSession(statePayload, env.SESSION_SECRET);
 
   const viaUrls = getOAuthUrls(env);
   const redirectUri = `${url.origin}/auth/callback`;
@@ -177,38 +190,30 @@ async function handleLogin(request, env) {
   authUrl.searchParams.set("response_type", "code");
   authUrl.searchParams.set("redirect_uri", redirectUri);
   authUrl.searchParams.set("scope", "openid email profile groups");
-  authUrl.searchParams.set("state", state);
+  authUrl.searchParams.set("state", encryptedState);
   authUrl.searchParams.set("code_challenge", challenge);
   authUrl.searchParams.set("code_challenge_method", "S256");
 
-  const response = Response.redirect(authUrl.toString(), 302);
-  const headers = new Headers(response.headers);
-  headers.append(
-    "Set-Cookie",
-    createCookieHeader("mc_auth_state", stateData, 600, url.protocol === "https:")
-  );
-
-  return new Response(null, {
-    status: 302,
-    headers,
-  });
+  return Response.redirect(authUrl.toString(), 302);
 }
 
 /**
  * Handle /auth/callback - Exchange code for tokens
+ *
+ * State is decoded from the OAuth state parameter (encrypted), not from a cookie.
  */
 async function handleCallback(request, env) {
   try {
     const url = new URL(request.url);
     const code = url.searchParams.get("code");
-    const state = url.searchParams.get("state");
+    const encryptedState = url.searchParams.get("state");
     const error = url.searchParams.get("error");
 
     if (error) {
       return new Response(`Authentication error: ${error}`, { status: 400 });
     }
 
-    if (!code || !state) {
+    if (!code || !encryptedState) {
       return new Response("Missing code or state", { status: 400 });
     }
 
@@ -218,86 +223,83 @@ async function handleCallback(request, env) {
       return new Response("Server configuration error: missing SESSION_SECRET", { status: 500 });
     }
 
-    // Retrieve and validate state
-    const cookies = parseCookies(request);
-    if (!cookies.mc_auth_state) {
-      return new Response("Missing auth state cookie - try logging in again", { status: 400 });
-    }
+    // Decrypt and validate state from URL parameter (not cookie)
+    const stateData = await decryptSession(encryptedState, env.SESSION_SECRET);
 
-    const stateData = await decryptSession(cookies.mc_auth_state, env.SESSION_SECRET);
-
-    if (!stateData || stateData.state !== state) {
-      console.error("State validation failed", { hasStateData: !!stateData, expectedState: state, actualState: stateData?.state });
+    if (!stateData) {
+      console.error("State decryption failed");
       return new Response("Invalid state - try logging in again", { status: 400 });
     }
 
-  // Exchange code for tokens
-  const viaUrls = getOAuthUrls(env);
-  const redirectUri = `${url.origin}/auth/callback`;
-  const tokenResponse = await fetch(viaUrls.token, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      grant_type: "authorization_code",
-      client_id: env.MC_OAUTH_CLIENT_ID,
-      client_secret: env.MC_OAUTH_CLIENT_SECRET,
-      code,
-      redirect_uri: redirectUri,
-      code_verifier: stateData.verifier,
-    }),
-  });
+    // Validate expiration
+    const now = Math.floor(Date.now() / 1000);
+    if (stateData.exp && stateData.exp < now) {
+      console.error("State expired", { exp: stateData.exp, now });
+      return new Response("Login session expired - try logging in again", { status: 400 });
+    }
 
-  if (!tokenResponse.ok) {
-    const errorText = await tokenResponse.text();
-    console.error("Token exchange failed:", tokenResponse.status, errorText);
-    return new Response(`Failed to exchange token: ${tokenResponse.status} - ${errorText}`, { status: 500 });
-  }
+    // Exchange code for tokens
+    const viaUrls = getOAuthUrls(env);
+    const redirectUri = `${url.origin}/auth/callback`;
+    const tokenResponse = await fetch(viaUrls.token, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        grant_type: "authorization_code",
+        client_id: env.MC_OAUTH_CLIENT_ID,
+        client_secret: env.MC_OAUTH_CLIENT_SECRET,
+        code,
+        redirect_uri: redirectUri,
+        code_verifier: stateData.verifier,
+      }),
+    });
 
-  const tokens = await tokenResponse.json();
+    if (!tokenResponse.ok) {
+      const errorText = await tokenResponse.text();
+      console.error("Token exchange failed:", tokenResponse.status, errorText);
+      return new Response(`Failed to exchange token: ${tokenResponse.status} - ${errorText}`, { status: 500 });
+    }
 
-  // Fetch user info
-  const userResponse = await fetch(viaUrls.userinfo, {
-    headers: {
-      Authorization: `Bearer ${tokens.access_token}`,
-    },
-  });
+    const tokens = await tokenResponse.json();
 
-  if (!userResponse.ok) {
-    return new Response("Failed to fetch user info", { status: 500 });
-  }
+    // Fetch user info
+    const userResponse = await fetch(viaUrls.userinfo, {
+      headers: {
+        Authorization: `Bearer ${tokens.access_token}`,
+      },
+    });
 
-  const user = await userResponse.json();
+    if (!userResponse.ok) {
+      return new Response("Failed to fetch user info", { status: 500 });
+    }
 
-  // Create session
-  const session = {
-    user: {
-      sub: user.sub,
-      email: user.email,
-      name: user.name || user.preferred_username,
-      groups: user.groups || [],
-    },
-    accessToken: tokens.access_token,
-    expiresAt: Date.now() + (tokens.expires_in * 1000),
-  };
+    const user = await userResponse.json();
 
-  const sessionCookie = await encryptSession(session, env.SESSION_SECRET);
-  const returnTo = stateData.returnTo || "/";
+    // Create session
+    const session = {
+      user: {
+        sub: user.sub,
+        email: user.email,
+        name: user.name || user.preferred_username,
+        groups: user.groups || [],
+      },
+      accessToken: tokens.access_token,
+      expiresAt: Date.now() + (tokens.expires_in * 1000),
+    };
 
-  const headers = new Headers();
-  headers.set("Location", returnTo);
-  headers.append(
-    "Set-Cookie",
-    createCookieHeader(SESSION_COOKIE_NAME, sessionCookie, SESSION_MAX_AGE, url.protocol === "https:")
-  );
-  // Clear the state cookie
-  headers.append(
-    "Set-Cookie",
-    createCookieHeader("mc_auth_state", "", 0, url.protocol === "https:")
-  );
+    const sessionCookie = await encryptSession(session, env.SESSION_SECRET);
+    const returnTo = stateData.returnTo || "/";
 
-  return new Response(null, { status: 302, headers });
+    const headers = new Headers();
+    headers.set("Location", returnTo);
+    headers.append(
+      "Set-Cookie",
+      createCookieHeader(SESSION_COOKIE_NAME, sessionCookie, SESSION_MAX_AGE, url.protocol === "https:")
+    );
+
+    return new Response(null, { status: 302, headers });
   } catch (err) {
     console.error("Callback error:", err.message, err.stack);
     return new Response(`Authentication callback failed: ${err.message}`, { status: 500 });
