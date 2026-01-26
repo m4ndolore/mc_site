@@ -12,13 +12,13 @@ Add authentication state indicator and login/logout buttons to the site header. 
 - `~/.claude/skills/command-center-ui-enforcer/SKILL.md`
 
 ## Acceptance Criteria
-- [ ] Header shows auth state indicator
-- [ ] Logged out: "Authenticate" button visible
-- [ ] Logged in: User indicator + "Sign Out" button
-- [ ] Clicking Authenticate initiates OAuth flow
-- [ ] Clicking Sign Out clears session
-- [ ] Mobile responsive (hamburger menu includes auth)
-- [ ] C2UX compliant language throughout
+- [x] Header shows auth state indicator
+- [x] Logged out: "Authenticate" button visible
+- [x] Logged in: User indicator + "Terminate Session" button
+- [x] Clicking Authenticate initiates OAuth flow (links to /auth/login)
+- [x] Clicking Terminate Session clears session (links to /auth/logout)
+- [x] Mobile responsive (hamburger menu includes auth via nav__menu-actions)
+- [x] C2UX compliant language throughout
 
 ## Implementation
 
@@ -106,7 +106,7 @@ window.handleLogout = () => logout();
 ```
 
 ## Implementation
-- **Status**: PENDING
+- **Status**: COMPLETE
 - **Phase**: 2
 - **Priority**: HIGH
 
@@ -118,3 +118,47 @@ window.handleLogout = () => logout();
 
 ## Dependencies
 - REQ-AUTH-002 (auth service needed)
+
+---
+
+## Sitrep - 2026-01-26 (Session 1)
+
+**Session**: claude-2026-01-26-auth-ui-header
+**Status**: COMPLETE
+
+### Completed This Session
+- Updated `js/auth-nav.js` with C2UX compliant language:
+  - Logged out: "Authenticate" button (not "Access" or "Sign In")
+  - Logged in: User dropdown with "Operations Console" and "Terminate Session" (not "Dashboard" and "Sign Out")
+  - Default fallback display name is "Operator" (not "User")
+- Updated 11 HTML files to use "Authenticate" as fallback text in static HTML:
+  - index.html, builders.html, knowledge.html, security.html, opportunities.html
+  - merch.html, archive.html, terms.html, 404.html, privacy.html, portfolio.html
+- Changed auth link from `/access` to `/auth/login` for proper OAuth flow
+- Added `nav__dropdown` class to container for correct dropdown positioning
+
+### Files Modified This Session
+- `js/auth-nav.js` - C2UX language updates
+- `index.html` - Auth button text and link
+- `builders.html` - Auth button text and link
+- `knowledge.html` - Auth button text and link
+- `security.html` - Auth button text and link
+- `opportunities.html` - Auth button text and link
+- `merch.html` - Auth button text and link
+- `archive.html` - Auth button text and link
+- `terms.html` - Auth button text and link
+- `404.html` - Auth button text and link
+- `privacy.html` - Auth button text and link
+- `portfolio.html` - Auth button text and link
+
+### C2UX Language Applied
+Per `docs/theme/ux.md` doctrine:
+- "Authenticate" instead of "Access", "Sign In", "Login"
+- "Operations Console" instead of "Dashboard"
+- "Terminate Session" instead of "Sign Out", "Logout"
+- "Operator" as default user display (not "User")
+
+### Notes
+- Existing CSS styles in `styles.css` already support the dropdown UI (nav__dropdown, nav__dropdown-trigger, nav__user-avatar, etc.)
+- The auth service at `js/builders/auth.js` provides the API used by auth-nav.js
+- Mobile responsive hamburger menu includes auth through the nav__menu-actions div

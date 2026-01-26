@@ -30,16 +30,18 @@
 })();
 
 function showLoggedOutDropdown(container) {
-  // Direct link to /access (no dropdown when logged out)
+  // C2UX: Use operational language - "Authenticate" not marketing-speak like "Access" or "Sign In"
   container.innerHTML = `
-    <a href="/access" class="nav__btn nav__btn--primary">Access</a>
+    <a href="/auth/login" class="nav__btn nav__btn--primary">Authenticate</a>
   `;
 }
 
 function showLoggedInDropdown(container, user) {
-  const displayName = user.name || user.email?.split('@')[0] || 'User';
+  const displayName = user.name || user.email?.split('@')[0] || 'Operator';
   const initial = displayName.charAt(0).toUpperCase();
 
+  // Add dropdown classes for positioning
+  container.classList.add('nav__dropdown');
   container.classList.add('nav__dropdown--user');
   container.innerHTML = `
     <button class="nav__btn nav__dropdown-trigger">
@@ -50,9 +52,9 @@ function showLoggedInDropdown(container, user) {
       </svg>
     </button>
     <div class="nav__dropdown-menu">
-      <a href="/dashboard" class="nav__dropdown-item">Dashboard</a>
+      <a href="/dashboard" class="nav__dropdown-item">Operations Console</a>
       <div class="nav__dropdown-divider"></div>
-      <a href="/auth/logout" class="nav__dropdown-item">Sign Out</a>
+      <a href="/auth/logout" class="nav__dropdown-item">Terminate Session</a>
     </div>
   `;
 }
