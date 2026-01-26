@@ -51,6 +51,19 @@
       font-size: 24px;
       color: var(--white);
       margin: 40px 0 16px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .legal-content h2:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .legal-content h3 {
+      font-size: 18px;
+      color: var(--white);
+      margin: 24px 0 12px;
     }
 
     .legal-content p,
@@ -61,9 +74,14 @@
       margin-bottom: 16px;
     }
 
-    .legal-content ul {
+    .legal-content ul,
+    .legal-content ol {
       padding-left: 24px;
       margin-bottom: 24px;
+    }
+
+    .legal-content li {
+      margin-bottom: 8px;
     }
 
     .legal-content a {
@@ -72,6 +90,66 @@
 
     .legal-content a:hover {
       text-decoration: underline;
+    }
+
+    .legal-content .highlight-box {
+      background: rgba(42, 127, 219, 0.1);
+      border: 1px solid rgba(42, 127, 219, 0.3);
+      padding: 20px;
+      margin: 24px 0;
+    }
+
+    .legal-content .highlight-box p {
+      margin-bottom: 0;
+    }
+
+    .legal-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+    }
+
+    .legal-content th,
+    .legal-content td {
+      text-align: left;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+    }
+
+    .legal-content th {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--white);
+      font-weight: 600;
+    }
+
+    .toc {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 24px;
+      margin: 24px 0 40px;
+    }
+
+    .toc h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    .toc ol {
+      margin-bottom: 0;
+    }
+
+    .toc li {
+      margin-bottom: 8px;
+    }
+
+    .toc a {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .toc a:hover {
+      color: var(--blue);
     }
   </style>
 </head>
@@ -109,48 +187,274 @@
       </button>
     </div>
   </header>
-
   <!-- Content -->
   <main class="legal-content">
     <h1>Privacy Policy</h1>
-    <p class="last-updated">Last updated: January 2025</p>
+    <p class="last-updated">Last updated: January 25, 2026</p>
 
-    <p>Merge Combinator ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services.</p>
+    <p>Merge Combinator LLC ("Merge Combinator," "we," "our," or "us") operates the mergecombinator.com website and related digital services, including the Defense Builders platform. This Privacy Policy explains how we collect, use, disclose, and protect your personal information when you use our services.</p>
 
-    <h2>Information We Collect</h2>
-    <p>We may collect information about you in a variety of ways, including:</p>
+    <div class="highlight-box">
+      <p><strong>Summary:</strong> We collect only the information necessary to provide our services. We do not sell your personal data. You have rights to access, correct, and delete your information.</p>
+    </div>
+
+    <nav class="toc">
+      <h3>Table of Contents</h3>
+      <ol>
+        <li><a href="#information-we-collect">Information We Collect</a></li>
+        <li><a href="#how-we-use-information">How We Use Your Information</a></li>
+        <li><a href="#authentication-and-via">Authentication and VIA</a></li>
+        <li><a href="#cookies-and-tracking">Cookies and Tracking Technologies</a></li>
+        <li><a href="#information-sharing">Information Sharing and Disclosure</a></li>
+        <li><a href="#data-retention">Data Retention</a></li>
+        <li><a href="#data-security">Data Security</a></li>
+        <li><a href="#your-rights">Your Rights and Choices</a></li>
+        <li><a href="#ccpa-rights">California Privacy Rights (CCPA)</a></li>
+        <li><a href="#gdpr-rights">European Privacy Rights (GDPR)</a></li>
+        <li><a href="#international-transfers">International Data Transfers</a></li>
+        <li><a href="#children">Children'''s Privacy</a></li>
+        <li><a href="#changes">Changes to This Policy</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="information-we-collect">1. Information We Collect</h2>
+
+    <h3>Information You Provide Directly</h3>
+    <p>When you interact with our services, you may provide us with:</p>
     <ul>
-      <li><strong>Personal Data:</strong> Name, email address, phone number, and other contact information you provide when applying to our programs or contacting us.</li>
-      <li><strong>Usage Data:</strong> Information about how you access and use our website, including IP address, browser type, and pages visited.</li>
-      <li><strong>Cookies:</strong> We use cookies and similar tracking technologies to enhance your experience on our site.</li>
+      <li><strong>Account Information:</strong> Name, email address, and other identifiers when you create an account or authenticate through our identity provider (VIA)</li>
+      <li><strong>Profile Information:</strong> Professional information, company affiliation, and role when you complete your Defense Builders profile</li>
+      <li><strong>Application Information:</strong> Information submitted when applying to programs such as SigmaBlox or requesting platform access</li>
+      <li><strong>Communications:</strong> Messages, feedback, or inquiries you send to us</li>
     </ul>
 
-    <h2>How We Use Your Information</h2>
-    <p>We use the information we collect to:</p>
+    <h3>Information Collected Automatically</h3>
+    <p>When you use our services, we automatically collect:</p>
     <ul>
-      <li>Process applications and communicate with applicants</li>
-      <li>Improve our website and services</li>
-      <li>Send newsletters and updates (with your consent)</li>
-      <li>Respond to inquiries and support requests</li>
-      <li>Comply with legal obligations</li>
+      <li><strong>Device Information:</strong> Browser type, operating system, device type, and screen resolution</li>
+      <li><strong>Usage Data:</strong> Pages visited, features used, time spent on pages, and navigation patterns</li>
+      <li><strong>Log Data:</strong> IP address, access times, referring URLs, and error logs</li>
+      <li><strong>Session Data:</strong> Authentication state and session identifiers</li>
     </ul>
 
-    <h2>Information Sharing</h2>
-    <p>We do not sell your personal information. We may share information with:</p>
+    <h3>Information from Third Parties</h3>
+    <p>We may receive information from:</p>
     <ul>
-      <li>Service providers who assist in operating our website and services</li>
-      <li>Partners involved in our programs (with your consent)</li>
-      <li>Legal authorities when required by law</li>
+      <li><strong>Authentication Providers:</strong> When you sign in using Google or other Single Sign-On (SSO) providers, we receive your name, email, and profile picture</li>
+      <li><strong>Partner Platforms:</strong> Information from SigmaBlox, Airtable, or other integrated services about your participation in our programs</li>
+    </ul>
+    <h2 id="how-we-use-information">2. How We Use Your Information</h2>
+    <p>We use your information to:</p>
+    <ul>
+      <li><strong>Provide Services:</strong> Authenticate your identity, display the Defense Builders directory, and enable platform features</li>
+      <li><strong>Process Applications:</strong> Evaluate program applications and communicate with applicants</li>
+      <li><strong>Improve Our Services:</strong> Analyze usage patterns to enhance user experience and fix issues</li>
+      <li><strong>Communicate:</strong> Send service updates, security alerts, and (with consent) newsletters and announcements</li>
+      <li><strong>Maintain Security:</strong> Detect and prevent fraud, abuse, and unauthorized access</li>
+      <li><strong>Comply with Law:</strong> Meet legal obligations and respond to lawful requests</li>
     </ul>
 
-    <h2>Data Security</h2>
-    <p>We implement appropriate technical and organizational measures to protect your personal information. However, no method of transmission over the Internet is 100% secure.</p>
+    <h2 id="authentication-and-via">3. Authentication and VIA</h2>
+    <p>We use VIA (Verified Identity Access), our authentication system powered by Authentik, to secure access to protected features of our platform.</p>
 
-    <h2>Your Rights</h2>
-    <p>Depending on your location, you may have rights regarding your personal data, including the right to access, correct, or delete your information. Contact us to exercise these rights.</p>
+    <h3>Data Processed During Authentication</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Data Type</th>
+          <th>Purpose</th>
+          <th>Retention</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Email address</td>
+          <td>Account identification</td>
+          <td>Duration of account</td>
+        </tr>
+        <tr>
+          <td>Display name</td>
+          <td>Personalization</td>
+          <td>Duration of account</td>
+        </tr>
+        <tr>
+          <td>OAuth tokens</td>
+          <td>Session management</td>
+          <td>Session duration (typically 24 hours)</td>
+        </tr>
+        <tr>
+          <td>Session cookies</td>
+          <td>Authentication state</td>
+          <td>Session duration</td>
+        </tr>
+        <tr>
+          <td>Login timestamps</td>
+          <td>Security auditing</td>
+          <td>90 days</td>
+        </tr>
+      </tbody>
+    </table>
 
-    <h2>Contact Us</h2>
-    <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:privacy@mergecombinator.com">privacy@mergecombinator.com</a>.</p>
+    <h3>Third-Party SSO Providers</h3>
+    <p>When you authenticate using Google or other SSO providers, those providers share limited profile information with us according to their own privacy policies. We encourage you to review:</p>
+    <ul>
+      <li><a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+    </ul>
+
+    <h2 id="cookies-and-tracking">4. Cookies and Tracking Technologies</h2>
+
+    <h3>Types of Cookies We Use</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Cookie Type</th>
+          <th>Purpose</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Essential Cookies</td>
+          <td>Authentication, security, and site functionality</td>
+          <td>Session or up to 7 days</td>
+        </tr>
+        <tr>
+          <td>Preference Cookies</td>
+          <td>Remember your settings and preferences</td>
+          <td>Up to 1 year</td>
+        </tr>
+        <tr>
+          <td>Analytics Cookies</td>
+          <td>Understand usage patterns and improve services</td>
+          <td>Up to 2 years</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>Managing Cookies</h3>
+    <p>Most web browsers allow you to control cookies through their settings. You can:</p>
+    <ul>
+      <li>Block all cookies</li>
+      <li>Accept only first-party cookies</li>
+      <li>Delete cookies when you close your browser</li>
+    </ul>
+    <p>Note that blocking essential cookies may prevent you from accessing authenticated features of our platform.</p>
+
+    <h3>Do Not Track</h3>
+    <p>We honor Do Not Track (DNT) signals from your browser. When DNT is enabled, we limit data collection to essential functionality only.</p>
+    <h2 id="information-sharing">5. Information Sharing and Disclosure</h2>
+    <p><strong>We do not sell your personal information.</strong></p>
+
+    <p>We may share your information with:</p>
+    <ul>
+      <li><strong>Service Providers:</strong> Third parties that help us operate our services (hosting, email delivery, analytics) under strict data protection agreements</li>
+      <li><strong>Partners:</strong> With your consent, we may share information with program partners (e.g., SigmaBlox cohort organizers, Defense Builders network members)</li>
+      <li><strong>Legal Requirements:</strong> When required by law, court order, or government request</li>
+      <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets</li>
+      <li><strong>Safety:</strong> To protect the rights, safety, and property of Merge Combinator, our users, or the public</li>
+    </ul>
+
+    <h3>Service Providers</h3>
+    <p>Our key service providers include:</p>
+    <ul>
+      <li><strong>Cloudflare:</strong> Content delivery and security (Privacy Policy: <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">cloudflare.com/privacypolicy</a>)</li>
+      <li><strong>Google Cloud:</strong> Infrastructure and services</li>
+      <li><strong>Airtable:</strong> Data management for program participants</li>
+    </ul>
+
+    <h2 id="data-retention">6. Data Retention</h2>
+    <p>We retain your information for as long as necessary to provide our services and fulfill the purposes described in this policy. Specific retention periods include:</p>
+    <ul>
+      <li><strong>Account Data:</strong> Retained while your account is active and for 3 years after deletion request</li>
+      <li><strong>Application Data:</strong> Retained for 5 years for program alumni records</li>
+      <li><strong>Usage Logs:</strong> Retained for 90 days</li>
+      <li><strong>Session Data:</strong> Deleted upon session end or within 24 hours</li>
+    </ul>
+
+    <h2 id="data-security">7. Data Security</h2>
+    <p>We implement industry-standard security measures to protect your information, including:</p>
+    <ul>
+      <li><strong>Encryption:</strong> All data transmitted between your browser and our servers is encrypted using TLS 1.3</li>
+      <li><strong>Access Controls:</strong> Strict access controls limit who can access personal data</li>
+      <li><strong>Infrastructure Security:</strong> Our services are hosted on secure, compliant cloud infrastructure</li>
+      <li><strong>Authentication Security:</strong> Multi-factor authentication available for all accounts</li>
+      <li><strong>Regular Audits:</strong> We regularly review and update our security practices</li>
+    </ul>
+    <p>While we take reasonable precautions, no method of transmission over the Internet is 100% secure. We cannot guarantee absolute security of your data.</p>
+
+    <h2 id="your-rights">8. Your Rights and Choices</h2>
+    <p>You have the following rights regarding your personal information:</p>
+    <ul>
+      <li><strong>Access:</strong> Request a copy of the personal information we hold about you</li>
+      <li><strong>Correction:</strong> Request correction of inaccurate or incomplete information</li>
+      <li><strong>Deletion:</strong> Request deletion of your personal information (subject to legal retention requirements)</li>
+      <li><strong>Portability:</strong> Request your data in a machine-readable format</li>
+      <li><strong>Opt-Out:</strong> Unsubscribe from marketing communications at any time</li>
+      <li><strong>Restrict Processing:</strong> Request that we limit how we use your information</li>
+    </ul>
+    <p>To exercise these rights, contact us at <a href="mailto:privacy@mergecombinator.com">privacy@mergecombinator.com</a>. We will respond to your request within 30 days.</p>
+    <h2 id="ccpa-rights">9. California Privacy Rights (CCPA)</h2>
+    <p>If you are a California resident, you have additional rights under the California Consumer Privacy Act (CCPA):</p>
+    <ul>
+      <li><strong>Right to Know:</strong> You can request information about the categories and specific pieces of personal information we have collected about you</li>
+      <li><strong>Right to Delete:</strong> You can request that we delete your personal information, subject to certain exceptions</li>
+      <li><strong>Right to Opt-Out:</strong> You can opt out of the "sale" of your personal information. Note: We do not sell personal information as defined by the CCPA</li>
+      <li><strong>Right to Non-Discrimination:</strong> We will not discriminate against you for exercising your CCPA rights</li>
+    </ul>
+
+    <h3>Categories of Information Collected</h3>
+    <p>In the past 12 months, we have collected the following categories of personal information:</p>
+    <ul>
+      <li>Identifiers (name, email, IP address)</li>
+      <li>Professional information (company, role)</li>
+      <li>Internet activity (browsing history, usage data)</li>
+      <li>Inferences drawn from the above</li>
+    </ul>
+
+    <h2 id="gdpr-rights">10. European Privacy Rights (GDPR)</h2>
+    <p>If you are located in the European Economic Area (EEA), United Kingdom, or Switzerland, you have rights under the General Data Protection Regulation (GDPR):</p>
+    <ul>
+      <li><strong>Legal Basis:</strong> We process your data based on consent, contract performance, legitimate interests, or legal obligations</li>
+      <li><strong>Data Subject Rights:</strong> You have rights to access, rectification, erasure, restriction, portability, and objection</li>
+      <li><strong>Right to Withdraw Consent:</strong> Where processing is based on consent, you may withdraw it at any time</li>
+      <li><strong>Right to Lodge a Complaint:</strong> You may file a complaint with your local data protection authority</li>
+    </ul>
+
+    <h3>Data Controller</h3>
+    <p>Merge Combinator LLC is the data controller for your personal information. For GDPR inquiries, contact our Data Protection contact at <a href="mailto:privacy@mergecombinator.com">privacy@mergecombinator.com</a>.</p>
+
+    <h2 id="international-transfers">11. International Data Transfers</h2>
+    <p>We are based in the United States and process data primarily in the US. If you access our services from outside the US, your information may be transferred to, stored, and processed in the US or other countries where our service providers operate.</p>
+    <p>For transfers from the EEA, UK, or Switzerland, we use appropriate safeguards including:</p>
+    <ul>
+      <li>Standard Contractual Clauses approved by the European Commission</li>
+      <li>Data processing agreements with our service providers</li>
+    </ul>
+
+    <h2 id="children">12. Children'''s Privacy</h2>
+    <p>Our services are not directed to individuals under 18 years of age. We do not knowingly collect personal information from children. If you believe we have collected information from a child, please contact us immediately at <a href="mailto:privacy@mergecombinator.com">privacy@mergecombinator.com</a>.</p>
+
+    <h2 id="changes">13. Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. When we make significant changes, we will:</p>
+    <ul>
+      <li>Update the "Last updated" date at the top of this policy</li>
+      <li>Notify registered users via email</li>
+      <li>Display a notice on our website</li>
+    </ul>
+    <p>We encourage you to review this policy periodically for any changes.</p>
+
+    <h2 id="contact">14. Contact Us</h2>
+    <p>If you have questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:privacy@mergecombinator.com">privacy@mergecombinator.com</a></li>
+      <li><strong>Mail:</strong> Merge Combinator LLC, Privacy Inquiries, San Francisco, CA</li>
+    </ul>
+    <p>For security-related concerns, please contact <a href="mailto:security@mergecombinator.com">security@mergecombinator.com</a>.</p>
+
+    <div class="highlight-box">
+      <p>This Privacy Policy applies to mergecombinator.com and its subdomains. For the SigmaBlox platform privacy policy, please visit <a href="https://sigmablox.com/privacy">sigmablox.com/privacy</a>.</p>
+    </div>
   </main>
 
   <!-- Footer -->
