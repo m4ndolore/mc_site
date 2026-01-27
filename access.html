@@ -189,15 +189,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(17,24,39,0.25);
-      border-left: 1px solid var(--border-subtle);
+      background: rgba(6, 14, 28, 0.55);
+      border-left: 1px solid rgba(148, 163, 255, 0.18);
     }
 
     .access-card {
       width: 100%;
       max-width: 420px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
+      background: linear-gradient(180deg, rgba(8, 20, 40, 0.98), rgba(6, 16, 34, 0.98));
+      border: 1px solid rgba(148, 163, 255, 0.24);
+      border-radius: 2px;
+      box-shadow: 0 24px 80px rgba(2, 6, 23, 0.65);
       padding: 36px;
     }
 
@@ -226,8 +228,9 @@
       gap: 8px;
       margin-top: 16px;
       padding: 10px 14px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.62);
+      border: 1px solid rgba(148, 163, 255, 0.22);
+      border-radius: 2px;
     }
 
     .access-card__secured-icon {
@@ -275,33 +278,35 @@
       align-items: center;
       gap: 14px;
       padding: 14px 16px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(148, 163, 255, 0.22);
+      background: rgba(15, 23, 42, 0.55);
+      border-radius: 2px;
       text-decoration: none;
       color: var(--text-primary);
       transition: border-color 100ms, background 100ms;
     }
 
     .access-card__method:hover {
-      border-color: rgba(14,165,233,0.5);
-      background: rgba(14,165,233,0.10);
+      border-color: rgba(147, 197, 253, 0.55);
+      background: rgba(59, 130, 246, 0.18);
     }
 
     .access-card__method--primary {
-      border-color: var(--accent-border);
-      background: var(--accent-subtle);
+      border-color: rgba(147, 197, 253, 0.6);
+      background: rgba(59, 130, 246, 0.28);
     }
 
     .access-card__method--primary:hover {
-      border-color: rgba(14,165,233,0.65);
-      background: rgba(14,165,233,0.20);
+      border-color: rgba(191, 219, 254, 0.8);
+      background: rgba(59, 130, 246, 0.38);
     }
 
     .access-card__method-icon {
       width: 40px;
       height: 40px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.72);
+      border: 1px solid rgba(148, 163, 255, 0.22);
+      border-radius: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -310,9 +315,9 @@
     }
 
     .access-card__method--primary .access-card__method-icon {
-      background: rgba(14,165,233,0.18);
-      border-color: var(--accent-border);
-      color: #38bdf8;
+      background: rgba(59, 130, 246, 0.32);
+      border-color: rgba(147, 197, 253, 0.7);
+      color: #bfdbfe;
     }
 
     .access-card__method-content {
@@ -375,8 +380,9 @@
       justify-content: center;
       gap: 8px;
       padding: 12px 14px;
-      border: 1px solid var(--border-subtle);
-      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(148, 163, 255, 0.22);
+      background: rgba(15, 23, 42, 0.55);
+      border-radius: 2px;
       text-decoration: none;
       color: var(--text-primary);
       font-size: 12px;
@@ -385,8 +391,8 @@
     }
 
     .access-card__sso-btn:hover {
-      border-color: rgba(14,165,233,0.5);
-      background: rgba(14,165,233,0.10);
+      border-color: rgba(147, 197, 253, 0.55);
+      background: rgba(59, 130, 246, 0.18);
     }
 
     .access-card__sso-btn--disabled {
@@ -418,8 +424,9 @@
     .access-card__requirements {
       margin-top: 20px;
       padding: 16px;
-      background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border-subtle);
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(148, 163, 255, 0.2);
+      border-radius: 2px;
     }
 
     .access-card__requirements-header {
@@ -474,7 +481,7 @@
     .access-card__footer {
       margin-top: 20px;
       padding-top: 16px;
-      border-top: 1px solid var(--border-subtle);
+      border-top: 1px solid rgba(148, 163, 255, 0.2);
       text-align: center;
     }
 
@@ -521,6 +528,231 @@
 
       .access-card__sso-btn {
         min-height: 44px;
+      }
+    }
+
+    /* Request Access Drawer */
+    .request-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    .request-drawer.is-open {
+      pointer-events: auto;
+    }
+
+    .request-drawer__backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .request-drawer.is-open .request-drawer__backdrop {
+      opacity: 1;
+    }
+
+    .request-drawer__panel {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 520px;
+      max-width: 100%;
+      background: var(--bg-card);
+      border-left: 1px solid var(--border-subtle);
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .request-drawer.is-open .request-drawer__panel {
+      transform: translateX(0);
+    }
+
+    .request-drawer__close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+
+    .request-drawer__close:hover {
+      border-color: var(--border-hover);
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .request-drawer__header {
+      margin-bottom: 32px;
+    }
+
+    .request-drawer__title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .request-drawer__subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .request-drawer__form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+    }
+
+    .request-drawer__field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .request-drawer__label {
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+    }
+
+    .request-drawer__input,
+    .request-drawer__select {
+      padding: 14px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 14px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+
+    .request-drawer__input::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .request-drawer__input:focus,
+    .request-drawer__select:focus {
+      outline: none;
+      border-color: var(--accent-border);
+      background: rgba(14, 165, 233, 0.08);
+    }
+
+    .request-drawer__select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%239ca3af' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    .request-drawer__select option {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .request-drawer__submit {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 12px;
+      padding: 16px 24px;
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      color: white;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .request-drawer__submit:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
+    }
+
+    .request-drawer__success {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .request-drawer__success-icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--success);
+      border: 1px solid var(--success-border);
+      border-radius: 50%;
+      color: var(--success-text);
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .request-drawer__success-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .request-drawer__success-text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    .request-drawer__footer {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .request-drawer__footer a {
+      color: rgba(56, 189, 248, 0.90);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .request-drawer__footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 968px) {
+      .request-drawer__panel {
+        width: 100%;
+        padding: 32px 24px;
       }
     }
   </style>
@@ -573,7 +805,7 @@
     <section class="access-card-section">
       <div class="access-card">
         <div class="access-card__header">
-          <h2 class="access-card__title">Sign In</h2>
+          <h2 class="access-card__title">Authenticate</h2>
           <div class="access-card__secured">
             <img src="/assets/logos/via2_rect_backed.jpg" alt="VIA" class="access-card__secured-icon">
             <span class="access-card__secured-text">Secured by VIA</span>
@@ -597,7 +829,7 @@
         </div>
 
         <p class="access-card__new-here">
-          New here? <a href="/access">Apply for access</a>
+          New here? <a href="#" id="open-request-drawer">Apply for access</a>
         </p>
 
         <div class="access-card__divider">
@@ -656,6 +888,216 @@
         </div>
       </div>
     </section>
+
+    <!-- Request Access Drawer (overlays auth card) -->
+    <div class="request-drawer" id="request-drawer">
+      <div class="request-drawer__backdrop" id="drawer-backdrop"></div>
+      <div class="request-drawer__panel">
+        <button class="request-drawer__close" id="close-drawer" aria-label="Close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+
+        <div class="request-drawer__header">
+          <h2 class="request-drawer__title">Request Access</h2>
+          <p class="request-drawer__subtitle">Join the Defense Builders community</p>
+        </div>
+
+        <form class="request-drawer__form" id="request-form">
+          <div class="request-drawer__field">
+            <label for="request-name" class="request-drawer__label">Full Name</label>
+            <input
+              type="text"
+              id="request-name"
+              name="name"
+              class="request-drawer__input"
+              placeholder="Your full name"
+              required
+            >
+          </div>
+
+          <div class="request-drawer__field">
+            <label for="request-email" class="request-drawer__label">Email</label>
+            <input
+              type="email"
+              id="request-email"
+              name="email"
+              class="request-drawer__input"
+              placeholder="you@company.com"
+              required
+            >
+          </div>
+
+          <div class="request-drawer__field">
+            <label for="request-role" class="request-drawer__label">Role</label>
+            <select id="request-role" name="role" class="request-drawer__select" required>
+              <option value="" disabled selected>Select your role</option>
+              <option value="founder">Founder</option>
+              <option value="operator">Operator</option>
+              <option value="investor">Investor</option>
+              <option value="advisor">Advisor</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <button type="submit" class="request-drawer__submit">
+            Request Access
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </form>
+
+        <div class="request-drawer__success" id="request-success" style="display: none;">
+          <div class="request-drawer__success-icon">&#10003;</div>
+          <h3 class="request-drawer__success-title">Request Submitted</h3>
+          <p class="request-drawer__success-text">We'll review your request and get back to you shortly.</p>
+        </div>
+
+        <p class="request-drawer__footer">
+          Already have access? <a href="#" id="drawer-sign-in">Sign in</a>
+        </p>
+      </div>
+    </div>
   </main>
+
+  <script>
+    // Access request configuration (set requestEndpoint to enable backend submission)
+    window.MCAccessConfig = {
+      requestEndpoint: 'https://api.sigmablox.com/api/access-request',
+      notifyEmail: 'access@mergecombinator.com'
+    };
+  </script>
+
+  <script>
+    // Request Access Drawer
+    (function() {
+      const drawer = document.getElementById('request-drawer');
+      const openBtn = document.getElementById('open-request-drawer');
+      const closeBtn = document.getElementById('close-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+      const signInLink = document.getElementById('drawer-sign-in');
+      const form = document.getElementById('request-form');
+      const successEl = document.getElementById('request-success');
+      const config = window.MCAccessConfig || {};
+
+      // Guard for partial renders
+      if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !successEl) {
+        console.warn('[Access] Drawer elements missing; skipping drawer wiring.');
+        return;
+      }
+
+      function openDrawer(e) {
+        e.preventDefault();
+        drawer.classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeDrawer(e) {
+        if (e) e.preventDefault();
+        drawer.classList.remove('is-open');
+        document.body.style.overflow = '';
+        // Reset form after animation
+        setTimeout(() => {
+          form.reset();
+          form.style.display = '';
+          successEl.style.display = 'none';
+        }, 300);
+      }
+
+      function buildMailtoUrl(data) {
+        const to = config.notifyEmail || 'access@mergecombinator.com';
+        const subject = encodeURIComponent('Access Request — mergecombinator.com');
+        const body = encodeURIComponent(
+          [
+            'Access request submitted:',
+            `Name: ${data.name || ''}`,
+            `Email: ${data.email || ''}`,
+            `Role: ${data.role || ''}`,
+            `Source: ${window.location.href}`,
+            `Timestamp: ${new Date().toISOString()}`
+          ].join('\n')
+        );
+        return `mailto:${to}?subject=${subject}&body=${body}`;
+      }
+
+      async function submitToEndpoint(data) {
+        const endpoint = config.requestEndpoint;
+        if (!endpoint) {
+          return { ok: false, skipped: true };
+        }
+
+        try {
+          // Shape payload to match the SigmaBlox /api/access-request contract.
+          const payload = {
+            email: data.email,
+            name: data.name,
+            tier: data.role || 'general',
+            website_url: '',
+            userAgent: String(navigator.userAgent || ''),
+            referrer: String(document.referrer || ''),
+            requestedAt: new Date().toISOString(),
+            source: window.location.href
+          };
+
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) {
+            const text = await response.text().catch(() => '');
+            throw new Error(`Endpoint returned ${response.status}: ${text}`);
+          }
+
+          return { ok: true };
+        } catch (error) {
+          console.error('[Access] Endpoint submission failed:', error);
+          return { ok: false, error };
+        }
+      }
+
+      async function handleSubmit(e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const data = {
+          name: String(formData.get('name') || ''),
+          email: String(formData.get('email') || ''),
+          role: String(formData.get('role') || '')
+        };
+
+        // Try backend submission first when configured
+        const result = await submitToEndpoint(data);
+
+        // Fallback: open a prefilled mailto so requests aren't silently dropped
+        if (!result.ok) {
+          const mailtoUrl = buildMailtoUrl(data);
+          window.location.href = mailtoUrl;
+        }
+
+        // Always show success state after an attempted submission path
+        form.style.display = 'none';
+        successEl.style.display = 'block';
+      }
+
+      openBtn.addEventListener('click', openDrawer);
+      closeBtn.addEventListener('click', closeDrawer);
+      backdrop.addEventListener('click', closeDrawer);
+      signInLink.addEventListener('click', closeDrawer);
+      form.addEventListener('submit', handleSubmit);
+
+      // Close on Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
+          closeDrawer();
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
