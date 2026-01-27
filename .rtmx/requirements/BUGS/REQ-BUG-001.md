@@ -32,7 +32,7 @@ When attempting passkey authentication on mergecombinator.com (which is not conf
 - Link back to auth method selection
 
 ## Implementation
-- **Status**: PENDING
+- **Status**: PARTIAL
 - **Phase**: 1
 - **Priority**: MEDIUM
 
@@ -47,3 +47,59 @@ When attempting passkey authentication on mergecombinator.com (which is not conf
 ## Related
 - REQ-AUTH-001 (VIA OAuth configuration)
 - VIA/Authentik admin settings
+- REQ-BUG-002 (investigate hiding passkey option)
+
+---
+
+## Sitrep - 2026-01-26 (Session 1)
+
+**Session**: claude-2026-01-26-via-passkey-ux
+**Status**: PARTIAL
+
+### Completed This Session
+
+**Option B Implementation - Custom Recovery Page:**
+
+1. Created custom recovery page: `authentik/media/via-auth-denied.html`
+   - Matches VIA design aesthetic (dark theme, accent colors)
+   - Split-panel layout like other VIA pages
+   - Warning icon with amber/orange accent
+   - Clear explanation of common failure reasons
+   - Three recovery options:
+     - **Try Again** - Returns to `/if/flow/via-auth/` (primary action)
+     - **Reset Authentication** - Links to `/if/flow/via-recovery/`
+     - **Contact Support** - Email to support@sigmablox.com
+
+2. Created Authentik resources via API:
+   - Flow: `via-auth-denied` (pk: 391ad413-b3ff-4a91-8bbc-e9a9571e5333)
+   - Redirect Stage: `via-auth-denied-redirect` (pk: d9d8cea2-0078-44be-b95f-3394c346de6b)
+   - Stage bound to flow
+
+3. Recovery page accessible at: `http://localhost:9000/media/via-auth-denied.html`
+
+### Remaining Work
+
+To complete the integration:
+
+1. **Connect redirect to passkey failure:**
+   - Add `via-auth-denied-redirect` stage to via-auth flow
+   - Configure policy to trigger when passkey validation fails
+   - OR update via-passkey stage's `invalid_response_action`
+
+2. **Alternative: CSS enhancement:**
+   - Add CSS to Authentik's denied message to include recovery link
+   - Style the "Not you?" button area with our recovery page link
+
+3. **Test end-to-end:**
+   - Attempt passkey on mergecombinator.com
+   - Verify redirect to recovery page
+   - Verify "Try Again" returns to auth flow
+
+### Files Created
+- `/Users/paulgarcia/Dev/sigmablox/authentik/media/via-auth-denied.html`
+- `/Users/paulgarcia/Dev/sigmablox/authentik/custom-templates/flows/via-auth-denied.html` (Django template version)
+
+### Authentik Resources Created
+- Flow: `via-auth-denied`
+- Stage: `via-auth-denied-redirect`
+- Stage Binding: connecting stage to flow
