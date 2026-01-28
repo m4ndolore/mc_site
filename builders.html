@@ -69,83 +69,125 @@
        MAIN CONTENT
        ============================================ -->
   <main class="builders-page">
-    <!-- Hero Section -->
-    <section class="builders-hero">
+    <!-- Console Header -->
+    <section class="builders-console">
       <div class="container">
-        <h1 class="builders-hero__title">Defense Builders</h1>
-        <p class="builders-hero__subtitle">
-          Companies building dual-use technology for national security.
-        </p>
-      </div>
-    </section>
-
-    <!-- Stats Bar -->
-    <section class="builders-stats">
-      <div class="container">
-        <div class="builders-stats__grid">
-          <div class="builders-stats__item">
-            <span class="builders-stats__value" id="stat-builders">0</span>
-            <span class="builders-stats__label">Builders</span>
+        <div class="builders-console__title-row">
+          <h1 class="builders-console__title">Builder Records</h1>
+          <div class="builders-console__meta">Operational directory · status-linked</div>
+        </div>
+        <div class="builders-console__bar" role="group" aria-label="Builders console status bar">
+          <div class="builders-console__cell">
+            <div class="builders-console__label">Orders</div>
+            <div class="builders-console__value">Filter and task builder records</div>
           </div>
-          <div class="builders-stats__item">
-            <span class="builders-stats__value" id="stat-mission-areas">0</span>
-            <span class="builders-stats__label">Mission Areas</span>
+          <div class="builders-console__cell">
+            <div class="builders-console__label">Status</div>
+            <div class="builders-console__value">Inventory, auth state, and coverage visible</div>
           </div>
-          <div class="builders-stats__item">
-            <span class="builders-stats__value" id="stat-tech-areas">0</span>
-            <span class="builders-stats__label">Tech Areas</span>
-          </div>
-          <div class="builders-stats__item">
-            <span class="builders-stats__value" id="stat-cohorts">0</span>
-            <span class="builders-stats__label">Cohorts</span>
+          <div class="builders-console__cell">
+            <div class="builders-console__label">Commentary</div>
+            <div class="builders-console__value">Records respond to live filters</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Filter Bar -->
-    <section class="builders-filters">
-      <div class="container">
-        <div class="builders-filters__bar">
-          <div class="builders-filters__search">
-            <svg class="builders-filters__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"/>
-              <path d="M21 21l-4.35-4.35"/>
-            </svg>
-            <input
-              type="text"
-              id="search-input"
-              class="builders-filters__input"
-              placeholder="Search builders..."
-              aria-label="Search builders"
-            >
-          </div>
+    <section class="builders-layout">
+      <div class="container builders-layout__grid">
+        <div class="builders-main">
+          <!-- Stats Bar -->
+          <section class="builders-stats" aria-label="Builder inventory statistics">
+            <div class="builders-stats__grid">
+              <div class="builders-stats__item">
+                <span class="builders-stats__value" id="stat-builders">0</span>
+                <span class="builders-stats__label">Builders</span>
+              </div>
+              <div class="builders-stats__item">
+                <span class="builders-stats__value" id="stat-mission-areas">0</span>
+                <span class="builders-stats__label">Mission Areas</span>
+              </div>
+              <div class="builders-stats__item">
+                <span class="builders-stats__value" id="stat-tech-areas">0</span>
+                <span class="builders-stats__label">Domains</span>
+              </div>
+              <div class="builders-stats__item">
+                <span class="builders-stats__value" id="stat-cohorts">0</span>
+                <span class="builders-stats__label">Cohorts</span>
+              </div>
+            </div>
+          </section>
 
-          <select id="filter-mission" class="builders-filters__select" aria-label="Filter by mission area">
-            <option value="">All Mission Areas</option>
-          </select>
+          <!-- Filter Bar -->
+          <section class="builders-filters" aria-label="Builder record filters">
+            <div class="builders-filters__bar">
+              <div class="builders-filters__search">
+                <svg class="builders-filters__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="M21 21l-4.35-4.35"/>
+                </svg>
+                <input
+                  type="text"
+                  id="search-input"
+                  class="builders-filters__input"
+                  placeholder="Search records"
+                  aria-label="Search builders"
+                >
+              </div>
 
-          <select id="filter-tech" class="builders-filters__select" aria-label="Filter by tech area">
-            <option value="">All Tech Areas</option>
-          </select>
+              <select id="filter-mission" class="builders-filters__select" aria-label="Filter by mission area">
+                <option value="">All Mission Areas</option>
+              </select>
 
-          <select id="filter-cohort" class="builders-filters__select" aria-label="Filter by cohort">
-            <option value="">All Cohorts</option>
-          </select>
+              <select id="filter-tech" class="builders-filters__select" aria-label="Filter by warfare domain">
+                <option value="">All Domains</option>
+              </select>
+
+            </div>
+
+            <div class="builders-filters__results">
+              <span id="results-count">0 records</span>
+            </div>
+          </section>
+
+          <!-- Builders Grid -->
+          <section class="builders-grid" aria-label="Builder record results">
+            <div class="builders-grid__items" id="builders-grid">
+              <!-- Grid items will be populated by JavaScript -->
+            </div>
+          </section>
         </div>
 
-        <div class="builders-filters__results">
-          <span id="results-count">0 builders</span>
-        </div>
-      </div>
-    </section>
+        <aside class="builders-rail" aria-label="Builders status rail">
+          <section class="rail-panel" aria-labelledby="rail-status-title">
+            <header class="rail-panel__header">
+              <h2 class="rail-panel__title" id="rail-status-title">System Status</h2>
+            </header>
+            <div class="rail-panel__body">
+              <div class="rail-kv">
+                <div class="rail-kv__label">Auth</div>
+                <div class="rail-kv__value" id="builders-auth-state">Checking</div>
+              </div>
+              <div class="rail-kv">
+                <div class="rail-kv__label">Last refresh</div>
+                <div class="rail-kv__value" id="builders-last-refresh">--:--:--</div>
+              </div>
+              <div class="rail-kv">
+                <div class="rail-kv__label">Total records</div>
+                <div class="rail-kv__value" id="builders-total-count">--</div>
+              </div>
+            </div>
+          </section>
 
-    <!-- Builders Grid -->
-    <section class="builders-grid">
-      <div class="container">
-        <div class="builders-grid__items" id="builders-grid">
-          <!-- Grid items will be populated by JavaScript -->
-        </div>
+          <section class="rail-panel" aria-labelledby="rail-filters-title">
+            <header class="rail-panel__header">
+              <h2 class="rail-panel__title" id="rail-filters-title">Active Filters</h2>
+            </header>
+            <div class="rail-panel__body">
+              <div class="rail-summary" id="builders-filter-summary">No filters applied.</div>
+            </div>
+          </section>
+        </aside>
       </div>
     </section>
   </main>
@@ -264,6 +306,6 @@
   <!-- Scripts -->
   <script type="module" src="js/scroll-reveal.js"></script>
   <script type="module" src="js/builders/index.js"></script>
-  <script src="js/auth-nav.js"></script>
+  <script type="module" src="js/auth-nav.js"></script>
 </body>
 </html>

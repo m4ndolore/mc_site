@@ -471,6 +471,21 @@ export function normalizeCompany(company) {
         ? `${companyName}: ${company.productName}`
         : companyName;
 
+    // Preserve timestamps when provided by the API so downstream views (e.g., dashboard)
+    // can compute recent activity windows without relying on fragile field names.
+    const createdAt =
+        company.createdAt ||
+        company.created_at ||
+        company.created ||
+        company.createdTime ||
+        null;
+    const updatedAt =
+        company.updatedAt ||
+        company.updated_at ||
+        company.updated ||
+        company.lastModified ||
+        null;
+
     return {
         id: companyId,
         name: companyName,
@@ -493,7 +508,9 @@ export function normalizeCompany(company) {
         tulsaAttended: company.tulsaAttended || '',
         upvoteCount: company.upvoteCount || 0,
         founders: company.founders || '',
-        location: company.location || ''
+        location: company.location || '',
+        createdAt,
+        updatedAt
     };
 }
 

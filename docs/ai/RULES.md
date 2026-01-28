@@ -24,7 +24,7 @@ Use this file only. All other AI docs in this folder defer here.
 - `config/doctor.js` is authoritative; app must not start if Doctor fails.
 
 ## Networking, URLs, and Theming
-- Required URL vars: `PUBLIC_BASE_URL`, `GHOST_URL`, `EXTRA_CORS_ORIGINS` (optional list). Use Docker service names, not `localhost`, for internal calls. Do not derive URLs from headers or hardcode them in JS, HBS, Docker, or CI.
+- Required URL vars: `PUBLIC_BASE_URL`, `GHOST_URL`, `EXTRA_CORS_ORIGINS` (optional list). Use Docker service names, not `localhost`, for internal calls. Do not derive URLs from headers or hardcode them in JS, HBS, Docker, or CI. CORS allowlists must be configured via `config/*.yaml` (e.g., `config/prod.yaml`) and rendered into env, never hardcoded in source. Example: `EXTRA_CORS_ORIGINS=https://www.mergecombinator.com,https://mergecombinator.com`
 - Ghost theme config comes from rendered JS (e.g., `window.SigmaBloxConfig.apiBase`). No hostname heuristics or Ghost Admin UI overrides. If config is missing, fail loudly (console error + abort).
 
 ## Webhook & Ghost API Rules
