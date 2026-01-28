@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Operational ecosystem status console for Merge Combinator.">
+  <title>Ecosystem Status Console — Merge Combinator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo" aria-label="Merge Combinator">
+        <span class="nav__logo-text">
+          <span class="nav__logo-merge">Merge</span>
+          <span class="nav__logo-combinator">Combinator</span>
+        </span>
+        <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public" alt="" class="nav__logo-icon">
+      </a>
+
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="/dashboard" class="nav__link nav__link--active">Status Console</a>
+          <a href="/builders" class="nav__link">Builder Records</a>
+          <a href="/knowledge" class="nav__link">Knowledge</a>
+          <a href="/opportunities" class="nav__link">Opportunities</a>
+        </div>
+        <div class="nav__menu-actions">
+          <div id="auth-nav">
+            <a href="/auth/login" class="nav__btn nav__btn--primary">Authenticate</a>
+          </div>
+        </div>
+      </nav>
+
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="dashboard">
+    <section class="dashboard__header">
+      <div class="container dashboard__header-inner">
+        <div>
+          <h1 class="dashboard__title">Ecosystem Status</h1>
+          <p class="dashboard__subtitle">Operational view of builder inventory, coverage, and recent records.</p>
+        </div>
+        <div class="dashboard__timestamp">
+          <div class="dashboard__timestamp-label">Last refresh</div>
+          <div class="dashboard__timestamp-value" id="dashboard-last-updated">--:--:--</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="dashboard__body">
+      <div class="container dashboard__grid">
+        <section class="panel panel--metrics" aria-labelledby="panel-metrics-title">
+          <header class="panel__header">
+            <h2 class="panel__title" id="panel-metrics-title">Inventory</h2>
+            <div class="panel__meta" id="panel-auth-state">Auth: checking</div>
+          </header>
+          <div class="panel__content metrics">
+            <article class="metric">
+              <div class="metric__label">Builder records</div>
+              <div class="metric__value" id="metric-builders">--</div>
+              <div class="metric__delta" id="metric-builders-delta">Baseline</div>
+            </article>
+            <article class="metric">
+              <div class="metric__label">Mission areas</div>
+              <div class="metric__value" id="metric-missions">--</div>
+              <div class="metric__delta">Unique</div>
+            </article>
+            <article class="metric">
+              <div class="metric__label">Warfare domains</div>
+              <div class="metric__value" id="metric-domains">--</div>
+              <div class="metric__delta">Unique</div>
+            </article>
+            <article class="metric">
+              <div class="metric__label">Recent additions</div>
+              <div class="metric__value" id="metric-recent">--</div>
+              <div class="metric__delta">Last 7 days</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel panel--activity" aria-labelledby="panel-activity-title">
+          <header class="panel__header">
+            <h2 class="panel__title" id="panel-activity-title">Recent Builder Records</h2>
+            <div class="panel__meta">Auto-refresh: 60s</div>
+          </header>
+          <div class="panel__content">
+            <ol class="activity-list" id="activity-list">
+              <li class="activity-list__item activity-list__item--empty">Retrieving records…</li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="panel panel--coverage" aria-labelledby="panel-coverage-title">
+          <header class="panel__header">
+            <h2 class="panel__title" id="panel-coverage-title">Mission Coverage</h2>
+            <div class="panel__meta">Top missions by record count</div>
+          </header>
+          <div class="panel__content coverage" id="coverage-list">
+            <div class="coverage__row coverage__row--empty">Coverage pending data.</div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+  <script src="js/auth-nav.js" type="module"></script>
+  <script src="js/dashboard.js" type="module"></script>
+</body>
+</html>
+

@@ -28,12 +28,91 @@ import { checkAuth } from './auth.js';
 let allCompanies = [];
 let currentCompany = null;
 let authState = { authenticated: false, user: null };
+let totalBuildersCount = 0;
 
 // DOM Elements
 const grid = document.getElementById('builders-grid');
 const modal = document.getElementById('builder-modal');
 const modalBody = document.getElementById('modal-body');
 const modalClose = document.getElementById('modal-close');
+const railAuthState = document.getElementById('builders-auth-state');
+const railLastRefresh = document.getElementById('builders-last-refresh');
+const railTotalCount = document.getElementById('builders-total-count');
+const railFilterSummary = document.getElementById('builders-filter-summary');
+
+/**
+ * Format a timestamp for the status rail
+ * @param {Date} date
+ * @returns {string}
+ */
+function formatTime(date) {
+    try {
+        return new Intl.DateTimeFormat(undefined, {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        }).format(date);
+    } catch (error) {
+        console.warn('[Builders] Failed to format time:', error);
+        return '--:--:--';
+    }
+}
+
+/**
+ * Update auth status in the rail
+ * @param {{authenticated: boolean, user: Object|null}} state
+ */
+function updateRailAuth(state) {
+    if (!railAuthState) return;
+    const label = state.authenticated ? 'Authenticated' : 'Anonymous';
+    const actor = state.user?.email || state.user?.name || 'operator';
+    railAuthState.textContent = `${label} (${actor})`;
+}
+
+/**
+ * Update last refresh timestamp in the rail
+ */
+function updateRailRefresh() {
+    if (!railLastRefresh) return;
+    railLastRefresh.textContent = formatTime(new Date());
+}
+
+/**
+ * Update total record count in the rail
+ * @param {number} count
+ */
+function updateRailTotal(count) {
+    if (!railTotalCount) return;
+    railTotalCount.textContent = String(count);
+}
+
+/**
+ * Create an operational summary of active filters
+ * @param {Object} filters
+ * @param {number} resultsCount
+ * @returns {string}
+ */
+function summarizeFilters(filters, resultsCount) {
+    const parts = [];
+    if (filters.search) parts.push(`search=${filters.search}`);
+    if (filters.missionArea) parts.push(`mission=${filters.missionArea}`);
+    if (filters.warfareDomain) parts.push(`domain=${filters.warfareDomain}`);
+    if (filters.fundingStage) parts.push(`stage=${filters.fundingStage}`);
+    if (filters.cohort) parts.push(`cohort=${filters.cohort}`);
+
+    const filterText = parts.length > 0 ? parts.join(' · ') : 'No filters applied.';
+    return `${filterText} Results=${resultsCount}`;
+}
+
+/**
+ * Update filter summary in the rail
+ * @param {Object} filters
+ * @param {number} resultsCount
+ */
+function updateRailFilters(filters, resultsCount) {
+    if (!railFilterSummary) return;
+    railFilterSummary.textContent = summarizeFilters(filters, resultsCount);
+}
 
 /**
  * Initialize the builder directory
@@ -48,8 +127,10 @@ async function init() {
     checkAuth().then(state => {
         authState = state;
         console.log('[Builders] Auth state:', authState.authenticated ? 'authenticated' : 'anonymous');
+        updateRailAuth(authState);
     }).catch(err => {
         console.warn('[Builders] Auth check failed:', err.message);
+        updateRailAuth({ authenticated: false, user: null });
     });
 
     try {
@@ -58,7 +139,7 @@ async function init() {
         console.log('[Builders] Fetched data:', data);
 
         // Extract and normalize companies
-        allCompanies = extractCompanies(data);
+        allCompanies = extractCompanies(data, { filterAttended: false });
         console.log('[Builders] Processed companies:', allCompanies.length);
 
         // Try to get filter options from API, fall back to extracting from data
@@ -72,8 +153,9 @@ async function init() {
         }
 
         // Update stats
+        totalBuildersCount = data.total || allCompanies.length;
         updateStats({
-            builders: data.total || allCompanies.length,
+            builders: totalBuildersCount,
             missionAreas: filterOptions.missionAreas?.length || 0,
             warfareDomains: filterOptions.warfareDomains?.length || 0,
             fundingStages: filterOptions.fundingStages?.length || 0,
@@ -81,12 +163,15 @@ async function init() {
             // Legacy support
             ctas: filterOptions.warfareDomains?.length || filterOptions.ctas?.length || 0
         });
+        updateRailTotal(totalBuildersCount);
+        updateRailRefresh();
 
         // Populate filter dropdowns
         populateFilters(filterOptions);
 
         // Render initial view
         renderBuilders(allCompanies);
+        updateRailFilters(getFilterState(), allCompanies.length);
 
         // Setup event listeners
         setupEventListeners();
@@ -106,6 +191,7 @@ function renderBuilders(companies) {
     if (!grid) return;
 
     updateResultsCount(companies.length);
+    updateRailFilters(getFilterState(), companies.length);
 
     if (companies.length === 0) {
         grid.innerHTML = renderEmptyState();
@@ -161,6 +247,7 @@ function renderBuilders(companies) {
 function applyFilters() {
     const filters = getFilterState();
     const filtered = filterCompanies(allCompanies, filters);
+    updateRailRefresh();
     renderBuilders(filtered);
 }
 
@@ -211,7 +298,6 @@ function setupEventListeners() {
         'filter-mission',
         'filter-domain',
         'filter-funding',
-        'filter-cohort',
         'filter-tech'  // Legacy
     ];
     filterIds.forEach(id => {

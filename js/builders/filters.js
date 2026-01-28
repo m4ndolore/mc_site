@@ -48,13 +48,6 @@ export function filterCompanies(companies, filters) {
             }
         }
 
-        // Cohort filter
-        if (filters.cohort) {
-            if (company.cohort !== filters.cohort) {
-                return false;
-            }
-        }
-
         // Legacy CTA filter support
         if (filters.cta && !filters.warfareDomain) {
             if (company.warfareDomain !== filters.cta) {
@@ -74,7 +67,6 @@ export function populateFilters(options) {
     const missionSelect = document.getElementById('filter-mission');
     const domainSelect = document.getElementById('filter-domain');
     const fundingSelect = document.getElementById('filter-funding');
-    const cohortSelect = document.getElementById('filter-cohort');
     // Legacy support
     const techSelect = document.getElementById('filter-tech');
 
@@ -82,7 +74,6 @@ export function populateFilters(options) {
     const missionAreas = options?.missionAreas || [];
     const warfareDomains = options?.warfareDomains || [];
     const fundingStages = options?.fundingStages || [];
-    const cohorts = options?.cohorts || [];
 
     // Mission areas
     if (missionSelect && missionAreas.length > 0) {
@@ -100,16 +91,6 @@ export function populateFilters(options) {
     if (fundingSelect && fundingStages.length > 0) {
         fundingSelect.innerHTML = '<option value="">All Funding Stages</option>' +
             fundingStages.map(f => `<option value="${escapeAttr(f)}">${escapeHtml(f)}</option>`).join('');
-    }
-
-    // Cohorts - handle both object format {id, name} and string format
-    if (cohortSelect && cohorts.length > 0) {
-        cohortSelect.innerHTML = '<option value="">All Cohorts</option>' +
-            cohorts.map(c => {
-                const value = typeof c === 'object' ? c.id : c;
-                const label = typeof c === 'object' ? c.name : c;
-                return `<option value="${escapeAttr(value)}">${escapeHtml(label)}</option>`;
-            }).join('');
     }
 
     // Legacy tech select (uses warfare domains)
@@ -133,7 +114,6 @@ export function getFilterState() {
         warfareDomain: document.getElementById('filter-domain')?.value ||
                        document.getElementById('filter-tech')?.value || '',
         fundingStage: document.getElementById('filter-funding')?.value || '',
-        cohort: document.getElementById('filter-cohort')?.value || '',
         // Legacy alias
         cta: document.getElementById('filter-tech')?.value || ''
     };

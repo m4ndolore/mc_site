@@ -21,6 +21,7 @@ if (!existsSync(OUTPUT_DIR)) {
     mkdirSync(OUTPUT_DIR, { recursive: true });
 }
 const API_BASE = 'https://api.sigmablox.com';
+const PAGE_LIMIT = 100;
 
 /**
  * Fallback mock data when API is unavailable and no cache exists
@@ -128,10 +129,17 @@ const FALLBACK_MOCK_DATA = {
 };
 
 /**
- * Fetch companies from public API
+ * Fetch one page of companies from the public API
+ * @param {number} limit
+ * @param {number} offset
+ * @returns {Promise<Object>}
  */
-async function fetchCompanies() {
-    const response = await fetch(`${API_BASE}/api/public/companies`, {
+async function fetchCompaniesPage(limit, offset) {
+    const url = new URL(`${API_BASE}/api/public/companies`);
+    url.searchParams.set('limit', String(limit));
+    url.searchParams.set('offset', String(offset));
+
+    const response = await fetch(url, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -152,6 +160,48 @@ async function fetchCompanies() {
     }
 
     return data;
+}
+
+/**
+ * Fetch all companies with pagination
+ * Handles APIs that default to a smaller limit (e.g., 50)
+ */
+async function fetchAllCompanies() {
+    const firstPage = await fetchCompaniesPage(PAGE_LIMIT, 0);
+    const firstCompanies = firstPage.companies || [];
+
+    const totalFromApi =
+        firstPage.total ??
+        firstPage.pagination?.total ??
+        null;
+
+    if (!totalFromApi || firstCompanies.length >= totalFromApi) {
+        return firstPage;
+    }
+
+    const allCompanies = [...firstCompanies];
+    let offset = firstCompanies.length;
+
+    while (offset < totalFromApi) {
+        const page = await fetchCompaniesPage(PAGE_LIMIT, offset);
+        const companies = page.companies || [];
+        if (companies.length === 0) break;
+        allCompanies.push(...companies);
+        offset += companies.length;
+    }
+
+    return {
+        ...firstPage,
+        companies: allCompanies,
+        total: totalFromApi,
+        pagination: {
+            ...(firstPage.pagination || {}),
+            total: totalFromApi,
+            limit: PAGE_LIMIT,
+            offset: 0,
+            hasMore: allCompanies.length < totalFromApi
+        }
+    };
 }
 
 /**
@@ -208,7 +258,7 @@ async function seed() {
     try {
         // Try to fetch from API
         console.log('[seed] Fetching from API:', API_BASE);
-        companiesData = await fetchCompanies();
+        companiesData = await fetchAllCompanies();
         filtersData = await fetchFilters();
 
         // Treat empty API response as a failure - use cache/fallback instead
