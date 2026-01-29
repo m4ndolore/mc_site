@@ -730,6 +730,44 @@
       line-height: 1.5;
     }
 
+    .request-drawer__error {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      border: 1px solid rgba(248, 113, 113, 0.35);
+      background: rgba(127, 29, 29, 0.2);
+    }
+
+    .request-drawer__error-icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      border: 1px solid rgba(248, 113, 113, 0.6);
+      color: #fecaca;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .request-drawer__error-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #fecaca;
+      margin-bottom: 8px;
+    }
+
+    .request-drawer__error-text {
+      font-size: 14px;
+      color: rgba(254, 202, 202, 0.85);
+      line-height: 1.5;
+    }
+
     .request-drawer__footer {
       margin-top: 24px;
       padding-top: 20px;
@@ -821,7 +859,7 @@
               </svg>
             </div>
             <div class="access-card__method-content">
-              <div class="access-card__method-title">Continue with Email or Username</div>
+              <div class="access-card__method-title">Login for Access</div>
               <div class="access-card__method-desc">Email, magic link, or passkey</div>
             </div>
             <div class="access-card__method-arrow">&#8594;</div>
@@ -955,6 +993,12 @@
           <p class="request-drawer__success-text">We'll review your request and get back to you shortly.</p>
         </div>
 
+        <div class="request-drawer__error" id="request-error" style="display: none;">
+          <div class="request-drawer__error-icon">!</div>
+          <h3 class="request-drawer__error-title">Request Failed</h3>
+          <p class="request-drawer__error-text">Submission failed. Please retry or email access@mergecombinator.com.</p>
+        </div>
+
         <p class="request-drawer__footer">
           Already have access? <a href="#" id="drawer-sign-in">Sign in</a>
         </p>
@@ -970,134 +1014,6 @@
     };
   </script>
 
-  <script>
-    // Request Access Drawer
-    (function() {
-      const drawer = document.getElementById('request-drawer');
-      const openBtn = document.getElementById('open-request-drawer');
-      const closeBtn = document.getElementById('close-drawer');
-      const backdrop = document.getElementById('drawer-backdrop');
-      const signInLink = document.getElementById('drawer-sign-in');
-      const form = document.getElementById('request-form');
-      const successEl = document.getElementById('request-success');
-      const config = window.MCAccessConfig || {};
-
-      // Guard for partial renders
-      if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !successEl) {
-        console.warn('[Access] Drawer elements missing; skipping drawer wiring.');
-        return;
-      }
-
-      function openDrawer(e) {
-        e.preventDefault();
-        drawer.classList.add('is-open');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeDrawer(e) {
-        if (e) e.preventDefault();
-        drawer.classList.remove('is-open');
-        document.body.style.overflow = '';
-        // Reset form after animation
-        setTimeout(() => {
-          form.reset();
-          form.style.display = '';
-          successEl.style.display = 'none';
-        }, 300);
-      }
-
-      function buildMailtoUrl(data) {
-        const to = config.notifyEmail || 'access@mergecombinator.com';
-        const subject = encodeURIComponent('Access Request — mergecombinator.com');
-        const body = encodeURIComponent(
-          [
-            'Access request submitted:',
-            `Name: ${data.name || ''}`,
-            `Email: ${data.email || ''}`,
-            `Role: ${data.role || ''}`,
-            `Source: ${window.location.href}`,
-            `Timestamp: ${new Date().toISOString()}`
-          ].join('\n')
-        );
-        return `mailto:${to}?subject=${subject}&body=${body}`;
-      }
-
-      async function submitToEndpoint(data) {
-        const endpoint = config.requestEndpoint;
-        if (!endpoint) {
-          return { ok: false, skipped: true };
-        }
-
-        try {
-          // Shape payload to match the SigmaBlox /api/access-request contract.
-          const payload = {
-            email: data.email,
-            name: data.name,
-            tier: data.role || 'general',
-            website_url: '',
-            userAgent: String(navigator.userAgent || ''),
-            referrer: String(document.referrer || ''),
-            requestedAt: new Date().toISOString(),
-            source: window.location.href
-          };
-
-          const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
-            },
-            body: JSON.stringify(payload)
-          });
-
-          if (!response.ok) {
-            const text = await response.text().catch(() => '');
-            throw new Error(`Endpoint returned ${response.status}: ${text}`);
-          }
-
-          return { ok: true };
-        } catch (error) {
-          console.error('[Access] Endpoint submission failed:', error);
-          return { ok: false, error };
-        }
-      }
-
-      async function handleSubmit(e) {
-        e.preventDefault();
-        const formData = new FormData(form);
-        const data = {
-          name: String(formData.get('name') || ''),
-          email: String(formData.get('email') || ''),
-          role: String(formData.get('role') || '')
-        };
-
-        // Try backend submission first when configured
-        const result = await submitToEndpoint(data);
-
-        // Fallback: open a prefilled mailto so requests aren't silently dropped
-        if (!result.ok) {
-          const mailtoUrl = buildMailtoUrl(data);
-          window.location.href = mailtoUrl;
-        }
-
-        // Always show success state after an attempted submission path
-        form.style.display = 'none';
-        successEl.style.display = 'block';
-      }
-
-      openBtn.addEventListener('click', openDrawer);
-      closeBtn.addEventListener('click', closeDrawer);
-      backdrop.addEventListener('click', closeDrawer);
-      signInLink.addEventListener('click', closeDrawer);
-      form.addEventListener('submit', handleSubmit);
-
-      // Close on Escape key
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
-          closeDrawer();
-        }
-      });
-    })();
-  </script>
+  <script type="module" src="js/access.js"></script>
 </body>
 </html>
