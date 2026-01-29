@@ -9,6 +9,7 @@ const signInLink = document.getElementById('drawer-sign-in');
 const form = document.getElementById('request-form');
 const successEl = document.getElementById('request-success');
 const errorEl = document.getElementById('request-error');
+const errorLink = document.getElementById('request-error-link');
 const config = window.MCAccessConfig || {};
 
 // Guard for partial renders
@@ -26,6 +27,7 @@ if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !su
     form.style.display = '';
     successEl.style.display = 'none';
     errorEl.style.display = 'none';
+    if (errorLink) errorLink.style.display = 'none';
   }
 
   function closeDrawer(e) {
@@ -85,7 +87,8 @@ async function submitToEndpoint(data) {
       const data = isJson ? await response.json().catch(() => null) : null;
       const text = !isJson ? await response.text().catch(() => '') : '';
       const message = (data && (data.error || data.message)) || text || 'Request failed';
-      return { ok: false, status: response.status, message };
+      const code = data && (data.code || data.errorCode);
+      return { ok: false, status: response.status, message, code };
     }
 
     return { ok: true };
@@ -126,6 +129,13 @@ async function submitToEndpoint(data) {
       if (textEl) {
         textEl.textContent = result.message;
       }
+    }
+    if (result.code === 'account_exists' && errorLink) {
+      const email = encodeURIComponent(data.email || '');
+      const href = `https://www.sigmablox.com/via-login/?email=${email}`;
+      const linkEl = errorLink.querySelector('a');
+      if (linkEl) linkEl.setAttribute('href', href);
+      errorLink.style.display = 'block';
     }
     return;
   }
