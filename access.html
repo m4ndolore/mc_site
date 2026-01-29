@@ -768,6 +768,23 @@
       line-height: 1.5;
     }
 
+    .request-drawer__error-link {
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .request-drawer__error-link a {
+      color: #bfdbfe;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 1px solid rgba(191, 219, 254, 0.45);
+    }
+
+    .request-drawer__error-link a:hover {
+      color: #e0f2fe;
+      border-bottom-color: rgba(224, 242, 254, 0.8);
+    }
+
     .request-drawer__footer {
       margin-top: 24px;
       padding-top: 20px;
@@ -997,6 +1014,9 @@
           <div class="request-drawer__error-icon">!</div>
           <h3 class="request-drawer__error-title">Request Failed</h3>
           <p class="request-drawer__error-text">Submission failed. Please retry or email access@mergecombinator.com.</p>
+          <p class="request-drawer__error-link" id="request-error-link" style="display:none;">
+            <a href="https://www.sigmablox.com/via-login/" target="_blank" rel="noopener">Continue to VIA login</a>
+          </p>
         </div>
 
         <p class="request-drawer__footer">
