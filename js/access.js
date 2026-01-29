@@ -51,13 +51,13 @@ if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !su
     return `mailto:${to}?subject=${subject}&body=${body}`;
   }
 
-  async function submitToEndpoint(data) {
-    const endpoint = config.requestEndpoint;
-    if (!endpoint) {
-      return { ok: false, skipped: true };
-    }
+async function submitToEndpoint(data) {
+  const endpoint = config.requestEndpoint;
+  if (!endpoint) {
+    return { ok: false, skipped: true };
+  }
 
-    try {
+  try {
       const payload = {
         email: data.email,
         name: data.name,
@@ -69,26 +69,31 @@ if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !su
         source: window.location.href
       };
 
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify(payload)
+    });
 
-      if (!response.ok) {
-        const text = await response.text().catch(() => '');
-        throw new Error(`Endpoint returned ${response.status}: ${text}`);
-      }
-
-      return { ok: true };
-    } catch (error) {
-      console.error('[Access] Endpoint submission failed:', error);
-      return { ok: false, error };
+    if (!response.ok) {
+      const contentType = response.headers.get('content-type') || '';
+      const isJson = contentType.includes('application/json');
+      const data = isJson ? await response.json().catch(() => null) : null;
+      const text = !isJson ? await response.text().catch(() => '') : '';
+      const message = (data && (data.error || data.message)) || text || 'Request failed';
+      return { ok: false, status: response.status, message };
     }
+
+    return { ok: true };
+  } catch (error) {
+    console.error('[Access] Endpoint submission failed:', error);
+    return { ok: false, error };
   }
+}
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -103,7 +108,8 @@ if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !su
 
     const result = await submitToEndpoint(data);
 
-    if (!result.ok) {
+  if (!result.ok) {
+    if (config.allowMailtoFallback) {
       try {
         const mailtoUrl = buildMailtoUrl(data);
         window.location.href = mailtoUrl;
@@ -114,9 +120,19 @@ if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !su
       }
     }
 
-    form.style.display = 'none';
-    successEl.style.display = 'block';
+    errorEl.style.display = 'block';
+    if (result.message) {
+      const textEl = errorEl.querySelector('.request-drawer__error-text');
+      if (textEl) {
+        textEl.textContent = result.message;
+      }
+    }
+    return;
   }
+
+  form.style.display = 'none';
+  successEl.style.display = 'block';
+}
 
   openBtn.addEventListener('click', openDrawer);
   closeBtn.addEventListener('click', closeDrawer);
@@ -130,4 +146,3 @@ if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !su
     }
   });
 }
-
