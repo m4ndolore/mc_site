@@ -3,8 +3,12 @@
  * Fetches products from Fourthwall Storefront API
  */
 
+const injectedToken = (window.MCMerchConfig && window.MCMerchConfig.storefrontToken) || '';
+const envToken = import.meta.env.VITE_FOURTHWALL_TOKEN || '';
+const resolvedToken = injectedToken && !injectedToken.startsWith('%') ? injectedToken : envToken;
+
 const FOURTHWALL_CONFIG = {
-  token: import.meta.env.VITE_FOURTHWALL_TOKEN || '',
+  token: resolvedToken || '',
   baseUrl: 'https://storefront-api.fourthwall.com/v1',
   shopUrl: 'https://merge-combinator-shop.fourthwall.com',
   currency: 'USD'
