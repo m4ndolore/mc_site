@@ -20,6 +20,7 @@ function formatPrice(priceObj) {
 }
 
 function getProductCategory(product) {
+  if (product.category) return product.category;
   const name = (product.name || '').toLowerCase();
   if (name.includes('cap') || name.includes('hat')) return 'Headwear';
   if (name.includes('coffee')) return 'Coffee';
@@ -29,6 +30,9 @@ function getProductCategory(product) {
 }
 
 function getProductImage(product) {
+  if (product.imageUrl) {
+    return product.imageUrl;
+  }
   if (product.images && product.images.length > 0) {
     return product.images[0].url || product.images[0].transformedUrl;
   }
@@ -50,6 +54,7 @@ function getProductPrice(product) {
 
 function getProductUrl(product) {
   const slug = product.slug || product.handle || '';
+  if (!slug) return FOURTHWALL_CONFIG.shopUrl;
   return `${FOURTHWALL_CONFIG.shopUrl}/products/${slug}`;
 }
 
@@ -79,15 +84,42 @@ function renderProduct(product) {
   `;
 }
 
-function renderError(message) {
+const FALLBACK_PRODUCTS = [
+  { name: 'Mission Hoodie', category: 'Apparel' },
+  { name: 'Signal Tee', category: 'Apparel' },
+  { name: 'Field Cap', category: 'Headwear' },
+  { name: 'Operator Mug', category: 'Drinkware' },
+  { name: 'Sticker Pack', category: 'Stickers' },
+  { name: 'Patch Set', category: 'Accessories' }
+];
+
+function renderFallbackGrid(message) {
+  const header = message
+    ? `<div class="merch-error" style="grid-column: 1 / -1;"><p>${message}</p></div>`
+    : '';
+  const cards = FALLBACK_PRODUCTS.map((product) =>
+    renderProduct({
+      ...product,
+      imageUrl: null,
+      variants: [],
+      unitPrice: null,
+      price: null,
+      slug: ''
+    })
+  ).join('');
   return `
+    ${header}
+    ${cards}
     <div class="merch-error" style="grid-column: 1 / -1;">
-      <p>${message}</p>
       <a href="${FOURTHWALL_CONFIG.shopUrl}" target="_blank" rel="noopener" class="merch-card__link" style="margin-top: 16px;">
         Visit Store Directly →
       </a>
     </div>
   `;
+}
+
+function renderError(message) {
+  return renderFallbackGrid(message);
 }
 
 async function fetchProducts() {
@@ -109,7 +141,7 @@ async function initMerch() {
 
   // If no token configured, show static fallback
   if (!FOURTHWALL_CONFIG.token) {
-    grid.innerHTML = renderError('Visit our store to browse all products.');
+    grid.innerHTML = renderFallbackGrid('Browse the full catalog in our store.');
     return;
   }
 
@@ -124,7 +156,7 @@ async function initMerch() {
     grid.innerHTML = products.map(renderProduct).join('');
   } catch (error) {
     console.error('Failed to fetch products:', error);
-    grid.innerHTML = renderError('Unable to load products. Please visit our store directly.');
+    grid.innerHTML = renderFallbackGrid('Unable to load live products right now.');
   }
 }
 
