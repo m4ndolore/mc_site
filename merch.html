@@ -355,6 +355,12 @@
   </footer>
 
   <script type="module" src="script.js"></script>
+  <script>
+    // Inject storefront token at build time (public token).
+    window.MCMerchConfig = {
+      storefrontToken: "%VITE_FOURTHWALL_TOKEN%"
+    };
+  </script>
   <script type="module" src="/js/merch.js"></script>
   <script src="js/auth-nav.js"></script>
 </body>
