@@ -28,7 +28,8 @@ compatibility_date = "2024-01-01"
 # -----------------------------------------------------------------------------
 [vars]
 OIDC_ISSUER_URL = "https://via.mergecombinator.com"
-OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/defense-builders/end-session/"
+OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/mergecombinator/end-session/"
+COOKIE_DOMAIN = ".mergecombinator.com"  # Enables cross-subdomain sessions (www, docs)
 
 # -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
@@ -39,4 +40,4 @@ name = "mc-router-dev"
 
 [env.dev.vars]
 OIDC_ISSUER_URL = "http://localhost:9000"  # Must match config/dev.local.yaml line 16
-OAUTH_LOGOUT_URL = "http://localhost:9000/application/o/defense-builders/end-session/"
+OAUTH_LOGOUT_URL = "http://localhost:9000/application/o/mergecombinator/end-session/"
