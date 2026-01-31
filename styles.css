@@ -1,73 +1,75 @@
 /* ============================================
-   MERGE COMBINATOR — LANDING PAGE STYLES
-   Palantir-Inspired Production-Grade CSS
+   MERGE COMBINATOR — C2UX OPERATIONAL STYLES
+   Command Center UI Design System
    ============================================ */
 
 /* ============================================
-   CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+   CSS CUSTOM PROPERTIES (C2UX DESIGN TOKENS)
    ============================================ */
 :root {
-  /* Colors */
-  --black: #0B0E11;
-  --charcoal: #1C232B;
-  --slate: #2C3036;
-  --blue: #2A7FDB;
-  --blue-dark: #1E5FA8;
-  --blue-light: #4A9FFF;
-  --white: #FFFFFF;
-  --offwhite: #F2F5F7;
-  --gray-light: #E7EAED;
-  --gray-medium: #9CA3AF;
-  --ghost-gray: #D1D5DA;
-  --operator-green: #5DA06F;
-  --green-light: #7BC48A;
+  /* C2UX Color Palette - subdued base with high-signal highlights */
+  --black: #0a0a0a;           /* Near Black - primary background */
+  --charcoal: #171717;        /* Panel backgrounds */
+  --slate: #262626;           /* Secondary surfaces */
+  --blue: #3b82f6;            /* Signal Blue - primary accent */
+  --blue-dark: #2563eb;       /* Darker accent */
+  --blue-light: #60a5fa;      /* Lighter accent */
+  --white: #fafafa;           /* Pure white - sparingly */
+  --offwhite: #e5e5e5;        /* Primary text */
+  --gray-light: #a3a3a3;      /* Secondary text */
+  --gray-medium: #737373;     /* Tertiary text */
+  --ghost-gray: #525252;      /* Borders, dividers */
+  --operator-green: #22c55e;  /* Status: operational */
+  --green-light: #4ade80;     /* Status: active */
+  --status-yellow: #eab308;   /* Status: pending */
+  --status-red: #ef4444;      /* Status: critical */
 
-  /* Typography Scale */
-  --font-primary: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-secondary: 'Helvetica Neue', 'Inter', Helvetica, Arial, sans-serif;
-  --font-serif: 'Lora', 'Times New Roman', serif;
-  --font-mono: 'Space Mono', 'SF Mono', 'Monaco', monospace;
+  /* C2UX Typography - Inter only, restrained scale */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
 
-  --text-h1: clamp(48px, 6vw, 72px);
-  --text-h2: clamp(36px, 4vw, 48px);
-  --text-h3: clamp(24px, 3vw, 32px);
-  --text-body: clamp(16px, 1.2vw, 18px);
-  --text-small: clamp(14px, 1vw, 16px);
+  /* Restrained type scale - no oversized marketing headlines */
+  --text-h1: clamp(28px, 3vw, 36px);
+  --text-h2: clamp(22px, 2.5vw, 28px);
+  --text-h3: clamp(18px, 2vw, 22px);
+  --text-body: 16px;
+  --text-small: 14px;
   --text-micro: 12px;
 
   /* Line Heights */
-  --lh-tight: 1.1;
-  --lh-snug: 1.25;
+  --lh-tight: 1.2;
+  --lh-snug: 1.3;
   --lh-normal: 1.5;
-  --lh-relaxed: 1.65;
+  --lh-relaxed: 1.6;
 
-  /* Spacing Tokens */
-  --section-lg: 140px;
-  --section-md: 100px;
-  --section-sm: 60px;
-  --section-xs: 32px;
+  /* C2UX Spacing - compact, dense */
+  --section-lg: 80px;
+  --section-md: 60px;
+  --section-sm: 40px;
+  --section-xs: 24px;
 
   /* Layout */
-  --max-width: 1280px;
-  --padding-x: clamp(24px, 5vw, 64px);
-  --nav-height: 80px;
+  --max-width: 1400px;
+  --padding-x: clamp(16px, 3vw, 48px);
+  --nav-height: 56px;
 
-  /* Shadows (Palantir-style ultra-soft) */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 0 40px rgba(42, 127, 219, 0.15);
+  /* C2UX Shadows - minimal or none */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --shadow-glow: none;
 
-  /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  /* C2UX Border Radius - sharp edges, 0-2px max */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
 
-  /* Transitions */
-  --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* Transitions - fast, functional */
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
 }
 
 /* ============================================

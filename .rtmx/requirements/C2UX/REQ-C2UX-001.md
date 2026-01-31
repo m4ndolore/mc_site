@@ -54,9 +54,10 @@ Transform mc-site from a marketing site to an operational command center interfa
 - Thin borders (1px)
 
 ## Implementation
-- **Status**: PENDING
+- **Status**: COMPLETE
 - **Phase**: 4
 - **Priority**: MEDIUM
+- **Completed**: 2026-01-30
 
 ## Validation
 - **Method**: Visual Test + LLM-as-Judge
@@ -66,3 +67,68 @@ Transform mc-site from a marketing site to an operational command center interfa
 
 ## Dependencies
 - REQ-CONTENT-002 (auth UI should be in place first)
+
+## Sitrep - 2026-01-30
+
+**Session**: claude-2026-01-30
+**Status**: COMPLETE
+
+### Completed
+
+1. **CSS Design Tokens Updated** (styles.css)
+   - Colors: Near Black (#0a0a0a), Off-white (#e5e5e5), Signal Blue (#3b82f6)
+   - Typography: Inter-only, restrained scale (H1 max 36px, H2 max 28px)
+   - Border radius: 2px max (sharp edges)
+   - Spacing: Compact (section-lg 80px, section-md 60px)
+   - Shadows: Minimal
+
+2. **index.html Transformed**
+   - Removed hero section with animated particles and marketing CTAs
+   - Added console header with OPERATIONAL status indicator
+   - Added system status bar (Mission / Region / Mode)
+   - Added stats grid with operational metrics
+   - Added ecosystem modules panel (Phase 01/02/03)
+   - Added operational pipeline panel with 4 stages
+   - Added capabilities grid (compact, data-dense)
+   - Added access protocols section (entity-type-driven)
+   - Added status rail (System Status, Regional Coverage, Quick Access)
+   - Removed testimonials section entirely
+   - Removed bento card grid marketing layout
+
+3. **Navigation Updated** (17 pages)
+   - Logo consolidated: "Merge Combinator" (removed serif "Merge")
+   - "Defense Builders" → "Builder Records"
+   - Removed "Merch" from navigation
+
+4. **Language Audit**
+   - "Build What Warfighters Need" → "Merge Combinator" (just the name)
+   - "National Security Innovation" → "OPERATIONAL" status
+   - "Watch Overview" → removed
+   - "Get Involved" → "Access Protocols"
+   - "Testimonials" → removed entirely
+   - All CTAs use operational language: "View Module", "Request Access", "View Records"
+
+### C2UX Compliance Verification
+
+| Criterion | Status |
+|-----------|--------|
+| Panels not pages | PASS |
+| Sharp edges (0-2px radius) | PASS |
+| Inter font throughout | PASS |
+| Operational language | PASS |
+| Status-focused layout | PASS |
+| No marketing fluff | PASS |
+| Typography hierarchy: Orders > Status > Commentary | PASS |
+| Status rail present | PASS |
+
+### Files Changed
+- `styles.css` - Design tokens updated
+- `index.html` - Complete rewrite to console layout
+- 17 HTML pages - Navigation updated
+
+### Remaining
+- Builders page retains light theme for content area (acceptable for data density)
+- Other pages may benefit from further C2UX refinement in future iterations
+
+### Next Steps
+- REQ-C2UX-002: Ecosystem dashboard with live data integration

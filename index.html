@@ -3,49 +3,628 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Merge Combinator is the builder-led venture studio for national security. Build what warfighters need with operators across the Indo-Pacific.">
-  <meta name="keywords" content="defense tech, national security, venture studio, Indo-Pacific, warfighter, dual-use technology">
+  <meta name="description" content="Merge Combinator - Defense ecosystem operations console. Builder records, capability tracking, operator coordination.">
+  <meta name="keywords" content="defense tech, national security, venture studio, Indo-Pacific, dual-use technology">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
   <link rel="icon" type="image/png" sizes="16x16" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
   <link rel="apple-touch-icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
-  <link rel="shortcut icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Merge Combinator — Build What Warfighters Need">
-  <meta property="og:description" content="The builder-led venture studio for national security. Discover, build, and deploy with operators.">
+  <meta property="og:title" content="Merge Combinator">
+  <meta property="og:description" content="Defense ecosystem operations console.">
   <meta property="og:type" content="website">
 
-  <title>Merge Combinator — Build What Warfighters Need</title>
+  <title>Merge Combinator</title>
 
-  <!-- Fonts -->
+  <!-- Fonts - Inter only for C2UX -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* C2UX Console Layout */
+    .console {
+      min-height: 100vh;
+      background: var(--black);
+      color: var(--offwhite);
+    }
+
+    .console__header {
+      border-bottom: 1px solid var(--ghost-gray);
+      padding: var(--section-xs) 0;
+    }
+
+    .console__title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .console__title {
+      font-size: var(--text-h1);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .console__status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: var(--text-small);
+      color: var(--operator-green);
+    }
+
+    .console__status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--operator-green);
+      border-radius: 50%;
+    }
+
+    .console__bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--ghost-gray);
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+    }
+
+    .console__cell {
+      padding: 12px 16px;
+      background: var(--charcoal);
+    }
+
+    .console__cell:first-child {
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    }
+
+    .console__cell:last-child {
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .console__label {
+      font-size: var(--text-micro);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gray-medium);
+      margin-bottom: 4px;
+    }
+
+    .console__value {
+      font-size: var(--text-small);
+      color: var(--offwhite);
+    }
+
+    /* Main Layout */
+    .console__layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 1px;
+      background: var(--ghost-gray);
+      min-height: calc(100vh - 200px);
+    }
+
+    @media (max-width: 1024px) {
+      .console__layout {
+        grid-template-columns: 1fr;
+      }
+      .console__rail {
+        display: none;
+      }
+    }
+
+    .console__main {
+      background: var(--black);
+      padding: var(--section-sm) var(--padding-x);
+    }
+
+    .console__rail {
+      background: var(--charcoal);
+      padding: var(--section-xs);
+      border-left: 1px solid var(--ghost-gray);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--ghost-gray);
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--section-sm);
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .stats-grid__item {
+      padding: 20px;
+      background: var(--charcoal);
+      text-align: center;
+    }
+
+    .stats-grid__item:first-child {
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    }
+
+    .stats-grid__item:last-child {
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+
+    .stats-grid__value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--blue);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stats-grid__label {
+      font-size: var(--text-micro);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gray-light);
+      margin-top: 4px;
+    }
+
+    /* Panels */
+    .panel {
+      background: var(--charcoal);
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--section-xs);
+    }
+
+    .panel__header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--ghost-gray);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .panel__title {
+      font-size: var(--text-body);
+      font-weight: 600;
+      color: var(--offwhite);
+    }
+
+    .panel__badge {
+      font-size: var(--text-micro);
+      font-weight: 500;
+      padding: 4px 8px;
+      background: var(--slate);
+      border-radius: var(--radius-sm);
+      color: var(--gray-light);
+    }
+
+    .panel__body {
+      padding: 20px;
+    }
+
+    .panel__desc {
+      font-size: var(--text-small);
+      color: var(--gray-light);
+      line-height: var(--lh-relaxed);
+      margin-bottom: 16px;
+    }
+
+    .panel__list {
+      list-style: none;
+      margin: 0 0 16px;
+      padding: 0;
+    }
+
+    .panel__list li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--slate);
+      font-size: var(--text-small);
+      color: var(--offwhite);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel__list li:last-child {
+      border-bottom: none;
+    }
+
+    .panel__list li::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: var(--blue);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Modules Grid */
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: var(--section-sm);
+    }
+
+    @media (max-width: 1024px) {
+      .modules-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .modules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .module {
+      background: var(--charcoal);
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      transition: border-color var(--transition-fast);
+    }
+
+    .module:hover {
+      border-color: var(--blue);
+    }
+
+    .module__phase {
+      font-size: var(--text-micro);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .module__title {
+      font-size: var(--text-h3);
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 8px;
+    }
+
+    .module__desc {
+      font-size: var(--text-small);
+      color: var(--gray-light);
+      line-height: var(--lh-normal);
+      margin-bottom: 16px;
+    }
+
+    .module__link {
+      font-size: var(--text-small);
+      font-weight: 500;
+      color: var(--blue);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .module__link:hover {
+      color: var(--blue-light);
+    }
+
+    .module__link svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* Rail Panels */
+    .rail-panel {
+      background: var(--slate);
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+    }
+
+    .rail-panel__header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--ghost-gray);
+    }
+
+    .rail-panel__title {
+      font-size: var(--text-small);
+      font-weight: 600;
+      color: var(--offwhite);
+    }
+
+    .rail-panel__body {
+      padding: 16px;
+    }
+
+    .rail-kv {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--ghost-gray);
+    }
+
+    .rail-kv:last-child {
+      border-bottom: none;
+    }
+
+    .rail-kv__label {
+      font-size: var(--text-micro);
+      color: var(--gray-medium);
+    }
+
+    .rail-kv__value {
+      font-size: var(--text-micro);
+      color: var(--offwhite);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .rail-kv__value--green {
+      color: var(--operator-green);
+    }
+
+    /* Capabilities Grid */
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 640px) {
+      .capabilities-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .capability {
+      padding: 16px;
+      background: var(--charcoal);
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+    }
+
+    .capability__icon {
+      width: 24px;
+      height: 24px;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .capability__title {
+      font-size: var(--text-small);
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 4px;
+    }
+
+    .capability__desc {
+      font-size: var(--text-micro);
+      color: var(--gray-light);
+      line-height: var(--lh-normal);
+    }
+
+    /* Access Protocols */
+    .protocols-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: var(--section-sm);
+    }
+
+    @media (max-width: 1024px) {
+      .protocols-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .protocol {
+      background: var(--charcoal);
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+    }
+
+    .protocol__type {
+      font-size: var(--text-micro);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gray-medium);
+      margin-bottom: 12px;
+    }
+
+    .protocol__title {
+      font-size: var(--text-h3);
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 12px;
+    }
+
+    .protocol__desc {
+      font-size: var(--text-small);
+      color: var(--gray-light);
+      line-height: var(--lh-normal);
+      margin-bottom: 16px;
+    }
+
+    .protocol__actions {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px;
+    }
+
+    .protocol__actions li {
+      padding: 6px 0;
+      font-size: var(--text-small);
+      color: var(--offwhite);
+    }
+
+    .protocol__actions li::before {
+      content: '>';
+      margin-right: 8px;
+      color: var(--blue);
+    }
+
+    .protocol__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--blue);
+      color: var(--white);
+      font-size: var(--text-small);
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition-fast);
+    }
+
+    .protocol__btn:hover {
+      background: var(--blue-dark);
+    }
+
+    /* Partners Section */
+    .partners {
+      padding: var(--section-sm) 0;
+      border-top: 1px solid var(--ghost-gray);
+    }
+
+    .partners__header {
+      margin-bottom: 24px;
+    }
+
+    .partners__title {
+      font-size: var(--text-small);
+      font-weight: 600;
+      color: var(--gray-medium);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .partners__grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      align-items: center;
+      opacity: 0.6;
+    }
+
+    .partners__grid img {
+      height: 28px;
+      width: auto;
+      filter: grayscale(100%) brightness(2);
+    }
+
+    .partners__note {
+      font-size: var(--text-micro);
+      color: var(--gray-medium);
+      margin-top: 16px;
+    }
+
+    /* Section Headers */
+    .section-header {
+      margin-bottom: var(--section-xs);
+    }
+
+    .section-header__title {
+      font-size: var(--text-h2);
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 8px;
+    }
+
+    .section-header__desc {
+      font-size: var(--text-small);
+      color: var(--gray-light);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: var(--section-md) 0;
+      background: var(--charcoal);
+      border-top: 1px solid var(--ghost-gray);
+    }
+
+    .cta-section__content {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cta-section__title {
+      font-size: var(--text-h2);
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 12px;
+    }
+
+    .cta-section__desc {
+      font-size: var(--text-body);
+      color: var(--gray-light);
+      margin-bottom: 24px;
+    }
+
+    .cta-section__actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      font-size: var(--text-small);
+      font-weight: 500;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-fast);
+    }
+
+    .btn--primary {
+      background: var(--blue);
+      color: var(--white);
+    }
+
+    .btn--primary:hover {
+      background: var(--blue-dark);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--offwhite);
+      border: 1px solid var(--ghost-gray);
+    }
+
+    .btn--ghost:hover {
+      border-color: var(--offwhite);
+    }
+  </style>
 </head>
 <body>
-  <!-- ============================================
-       NAVIGATION (Enhanced glass effect sticky header)
-       ============================================ -->
+  <!-- Navigation -->
   <header class="nav" id="nav">
     <div class="nav__container">
-      <a href="#hero" class="nav__logo">
+      <a href="/" class="nav__logo">
         <span class="nav__logo-text">
-          <span class="nav__logo-merge">Merge</span>
-          <span class="nav__logo-combinator">Combinator</span>
+          <span class="nav__logo-combinator">Merge Combinator</span>
         </span>
-        <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public" alt="Merge arrows" class="nav__logo-icon">
+        <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public" alt="" class="nav__logo-icon">
       </a>
 
       <nav class="nav__menu" aria-label="Primary navigation">
         <div class="nav__menu-links">
-          <a href="/builders" class="nav__link">Defense Builders</a>
+          <a href="/builders" class="nav__link">Builder Records</a>
           <a href="/combine" class="nav__link">Combine</a>
-          <a href="/merch" class="nav__link">Merch</a>
           <a href="/opportunities" class="nav__link">Opportunities</a>
           <a href="/knowledge" class="nav__link">Knowledge</a>
           <a href="https://docs.mergecombinator.com" class="nav__link">Docs</a>
@@ -65,922 +644,314 @@
     </div>
   </header>
 
-  <!-- ============================================
-       SECTION 1: HERO (Enhanced with node network)
-       ============================================ -->
-  <section class="hero" id="hero">
-    <!-- Hero Background (Canvas-based animation) -->
-    <div class="hero__bg">
-      <div class="hero__gradient"></div>
-      <div class="hero__grid"></div>
-      <canvas class="hero__canvas" id="hero-canvas"></canvas>
-      <div class="hero__vignette"></div>
-    </div>
-
-    <div class="container hero__content">
-      <div class="hero__text reveal-stagger">
-        <div class="hero__badge reveal">
-          <span class="hero__badge-dot"></span>
-          National Security Innovation
-        </div>
-        <h1 class="hero__title reveal">Build What<br>Warfighters Need.</h1>
-        <p class="hero__subtitle reveal">
-          Merge Combinator is the builder-led venture studio for national security.
-          If you're building for the Indo-Pacific mission, build with us.
-        </p>
-        <div class="hero__ctas reveal">
-          <a href="/builders" class="btn btn--primary btn--glow">
-            Build With Us
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-          <a href="#platform" class="btn btn--ghost">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M6.5 6L10 8L6.5 10V6Z" fill="currentColor"/>
-            </svg>
-            Watch Overview
-          </a>
-        </div>
-        <div class="hero__stats reveal">
-          <div class="hero__stat">
-            <span class="hero__stat-number" data-stat="companies">80+</span>
-            <span class="hero__stat-label">Companies</span>
+  <!-- Console Header -->
+  <main class="console">
+    <section class="console__header">
+      <div class="container">
+        <div class="console__title-row">
+          <h1 class="console__title">Merge Combinator</h1>
+          <div class="console__status">
+            <span class="console__status-dot"></span>
+            OPERATIONAL
           </div>
-          <div class="hero__stat-divider"></div>
-          <div class="hero__stat">
-            <span class="hero__stat-number" data-stat="operators">150+</span>
-            <span class="hero__stat-label">Operators</span>
+        </div>
+        <div class="console__bar" role="group" aria-label="System status bar">
+          <div class="console__cell">
+            <div class="console__label">Mission</div>
+            <div class="console__value">Defense ecosystem coordination</div>
           </div>
-          <div class="hero__stat-divider"></div>
-          <div class="hero__stat">
-            <span class="hero__stat-number" data-stat="problem-sets">20+</span>
-            <span class="hero__stat-label">Problem Sets</span>
+          <div class="console__cell">
+            <div class="console__label">Region</div>
+            <div class="console__value">Indo-Pacific</div>
+          </div>
+          <div class="console__cell">
+            <div class="console__label">Mode</div>
+            <div class="console__value">Builder-led venture formation</div>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="hero__visual">
-        <div class="hero__diagram">
-          <!-- Animated data flow diagram -->
-          <svg class="hero__flow" viewBox="0 0 400 400" fill="none">
-            <!-- Connection lines -->
-            <path class="hero__flow-line hero__flow-line--1" d="M80 200 Q150 150 200 200" stroke="url(#lineGradient)" stroke-width="2"/>
-            <path class="hero__flow-line hero__flow-line--2" d="M200 200 Q250 250 320 200" stroke="url(#lineGradient)" stroke-width="2"/>
-            <path class="hero__flow-line hero__flow-line--3" d="M200 200 Q200 280 200 340" stroke="url(#lineGradient)" stroke-width="2"/>
-            <path class="hero__flow-line hero__flow-line--4" d="M80 200 Q80 280 140 340" stroke="url(#lineGradient)" stroke-width="2" opacity="0.5"/>
-            <path class="hero__flow-line hero__flow-line--5" d="M320 200 Q320 280 260 340" stroke="url(#lineGradient)" stroke-width="2" opacity="0.5"/>
+    <div class="console__layout">
+      <div class="console__main">
+        <div class="container">
+          <!-- Stats -->
+          <div class="stats-grid">
+            <div class="stats-grid__item">
+              <div class="stats-grid__value" data-stat="companies">80+</div>
+              <div class="stats-grid__label">Builders</div>
+            </div>
+            <div class="stats-grid__item">
+              <div class="stats-grid__value" data-stat="operators">150+</div>
+              <div class="stats-grid__label">Operators</div>
+            </div>
+            <div class="stats-grid__item">
+              <div class="stats-grid__value" data-stat="problem-sets">20+</div>
+              <div class="stats-grid__label">Problem Sets</div>
+            </div>
+            <div class="stats-grid__item">
+              <div class="stats-grid__value">6-8</div>
+              <div class="stats-grid__label">Weeks to Deploy</div>
+            </div>
+          </div>
 
-            <!-- Data flow particles -->
-            <circle class="hero__particle" r="3" fill="#2A7FDB">
-              <animateMotion dur="3s" repeatCount="indefinite" path="M80 200 Q150 150 200 200"/>
-            </circle>
-            <circle class="hero__particle" r="3" fill="#2A7FDB">
-              <animateMotion dur="2.5s" repeatCount="indefinite" path="M200 200 Q250 250 320 200"/>
-            </circle>
-            <circle class="hero__particle" r="3" fill="#5DA06F">
-              <animateMotion dur="2s" repeatCount="indefinite" path="M200 200 Q200 280 200 340"/>
-            </circle>
+          <!-- Ecosystem Modules -->
+          <div class="section-header">
+            <h2 class="section-header__title">Ecosystem Modules</h2>
+            <p class="section-header__desc">Operational components of the defense builder pipeline.</p>
+          </div>
 
-            <!-- Gradient definition -->
-            <defs>
-              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#2A7FDB" stop-opacity="0.1"/>
-                <stop offset="50%" stop-color="#2A7FDB" stop-opacity="0.6"/>
-                <stop offset="100%" stop-color="#2A7FDB" stop-opacity="0.1"/>
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
-                </feMerge>
-              </filter>
-            </defs>
+          <div class="modules-grid">
+            <article class="module">
+              <div class="module__phase">Phase 01</div>
+              <h3 class="module__title">The Combine</h3>
+              <p class="module__desc">5-day operator integration cycle. Problem validation, team formation, prototype scoping.</p>
+              <a href="/combine" class="module__link">
+                View Module
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 8h10M9 4l4 4-4 4"/>
+                </svg>
+              </a>
+            </article>
 
-            <!-- Nodes -->
-            <g class="hero__node-group" filter="url(#glow)">
-              <!-- Discover node -->
-              <g class="hero__flow-node" transform="translate(80, 200)">
-                <circle r="28" fill="#0B0E11" stroke="#2A7FDB" stroke-width="2"/>
-                <circle r="20" fill="#1C232B"/>
-                <text y="5" text-anchor="middle" fill="#fff" font-size="10" font-family="Space Mono">01</text>
-              </g>
+            <article class="module">
+              <div class="module__phase">Phase 02</div>
+              <h3 class="module__title">Merge Studio</h3>
+              <p class="module__desc">Venture co-formation from validated problem sets. Operator-backed development cycles.</p>
+              <a href="/access" class="module__link">
+                Request Access
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 8h10M9 4l4 4-4 4"/>
+                </svg>
+              </a>
+            </article>
 
-              <!-- Build node (center) -->
-              <g class="hero__flow-node hero__flow-node--main" transform="translate(200, 200)">
-                <circle r="36" fill="#0B0E11" stroke="#2A7FDB" stroke-width="3"/>
-                <circle r="26" fill="#1C232B"/>
-                <circle r="8" fill="#2A7FDB" class="hero__node-pulse"/>
-              </g>
+            <article class="module">
+              <div class="module__phase">Phase 03</div>
+              <h3 class="module__title">Builder Records</h3>
+              <p class="module__desc">Operational directory of defense builders. Capability tracking, status monitoring.</p>
+              <a href="/builders" class="module__link">
+                View Records
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 8h10M9 4l4 4-4 4"/>
+                </svg>
+              </a>
+            </article>
+          </div>
 
-              <!-- Deploy node -->
-              <g class="hero__flow-node" transform="translate(320, 200)">
-                <circle r="28" fill="#0B0E11" stroke="#5DA06F" stroke-width="2"/>
-                <circle r="20" fill="#1C232B"/>
-                <text y="5" text-anchor="middle" fill="#fff" font-size="10" font-family="Space Mono">03</text>
-              </g>
-
-              <!-- Output node -->
-              <g class="hero__flow-node" transform="translate(200, 340)">
-                <circle r="24" fill="#0B0E11" stroke="#5DA06F" stroke-width="2"/>
-                <circle r="16" fill="#1C232B"/>
-                <polygon points="0,-6 6,4 -6,4" fill="#5DA06F"/>
-              </g>
-            </g>
-
-            <!-- Labels -->
-            <text x="80" y="250" text-anchor="middle" fill="#6B7280" font-size="11" font-family="Space Mono">DISCOVER</text>
-            <text x="200" y="165" text-anchor="middle" fill="#fff" font-size="12" font-family="Space Mono" font-weight="600">BUILD</text>
-            <text x="320" y="250" text-anchor="middle" fill="#6B7280" font-size="11" font-family="Space Mono">DEPLOY</text>
-            <text x="200" y="385" text-anchor="middle" fill="#5DA06F" font-size="11" font-family="Space Mono">MISSION</text>
-          </svg>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero__scroll-indicator">
-      <span>Scroll to explore</span>
-      <div class="hero__scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 2: PLATFORM OVERVIEW (New Palantir-style)
-       ============================================ -->
-  <section class="platform section--lg" id="platform">
-    <div class="container">
-      <header class="platform__header fade-up">
-        <span class="section-label">The Platform</span>
-        <h2 class="platform__title">A vertically integrated, warfighter-centered builder studio.</h2>
-        <p class="platform__subtitle">
-          Merge connects real operational problems, technical builders, and field deployments into one end-to-end pipeline.
-        </p>
-      </header>
-
-      <!-- Horizontal tabs (Palantir-style) -->
-      <div class="platform__tabs fade-up">
-        <button class="platform__tab platform__tab--active" data-tab="discover">
-          <span class="platform__tab-number">01</span>
-          Discover
-        </button>
-        <button class="platform__tab" data-tab="build">
-          <span class="platform__tab-number">02</span>
-          Build
-        </button>
-        <button class="platform__tab" data-tab="deploy">
-          <span class="platform__tab-number">03</span>
-          Deploy
-        </button>
-      </div>
-
-      <!-- Tab content panels -->
-      <div class="platform__panels">
-        <div class="platform__panel platform__panel--active" id="panel-discover">
-          <div class="platform__panel-content">
-            <div class="platform__panel-text">
-              <h3 class="platform__panel-title">SigmaBlox: The Defense Tech Combine</h3>
-              <p class="platform__panel-body">
-                Where founders, operators, and mission owners validate real problems and form teams.
-                The best week in defense tech for early-stage founders.
-              </p>
-              <ul class="platform__features">
-                <li>
-                  <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Validate operational problems with real operators
-                </li>
-                <li>
-                  <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Form mission-first teams
-                </li>
-                <li>
-                  <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Explore prototype opportunities
-                </li>
+          <!-- Operational Pipeline -->
+          <div class="panel">
+            <div class="panel__header">
+              <h3 class="panel__title">Operational Pipeline</h3>
+              <span class="panel__badge">4 Stages</span>
+            </div>
+            <div class="panel__body">
+              <p class="panel__desc">Problem-to-deployment cycle. Validated requirements translate to fielded capability.</p>
+              <ul class="panel__list">
+                <li>Problem Discovery: Operator-identified requirements</li>
+                <li>Team Formation: Builder-operator matching at Combine</li>
+                <li>Rapid Build: Prototype development in Merge Studio</li>
+                <li>Field Deployment: Indo-Pacific operator integration</li>
               </ul>
-              <a href="/combine" class="btn btn--primary btn--small">Learn About The Combine</a>
-            </div>
-            <div class="platform__panel-visual">
-              <div class="platform__diagram">
-                <div class="platform__diagram-node platform__diagram-node--1">
-                  <span class="platform__diagram-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <circle cx="12" cy="8" r="4"/>
-                      <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
-                    </svg>
-                  </span>
-                  <span>Founders</span>
-                </div>
-                <div class="platform__diagram-connector"></div>
-                <div class="platform__diagram-node platform__diagram-node--2">
-                  <span class="platform__diagram-icon platform__diagram-icon--active">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="M12 6v6l4 2"/>
-                    </svg>
-                  </span>
-                  <span>Combine</span>
-                </div>
-                <div class="platform__diagram-connector"></div>
-                <div class="platform__diagram-node platform__diagram-node--3">
-                  <span class="platform__diagram-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                      <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                      <path d="M2 17l10 5 10-5"/>
-                      <path d="M2 12l10 5 10-5"/>
-                    </svg>
-                  </span>
-                  <span>Operators</span>
-                </div>
-              </div>
             </div>
           </div>
-        </div>
 
-        <div class="platform__panel" id="panel-build">
-          <div class="platform__panel-content">
-            <div class="platform__panel-text">
-              <h3 class="platform__panel-title">Merge Studio: Venture Formation</h3>
-              <p class="platform__panel-body">
-                We co-found ventures born from validated problem sets. Backed by operators, advisors, and technical builders committed to the mission.
-              </p>
-              <ul class="platform__features">
-                <li>
-                  <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Co-found ventures from validated problems
-                </li>
-                <li>
-                  <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Rapid prototyping & iteration
-                </li>
-                <li>
-                  <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Operator-backed development
-                </li>
+          <!-- Capabilities -->
+          <div class="section-header">
+            <h2 class="section-header__title">System Capabilities</h2>
+          </div>
+
+          <div class="capabilities-grid">
+            <div class="capability">
+              <svg class="capability__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <h4 class="capability__title">Security-First</h4>
+              <p class="capability__desc">Designed for classified environments.</p>
+            </div>
+
+            <div class="capability">
+              <svg class="capability__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <h4 class="capability__title">Indo-Pacific Focus</h4>
+              <p class="capability__desc">Regional operator relationships.</p>
+            </div>
+
+            <div class="capability">
+              <svg class="capability__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              <h4 class="capability__title">Rapid Iteration</h4>
+              <p class="capability__desc">Weeks to deployment.</p>
+            </div>
+
+            <div class="capability">
+              <svg class="capability__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <h4 class="capability__title">Operator Network</h4>
+              <p class="capability__desc">Direct mission owner access.</p>
+            </div>
+
+            <div class="capability">
+              <svg class="capability__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                <line x1="8" y1="21" x2="16" y2="21"/>
+                <line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              <h4 class="capability__title">Dual-Use Expertise</h4>
+              <p class="capability__desc">Commercial and defense markets.</p>
+            </div>
+
+            <div class="capability">
+              <svg class="capability__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
+              <h4 class="capability__title">Validated Problems</h4>
+              <p class="capability__desc">Operator-confirmed requirements.</p>
+            </div>
+          </div>
+
+          <!-- Access Protocols -->
+          <div class="section-header">
+            <h2 class="section-header__title">Access Protocols</h2>
+            <p class="section-header__desc">Entry points by entity type.</p>
+          </div>
+
+          <div class="protocols-grid">
+            <article class="protocol">
+              <div class="protocol__type">Entity Type: Builder</div>
+              <h3 class="protocol__title">Founders</h3>
+              <p class="protocol__desc">Validate problems, join Combine, explore venture formation.</p>
+              <ul class="protocol__actions">
+                <li>Apply to Combine</li>
+                <li>Pitch to Studio</li>
+                <li>Join Builder Records</li>
               </ul>
-              <a href="/access" class="btn btn--primary btn--small">Get Involved</a>
-            </div>
-            <div class="platform__panel-visual">
-              <div class="platform__code-block">
-                <div class="platform__code-header">
-                  <span class="platform__code-dot"></span>
-                  <span class="platform__code-dot"></span>
-                  <span class="platform__code-dot"></span>
-                  <span class="platform__code-title">venture.config</span>
-                </div>
-                <pre class="platform__code"><code><span class="code-key">venture</span>: {
-  <span class="code-key">problem</span>: <span class="code-string">"validated"</span>,
-  <span class="code-key">team</span>: <span class="code-string">"operator-led"</span>,
-  <span class="code-key">timeline</span>: <span class="code-string">"weeks"</span>,
-  <span class="code-key">status</span>: <span class="code-value">"building"</span>
-}</code></pre>
-              </div>
-            </div>
-          </div>
-        </div>
+              <a href="/builders" class="protocol__btn">Access</a>
+            </article>
 
-        <div class="platform__panel" id="panel-deploy">
-          <div class="platform__panel-content">
-            <div class="platform__panel-text">
-              <h3 class="platform__panel-title">Defense Builders: Deployment Platform</h3>
-              <p class="platform__panel-body">
-                The digital platform connecting founders, SMEs, and operators. Run pilots, solve technical problems, and deploy fast.
-              </p>
-              <ul class="platform__features">
-                <li>
-                  <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Simple, compliant workflows
-                </li>
-                <li>
-                  <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Direct operator access
-                </li>
-                <li>
-                  <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
-                    <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  Indo-Pacific field deployments
-                </li>
+            <article class="protocol">
+              <div class="protocol__type">Entity Type: Government</div>
+              <h3 class="protocol__title">Mission Owners</h3>
+              <p class="protocol__desc">Post problems, run pilots, request support.</p>
+              <ul class="protocol__actions">
+                <li>Submit requirements</li>
+                <li>Request pilot programs</li>
+                <li>Access talent network</li>
               </ul>
-              <a href="/builders" class="btn btn--primary btn--small">Join the Platform</a>
+              <a href="/access" class="protocol__btn">Access</a>
+            </article>
+
+            <article class="protocol">
+              <div class="protocol__type">Entity Type: Industry</div>
+              <h3 class="protocol__title">Primes</h3>
+              <p class="protocol__desc">Access dual-use teams, de-risk prototypes.</p>
+              <ul class="protocol__actions">
+                <li>Partner on prototypes</li>
+                <li>Sponsor cohorts</li>
+                <li>Acquire capability</li>
+              </ul>
+              <a href="/access" class="protocol__btn">Access</a>
+            </article>
+          </div>
+
+          <!-- Partners -->
+          <section class="partners">
+            <div class="partners__header">
+              <h3 class="partners__title">Integration Partners</h3>
             </div>
-            <div class="platform__panel-visual">
-              <div class="platform__deploy-visual">
-                <div class="platform__deploy-ring platform__deploy-ring--outer"></div>
-                <div class="platform__deploy-ring platform__deploy-ring--middle"></div>
-                <div class="platform__deploy-ring platform__deploy-ring--inner"></div>
-                <div class="platform__deploy-center">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
-                  </svg>
-                </div>
-                <div class="platform__deploy-point platform__deploy-point--1"></div>
-                <div class="platform__deploy-point platform__deploy-point--2"></div>
-                <div class="platform__deploy-point platform__deploy-point--3"></div>
-                <div class="platform__deploy-point platform__deploy-point--4"></div>
-              </div>
+            <div class="partners__grid">
+              <img src="assets/logos/indopacom.svg" alt="INDOPACOM">
+              <img src="assets/logos/DIU.svg" alt="DIU">
+              <img src="assets/logos/AFSOC.svg" alt="AFSOC">
+              <img src="assets/logos/AFRL.svg" alt="AFRL">
+              <img src="assets/logos/613_aoc.svg" alt="613 AOC">
+              <img src="assets/logos/sofwerx.svg" alt="SOFWERX">
+              <img src="assets/logos/tak_product_center.svg" alt="TAK Product Center">
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 3: DATA PIPELINE (Palantir Foundry-style)
-       ============================================ -->
-  <section class="pipeline-section" id="pipeline">
-    <div class="pipeline-section__bg">
-      <div class="pipeline-section__grid"></div>
-    </div>
-    <div class="container">
-      <header class="pipeline-section__header fade-up">
-        <span class="section-label section-label--light">How It Works</span>
-        <h2 class="pipeline-section__title">From problem to deployment in weeks, not years.</h2>
-      </header>
-
-      <div class="pipeline-visual fade-up">
-        <div class="pipeline-visual__track">
-          <!-- Stage 1 -->
-          <div class="pipeline-stage">
-            <div class="pipeline-stage__node">
-              <div class="pipeline-stage__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <circle cx="11" cy="11" r="8"/>
-                  <path d="M21 21l-4.35-4.35"/>
-                </svg>
-              </div>
-            </div>
-            <div class="pipeline-stage__content">
-              <span class="pipeline-stage__label">01</span>
-              <h4 class="pipeline-stage__title">Problem Discovery</h4>
-              <p class="pipeline-stage__desc">Real operational problems identified by mission owners</p>
-            </div>
-          </div>
-
-          <div class="pipeline-connector">
-            <div class="pipeline-connector__line"></div>
-            <div class="pipeline-connector__pulse"></div>
-          </div>
-
-          <!-- Stage 2 -->
-          <div class="pipeline-stage">
-            <div class="pipeline-stage__node">
-              <div class="pipeline-stage__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                  <circle cx="9" cy="7" r="4"/>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                </svg>
-              </div>
-            </div>
-            <div class="pipeline-stage__content">
-              <span class="pipeline-stage__label">02</span>
-              <h4 class="pipeline-stage__title">Team Formation</h4>
-              <p class="pipeline-stage__desc">Founders and operators matched at The Combine</p>
-            </div>
-          </div>
-
-          <div class="pipeline-connector">
-            <div class="pipeline-connector__line"></div>
-            <div class="pipeline-connector__pulse"></div>
-          </div>
-
-          <!-- Stage 3 -->
-          <div class="pipeline-stage">
-            <div class="pipeline-stage__node pipeline-stage__node--active">
-              <div class="pipeline-stage__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <polyline points="16 18 22 12 16 6"/>
-                  <polyline points="8 6 2 12 8 18"/>
-                </svg>
-              </div>
-            </div>
-            <div class="pipeline-stage__content">
-              <span class="pipeline-stage__label">03</span>
-              <h4 class="pipeline-stage__title">Rapid Build</h4>
-              <p class="pipeline-stage__desc">Prototype development in Merge Studio</p>
-            </div>
-          </div>
-
-          <div class="pipeline-connector">
-            <div class="pipeline-connector__line"></div>
-            <div class="pipeline-connector__pulse"></div>
-          </div>
-
-          <!-- Stage 4 -->
-          <div class="pipeline-stage">
-            <div class="pipeline-stage__node">
-              <div class="pipeline-stage__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                  <polyline points="22 4 12 14.01 9 11.01"/>
-                </svg>
-              </div>
-            </div>
-            <div class="pipeline-stage__content">
-              <span class="pipeline-stage__label">04</span>
-              <h4 class="pipeline-stage__title">Field Deployment</h4>
-              <p class="pipeline-stage__desc">Deployed to operators across Indo-Pacific</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="pipeline-visual__cta">
-          <a href="#ecosystem" class="btn btn--ghost">Explore the Full Pipeline</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 4: WHY MERGE EXISTS (Enhanced)
-       ============================================ -->
-  <section class="why-merge section--lg" id="why-merge">
-    <!-- Canvas Background -->
-    <div class="section-canvas-bg">
-      <canvas class="section-canvas" id="mission-canvas"></canvas>
-      <div class="section-canvas-overlay"></div>
-    </div>
-
-    <div class="container">
-      <div class="why-merge__content">
-        <div class="why-merge__text reveal">
-          <span class="section-label section-label--light">The Mission</span>
-          <h2 class="why-merge__title">Our national security demands better technology, faster.</h2>
-          <div class="why-merge__body">
-            <p>Operators face accelerating threats. Founders struggle to access real problems. Traditional acquisition moves slowly, trapped by legacy overhead and siloed processes.</p>
-            <p class="why-merge__emphasis">Innovation must happen next to the mission — not behind a desk.</p>
-            <p>Merge creates a new model: A rapid, informed, operator-driven cycle where real problems translate into real prototypes and real deployments.</p>
-          </div>
-
-          <div class="why-merge__logos">
-            <span class="why-merge__logos-label">Experience from:</span>
-            <div class="why-merge__logos-grid">
-              <span class="why-merge__logo-text">Palantir</span>
-              <span class="why-merge__logo-text">Anduril</span>
-              <span class="why-merge__logo-text">SOCOM</span>
-              <span class="why-merge__logo-text">DIU</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="why-merge__visual reveal">
-          <div class="why-merge__stats-card">
-            <div class="why-merge__stat-row">
-              <div class="why-merge__stat-item">
-                <span class="why-merge__stat-value">18-24</span>
-                <span class="why-merge__stat-unit">months</span>
-                <span class="why-merge__stat-desc">Traditional acquisition</span>
-              </div>
-              <div class="why-merge__stat-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </div>
-              <div class="why-merge__stat-item why-merge__stat-item--highlight">
-                <span class="why-merge__stat-value">6-8</span>
-                <span class="why-merge__stat-unit">weeks</span>
-                <span class="why-merge__stat-desc">Merge pipeline</span>
-              </div>
-            </div>
-            <div class="why-merge__stat-bar">
-              <div class="why-merge__stat-bar-fill"></div>
-              <span class="why-merge__stat-bar-label">75% faster to deployment</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 5: ECOSYSTEM CARDS (Bento Grid)
-       ============================================ -->
-  <section class="ecosystem section--lg" id="ecosystem">
-    <div class="container">
-      <header class="ecosystem__header fade-up">
-        <span class="section-label">The Ecosystem</span>
-        <h2 class="ecosystem__title">Three programs. One mission.</h2>
-      </header>
-
-      <div class="bento-grid fade-up">
-        <!-- Large card - The Combine -->
-        <article class="bento-card bento-card--large">
-          <div class="bento-card__bg">
-            <div class="bento-card__pattern"></div>
-          </div>
-          <div class="bento-card__content">
-            <div class="bento-card__header">
-              <span class="bento-card__phase">Discover</span>
-              <div class="bento-card__icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 2a10 10 0 0 1 0 20"/>
-                  <line x1="2" y1="12" x2="22" y2="12"/>
-                </svg>
-              </div>
-            </div>
-            <h3 class="bento-card__title">The Combine</h3>
-            <p class="bento-card__body">
-              The best week in defense for early-stage founders and mission owners. Validate operational problems, explore prototypes, and form mission-first teams.
-            </p>
-            <div class="bento-card__stats">
-              <div class="bento-card__stat">
-                <span class="bento-card__stat-value" data-stat="companies">80+</span>
-                <span class="bento-card__stat-label">Companies</span>
-              </div>
-              <div class="bento-card__stat">
-                <span class="bento-card__stat-value">5</span>
-                <span class="bento-card__stat-label">Day Program</span>
-              </div>
-            </div>
-            <a href="/combine" class="bento-card__cta">
-              Learn More
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Medium card - Merge Studio -->
-        <article class="bento-card bento-card--medium">
-          <div class="bento-card__content">
-            <div class="bento-card__header">
-              <span class="bento-card__phase bento-card__phase--build">Build</span>
-            </div>
-            <h3 class="bento-card__title">Merge Studio</h3>
-            <p class="bento-card__body">
-              We co-found ventures born from validated problem sets. Backed by operators, advisors, and technical builders.
-            </p>
-            <a href="/access" class="bento-card__cta">
-              Get Involved
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Medium card - Defense Builders -->
-        <article class="bento-card bento-card--medium">
-          <div class="bento-card__content">
-            <div class="bento-card__header">
-              <span class="bento-card__phase bento-card__phase--deploy">Deploy</span>
-            </div>
-            <h3 class="bento-card__title">Defense Builders</h3>
-            <p class="bento-card__body">
-              The digital platform connecting founders, SMEs, and operators. Deploy fast with compliant workflows.
-            </p>
-            <a href="/builders" class="bento-card__cta">
-              Join Platform
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Small card - Metrics -->
-        <article class="bento-card bento-card--small bento-card--dark">
-          <div class="bento-card__content">
-            <span class="bento-card__metric" data-stat="operators">150+</span>
-            <span class="bento-card__metric-label">Operators & SMEs engaged</span>
-          </div>
-        </article>
-
-        <!-- Small card - Deployments -->
-        <article class="bento-card bento-card--small bento-card--accent">
-          <div class="bento-card__content">
-            <span class="bento-card__metric">IP</span>
-            <span class="bento-card__metric-label">Indo-Pacific deployments</span>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 6: CAPABILITIES (Feature Grid)
-       ============================================ -->
-  <section class="capabilities section--lg" id="capabilities">
-    <div class="container">
-      <header class="capabilities__header fade-up">
-        <span class="section-label">Capabilities</span>
-        <h2 class="capabilities__title">Built for the mission</h2>
-      </header>
-
-      <div class="capabilities__grid stagger-children">
-        <div class="capability-card">
-          <div class="capability-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-          </div>
-          <h4 class="capability-card__title">Security First</h4>
-          <p class="capability-card__desc">Built for classified and sensitive environments from day one.</p>
-        </div>
-
-        <div class="capability-card">
-          <div class="capability-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M2 12h20"/>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </svg>
-          </div>
-          <h4 class="capability-card__title">Indo-Pacific Focus</h4>
-          <p class="capability-card__desc">Deep regional expertise and established operator relationships.</p>
-        </div>
-
-        <div class="capability-card">
-          <div class="capability-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-            </svg>
-          </div>
-          <h4 class="capability-card__title">Rapid Iteration</h4>
-          <p class="capability-card__desc">Weeks to deployment, not months or years.</p>
-        </div>
-
-        <div class="capability-card">
-          <div class="capability-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-              <circle cx="9" cy="7" r="4"/>
-              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-            </svg>
-          </div>
-          <h4 class="capability-card__title">Operator Network</h4>
-          <p class="capability-card__desc">Direct access to mission owners and field operators.</p>
-        </div>
-
-        <div class="capability-card">
-          <div class="capability-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-              <line x1="8" y1="21" x2="16" y2="21"/>
-              <line x1="12" y1="17" x2="12" y2="21"/>
-            </svg>
-          </div>
-          <h4 class="capability-card__title">Dual-Use Expertise</h4>
-          <p class="capability-card__desc">Navigate commercial and defense markets seamlessly.</p>
-        </div>
-
-        <div class="capability-card">
-          <div class="capability-card__icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-              <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-          </div>
-          <h4 class="capability-card__title">Validated Problems</h4>
-          <p class="capability-card__desc">Every venture starts with real, operator-validated needs.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 7: SOCIAL PROOF
-       ============================================ -->
-  <section class="social-proof section" id="social-proof">
-    <div class="container">
-      <header class="social-proof__header fade-up">
-        <h2 class="social-proof__title">Trusted by builders across the Indo-Pacific.</h2>
-        <p class="social-proof__subtitle">
-          Teams, founders, operators, and experts from leading organizations have participated in Merge and SigmaBlox programs.
-        </p>
-      </header>
-
-      <div class="logo-marquee fade-up">
-        <div class="logo-marquee__track">
-          <div class="logo-marquee__item"><img src="assets/logos/indopacom.svg" alt="INDOPACOM"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/DIU.svg" alt="DIU"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/AFSOC.svg" alt="AFSOC"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/AFRL.svg" alt="AFRL"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/613_aoc.svg" alt="613 AOC"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/sofwerx.svg" alt="SOFWERX"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/tak_product_center.svg" alt="TAK Product Center"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/overmatch.svg" alt="Overmatch"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/diu_onramp_hawaii.svg" alt="DIU Onramp Hawaii"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/bravo_hackathon.svg" alt="Bravo Hackathon"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/mchmr.svg" alt="MCHMR"></div>
-          <!-- Duplicate for seamless loop -->
-          <div class="logo-marquee__item"><img src="assets/logos/indopacom.svg" alt="INDOPACOM"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/DIU.svg" alt="DIU"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/AFSOC.svg" alt="AFSOC"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/AFRL.svg" alt="AFRL"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/613_aoc.svg" alt="613 AOC"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/sofwerx.svg" alt="SOFWERX"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/tak_product_center.svg" alt="TAK Product Center"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/overmatch.svg" alt="Overmatch"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/diu_onramp_hawaii.svg" alt="DIU Onramp Hawaii"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/bravo_hackathon.svg" alt="Bravo Hackathon"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/mchmr.svg" alt="MCHMR"></div>
+            <p class="partners__note">No endorsement implied.</p>
+          </section>
         </div>
       </div>
 
-      <p class="social-proof__disclaimer">No endorsement implied.</p>
+      <!-- Status Rail -->
+      <aside class="console__rail">
+        <section class="rail-panel">
+          <header class="rail-panel__header">
+            <h2 class="rail-panel__title">System Status</h2>
+          </header>
+          <div class="rail-panel__body">
+            <div class="rail-kv">
+              <span class="rail-kv__label">Platform</span>
+              <span class="rail-kv__value rail-kv__value--green">Operational</span>
+            </div>
+            <div class="rail-kv">
+              <span class="rail-kv__label">Combine</span>
+              <span class="rail-kv__value">Recruiting</span>
+            </div>
+            <div class="rail-kv">
+              <span class="rail-kv__label">Studio</span>
+              <span class="rail-kv__value">Active</span>
+            </div>
+            <div class="rail-kv">
+              <span class="rail-kv__label">Records</span>
+              <span class="rail-kv__value">80+ builders</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="rail-panel">
+          <header class="rail-panel__header">
+            <h2 class="rail-panel__title">Regional Coverage</h2>
+          </header>
+          <div class="rail-panel__body">
+            <div class="rail-kv">
+              <span class="rail-kv__label">Primary</span>
+              <span class="rail-kv__value">Indo-Pacific</span>
+            </div>
+            <div class="rail-kv">
+              <span class="rail-kv__label">HQ</span>
+              <span class="rail-kv__value">San Francisco</span>
+            </div>
+            <div class="rail-kv">
+              <span class="rail-kv__label">Nodes</span>
+              <span class="rail-kv__value">Tokyo, Singapore</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="rail-panel">
+          <header class="rail-panel__header">
+            <h2 class="rail-panel__title">Quick Access</h2>
+          </header>
+          <div class="rail-panel__body">
+            <div class="rail-kv">
+              <a href="/builders" class="rail-kv__label" style="color: var(--blue);">Builder Records</a>
+            </div>
+            <div class="rail-kv">
+              <a href="/opportunities" class="rail-kv__label" style="color: var(--blue);">Opportunities</a>
+            </div>
+            <div class="rail-kv">
+              <a href="/knowledge" class="rail-kv__label" style="color: var(--blue);">Knowledge Base</a>
+            </div>
+            <div class="rail-kv">
+              <a href="https://docs.mergecombinator.com" class="rail-kv__label" style="color: var(--blue);">Documentation</a>
+            </div>
+          </div>
+        </section>
+      </aside>
     </div>
-  </section>
+  </main>
 
-  <!-- ============================================
-       SECTION 8: TESTIMONIALS (Card carousel)
-       ============================================ -->
-  <section class="testimonials section--lg" id="testimonials">
-    <div class="container">
-      <header class="testimonials__header fade-up">
-        <span class="section-label section-label--light">Testimonials</span>
-        <h2 class="testimonials__title">What our builders are saying</h2>
-      </header>
-
-      <div class="testimonials__carousel fade-up">
-        <div class="testimonial-card">
-          <div class="testimonial-card__quote">
-            <svg class="testimonial-card__quote-icon" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-            </svg>
-            <p>SigmaBlox was the most valuable week we've spent in defense tech. The connections and validation we received accelerated our roadmap by months.</p>
-          </div>
-          <div class="testimonial-card__author">
-            <div class="testimonial-card__avatar">JC</div>
-            <div class="testimonial-card__info">
-              <span class="testimonial-card__name">Founder</span>
-              <span class="testimonial-card__role">Autonomy Startup</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="testimonial-card__quote">
-            <svg class="testimonial-card__quote-icon" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-            </svg>
-            <p>Merge helped us validate the problem and build with the right operators. We went from concept to field testing in under two months.</p>
-          </div>
-          <div class="testimonial-card__author">
-            <div class="testimonial-card__avatar">MK</div>
-            <div class="testimonial-card__info">
-              <span class="testimonial-card__name">CEO</span>
-              <span class="testimonial-card__role">UAS Company</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="testimonial-card__quote">
-            <svg class="testimonial-card__quote-icon" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-            </svg>
-            <p>This is the first ecosystem where engineers and mission owners actually solve problems together. The collaboration model is transformative.</p>
-          </div>
-          <div class="testimonial-card__author">
-            <div class="testimonial-card__avatar">SR</div>
-            <div class="testimonial-card__info">
-              <span class="testimonial-card__name">Mission Owner</span>
-              <span class="testimonial-card__role">DoD</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 9: HOW TO ENGAGE
-       ============================================ -->
-  <section class="engage section--lg" id="engage">
-    <div class="container">
-      <header class="engage__header fade-up">
-        <span class="section-label">Get Involved</span>
-        <h2 class="engage__title">How to Engage</h2>
-        <p class="engage__subtitle">Where builders, operators, primes, and mission owners connect.</p>
-      </header>
-
-      <div class="engage__cards stagger-children">
-        <article class="engage-card">
-          <div class="engage-card__icon-wrap">
-            <div class="engage-card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                <path d="M2 17l10 5 10-5"/>
-                <path d="M2 12l10 5 10-5"/>
-              </svg>
-            </div>
-          </div>
-          <h3 class="engage-card__title">Founders & Startups</h3>
-          <p class="engage-card__body">
-            Validate problems, join the Combine, or explore venture formation with Merge Studio.
-          </p>
-          <ul class="engage-card__list">
-            <li>Apply to The Combine</li>
-            <li>Pitch to Merge Studio</li>
-            <li>Join Defense Builders</li>
-          </ul>
-          <a href="/builders" class="btn btn--primary">For Founders</a>
-        </article>
-
-        <article class="engage-card engage-card--featured">
-          <div class="engage-card__badge">Most Popular</div>
-          <div class="engage-card__icon-wrap">
-            <div class="engage-card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="3" y="11" width="18" height="11" rx="1"/>
-                <path d="M12 2l9 9H3l9-9z"/>
-                <line x1="7" y1="22" x2="7" y2="15"/>
-                <line x1="12" y1="22" x2="12" y2="15"/>
-                <line x1="17" y1="22" x2="17" y2="15"/>
-              </svg>
-            </div>
-          </div>
-          <h3 class="engage-card__title">Government & Mission Owners</h3>
-          <p class="engage-card__body">
-            Post problems, run pilots, or request support through Defense Builders.
-          </p>
-          <ul class="engage-card__list">
-            <li>Submit problem statements</li>
-            <li>Request pilot programs</li>
-            <li>Access talent network</li>
-          </ul>
-          <a href="/builders" class="btn btn--primary">For Government</a>
-        </article>
-
-        <article class="engage-card">
-          <div class="engage-card__icon-wrap">
-            <div class="engage-card__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-              </svg>
-            </div>
-          </div>
-          <h3 class="engage-card__title">Primes & Industry</h3>
-          <p class="engage-card__body">
-            Access dual-use teams, de-risk prototypes, or support venture spinouts.
-          </p>
-          <ul class="engage-card__list">
-            <li>Partner on prototypes</li>
-            <li>Sponsor Combine cohorts</li>
-            <li>Acquire spinout tech</li>
-          </ul>
-          <a href="/builders" class="btn btn--primary">For Industry</a>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       SECTION 10: FINAL CTA
-       ============================================ -->
-  <section class="final-cta" id="cta">
-    <!-- Canvas Background -->
-    <div class="section-canvas-bg">
-      <canvas class="section-canvas" id="cta-canvas"></canvas>
-      <div class="section-canvas-overlay"></div>
-    </div>
-    <div class="container">
-      <div class="final-cta__content reveal">
-        <h2 class="final-cta__title">Build what warfighters need.</h2>
-        <p class="final-cta__subtitle">
-          Join Merge Combinator and become part of the next wave of national security innovation.
-        </p>
-        <div class="final-cta__buttons">
-          <a href="/builders" class="btn btn--primary btn--large btn--glow">
-            Build With Us
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-          <a href="#platform" class="btn btn--ghost btn--large">Learn More</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       FOOTER (Palantir-style)
-       ============================================ -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer__grid">
@@ -989,26 +960,16 @@
             <span class="footer__logo-mark">M</span>
             <span class="footer__logo-text">Merge Combinator</span>
           </a>
-          <p class="footer__tagline">The builder-led venture studio for national security.</p>
+          <p class="footer__tagline">Defense ecosystem coordination platform.</p>
           <div class="footer__social">
             <a href="https://www.linkedin.com/company/merge-combinator/" class="footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
               </svg>
             </a>
-            <a href="https://x.com/FPExtraordinAir" class="footer__social-link" aria-label="X (Twitter)" target="_blank" rel="noopener">
+            <a href="https://x.com/FPExtraordinAir" class="footer__social-link" aria-label="X" target="_blank" rel="noopener">
               <svg viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-            </a>
-            <a href="/combine" class="footer__social-link" aria-label="Combine" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-              </svg>
-            </a>
-            <a href="/knowledge" class="footer__social-link" aria-label="Knowledge" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
               </svg>
             </a>
           </div>
@@ -1019,52 +980,39 @@
             <h4 class="footer__heading">Platform</h4>
             <ul class="footer__list">
               <li><a href="/combine">Combine</a></li>
-              <li><a href="/builders">Defense Builders</a></li>
+              <li><a href="/builders">Builder Records</a></li>
               <li><a href="/opportunities">Opportunities</a></li>
-              <li><a href="/merch">Merch</a></li>
-            </ul>
-          </div>
-
-          <div class="footer__column">
-            <h4 class="footer__heading">Company</h4>
-            <ul class="footer__list">
-              <li><a href="/#hero">About</a></li>
-              <li><a href="/access">Contact</a></li>
-              <li><a href="/builders">Careers</a></li>
             </ul>
           </div>
 
           <div class="footer__column">
             <h4 class="footer__heading">Resources</h4>
             <ul class="footer__list">
-              <li><a href="/blog.html">Blog</a></li>
-              <li><a href="/portfolio.html">Case Studies</a></li>
+              <li><a href="/blog">Analysis</a></li>
               <li><a href="/knowledge">Knowledge</a></li>
-              <li><a href="https://docs.mergecombinator.com">Docs</a></li>
+              <li><a href="https://docs.mergecombinator.com">Documentation</a></li>
             </ul>
           </div>
 
           <div class="footer__column">
             <h4 class="footer__heading">Legal</h4>
             <ul class="footer__list">
-              <li><a href="/privacy.html">Privacy Policy</a></li>
-              <li><a href="/terms.html">Terms of Service</a></li>
-              <li><a href="/security.html">Security</a></li>
+              <li><a href="/privacy">Privacy</a></li>
+              <li><a href="/terms">Terms</a></li>
+              <li><a href="/security">Security</a></li>
             </ul>
           </div>
         </div>
       </div>
 
       <div class="footer__bottom">
-        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
-        <p class="footer__location">San Francisco • Tokyo • Singapore</p>
+        <p class="footer__copyright">&copy; 2026 Merge Combinator</p>
+        <p class="footer__location">San Francisco / Tokyo / Singapore</p>
       </div>
     </div>
   </footer>
 
   <!-- Scripts -->
-  <script type="module" src="js/scroll-reveal.js"></script>
-  <script type="module" src="js/homepage/index.js"></script>
   <script type="module" src="script.js"></script>
   <script src="js/auth-nav.js"></script>
 </body>
