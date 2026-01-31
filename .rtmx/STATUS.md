@@ -1,22 +1,22 @@
 # Ralph Status
 
 ## Current Session
-- **Started**: 2026-01-30 23:00
-- **Task**: Codebase scan + bug fixes
+- **Started**: 2026-01-30 23:30
+- **Task**: Bug fix session - script loading + portfolio links
 
 ## Queue (Next 5)
-1. REQ-AUTH-004 - Passkey setup prompt (BLOCKED - needs VIA admin API token)
-2. REQ-INFRA-001 - api.mergecombinator.com (BLOCKED - needs DNS record)
-3. REQ-DOCS-003 - Contributor access workflow Phase 3 (BLOCKED - needs API endpoint)
-4. -
+1. REQ-UX-001 - Mobile UI/UX review (PENDING - needs device testing)
+2. REQ-AUTH-004 - Passkey setup prompt (BLOCKED - needs VIA admin API token)
+3. REQ-INFRA-001 - api.mergecombinator.com (BLOCKED - needs DNS record)
+4. REQ-DOCS-003 - Contributor access workflow Phase 3 (BLOCKED - needs API endpoint)
 5. -
 
 ## Recently Completed
+- REQ-BUG-006 - Portfolio case study links fixed with pending state (2026-01-30)
+- REQ-BUG-005 - Script loading inconsistency fixed (2026-01-30)
 - REQ-BUG-004 - Partner logo path fix in index.html (2026-01-30)
 - REQ-BUG-003 - Missing /combine page fixed (2026-01-30)
 - REQ-C2UX-002 - Ecosystem status dashboard + nav links (2026-01-30)
-- REQ-C2UX-001 - C2UX transformation of index.html and navigation (2026-01-30)
-- REQ-DOCS-003 Phase 1 - Contributor request page /contribute.html (2026-01-30)
 
 ## Blocked / Needs Human
 - REQ-AUTH-004: Requires AUTHENTIK_ADMIN_TOKEN in .env.local for VIA API access
@@ -26,19 +26,25 @@
 
 ## Session Notes - 2026-01-30
 
-### Bug Fix Session (23:00)
-- Ran automated codebase scan for bugs
-- Found: Partner logos in index.html referenced `assets/logos/*.svg` but files were at `assets/logos/partners/*.svg`
-- Fixed: Updated 7 image paths in index.html lines 873-879
-- Created REQ-BUG-004 in RTMX database
-- Build verified passing
+### Bug Fix Session (23:30)
+- Ran automated codebase scan for bugs via Explore agent
+- Found and fixed 2 issues:
 
-### Visual Audit (22:15)
+**REQ-BUG-005: Script Loading Inconsistency**
+- `dashboard.html` and `combine.html` had `script.js` without `type="module"`
+- `builders.html` had `auth-nav.js` with unnecessary `type="module"`
+- Fixed to standardize: `script.js` always module, `auth-nav.js` never module
+
+**REQ-BUG-006: Portfolio Case Study Links**
+- 7 "View Case Study" links pointing to `href="#"` - non-functional
+- Following C2UX explicit state doctrine, replaced with disabled spans
+- Added "PENDING" badge with amber styling (matches access.html pattern)
+- CSS: dashed border, 50% opacity, pointer-events: none
+
+### Visual Audit (23:30)
 - **Build**: Passes cleanly (exit 0)
-- **Homepage**: C2UX compliant - dark theme, operational language, status rail, panel layout
-- **Combine Page**: 5-day timeline, cohort history, participant requirements, recruiting status
-- **Dashboard**: Inventory metrics, recent builder records, mission coverage bars, auto-refresh 60s
-- **Contribute Page**: Auth-gated form working, split layout, process steps visible
+- **Portfolio Page**: Pending badges render correctly on dark background
+- **Pattern**: Consistent with access.html disabled button pattern
 
 ### Console Errors (Expected in Local Dev)
 - `/auth/me` returns HTML 404 (Cloudflare Worker not running locally)
@@ -46,7 +52,7 @@
 - These resolve in production environment
 
 ### Build Warnings (Non-blocking)
-- `<script>` tags without `type="module"` warnings - Vite optimization note, doesn't affect functionality
+- `<script>` tags for `auth-nav.js` without `type="module"` - expected, IIFE doesn't need module
 
 ---
-_Last updated: 2026-01-30 23:00_
+_Last updated: 2026-01-30 23:45_
