@@ -11,13 +11,13 @@ Add a dashboard view showing real-time ecosystem activity: builder count, recent
 - C2UX design doctrine
 
 ## Acceptance Criteria
-- [ ] Dashboard route: `/dashboard` or `/status`
-- [ ] Builder count with trend indicator
-- [ ] Recent builder additions (last 7 days)
-- [ ] Docs activity feed (recent edits)
-- [ ] User engagement metrics (if available)
-- [ ] Auto-refresh every 60 seconds
-- [ ] C2UX compliant (data-dense, operational)
+- [x] Dashboard route: `/dashboard` or `/status`
+- [x] Builder count with trend indicator
+- [x] Recent builder additions (last 7 days)
+- [ ] Docs activity feed (recent edits) - deferred: requires Outline API integration
+- [ ] User engagement metrics (if available) - deferred: requires VIA API integration
+- [x] Auto-refresh every 60 seconds
+- [x] C2UX compliant (data-dense, operational)
 
 ## Dashboard Layout
 ```
@@ -46,7 +46,7 @@ Add a dashboard view showing real-time ecosystem activity: builder count, recent
 - User metrics: VIA/Authentik API
 
 ## Implementation
-- **Status**: PENDING
+- **Status**: COMPLETE
 - **Phase**: 4
 - **Priority**: LOW
 
@@ -59,3 +59,37 @@ Add a dashboard view showing real-time ecosystem activity: builder count, recent
 ## Dependencies
 - REQ-C2UX-001 (design system should be in place)
 - REQ-AUTH-002 (may need auth for some metrics)
+
+## Sitrep - 2026-01-30
+
+**Session**: claude-2026-01-30
+**Status**: COMPLETE
+
+### Completed
+- Dashboard already existed at `/dashboard` with full implementation
+- Verified dashboard.html, styles/dashboard.css, js/dashboard.js in place
+- Dashboard shows:
+  - Builder records count with delta vs last refresh
+  - Mission areas count
+  - Warfare domains count
+  - Recent additions (last 7 days)
+  - Recent builder records activity feed
+  - Mission coverage with progress bars
+- Auto-refresh every 60 seconds implemented
+- C2UX compliant: panels, dark theme, operational language
+- Added "Status" link to navigation across 16 pages:
+  - index.html, builders.html, opportunities.html, knowledge.html
+  - blog.html, merch.html, archive.html, portfolio.html
+  - privacy.html, security.html, terms.html, 404.html
+  - blog/counter-drone-jiatf-401.html, blog/ndaa-speed-act.html, blog/uss-eisenhower-lessons.html
+  - dashboard.html (nav consistency update)
+- Build passes with no errors
+- Visual verification via Playwright confirmed C2UX compliance
+
+### Deferred Items
+- Docs activity feed: Requires Outline Wiki API integration (REQ-INFRA-001 dependency)
+- User engagement metrics: Requires VIA/Authentik API integration
+
+### Next Steps
+- Docs activity feed can be added when api.mergecombinator.com is available
+- Consider adding user engagement metrics via VIA API in future phase
