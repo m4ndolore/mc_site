@@ -31,6 +31,7 @@ export default defineConfig({
         archive: resolve(__dirname, 'archive.html'),
         access: resolve(__dirname, 'access.html'),
         contribute: resolve(__dirname, 'contribute.html'),
+        combine: resolve(__dirname, 'combine.html'),
         '404': resolve(__dirname, '404.html'),
         // Blog articles
         'blog-counter-drone': resolve(__dirname, 'blog/counter-drone-jiatf-401.html'),

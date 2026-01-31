@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Combine — 5-day operator integration cycle. Problem validation, team formation, prototype scoping.">
+  <title>The Combine — Merge Combinator</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
+  <link rel="apple-touch-icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public">
+
+  <meta property="og:title" content="The Combine — Merge Combinator">
+  <meta property="og:description" content="5-day operator integration cycle. Problem validation, team formation, prototype scoping.">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Combine Page — C2UX Console Layout */
+    .combine {
+      background: var(--black);
+      color: var(--offwhite);
+      min-height: calc(100vh - var(--nav-height));
+      padding-bottom: 64px;
+    }
+
+    .combine .container {
+      max-width: 1280px;
+    }
+
+    .combine__header {
+      border-bottom: 1px solid var(--ghost-gray);
+      padding: 40px 0 28px;
+    }
+
+    .combine__header-inner {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .combine__title {
+      font-size: clamp(32px, 4vw, 44px);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin: 0 0 8px;
+      color: var(--white);
+    }
+
+    .combine__subtitle {
+      margin: 0;
+      color: var(--gray-light);
+      font-size: 16px;
+    }
+
+    .combine__status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      background: var(--charcoal);
+    }
+
+    .combine__status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--status-yellow);
+      border-radius: 50%;
+    }
+
+    .combine__status-text {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--status-yellow);
+    }
+
+    .combine__body {
+      padding: 28px 0 0;
+    }
+
+    .combine__grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* Panels */
+    .panel {
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      background: var(--charcoal);
+      overflow: hidden;
+    }
+
+    .panel--full {
+      grid-column: 1 / -1;
+    }
+
+    .panel__header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--ghost-gray);
+      background: var(--slate);
+    }
+
+    .panel__title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: var(--white);
+      margin: 0;
+    }
+
+    .panel__meta {
+      font-size: 12px;
+      color: var(--gray-light);
+      font-family: var(--font-mono);
+    }
+
+    .panel__content {
+      padding: 20px;
+    }
+
+    .panel__desc {
+      font-size: 14px;
+      color: var(--gray-light);
+      line-height: 1.6;
+      margin: 0 0 16px;
+    }
+
+    /* Timeline */
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .timeline__day {
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      background: var(--slate);
+      padding: 16px;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .timeline__label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--blue);
+      margin-bottom: 8px;
+    }
+
+    .timeline__title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .timeline__items {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex: 1;
+    }
+
+    .timeline__items li {
+      font-size: 12px;
+      color: var(--gray-light);
+      padding: 4px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .timeline__items li::before {
+      content: '>';
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+
+    /* Requirements */
+    .requirements {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .requirement {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      background: var(--slate);
+    }
+
+    .requirement__icon {
+      width: 20px;
+      height: 20px;
+      color: var(--blue);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .requirement__text {
+      font-size: 14px;
+      color: var(--offwhite);
+      line-height: 1.5;
+    }
+
+    /* Apply Section */
+    .apply {
+      background: var(--slate);
+      border: 1px solid var(--blue);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+      text-align: center;
+    }
+
+    .apply__title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--white);
+      margin: 0 0 8px;
+    }
+
+    .apply__text {
+      font-size: 14px;
+      color: var(--gray-light);
+      margin: 0 0 20px;
+    }
+
+    .apply__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: var(--blue);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition-fast);
+    }
+
+    .apply__btn:hover {
+      background: var(--blue-dark);
+    }
+
+    /* Key-value rows */
+    .kv-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--ghost-gray);
+    }
+
+    .kv-row:last-child {
+      border-bottom: none;
+    }
+
+    .kv-row__label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--gray-medium);
+    }
+
+    .kv-row__value {
+      font-size: 14px;
+      color: var(--offwhite);
+      font-family: var(--font-mono);
+    }
+
+    .kv-row__value--status {
+      color: var(--status-yellow);
+    }
+
+    /* Cohort History */
+    .cohort-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cohort {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--ghost-gray);
+      border-radius: var(--radius-sm);
+      background: var(--slate);
+    }
+
+    .cohort__name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--offwhite);
+    }
+
+    .cohort__date {
+      font-size: 12px;
+      color: var(--gray-light);
+      font-family: var(--font-mono);
+    }
+
+    .cohort__count {
+      font-size: 12px;
+      color: var(--blue);
+      font-family: var(--font-mono);
+    }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .timeline {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .combine__header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .combine__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .combine__header {
+        padding: 28px 0 20px;
+      }
+
+      .panel__header,
+      .panel__content {
+        padding: 12px;
+      }
+
+      .timeline {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo" aria-label="Merge Combinator">
+        <span class="nav__logo-text">
+          <span class="nav__logo-combinator">Merge Combinator</span>
+        </span>
+        <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public" alt="" class="nav__logo-icon">
+      </a>
+
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="/dashboard" class="nav__link">Status</a>
+          <a href="/builders" class="nav__link">Builder Records</a>
+          <a href="/combine" class="nav__link nav__link--active">Combine</a>
+          <a href="/opportunities" class="nav__link">Opportunities</a>
+          <a href="/knowledge" class="nav__link">Knowledge</a>
+          <a href="https://docs.mergecombinator.com" class="nav__link">Docs</a>
+        </div>
+        <div class="nav__menu-actions">
+          <div id="auth-nav">
+            <a href="/auth/login" class="nav__btn nav__btn--primary">Authenticate</a>
+          </div>
+        </div>
+      </nav>
+
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="combine">
+    <section class="combine__header">
+      <div class="container combine__header-inner">
+        <div>
+          <h1 class="combine__title">The Combine</h1>
+          <p class="combine__subtitle">5-day operator integration cycle. Problem validation, team formation, prototype scoping.</p>
+        </div>
+        <div class="combine__status">
+          <span class="combine__status-dot"></span>
+          <span class="combine__status-text">Recruiting</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="combine__body">
+      <div class="container">
+        <!-- Overview Panel -->
+        <div class="panel panel--full" style="margin-bottom: 20px;">
+          <header class="panel__header">
+            <h2 class="panel__title">Program Overview</h2>
+            <span class="panel__meta">Phase 01</span>
+          </header>
+          <div class="panel__content">
+            <p class="panel__desc">
+              The Combine is an intensive 5-day integration cycle where defense builders work directly with operators to validate problems, form teams, and scope prototypes. Participants gain direct access to mission owners and leave with validated requirements for venture formation in Merge Studio.
+            </p>
+            <div class="timeline">
+              <article class="timeline__day">
+                <span class="timeline__label">Day 1</span>
+                <h3 class="timeline__title">Orientation</h3>
+                <ul class="timeline__items">
+                  <li>Operator briefings</li>
+                  <li>Problem set review</li>
+                  <li>Team assignments</li>
+                </ul>
+              </article>
+              <article class="timeline__day">
+                <span class="timeline__label">Day 2</span>
+                <h3 class="timeline__title">Problem Validation</h3>
+                <ul class="timeline__items">
+                  <li>Operator interviews</li>
+                  <li>Constraint mapping</li>
+                  <li>Requirements capture</li>
+                </ul>
+              </article>
+              <article class="timeline__day">
+                <span class="timeline__label">Day 3</span>
+                <h3 class="timeline__title">Solution Design</h3>
+                <ul class="timeline__items">
+                  <li>Architecture sessions</li>
+                  <li>Feasibility analysis</li>
+                  <li>Risk assessment</li>
+                </ul>
+              </article>
+              <article class="timeline__day">
+                <span class="timeline__label">Day 4</span>
+                <h3 class="timeline__title">Prototype Scoping</h3>
+                <ul class="timeline__items">
+                  <li>MVP definition</li>
+                  <li>Timeline planning</li>
+                  <li>Resource mapping</li>
+                </ul>
+              </article>
+              <article class="timeline__day">
+                <span class="timeline__label">Day 5</span>
+                <h3 class="timeline__title">Validation Review</h3>
+                <ul class="timeline__items">
+                  <li>Operator feedback</li>
+                  <li>Go/no-go decisions</li>
+                  <li>Studio selection</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div class="combine__grid">
+          <!-- Left Column -->
+          <div>
+            <!-- Requirements Panel -->
+            <div class="panel" style="margin-bottom: 20px;">
+              <header class="panel__header">
+                <h2 class="panel__title">Participant Requirements</h2>
+              </header>
+              <div class="panel__content">
+                <div class="requirements">
+                  <div class="requirement">
+                    <svg class="requirement__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                    <span class="requirement__text">Security clearance eligibility or existing clearance preferred. Dual-use teams considered.</span>
+                  </div>
+                  <div class="requirement">
+                    <svg class="requirement__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <rect x="2" y="3" width="20" height="14" rx="2"/>
+                      <line x1="8" y1="21" x2="16" y2="21"/>
+                      <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                    <span class="requirement__text">Technical founder or deep domain expertise in relevant capability area.</span>
+                  </div>
+                  <div class="requirement">
+                    <svg class="requirement__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <circle cx="12" cy="12" r="10"/>
+                      <path d="M2 12h20"/>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    <span class="requirement__text">Ability to operate in Indo-Pacific theater. Travel to San Francisco required.</span>
+                  </div>
+                  <div class="requirement">
+                    <svg class="requirement__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                      <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <span class="requirement__text">Commitment to 5-day intensive program. Full attendance required.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cohort History Panel -->
+            <div class="panel">
+              <header class="panel__header">
+                <h2 class="panel__title">Cohort History</h2>
+                <span class="panel__meta">Past sessions</span>
+              </header>
+              <div class="panel__content">
+                <div class="cohort-list">
+                  <article class="cohort">
+                    <span class="cohort__name">Cohort 03</span>
+                    <span class="cohort__date">2025-Q4</span>
+                    <span class="cohort__count">12 builders</span>
+                  </article>
+                  <article class="cohort">
+                    <span class="cohort__name">Cohort 02</span>
+                    <span class="cohort__date">2025-Q2</span>
+                    <span class="cohort__count">10 builders</span>
+                  </article>
+                  <article class="cohort">
+                    <span class="cohort__name">Cohort 01</span>
+                    <span class="cohort__date">2024-Q4</span>
+                    <span class="cohort__count">8 builders</span>
+                  </article>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div>
+            <!-- Next Session Panel -->
+            <div class="panel" style="margin-bottom: 20px;">
+              <header class="panel__header">
+                <h2 class="panel__title">Next Session</h2>
+              </header>
+              <div class="panel__content">
+                <div class="kv-row">
+                  <span class="kv-row__label">Cohort</span>
+                  <span class="kv-row__value">04</span>
+                </div>
+                <div class="kv-row">
+                  <span class="kv-row__label">Timeline</span>
+                  <span class="kv-row__value">2026-Q1</span>
+                </div>
+                <div class="kv-row">
+                  <span class="kv-row__label">Location</span>
+                  <span class="kv-row__value">San Francisco</span>
+                </div>
+                <div class="kv-row">
+                  <span class="kv-row__label">Capacity</span>
+                  <span class="kv-row__value">15 builders</span>
+                </div>
+                <div class="kv-row">
+                  <span class="kv-row__label">Status</span>
+                  <span class="kv-row__value kv-row__value--status">Recruiting</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Apply Panel -->
+            <div class="apply">
+              <h3 class="apply__title">Request Access</h3>
+              <p class="apply__text">Submit your application for the next Combine cohort.</p>
+              <a href="/access" class="apply__btn">
+                Apply Now
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M3 8h10M9 4l4 4-4 4"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <span class="footer__logo-mark">M</span>
+            <span class="footer__logo-text">Merge Combinator</span>
+          </a>
+          <p class="footer__tagline">Defense ecosystem coordination platform.</p>
+          <div class="footer__social">
+            <a href="https://www.linkedin.com/company/merge-combinator/" class="footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <a href="https://x.com/FPExtraordinAir" class="footer__social-link" aria-label="X" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer__links">
+          <div class="footer__column">
+            <h4 class="footer__heading">Platform</h4>
+            <ul class="footer__list">
+              <li><a href="/combine">Combine</a></li>
+              <li><a href="/builders">Builder Records</a></li>
+              <li><a href="/opportunities">Opportunities</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Resources</h4>
+            <ul class="footer__list">
+              <li><a href="/blog">Analysis</a></li>
+              <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="https://docs.mergecombinator.com">Documentation</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Legal</h4>
+            <ul class="footer__list">
+              <li><a href="/privacy">Privacy</a></li>
+              <li><a href="/terms">Terms</a></li>
+              <li><a href="/security">Security</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2026 Merge Combinator</p>
+        <p class="footer__location">San Francisco / Tokyo / Singapore</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="js/auth-nav.js" type="module"></script>
+</body>
+</html>
