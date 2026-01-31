@@ -140,8 +140,14 @@ function parseCookies(request) {
 
 /**
  * Create a secure cookie header
+ *
+ * @param {string} name - Cookie name
+ * @param {string} value - Cookie value
+ * @param {number} maxAge - Cookie max age in seconds
+ * @param {boolean} secure - Whether to set Secure flag
+ * @param {string|undefined} domain - Optional domain for cross-subdomain cookies
  */
-function createCookieHeader(name, value, maxAge, secure = true) {
+function createCookieHeader(name, value, maxAge, secure = true, domain = undefined) {
   const parts = [
     `${name}=${value}`,
     `Path=/`,
@@ -155,6 +161,10 @@ function createCookieHeader(name, value, maxAge, secure = true) {
   }
   if (secure) {
     parts.push("Secure");
+  }
+  // Cross-subdomain support: set domain for shared sessions (e.g., ".mergecombinator.com")
+  if (domain) {
+    parts.push(`Domain=${domain}`);
   }
   return parts.join("; ");
 }
@@ -296,7 +306,13 @@ async function handleCallback(request, env) {
     headers.set("Location", returnTo);
     headers.append(
       "Set-Cookie",
-      createCookieHeader(SESSION_COOKIE_NAME, sessionCookie, SESSION_MAX_AGE, url.protocol === "https:")
+      createCookieHeader(
+        SESSION_COOKIE_NAME,
+        sessionCookie,
+        SESSION_MAX_AGE,
+        url.protocol === "https:",
+        env.COOKIE_DOMAIN  // Cross-subdomain support
+      )
     );
 
     return new Response(null, { status: 302, headers });
@@ -316,11 +332,17 @@ async function handleLogout(request, env) {
   const url = new URL(request.url);
   const returnTo = url.searchParams.get("return_to") || url.origin;
 
-  // Clear local session cookie
+  // Clear local session cookie (must include domain to delete cross-subdomain cookie)
   const headers = new Headers();
   headers.append(
     "Set-Cookie",
-    createCookieHeader(SESSION_COOKIE_NAME, "", 0, url.protocol === "https:")
+    createCookieHeader(
+      SESSION_COOKIE_NAME,
+      "",
+      0,
+      url.protocol === "https:",
+      env.COOKIE_DOMAIN  // Must match domain used when setting cookie
+    )
   );
 
   // Redirect to Authentik end-session to fully log out of SSO
