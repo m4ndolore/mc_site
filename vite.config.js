@@ -30,6 +30,7 @@ export default defineConfig({
         security: resolve(__dirname, 'security.html'),
         archive: resolve(__dirname, 'archive.html'),
         access: resolve(__dirname, 'access.html'),
+        contribute: resolve(__dirname, 'contribute.html'),
         '404': resolve(__dirname, '404.html'),
         // Blog articles
         'blog-counter-drone': resolve(__dirname, 'blog/counter-drone-jiatf-401.html'),
