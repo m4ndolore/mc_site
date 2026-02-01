@@ -3,13 +3,15 @@
 **Date:** 2026-01-26
 **Status:** Complete
 
+**Branding note:** VIA defaults to Merge Combinator. SigmaBlox references here are product-specific or historical.
+
 ## Completed This Session
 
 ### 1. OAuth Cookie Fix (Critical)
 
 **Problem:** Auth flow failed with "Missing auth state cookie" after VIA redirect. Cookies set before OAuth redirect were lost due to cross-site SameSite restrictions.
 
-**Solution:** Implemented signed state token pattern (borrowed from SigmaBlox VIA integration):
+**Solution:** Implemented signed state token pattern (borrowed from prior VIA integration work):
 - State data (PKCE verifier, returnTo, nonce, expiry) encrypted into OAuth `state` URL parameter
 - No longer relies on cookies surviving cross-site redirects
 - File: `cloudflare/auth.js`

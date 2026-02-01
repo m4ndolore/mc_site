@@ -3,6 +3,8 @@
 **Status:** Production Ready
 **Primary Focus:** Access Page Redesign & Auth Flow Testing
 
+**Branding note:** VIA defaults to Merge Combinator. SigmaBlox references here are product-specific or historical.
+
 ---
 
 ## Completed This Session
@@ -30,7 +32,7 @@
 - `assets/logos/merge-combinator-logo@2x.png`
 
 ### 3. Auth Flow Testing
-- Verified OAuth redirect flow: `/access` → `/auth/login` → VIA (auth.sigmablox.com)
+- Verified OAuth redirect flow: `/access` → `/auth/login` → VIA (via.mergecombinator.com)
 - Confirmed PKCE parameters: `client_id=mc-web-prod`, proper redirect_uri, scopes
 - VIA login page loads with correct branding
 
@@ -90,7 +92,7 @@ AUTH FLOW (Turnstile disabled)
 │  User clicks "Continue with Email"                      │
 │  └── /auth/login (Cloudflare Worker)                   │
 │      └── Redirect to VIA OAuth                          │
-│          └── auth.sigmablox.com/if/flow/via-auth/       │
+│          └── via.mergecombinator.com/if/flow/via-auth/  │
 │              ├── [REMOVED] via-captcha (Turnstile)      │
 │              ├── via-identification                     │
 │              ├── via-password / via-magic-link          │
@@ -109,7 +111,7 @@ When ready to re-enable bot protection:
 TOKEN="5Lk9G0MXtIYFBl984LaJG7mGMpDrYs2lD4mR66nQFzUWEKs6DH57Z9xi4AgJ"
 
 # Re-add via-captcha at order -5 (runs first)
-curl -X POST "https://auth.sigmablox.com/api/v3/flows/bindings/" \
+curl -X POST "https://via.mergecombinator.com/api/v3/flows/bindings/" \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{

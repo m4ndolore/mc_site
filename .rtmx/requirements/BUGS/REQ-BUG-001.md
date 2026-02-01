@@ -77,23 +77,36 @@ When attempting passkey authentication on mergecombinator.com (which is not conf
 
 3. Recovery page accessible at: `http://localhost:9000/media/via-auth-denied.html`
 
-### Remaining Work
+### Completed - 2026-01-26 (Session 2)
 
-To complete the integration:
+**Blueprint implementation complete:**
 
-1. **Connect redirect to passkey failure:**
-   - Add `via-auth-denied-redirect` stage to via-auth flow
-   - Configure policy to trigger when passkey validation fails
-   - OR update via-passkey stage's `invalid_response_action`
+1. **Redirect Stage** (`via-passkey-no-device-redirect`):
+   - Added to `via-flow.yaml`
+   - Redirects to `/media/via-auth-denied.html`
 
-2. **Alternative: CSS enhancement:**
-   - Add CSS to Authentik's denied message to include recovery link
-   - Style the "Not you?" button area with our recovery page link
+2. **Policy** (`via-passkey-no-device-redirect`):
+   - Added to `via-policies.yaml`
+   - Checks if user selected "Passkey" method
+   - Checks if user has any confirmed WebAuthn devices
+   - Returns True (trigger redirect) when Passkey selected but no device
 
-3. **Test end-to-end:**
-   - Attempt passkey on mergecombinator.com
-   - Verify redirect to recovery page
-   - Verify "Try Again" returns to auth flow
+3. **Stage Binding**:
+   - Order 25 (before passkey validation at order 30)
+   - Policy binding added to `via-policy-bindings.yaml`
+
+**To deploy:**
+```bash
+# Apply blueprints in order
+docker exec sigmablox-authentik-server-1 ak apply_blueprint /blueprints/via-policies.yaml
+docker exec sigmablox-authentik-server-1 ak apply_blueprint /blueprints/via-flow.yaml
+docker exec sigmablox-authentik-server-1 ak apply_blueprint /blueprints/via-policy-bindings.yaml
+```
+
+**To test:**
+1. Attempt passkey on mergecombinator.com with user who has no passkey
+2. Verify redirect to recovery page
+3. Verify "Try Again" returns to auth flow
 
 ### Files Created
 - `/Users/paulgarcia/Dev/sigmablox/authentik/media/via-auth-denied.html`

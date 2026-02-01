@@ -1401,6 +1401,26 @@
       "cohortId": "25-1"
     },
     {
+      "id": "cml176zh800101tydr84ymdir",
+      "legacyAirtableId": null,
+      "name": "Merge Combinator, LLC",
+      "productName": "DOMINUS",
+      "website": "www.mergecombinator.com",
+      "logoUrl": null,
+      "storedLogoId": null,
+      "location": null,
+      "missionArea": "fires",
+      "warfareDomain": "air",
+      "description": null,
+      "trlLevel": 6,
+      "fundingStage": "pre_seed",
+      "teamSize": "11-25",
+      "tulsaAttended": null,
+      "upvoteCount": 0,
+      "cohort": null,
+      "cohortId": null
+    },
+    {
       "id": "cmknqigx7000ts601ajlm61og",
       "legacyAirtableId": "recGg9KlZzxxMlHfI",
       "name": "Modular Misfits",
@@ -2249,9 +2269,9 @@
       "logoUrl": "https://v5.airtableusercontent.com/v3/u/44/44/1756900800000/VQJ2HJG1EBefpcqhjcHmaQ/7DHpOi7nJOSod6hursSkVG6Y1XcHbQ6-LMU6TBjj7RR_oTNde5BYIm7GbDEXaMsRzDIVWSNV9DcuwSy5dAkJaFTesXPlUSAhxizuaGsQf3PPYcrhLyteLDBBnpuBsU6HRVuSNvVCFzONMjQC1FTnog/Jp-cK6_-Vk4xrz7D16zdGNJIE7a22IHieUUXawr8vpo",
       "storedLogoId": "68b8020547d0cbf71b898baa",
       "location": "Newbury Park, CA",
-      "missionArea": "Administration",
-      "warfareDomain": "Air, Information, Land, Multi, Sea, Space",
-      "description": "Enhancing lethality requires warfighters be in top physical and mental condition. \nPrecision medicine needs consistent, accurate, and granular data to be effective.\nGamification is the way to engage participants and sustain participation.\nWorkload management improves productivity and reduces burnout.\nCommand-and-control of data is imperative.\n\nWe deliver this and more.\n\nSolution\nDashboards and apps that utilize SCIF approved wearable devices from Garmin, Oura, and Whoop that levels the playing field so they all deliver the same scores so personnel can choose the right device for them and command doesn’t need to wonder about the device inconsistencies. Push notifications can allow systems to pivot from reactive to proactive support. \n\nField Validation\nEielson AFB in special operations, the med wing, firefighters, and two recruiting units. \n\nTechnology Maturity (TRL)\nTRL 9 is validated by a completed D2P2 and our current Phase III. \n\nStrategic Advantage\nDeloitte built a proprietary algorithm to enable the z-score across the devices and Vantiq delivers the data in real time and push notifications. \n\nGo-to-Market Access\nTradewinds and other OTA vehicles are being deployed. AFRL, INDOPACOM, the 711th, and leadership within each is supporting our scalability. \n\nDual-Use Potential\nElder care, the VA, sports medicine, and many other programs. \n\nTeam\nFounder and CEO Greg Hayward has been a technologist since 1997. Bernice Glenn-Kissinger at the Hawaii Tech Bridge, Major Miles Stutes at Eielson, Major Ben Lowry at Kadena, former health innovation director of the VA Dr. Ryan Vega, and former Major General of the Air Force Dr. Lee Payne are supporting. \n\nCompetitive Landscape\nOther platforms are not meeting the needs of commanders and are not able to deliver the baselines and proactive functionality.\n\nPrimary User\nMAJCOM, human performance, Human Resources, and others. \n\nUser-Critical Problem Maintenance\nEnhancing lethality and reducing costs of operations injuries.",
+      "missionArea": "Information",
+      "warfareDomain": "Air, Cyber, Information, Land, Multi, Sea, Space",
+      "description": "Trackable Health AI delivers a suite of AI products that transforms human performance oversight by pivoting from reactive care to proactive, real-time support, - a solution currently validated by the United States Air Force. Our hardware-agnostic platform, powered by Vantiq and hosted on AWS GovCloud, ingests non-interoperable data from diverse inputs (including SCIF-approved wearables like Garmin, Oura, and Whoop) to eliminate health \"blind spots\" between interactions and establish accurate precision medicine baselines to guide AI decision making. By providing gamification and user device choices to sustain engagement we deliver trustworthy, actionable data that enhances operational readiness while meeting strict enterprise compliance and security mandates. Deloitte and Vantiq provide the guardrails for the data to remain trustworthy and free from hallucinations.",
       "trlLevel": 9,
       "fundingStage": "Grant Funded",
       "teamSize": "3-5",
@@ -2502,7 +2522,7 @@
     }
   ],
   "pagination": {
-    "total": 125,
+    "total": 126,
     "limit": 100,
     "offset": 0,
     "hasMore": false
@@ -2519,11 +2539,12 @@
       "Joint Fires (Offense)",
       "Logistics",
       "Maintenance",
-      "Planning"
+      "Planning",
+      "fires"
     ],
     "warfareDomains": [
       "Air",
-      "Air, Information, Land, Multi, Sea, Space",
+      "Air, Cyber, Information, Land, Multi, Sea, Space",
       "Air, Land, Sea",
       "Air, Land, Sea, Multi",
       "Air, Land, Sea, Space, Cyber, Information, Multi",
@@ -2558,14 +2579,16 @@
       "Sea, Land, Air, Information, Space, Cyber, Multi",
       "Space",
       "Space, Air",
-      "Space, Air, Land, Sea"
+      "Space, Air, Land, Sea",
+      "air"
     ],
     "fundingStages": [
       "Angel / Private",
       "Bootstrapped",
       "Grant Funded",
       "Pre-Seed",
-      "Series Funding"
+      "Series Funding",
+      "pre_seed"
     ],
     "cohorts": [
       {
@@ -2575,9 +2598,9 @@
     ]
   },
   "metadata": {
-    "fetchedAt": "2026-01-27T06:05:40.307Z",
-    "buildAt": "2026-01-27T08:25:24.000Z",
-    "source": "cache",
+    "fetchedAt": "2026-02-01T04:13:34.846Z",
+    "buildAt": "2026-02-01T04:13:34.846Z",
+    "source": "api",
     "apiBase": "https://api.sigmablox.com"
   }
 }

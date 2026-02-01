@@ -22,6 +22,7 @@ export default defineConfig({
         portfolio: resolve(__dirname, 'portfolio.html'),
         builders: resolve(__dirname, 'builders.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),
+        status: resolve(__dirname, 'status.html'),
         merch: resolve(__dirname, 'merch.html'),
         opportunities: resolve(__dirname, 'opportunities.html'),
         knowledge: resolve(__dirname, 'knowledge.html'),
