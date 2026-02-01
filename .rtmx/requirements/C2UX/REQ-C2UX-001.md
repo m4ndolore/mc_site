@@ -1,10 +1,26 @@
 # REQ-C2UX-001: Evolve Site Toward Command Center UX
 
 ## Description
-Transform mc-site from a marketing site to an operational command center interface following C2UX design doctrine.
+Apply C2UX design doctrine to **operational pages only** (dashboards, consoles, authenticated views). Marketing homepages retain glossy branding (Anduril/Palantir style).
+
+## Scope Clarification (2026-01-31)
+
+**C2UX applies to:**
+- `/status` - Ecosystem operations console
+- `/dashboard` - Data dashboard
+- `/builders` - Builder records (authenticated view)
+- Authenticated operator interfaces
+
+**C2UX does NOT apply to:**
+- `/` - Marketing homepage (glossy, branded, storytelling)
+- `/combine` - Program marketing page
+- `/portfolio` - Portfolio showcase
+- Public-facing landing pages
+
+**Rationale:** The front door is for marketing and branding. C2UX is for operators once they're inside.
 
 ## Target
-**Metric**: Operational interface replacing marketing patterns
+**Metric**: Operational interfaces use C2UX; marketing pages use glossy branding
 
 ## Reference
 - `docs/theme/ux.md` - C2UX doctrine
@@ -132,3 +148,38 @@ Transform mc-site from a marketing site to an operational command center interfa
 
 ### Next Steps
 - REQ-C2UX-002: Ecosystem dashboard with live data integration
+
+---
+
+## Sitrep - 2026-01-31
+
+**Session**: claude-session
+**Status**: SCOPE REVISED
+
+### Changes
+
+1. **Reverted marketing pages to pre-C2UX**
+   - `index.html` - Restored original marketing homepage
+   - `portfolio.html` - Restored glossy portfolio showcase
+   - `archive.html` - Restored
+   - `opportunities.html` - Restored
+
+2. **Preserved C2UX for operational pages**
+   - Created `/status` from C2UX homepage (console view for operators)
+   - `/dashboard` retains C2UX data dashboard
+   - `/builders` retains C2UX builder records
+
+3. **Unified navigation**
+   - Consistent navbar across all pages
+   - Platform dropdown: Status, Opportunities, Knowledge, Docs
+   - Single Access button (blue, compact)
+
+### Design Philosophy Update
+
+> "Parts of the website are for marketing and branding" - User feedback
+
+**Two-tier approach:**
+- **Marketing tier**: Glossy homepages like Anduril/Palantir for visitors
+- **Operational tier**: C2UX for authenticated operators
+
+This preserves brand identity while providing efficient operational interfaces.
