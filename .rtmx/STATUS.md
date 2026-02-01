@@ -2,7 +2,7 @@
 
 ## Current Session
 - **Started**: 2026-01-31 00:00
-- **Task**: REQ-UX-001 - Mobile UI/UX review and optimization (COMPLETE)
+- **Task**: REQ-C2UX-001 scope revision + unified navbar (COMPLETE)
 
 ## Queue (Next 5)
 1. REQ-AUTH-004 - Passkey setup prompt (BLOCKED - needs VIA admin API token)
@@ -12,6 +12,8 @@
 5. -
 
 ## Recently Completed
+- REQ-C2UX-001 scope revision - marketing vs operational split (2026-01-31)
+- Unified navbar with Platform dropdown (2026-01-31)
 - REQ-UX-001 - Mobile UI/UX review - all pages pass (2026-01-31)
 - REQ-BUG-006 - Portfolio case study links fixed with pending state (2026-01-30)
 - REQ-BUG-005 - Script loading inconsistency fixed (2026-01-30)
@@ -25,6 +27,25 @@
 - REQ-DOCS-003 Phase 3: API endpoint at api.sigmablox.com/api/contributor-request
 
 ## Session Notes - 2026-01-31
+
+### C2UX Scope Revision
+
+**User feedback:** "I appreciate C2UX but parts of the website are for marketing and branding."
+
+**Resolution - Two-tier design approach:**
+- **Marketing tier**: Glossy homepages (Anduril/Palantir style) for `/`, `/portfolio`, `/combine`
+- **Operational tier**: C2UX for `/status`, `/dashboard`, `/builders` (authenticated views)
+
+**Changes made:**
+1. Reverted index.html, portfolio.html, archive.html, opportunities.html to pre-C2UX
+2. Created `/status` page from C2UX homepage (preserved for operators)
+3. Unified navbar: Defense Builders | Combine | Merch | Platform (dropdown)
+4. Platform dropdown contains: Status, Opportunities, Knowledge, Docs
+5. Single blue Access button
+
+**Design philosophy:** The front door is for marketing. C2UX is for operators once inside.
+
+---
 
 ### Mobile UX Audit (REQ-UX-001)
 
