@@ -1018,3 +1018,46 @@
         justify-content: center;
     }
 }
+
+@media (max-width: 640px) {
+    .builders-console {
+        padding: 24px 0 12px;
+    }
+
+    .builders-console__title {
+        font-size: 1.75rem;
+    }
+
+    .builders-stats__grid {
+        gap: 16px;
+    }
+
+    .builders-stats__item {
+        flex: 1 1 100%;
+    }
+
+    .builder-card {
+        padding: 16px;
+    }
+
+    .builder-card__name {
+        font-size: 1.05rem;
+    }
+
+    .builder-card__tagline {
+        font-size: 0.9rem;
+    }
+
+    .modal-header {
+        padding: 20px 16px;
+    }
+
+    .modal-section {
+        padding: 16px;
+    }
+
+    .modal-cta-box {
+        margin: 0 16px 20px;
+        padding: 16px;
+    }
+}
