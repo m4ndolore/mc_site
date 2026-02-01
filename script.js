@@ -681,6 +681,28 @@
   }
 
   // ============================================
+  // DROPDOWN MENU (Mobile)
+  // ============================================
+  function initDropdownMenu() {
+    const dropdowns = document.querySelectorAll('.nav__dropdown');
+
+    dropdowns.forEach(dropdown => {
+      const trigger = dropdown.querySelector('.nav__dropdown-trigger');
+      if (!trigger) return;
+
+      trigger.addEventListener('click', (e) => {
+        // Only handle click on mobile (when dropdown menu is not hover-based)
+        if (window.innerWidth <= 1024) {
+          e.preventDefault();
+          dropdown.classList.toggle('active');
+          const expanded = dropdown.classList.contains('active');
+          trigger.setAttribute('aria-expanded', String(expanded));
+        }
+      });
+    });
+  }
+
+  // ============================================
   // KEYBOARD NAVIGATION
   // ============================================
   function initKeyboardNav() {
@@ -948,6 +970,7 @@
     initScrollAnimations();
     initSmoothScroll();
     initMobileMenu();
+    initDropdownMenu();
 
     // Visual enhancements
     initHeroCanvas();

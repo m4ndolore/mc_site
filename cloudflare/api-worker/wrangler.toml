@@ -1,0 +1,47 @@
+# =============================================================================
+# Cloudflare Worker Configuration for mc-api
+# =============================================================================
+#
+# VIA flow callbacks for Merge Combinator.
+# Deployed to: api.mergecombinator.com
+#
+# CONFIGURATION PATTERN:
+#   - Non-secrets: Values here MUST align with config/*.yaml
+#   - Secrets: Stored via wrangler secret put
+#
+# LOCAL DEVELOPMENT:
+#   cd cloudflare/api-worker
+#   wrangler dev --env dev
+#
+# PRODUCTION DEPLOYMENT:
+#   cd cloudflare/api-worker
+#   wrangler deploy
+#
+# =============================================================================
+
+name = "mc-api"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+# -----------------------------------------------------------------------------
+# Production configuration
+# -----------------------------------------------------------------------------
+[vars]
+MC_PUBLIC_URL = "https://www.mergecombinator.com"
+VIA_ISSUER_URL = "https://via.mergecombinator.com"
+
+# Production route - requires DNS setup first
+# [[routes]]
+# pattern = "api.mergecombinator.com/*"
+# zone_name = "mergecombinator.com"
+
+# -----------------------------------------------------------------------------
+# Local development
+# Run with: wrangler dev --env dev
+# -----------------------------------------------------------------------------
+[env.dev]
+name = "mc-api-dev"
+
+[env.dev.vars]
+MC_PUBLIC_URL = "http://localhost:5173"
+VIA_ISSUER_URL = "http://localhost:9000"

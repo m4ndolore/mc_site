@@ -100,7 +100,7 @@ When SigmaBlox adds member endpoints:
 **Production:**
 - Console: `console.mergecombinator.com`
 - mc_site: `www.mergecombinator.com`
-- Authentik: `auth.sigmablox.com`
+- Authentik: `via.mergecombinator.com`
 
 **OAuth clients:**
 - Production: `mc-web-prod` (client in `defense-builders` provider)

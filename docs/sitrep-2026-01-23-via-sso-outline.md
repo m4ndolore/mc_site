@@ -3,6 +3,8 @@
 **Status:** Production Ready
 **Primary Focus:** VIA SSO Integration & UI Improvements
 
+**Branding note:** VIA defaults to Merge Combinator. SigmaBlox references here are product-specific or historical.
+
 ---
 
 ## Completed This Session
@@ -23,7 +25,7 @@
 - Split layout: Hero content left, login card right
 - VIA branding with "Continue with VIA" button
 - Google SSO option
-- Similar design to SigmaBlox `/join` page
+- Similar design to the legacy SigmaBlox `/join` page
 
 ### 4. SBIR Service Fix (Railway)
 - **Root cause:** Server bound to `localhost` instead of `0.0.0.0`
@@ -36,7 +38,7 @@
   - Client ID: `outline-docs`
   - Redirect URI: `https://docs.mergecombinator.com/auth/oidc.callback`
 - **Outline config updated** on homelab (`100.66.200.39`):
-  - OIDC endpoints pointing to `auth.sigmablox.com`
+  - OIDC endpoints pointing to `via.mergecombinator.com`
   - Display name: "VIA" (shows as "Continue with VIA")
   - Slack auth removed, Google retained
 - **SSO flow working:** docs.mergecombinator.com → VIA login → authenticated
@@ -49,7 +51,7 @@
 ┌─────────────────────────────────────────────────────────────────┐
 │                        AUTHENTICATION                            │
 ├─────────────────────────────────────────────────────────────────┤
-│  VIA (auth.sigmablox.com)                                       │
+│  VIA (via.mergecombinator.com)                                  │
 │  └── Authentik-based SSO                                        │
 │      ├── OAuth2 Provider: merge-combinator (mc_site)            │
 │      ├── OAuth2 Provider: outline-docs (Outline wiki)           │
@@ -131,7 +133,7 @@
 
 7. **SSO for Additional Properties**
    - SigmaBlox main site (`sigmablox.com`)
-   - VIA Dashboard (`via.sigmablox.com`)
+   - VIA Dashboard (`via.mergecombinator.com`)
    - Any new MC properties
 
 8. **Custom Outline Login Page**

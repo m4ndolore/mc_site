@@ -3,6 +3,8 @@
 **Status:** Production Ready
 **Primary Focus:** Auth Improvements & Access Page Redesign
 
+**Branding note:** VIA defaults to Merge Combinator. SigmaBlox references here are product-specific or historical.
+
 ---
 
 ## Completed This Session
@@ -36,7 +38,7 @@
 - Pages auto-deploys on git push; Worker requires `npm run deploy`
 
 ### 6. Access Page Redesign
-- **Styling:** Matches sigmablox via-dashboard dark mode (`#0b0f14` bg, square corners)
+- **Styling:** Matches VIA dashboard dark mode (`#0b0f14` bg, square corners)
 - **Logo:** Matches navbar (Merge Combinator + arrows)
 - **Features list:**
   - Browse and track defense tech opportunities
@@ -77,7 +79,7 @@
 │                     CLOUDFLARE WORKER (mc-router)               │
 ├─────────────────────────────────────────────────────────────────┤
 │  Config: wrangler.toml                                          │
-│  ├── [vars] OIDC_ISSUER_URL = auth.sigmablox.com (prod)        │
+│  ├── [vars] OIDC_ISSUER_URL = via.mergecombinator.com (prod)   │
 │  ├── [env.dev.vars] OIDC_ISSUER_URL = localhost:9000 (local)   │
 │  └── Secrets: .dev.vars → .env.local (symlink)                  │
 │                                                                  │

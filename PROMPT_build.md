@@ -3,9 +3,10 @@
 0a. Run `cat .rtmx/database.csv` to see all requirements and their status.
 0b. Study `.rtmx/database.csv` to understand current status of all requirements.
 0c. Study @AGENTS.md for build/test commands and validation procedures.
-0d. Study `docs/theme/ux.md` for C2UX design doctrine.
-0e. Study `docs/` for domain knowledge and past implementations.
-0f. For VIA/Authentik work, study `~/.claude/skills/via-configuration/SKILL.md` for API patterns and debugging.
+0d. Update @.rtmx/STATUS.md at START: set current task, list next 5 from plan.
+0e. Study `docs/theme/ux.md` for C2UX design doctrine.
+0f. Study `docs/` for domain knowledge and past implementations.
+0g. For VIA/Authentik work, study `~/.claude/skills/via-configuration/SKILL.md` for API patterns and debugging.
 
 1. Select work from RTMX database:
    - Pick the highest priority PENDING or PARTIAL requirement in the lowest phase
@@ -20,11 +21,7 @@
 
 3. Validate your work:
    - Run `npm run build` to verify no build errors
-   - Use Playwright MCP (Chromium) to visually verify your changes:
-     a. Start dev server: `npm run dev` (runs on localhost:5173)
-     b. Use `mcp__playwright__browser_navigate` to load the page
-     c. Use `mcp__playwright__browser_take_screenshot` to capture the result
-     d. Apply LLM-as-judge: Does the visual output match the spec? Binary pass/fail.
+   - Visual verification: Deploy to staging (wrangler pages deploy) and manually verify, or use Cloudflare Browser Rendering if automated screenshots needed
    - If functionality is missing then it's your job to add it per the specifications. Ultrathink.
 
 4. Update RTMX on completion:
@@ -53,6 +50,7 @@ VISUAL VERIFICATION CHECKLIST:
 
 ## Invariants (higher number = more critical)
 
+1. PROHIBITED: Do NOT install, download, or use Chrome, Chromium, Puppeteer, or Playwright. Use Cloudflare Browser Rendering + Stagehand for any browser automation needs.
 99999. Important: When authoring documentation, capture the why.
 999999. Important: Single sources of truth, no migrations/adapters. If issues unrelated to your work appear, resolve them.
 9999999. As soon as there are no build errors, create a git tag. If there are no git tags start at 0.0.0 and increment patch.
@@ -65,6 +63,10 @@ VISUAL VERIFICATION CHECKLIST:
 99999999999999. IMPORTANT: Keep @AGENTS.md operational only — progress notes belong in RTMX requirement files.
 999999999999999. Commit messages MUST reference the REQ-ID: `feat(REQ-AUTH-001): configure VIA OAuth`
 9999999999999999. IMPORTANT: Follow C2UX design doctrine from `docs/theme/ux.md`. No friendly/marketing UI patterns.
+99999999999999999. IMPORTANT: Maintain @.rtmx/STATUS.md for human visibility.
+    At loop START: set "Started" timestamp, "Task" to current REQ, update "Queue".
+    At loop END: move completed to "Recently Completed" (keep 5), update timestamp.
+    If blocked, add reason to "Blocked / Needs Human".
 
 ## RTMX Sitrep Template
 
