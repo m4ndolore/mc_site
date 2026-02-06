@@ -37,6 +37,8 @@ function getOAuthUrls(env) {
 // Cookie settings
 const SESSION_COOKIE_NAME = "mc_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
+const LAST_CONSOLE_COOKIE_NAME = "mc_last_console";
+const LAST_CONSOLE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
 /**
  * Generate a random string for PKCE and state
@@ -147,14 +149,23 @@ function parseCookies(request) {
  * @param {boolean} secure - Whether to set Secure flag
  * @param {string|undefined} domain - Optional domain for cross-subdomain cookies
  */
-function createCookieHeader(name, value, maxAge, secure = true, domain = undefined) {
+function createCookieHeader(
+  name,
+  value,
+  maxAge,
+  secure = true,
+  domain = undefined,
+  httpOnly = true
+) {
   const parts = [
     `${name}=${value}`,
     `Path=/`,
-    `HttpOnly`,
     `SameSite=Lax`,
     `Max-Age=${maxAge}`,
   ];
+  if (httpOnly) {
+    parts.push("HttpOnly");
+  }
   // For deletion (maxAge=0), also set explicit expired date for browser compatibility
   if (maxAge <= 0) {
     parts.push("Expires=Thu, 01 Jan 1970 00:00:00 GMT");
@@ -169,6 +180,49 @@ function createCookieHeader(name, value, maxAge, secure = true, domain = undefin
   return parts.join("; ");
 }
 
+function isAllowedHost(hostname) {
+  if (!hostname) return false;
+  if (hostname === "mergecombinator.com") return true;
+  if (hostname === "www.mergecombinator.com") return true;
+  return hostname.endsWith(".mergecombinator.com");
+}
+
+function sanitizeReturnTo(returnTo) {
+  if (!returnTo) return null;
+  if (returnTo.startsWith("/")) {
+    return returnTo;
+  }
+  try {
+    const url = new URL(returnTo);
+    if (!isAllowedHost(url.hostname)) {
+      return null;
+    }
+    return url.toString();
+  } catch (err) {
+    return null;
+  }
+}
+
+function getLastConsoleDestination(request) {
+  const cookies = parseCookies(request);
+  const value = cookies[LAST_CONSOLE_COOKIE_NAME];
+  if (value === "wingman") return "/wingman";
+  if (value === "control") return "/control";
+  if (value === "app") return "/app";
+  return "/app";
+}
+
+export function createLastConsoleCookie(value, env, isSecure) {
+  return createCookieHeader(
+    LAST_CONSOLE_COOKIE_NAME,
+    value,
+    LAST_CONSOLE_MAX_AGE,
+    isSecure,
+    env.COOKIE_DOMAIN,
+    false
+  );
+}
+
 /**
  * Handle /auth/login - Redirect to VIA OAuth
  *
@@ -177,7 +231,7 @@ function createCookieHeader(name, value, maxAge, secure = true, domain = undefin
  */
 async function handleLogin(request, env) {
   const url = new URL(request.url);
-  const returnTo = url.searchParams.get("return_to") || "/";
+  const returnTo = url.searchParams.get("returnTo") || "/";
 
   const { verifier, challenge } = await generatePKCE();
   const nonce = generateRandomString(16);
@@ -300,7 +354,8 @@ async function handleCallback(request, env) {
     };
 
     const sessionCookie = await encryptSession(session, env.SESSION_SECRET);
-    const returnTo = stateData.returnTo || "/";
+    const safeReturnTo = sanitizeReturnTo(stateData.returnTo);
+    const returnTo = safeReturnTo || getLastConsoleDestination(request);
 
     const headers = new Headers();
     headers.set("Location", returnTo);
@@ -330,7 +385,7 @@ async function handleCallback(request, env) {
  */
 async function handleLogout(request, env) {
   const url = new URL(request.url);
-  const returnTo = url.searchParams.get("return_to") || url.origin;
+  const returnTo = url.searchParams.get("returnTo") || url.origin;
 
   // Clear local session cookie (must include domain to delete cross-subdomain cookie)
   const headers = new Headers();
@@ -413,6 +468,14 @@ export async function getSession(request, env) {
   }
 
   return session;
+}
+
+export function getLastConsoleCookieName() {
+  return LAST_CONSOLE_COOKIE_NAME;
+}
+
+export function sanitizeReturnToParam(value) {
+  return sanitizeReturnTo(value);
 }
 
 /**

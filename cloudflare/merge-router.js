@@ -1,8 +1,19 @@
-import { handleAuthRoute, isAuthRoute, getSession } from "./auth.js";
+import {
+  handleAuthRoute,
+  isAuthRoute,
+  getSession,
+  createLastConsoleCookie,
+} from "./auth.js";
 
-const MC_PAGES_ORIGIN = "https://mc-site-dr4.pages.dev";
-const SIGMABLOX_ORIGIN = "https://www.sigmablox.com";
-const SIGMABLOX_API_ORIGIN = "https://api.sigmablox.com";
+const DEFAULT_ORIGINS = {
+  mcPages: "https://mc-site-dr4.pages.dev",
+  sigmablox: "https://www.sigmablox.com",
+  sigmabloxApi: "https://api.sigmablox.com",
+  app: "https://app.mergecombinator.com",
+  wingman: "https://wingman.mergecombinator.com",
+  control: "https://control.mergecombinator.com",
+};
+
 const SIGMABLOX_HOSTNAMES = new Set(["www.sigmablox.com", "sigmablox.com"]);
 
 // Allowed origins for CORS on /api/* routes
@@ -15,12 +26,20 @@ const API_CORS_ORIGINS = new Set([
   "http://localhost:5173",
 ]);
 
-const ROUTES = [
-  { prefix: "/api", origin: SIGMABLOX_API_ORIGIN, stripPrefix: false, isApi: true },
-  { prefix: "/combine", origin: SIGMABLOX_ORIGIN, stripPrefix: true, preserveRoot: true },
-  // /builders is served from MC Pages (default origin), no route entry needed
-  { prefix: "/opportunities", origin: "https://sbir.mergecombinator.com", stripPrefix: true },
-];
+const HOP_BY_HOP_HEADERS = new Set([
+  "connection",
+  "keep-alive",
+  "proxy-authenticate",
+  "proxy-authorization",
+  "te",
+  "trailer",
+  "transfer-encoding",
+  "upgrade",
+]);
+
+const CONSOLE_PATHS = new Set(["/app", "/wingman", "/control"]);
+const DEFAULT_CONSOLE_PATH = "/app";
+const DEFAULT_ADMIN_GROUPS = ["via-admins", "sigmablox-admins"];
 
 
 const BANNER_HTML = `
@@ -120,6 +139,82 @@ function resolveTarget(url, route) {
   return target;
 }
 
+function isConsolePath(pathname) {
+  return Array.from(CONSOLE_PATHS).some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`)
+  );
+}
+
+function consoleValueFromPath(pathname) {
+  if (pathname === "/wingman" || pathname.startsWith("/wingman/")) {
+    return "wingman";
+  }
+  if (pathname === "/control" || pathname.startsWith("/control/")) {
+    return "control";
+  }
+  return "app";
+}
+
+function isAdminSession(session, env) {
+  if (!session || !session.user || !Array.isArray(session.user.groups)) {
+    return false;
+  }
+  const configured = env.CONTROL_ADMIN_GROUPS
+    ? env.CONTROL_ADMIN_GROUPS.split(",").map((item) => item.trim()).filter(Boolean)
+    : DEFAULT_ADMIN_GROUPS;
+  const groupSet = new Set(configured);
+  return session.user.groups.some((group) => groupSet.has(group));
+}
+
+function createLoginRedirect(request) {
+  const url = new URL(request.url);
+  const loginUrl = new URL("/auth/login", url.origin);
+  loginUrl.searchParams.set("returnTo", url.toString());
+  return Response.redirect(loginUrl.toString(), 302);
+}
+
+function withLastConsoleCookie(response, value, env, request) {
+  const headers = new Headers(response.headers);
+  headers.append(
+    "Set-Cookie",
+    createLastConsoleCookie(value, env, new URL(request.url).protocol === "https:")
+  );
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+function isWebSocketRequest(request) {
+  const upgrade = request.headers.get("upgrade");
+  return upgrade && upgrade.toLowerCase() === "websocket";
+}
+
+function buildUpstreamHeaders(request, { stripCookies = false } = {}) {
+  const headers = new Headers(request.headers);
+  const isWebSocket = isWebSocketRequest(request);
+  if (!isWebSocket) {
+    for (const header of HOP_BY_HOP_HEADERS) {
+      headers.delete(header);
+    }
+  }
+
+  if (stripCookies) {
+    headers.delete("cookie");
+  }
+
+  const originalUrl = new URL(request.url);
+  const originalHost = request.headers.get("host");
+  if (originalHost) {
+    headers.set("x-forwarded-host", originalHost);
+  }
+  headers.set("x-original-path", originalUrl.pathname);
+  headers.set("x-forwarded-proto", originalUrl.protocol.replace(":", ""));
+
+  return headers;
+}
+
 function getCorsHeaders(request) {
   const origin = request.headers.get("Origin");
   if (origin && API_CORS_ORIGINS.has(origin)) {
@@ -147,16 +242,13 @@ async function handleApiRoute(request, targetUrl, env) {
   }
 
   // Build headers for upstream request
-  const upstreamHeaders = new Headers(request.headers);
+  const upstreamHeaders = buildUpstreamHeaders(request, { stripCookies: true });
 
   // Check for authenticated session and pass token to SigmaBlox
   const session = await getSession(request, env);
   if (session && session.accessToken) {
     upstreamHeaders.set("Authorization", `Bearer ${session.accessToken}`);
   }
-
-  // Remove cookie header (don't leak MC session to upstream)
-  upstreamHeaders.delete("Cookie");
 
   // Proxy the request to SigmaBlox API
   const proxyRequest = new Request(targetUrl, {
@@ -182,6 +274,29 @@ async function handleApiRoute(request, targetUrl, env) {
   }
 
   return response;
+}
+
+function getOrigins(env) {
+  return {
+    mcPages: env.MC_PAGES_ORIGIN || DEFAULT_ORIGINS.mcPages,
+    sigmablox: env.SIGMABLOX_ORIGIN || DEFAULT_ORIGINS.sigmablox,
+    sigmabloxApi: env.SIGMABLOX_API_ORIGIN || DEFAULT_ORIGINS.sigmabloxApi,
+    app: env.APP_ORIGIN || DEFAULT_ORIGINS.app,
+    wingman: env.WINGMAN_ORIGIN || DEFAULT_ORIGINS.wingman,
+    control: env.CONTROL_ORIGIN || DEFAULT_ORIGINS.control,
+  };
+}
+
+function getRoutes(origins) {
+  return [
+    { prefix: "/app", origin: origins.app, stripPrefix: true },
+    { prefix: "/wingman", origin: origins.wingman, stripPrefix: true },
+    { prefix: "/control", origin: origins.control, stripPrefix: true },
+    { prefix: "/api", origin: origins.sigmabloxApi, stripPrefix: false, isApi: true },
+    { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
+    // /builders is served from MC Pages (default origin), no route entry needed
+    { prefix: "/opportunities", origin: "https://sbir.mergecombinator.com", stripPrefix: true },
+  ];
 }
 
 function shouldRewriteBanner(response) {
@@ -263,6 +378,8 @@ function rewriteSigmabloxUrl(value) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const origins = getOrigins(env);
+    const routes = getRoutes(origins);
 
     // Handle auth routes first
     if (isAuthRoute(url.pathname)) {
@@ -272,13 +389,22 @@ export default {
       }
     }
 
-    if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
-      const redirectUrl = new URL("/combine/dashboard", url.origin);
-      redirectUrl.search = url.search;
-      return Response.redirect(redirectUrl.toString(), 302);
+    if (isConsolePath(url.pathname)) {
+      const session = await getSession(request, env);
+      if (!session) {
+        return createLoginRedirect(request);
+      }
+
+      if (
+        (url.pathname === "/control" || url.pathname.startsWith("/control/")) &&
+        !isAdminSession(session, env)
+      ) {
+        const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
+        return withLastConsoleCookie(redirect, "app", env, request);
+      }
     }
 
-    const route = ROUTES.find((entry) =>
+    const route = routes.find((entry) =>
       url.pathname === entry.prefix || url.pathname.startsWith(`${entry.prefix}/`)
     );
 
@@ -293,19 +419,36 @@ export default {
 
       if (isFromCombine) {
         // Route to SigmaBlox for assets requested from /combine pages
-        const sigmabloxUrl = new URL(url.pathname, SIGMABLOX_ORIGIN);
+        const sigmabloxUrl = new URL(url.pathname, origins.sigmablox);
         sigmabloxUrl.search = url.search;
-        return fetch(new Request(sigmabloxUrl, request));
+        const upstreamHeaders = buildUpstreamHeaders(request);
+        return fetch(new Request(sigmabloxUrl, {
+          method: request.method,
+          headers: upstreamHeaders,
+          body: request.body,
+        }));
       }
 
       // Proxy unmatched routes to MC Pages origin (homepage, assets, etc.)
-      const mcPagesUrl = new URL(url.pathname, MC_PAGES_ORIGIN);
+      const mcPagesUrl = new URL(url.pathname, origins.mcPages);
       mcPagesUrl.search = url.search;
-      return fetch(new Request(mcPagesUrl, {
+      const upstreamHeaders = buildUpstreamHeaders(request);
+      let response = await fetch(new Request(mcPagesUrl, {
         method: request.method,
-        headers: request.headers,
+        headers: upstreamHeaders,
         body: request.body,
       }));
+      if (isConsolePath(url.pathname)) {
+        response = withLastConsoleCookie(response, consoleValueFromPath(url.pathname), env, request);
+      }
+      if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
+        const session = await getSession(request, env);
+        if (session) {
+          const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
+          return withLastConsoleCookie(redirect, "app", env, request);
+        }
+      }
+      return response;
     }
 
     const targetUrl = resolveTarget(url, route);
@@ -315,9 +458,18 @@ export default {
       return handleApiRoute(request, targetUrl, env);
     }
 
-    let response = await fetch(new Request(targetUrl, request));
+    const upstreamHeaders = buildUpstreamHeaders(request);
+    let response = await fetch(new Request(targetUrl, {
+      method: request.method,
+      headers: upstreamHeaders,
+      body: request.body,
+    }));
 
-    if (route.origin === SIGMABLOX_ORIGIN && isRedirectResponse(response)) {
+    if (isConsolePath(url.pathname)) {
+      response = withLastConsoleCookie(response, consoleValueFromPath(url.pathname), env, request);
+    }
+
+    if (route.origin === origins.sigmablox && isRedirectResponse(response)) {
       const location = response.headers.get("location");
       let replacement = rewriteSigmabloxLocation(location);
       const isCombineDeep =
@@ -343,7 +495,7 @@ export default {
       }
     }
 
-    if (route.origin !== SIGMABLOX_ORIGIN || !shouldRewriteBanner(response)) {
+    if (route.origin !== origins.sigmablox || !shouldRewriteBanner(response)) {
       return response;
     }
 
