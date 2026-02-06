@@ -197,7 +197,7 @@ function sanitizeReturnTo(returnTo) {
     if (!isAllowedHost(url.hostname)) {
       return null;
     }
-    return url.toString();
+    return `${url.pathname}${url.search}${url.hash}`;
   } catch (err) {
     return null;
   }
@@ -356,9 +356,12 @@ async function handleCallback(request, env) {
     const sessionCookie = await encryptSession(session, env.SESSION_SECRET);
     const safeReturnTo = sanitizeReturnTo(stateData.returnTo);
     const returnTo = safeReturnTo || getLastConsoleDestination(request);
+    const redirectTo = returnTo.startsWith("/")
+      ? new URL(returnTo, url.origin).toString()
+      : new URL(getLastConsoleDestination(request), url.origin).toString();
 
     const headers = new Headers();
-    headers.set("Location", returnTo);
+    headers.set("Location", redirectTo);
     headers.append(
       "Set-Cookie",
       createCookieHeader(

@@ -19,6 +19,9 @@ const SIGMABLOX_HOSTNAMES = new Set(["www.sigmablox.com", "sigmablox.com"]);
 // Allowed origins for CORS on /api/* routes
 const API_CORS_ORIGINS = new Set([
   "https://console.mergecombinator.com",
+  "https://app.mergecombinator.com",
+  "https://wingman.mergecombinator.com",
+  "https://control.mergecombinator.com",
   "https://mergecombinator.com",
   "https://www.mergecombinator.com",
   "http://localhost:3000",
@@ -169,7 +172,8 @@ function isAdminSession(session, env) {
 function createLoginRedirect(request) {
   const url = new URL(request.url);
   const loginUrl = new URL("/auth/login", url.origin);
-  loginUrl.searchParams.set("returnTo", url.toString());
+  const relativeReturnTo = `${url.pathname}${url.search}${url.hash}`;
+  loginUrl.searchParams.set("returnTo", relativeReturnTo);
   return Response.redirect(loginUrl.toString(), 302);
 }
 
@@ -243,6 +247,7 @@ async function handleApiRoute(request, targetUrl, env) {
 
   // Build headers for upstream request
   const upstreamHeaders = buildUpstreamHeaders(request, { stripCookies: true });
+  const cloned = request.clone();
 
   // Check for authenticated session and pass token to SigmaBlox
   const session = await getSession(request, env);
@@ -252,9 +257,9 @@ async function handleApiRoute(request, targetUrl, env) {
 
   // Proxy the request to SigmaBlox API
   const proxyRequest = new Request(targetUrl, {
-    method: request.method,
+    method: cloned.method,
     headers: upstreamHeaders,
-    body: request.body,
+    body: cloned.body,
   });
 
   const response = await fetch(proxyRequest);
@@ -389,6 +394,14 @@ export default {
       }
     }
 
+    if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
+      const session = await getSession(request, env);
+      if (session) {
+        const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
+        return withLastConsoleCookie(redirect, "app", env, request);
+      }
+    }
+
     if (isConsolePath(url.pathname)) {
       const session = await getSession(request, env);
       if (!session) {
@@ -421,32 +434,27 @@ export default {
         // Route to SigmaBlox for assets requested from /combine pages
         const sigmabloxUrl = new URL(url.pathname, origins.sigmablox);
         sigmabloxUrl.search = url.search;
+        const cloned = request.clone();
         const upstreamHeaders = buildUpstreamHeaders(request);
         return fetch(new Request(sigmabloxUrl, {
-          method: request.method,
+          method: cloned.method,
           headers: upstreamHeaders,
-          body: request.body,
+          body: cloned.body,
         }));
       }
 
       // Proxy unmatched routes to MC Pages origin (homepage, assets, etc.)
       const mcPagesUrl = new URL(url.pathname, origins.mcPages);
       mcPagesUrl.search = url.search;
+      const cloned = request.clone();
       const upstreamHeaders = buildUpstreamHeaders(request);
       let response = await fetch(new Request(mcPagesUrl, {
-        method: request.method,
+        method: cloned.method,
         headers: upstreamHeaders,
-        body: request.body,
+        body: cloned.body,
       }));
       if (isConsolePath(url.pathname)) {
         response = withLastConsoleCookie(response, consoleValueFromPath(url.pathname), env, request);
-      }
-      if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
-        const session = await getSession(request, env);
-        if (session) {
-          const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
-          return withLastConsoleCookie(redirect, "app", env, request);
-        }
       }
       return response;
     }
@@ -459,10 +467,11 @@ export default {
     }
 
     const upstreamHeaders = buildUpstreamHeaders(request);
+    const cloned = request.clone();
     let response = await fetch(new Request(targetUrl, {
-      method: request.method,
+      method: cloned.method,
       headers: upstreamHeaders,
-      body: request.body,
+      body: cloned.body,
     }));
 
     if (isConsolePath(url.pathname)) {
