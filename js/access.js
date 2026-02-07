@@ -43,9 +43,11 @@ if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !su
     const body = encodeURIComponent(
       [
         'Access request submitted:',
-        `Name: ${data.name || ''}`,
-        `Email: ${data.email || ''}`,
         `Role: ${data.role || ''}`,
+        `Organization: ${data.org || ''}`,
+        `Email: ${data.email || ''}`,
+        `Why: ${data.why || ''}`,
+        `Building: ${data.building || ''}`,
         `Source: ${window.location.href}`,
         `Timestamp: ${new Date().toISOString()}`
       ].join('\n')
@@ -61,10 +63,11 @@ async function submitToEndpoint(data) {
 
   try {
       const payload = {
-        email: data.email,
-        name: data.name,
-        tier: data.role || 'general',
-        website_url: '',
+        email: data.email || '',
+        role: data.role || 'general',
+        organization: data.org || '',
+        reason: data.why || '',
+        building: data.building || '',
         userAgent: String(navigator.userAgent || ''),
         referrer: String(document.referrer || ''),
         requestedAt: new Date().toISOString(),
@@ -104,9 +107,11 @@ async function submitToEndpoint(data) {
 
     const formData = new FormData(form);
     const data = {
-      name: String(formData.get('name') || ''),
+      role: String(formData.get('role') || ''),
+      org: String(formData.get('org') || ''),
       email: String(formData.get('email') || ''),
-      role: String(formData.get('role') || '')
+      why: String(formData.get('why') || ''),
+      building: String(formData.get('building') || '')
     };
 
     const result = await submitToEndpoint(data);
@@ -129,13 +134,6 @@ async function submitToEndpoint(data) {
       if (textEl) {
         textEl.textContent = result.message;
       }
-    }
-    if (result.code === 'account_exists' && errorLink) {
-      const email = encodeURIComponent(data.email || '');
-      const href = `https://www.sigmablox.com/via-login/?email=${email}`;
-      const linkEl = errorLink.querySelector('a');
-      if (linkEl) linkEl.setAttribute('href', href);
-      errorLink.style.display = 'block';
     }
     return;
   }

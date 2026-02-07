@@ -33,6 +33,7 @@ export default defineConfig({
         access: resolve(__dirname, 'access.html'),
         contribute: resolve(__dirname, 'contribute.html'),
         combine: resolve(__dirname, 'combine.html'),
+        wingman: resolve(__dirname, 'wingman.html'),
         '404': resolve(__dirname, '404.html'),
         // Blog articles
         'blog-counter-drone': resolve(__dirname, 'blog/counter-drone-jiatf-401.html'),

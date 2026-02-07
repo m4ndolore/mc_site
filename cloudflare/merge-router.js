@@ -294,8 +294,8 @@ function getOrigins(env) {
 
 function getRoutes(origins) {
   return [
+    { prefix: "/app/wingman", origin: origins.wingman, stripPrefix: true, preserveRoot: true },
     { prefix: "/app", origin: origins.app, stripPrefix: true },
-    { prefix: "/wingman", origin: origins.wingman, stripPrefix: true },
     { prefix: "/control", origin: origins.control, stripPrefix: true },
     { prefix: "/api", origin: origins.sigmabloxApi, stripPrefix: false, isApi: true },
     { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
@@ -307,6 +307,16 @@ function getRoutes(origins) {
 function shouldRewriteBanner(response) {
   const contentType = response.headers.get("content-type") || "";
   return contentType.includes("text/html");
+}
+
+function shouldRewriteWingman(pathname, response) {
+  if (pathname !== "/wingman" && pathname !== "/wingman/") return false;
+  const contentType = response.headers.get("content-type") || "";
+  return contentType.includes("text/html");
+}
+
+function buildWingmanConfigScript(enabled) {
+  return `<script>window.MC_CONFIG={wingmanConsoleEnabled:${enabled}};</script>`;
 }
 
 function isRedirectResponse(response) {
@@ -385,6 +395,9 @@ export default {
     const url = new URL(request.url);
     const origins = getOrigins(env);
     const routes = getRoutes(origins);
+    const wingmanConsoleEnabled = String(env.WINGMAN_CONSOLE_ENABLED || "false")
+      .toLowerCase()
+      .trim() === "true";
 
     // Handle auth routes first
     if (isAuthRoute(url.pathname)) {
@@ -392,6 +405,18 @@ export default {
       if (authResponse) {
         return authResponse;
       }
+    }
+
+    if (url.pathname === "/marketplace" || url.pathname.startsWith("/marketplace/")) {
+      const redirectUrl = new URL("/guild", url.origin);
+      redirectUrl.search = url.search;
+      return Response.redirect(redirectUrl.toString(), 301);
+    }
+
+    if (url.pathname === "/combine" || url.pathname.startsWith("/combine/")) {
+      const redirectUrl = new URL("/programs/the-combine", url.origin);
+      redirectUrl.search = url.search;
+      return Response.redirect(redirectUrl.toString(), 301);
     }
 
     if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
@@ -453,6 +478,16 @@ export default {
         headers: upstreamHeaders,
         body: cloned.body,
       }));
+      if (shouldRewriteWingman(url.pathname, response)) {
+        const configScript = buildWingmanConfigScript(wingmanConsoleEnabled);
+        response = new HTMLRewriter()
+          .on("head", {
+            element(element) {
+              element.append(configScript, { html: true });
+            },
+          })
+          .transform(response);
+      }
       if (isConsolePath(url.pathname)) {
         response = withLastConsoleCookie(response, consoleValueFromPath(url.pathname), env, request);
       }

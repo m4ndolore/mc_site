@@ -907,7 +907,19 @@ h4, .h4 {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+  align-items: center;
   margin-bottom: 48px;
+}
+
+.hero__tertiary-link {
+  font-size: 0.9rem;
+  color: var(--signal-blue);
+  text-decoration: none;
+  margin-left: 8px;
+}
+
+.hero__tertiary-link:hover {
+  text-decoration: underline;
 }
 
 .hero__stats {

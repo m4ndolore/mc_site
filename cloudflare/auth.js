@@ -189,6 +189,7 @@ function isAllowedHost(hostname) {
 
 function sanitizeReturnTo(returnTo) {
   if (!returnTo) return null;
+  if (returnTo.startsWith("//")) return null;
   if (returnTo.startsWith("/")) {
     return returnTo;
   }
