@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Programs - Structured paths from idea to deployment. Defense Builders (open access) and The Combine (selection-based).">
+  <meta name="keywords" content="programs, defense builders, the combine, defense tech, validation">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-2.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/arrows-2.png">
+  <link rel="apple-touch-icon" href="/assets/arrows-2.png">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Programs — Merge Combinator">
+  <meta property="og:description" content="Structured paths from idea to deployment.">
+  <meta property="og:type" content="website">
+
+  <title>Programs — Merge Combinator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .programs-hero {
+      padding: 140px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .programs-hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(800px 360px at 30% 0%, rgba(59, 130, 246, 0.1), transparent 60%),
+        radial-gradient(600px 300px at 70% 20%, rgba(34, 197, 94, 0.08), transparent 55%),
+        linear-gradient(180deg, rgba(8, 12, 18, 0.95), rgba(5, 7, 10, 1));
+      z-index: 0;
+    }
+
+    .programs-hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .programs-hero__title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--offwhite);
+      margin-bottom: 16px;
+    }
+
+    .programs-hero__subtitle {
+      font-size: 1.125rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+    }
+
+    /* Programs Grid */
+    .programs-grid {
+      padding: 60px 0 80px;
+    }
+
+    .programs-grid__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      max-width: 800px;
+    }
+
+    .program-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .program-card__badge {
+      display: inline-flex;
+      align-self: flex-start;
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      margin-bottom: 16px;
+    }
+
+    .program-card__badge--open {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .program-card__badge--selection {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--signal-blue);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .program-card__title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 12px;
+    }
+
+    .program-card__desc {
+      font-size: 0.95rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .program-card__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--signal-blue);
+      text-decoration: none;
+    }
+
+    .program-card__cta:hover {
+      text-decoration: underline;
+    }
+
+    .program-card__cta svg {
+      transition: transform 0.2s;
+    }
+
+    .program-card__cta:hover svg {
+      transform: translateX(3px);
+    }
+
+    /* Bottom Note */
+    .programs-note {
+      padding: 40px 0 80px;
+    }
+
+    .programs-note__text {
+      font-size: 0.95rem;
+      color: var(--gray-medium);
+      max-width: 600px;
+    }
+
+    .programs-note__link {
+      color: var(--signal-blue);
+      text-decoration: none;
+    }
+
+    .programs-note__link:hover {
+      text-decoration: underline;
+    }
+
+    /* Footer */
+    .programs-footer {
+      padding: 40px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: center;
+    }
+
+    .programs-footer__links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .programs-footer__link {
+      font-size: 0.85rem;
+      color: var(--gray-medium);
+      text-decoration: none;
+    }
+
+    .programs-footer__link:hover {
+      color: var(--offwhite);
+    }
+
+    .programs-footer__copy {
+      font-size: 0.8rem;
+      color: var(--gray-dark);
+    }
+
+    @media (max-width: 640px) {
+      .programs-grid__list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-text">
+          <span class="nav__logo-merge">Merge</span>
+          <span class="nav__logo-combinator">Combinator</span>
+        </span>
+        <img src="/assets/arrows-2.png" alt="Merge arrows" class="nav__logo-icon">
+      </a>
+
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="/builders" class="nav__link">Defense Builders</a>
+          <a href="/wingman" class="nav__link">Wingman</a>
+          <a href="/guild" class="nav__link">Guild</a>
+          <a href="/programs/the-combine" class="nav__link">The Combine</a>
+          <div class="nav__dropdown">
+            <button class="nav__link nav__dropdown-trigger" aria-expanded="false" aria-haspopup="true">
+              Platform
+              <svg class="nav__dropdown-icon" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="nav__dropdown-menu">
+              <a href="/status" class="nav__dropdown-item">Status</a>
+              <a href="/briefs" class="nav__dropdown-item">Briefs</a>
+              <a href="/knowledge" class="nav__dropdown-item">Knowledge</a>
+              <a href="https://docs.mergecombinator.com" class="nav__dropdown-item">Docs</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__menu-actions">
+          <a href="/auth/login" class="nav__btn nav__btn--secondary">Sign in</a>
+          <a href="/access" class="nav__btn nav__btn--access">Join</a>
+        </div>
+      </nav>
+
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="programs-hero">
+    <div class="programs-hero__bg"></div>
+    <div class="container programs-hero__content">
+      <h1 class="programs-hero__title">Programs</h1>
+      <p class="programs-hero__subtitle">
+        Structured paths from idea to deployment.
+      </p>
+    </div>
+  </section>
+
+  <!-- Programs Grid -->
+  <section class="programs-grid">
+    <div class="container">
+      <div class="programs-grid__list">
+        <!-- Defense Builders Card -->
+        <article class="program-card">
+          <span class="program-card__badge program-card__badge--open">Open Access</span>
+          <h2 class="program-card__title">Defense Builders</h2>
+          <p class="program-card__desc">
+            The platform for defense tech founders, operators, and mission owners. Directory, briefs, and execution workflows.
+          </p>
+          <a href="/access" class="program-card__cta">
+            Join Defense Builders
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </article>
+
+        <!-- The Combine Card -->
+        <article class="program-card">
+          <span class="program-card__badge program-card__badge--selection">Selection-Based</span>
+          <h2 class="program-card__title">The Combine</h2>
+          <p class="program-card__desc">
+            One week. In person. Operators validate your solution against real requirements. Funded startups and emerging tech only.
+          </p>
+          <a href="/programs/the-combine" class="program-card__cta">
+            Apply to The Combine
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8H13M13 8L9 4M13 8L9 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Note -->
+  <section class="programs-note">
+    <div class="container">
+      <p class="programs-note__text">
+        Not sure which path? Start with <a href="/access" class="programs-note__link">Defense Builders</a>—it's open to all.
+      </p>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="programs-footer">
+    <div class="container">
+      <div class="programs-footer__links">
+        <a href="/" class="programs-footer__link">Home</a>
+        <a href="/builders" class="programs-footer__link">Defense Builders</a>
+        <a href="/wingman" class="programs-footer__link">Wingman</a>
+        <a href="/guild" class="programs-footer__link">Guild</a>
+        <a href="/privacy" class="programs-footer__link">Privacy</a>
+      </div>
+      <p class="programs-footer__copy">&copy; 2026 Merge Combinator. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="/script.js"></script>
+</body>
+</html>

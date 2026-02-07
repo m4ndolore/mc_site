@@ -1,117 +1,211 @@
-# Deployment Guide
+# Console Routing Deployment Plan
 
-This site has two deployment components:
-1. **Cloudflare Pages** - Static site (HTML, CSS, JS, assets)
-2. **Cloudflare Worker** - Router with auth (mc-router)
+**PR3: Mission Control + Console Switcher**
+**Date:** 2026-02-05
 
-## Quick Reference
+---
 
-```bash
-# Deploy worker (auth changes, routing changes)
-npm run deploy
+## Architecture Overview
 
-# Check Pages deployment status
-npm run deploy:status
-
-# Local development
-npm run dev              # Static site only (port 3000)
-npm run dev:worker       # Worker with local VIA (port 8787)
+```
+                    Cloudflare Worker (merge-router.js)
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        │                     │                     │
+        ▼                     ▼                     ▼
+  /app/*              /wingman/*             /control/*
+     │                     │                     │
+     ▼                     ▼                     ▼
+app.mergecombinator   wingman.mergecombinator   control.mergecombinator
+     │                     │                     │
+     ▼                     ▼                     ▼
+CF Pages / Workers    CF Pages / Workers    Cloud Run
+(console app)         (dashboard app)       (via-dashboard)
 ```
 
-## Deployment Flow
+## Pre-Deployment Checklist
 
-### Static Site (Cloudflare Pages)
-- **Auto-deploys on git push to `main`**
-- Source: GitHub repo → Cloudflare Pages
-- Build command: `npm run build`
-- Output directory: `dist/`
+- [ ] Console app builds successfully
+- [ ] Wingman app builds successfully
+- [ ] Via-dashboard builds successfully
+- [ ] Worker routing tested locally with wrangler dev --env dev
+- [ ] DNS records prepared for subdomains
 
-To check status:
-```bash
-npm run deploy:status
-# or
-wrangler pages deployment list --project-name mc-site
-```
+---
 
-### Worker (mc-router)
-- **Manual deploy required** for auth/routing changes
-- Deploys to: `mc-router.defensebuilders.workers.dev`
+## Deployment Phases
 
-```bash
-npm run deploy
-# or
+### Phase 1: Deploy Placeholder Apps
+
+Deploy minimal 200 OK responses to subdomains before enabling worker routing.
+
+**1a. Create placeholder workers**
+
+\`\`\`bash
+# Create placeholder for app.mergecombinator.com
+echo 'export default { fetch: () => new Response("Console coming soon", { status: 200 }) }' > /tmp/placeholder.js
+wrangler deploy /tmp/placeholder.js --name mc-app-placeholder
+
+# Create placeholder for wingman.mergecombinator.com
+wrangler deploy /tmp/placeholder.js --name mc-wingman-placeholder
+\`\`\`
+
+**1b. Configure DNS (Cloudflare)**
+
+| Subdomain | Type | Target |
+|-----------|------|--------|
+| app | CNAME | mc-app-placeholder.workers.dev |
+| wingman | CNAME | mc-wingman-placeholder.workers.dev |
+| control | CNAME | control-layer-xxxxx.run.app (Cloud Run) |
+
+**1c. Verify placeholders respond**
+
+\`\`\`bash
+curl -I https://app.mergecombinator.com
+curl -I https://wingman.mergecombinator.com
+curl -I https://control.mergecombinator.com
+\`\`\`
+
+Expected: HTTP/2 200 for all.
+
+---
+
+### Phase 2: Deploy Worker Routing
+
+**2a. Verify wrangler.toml production origins**
+
+\`\`\`toml
+[vars]
+APP_ORIGIN = "https://app.mergecombinator.com"
+WINGMAN_ORIGIN = "https://wingman.mergecombinator.com"
+CONTROL_ORIGIN = "https://control.mergecombinator.com"
+\`\`\`
+
+**2b. Deploy worker**
+
+\`\`\`bash
+cd /Users/paulgarcia/Dev/mc_site
 wrangler deploy
-```
+\`\`\`
 
-## What Triggers Each Deployment?
+**2c. Verify routing**
 
-| Change Type | Pages (auto) | Worker (manual) |
-|-------------|--------------|-----------------|
-| HTML/CSS/JS changes | ✓ | - |
-| New pages (*.html) | ✓ | - |
-| vite.config.js | ✓ | - |
-| cloudflare/auth.js | - | ✓ |
-| cloudflare/merge-router.js | - | ✓ |
-| wrangler.toml | - | ✓ |
+\`\`\`bash
+# Should redirect to /auth/login when not authenticated
+curl -I https://www.mergecombinator.com/app
+# Expected: 302 Location: /auth/login?returnTo=/app
+\`\`\`
 
-## Local Development
+---
 
-### Static site only
-```bash
-npm run dev
-# Visit http://localhost:3000
-```
+### Phase 3: Deploy Real Console Apps
 
-### Full stack with auth (requires local VIA at localhost:9000)
-```bash
-# Terminal 1: Ensure VIA is running on port 9000
+**3a. Deploy Console (Defense Builders)**
 
-# Terminal 2: Start worker
-npm run dev:worker
-# Visit http://localhost:8787
-```
+\`\`\`bash
+cd /Users/paulgarcia/Dev/signal-incubator/apps/console
+npm run build
+wrangler pages deploy dist --project-name mc-console
+\`\`\`
 
-Note: `wrangler dev --env dev` uses local VIA (`OIDC_ISSUER_URL=http://localhost:9000`).
+Update DNS: app CNAME → mc-console.pages.dev
 
-## Configuration
+**3b. Deploy Wingman**
 
-### Environment Variables
+\`\`\`bash
+cd /Users/paulgarcia/Dev/signal-incubator/apps/dashboard
+npm run build
+wrangler pages deploy dist --project-name mc-wingman
+\`\`\`
 
-| Variable | Where | Purpose |
-|----------|-------|---------|
-| OIDC_ISSUER_URL | wrangler.toml | Auth provider URL |
-| OAUTH_LOGOUT_URL | wrangler.toml | SSO logout endpoint |
-| MC_OAUTH_CLIENT_ID | .dev.vars / secrets | OAuth client ID |
-| MC_OAUTH_CLIENT_SECRET | .dev.vars / secrets | OAuth client secret |
-| SESSION_SECRET | .dev.vars / secrets | Session encryption key |
+Update DNS: wingman CNAME → mc-wingman.pages.dev
 
-### Secrets Setup
+**3c. Verify Via-Dashboard (Admin Console)**
 
-**Local development:**
-```bash
-# .dev.vars is a symlink to .env.local
-ln -s .env.local .dev.vars
-# Add secrets to .env.local (see .env.example)
-```
+Already deployed to Cloud Run.
 
-**Production:**
-```bash
-wrangler secret put MC_OAUTH_CLIENT_ID
-wrangler secret put MC_OAUTH_CLIENT_SECRET
-wrangler secret put SESSION_SECRET
-```
+---
 
-## Troubleshooting
+## Rollback Procedures
 
-### Pages deployment failed
-1. Check build locally: `npm run build`
-2. Common issue: entry files in vite.config.js don't match actual files
+### Rollback Level 1: Disable Path Routing
 
-### Worker not picking up changes
-1. Ensure you ran `npm run deploy` (Pages auto-deploy doesn't update worker)
-2. Check deployment: `wrangler deployments list`
+Point paths back to MC Pages (marketing site):
 
-### Auth not working locally
-1. Ensure VIA is running at localhost:9000
-2. Ensure .dev.vars symlink exists: `ls -la .dev.vars`
-3. Run with dev env: `npm run dev:worker` (not just `wrangler dev`)
+\`\`\`toml
+[vars]
+APP_ORIGIN = "https://mc-site-dr4.pages.dev"
+WINGMAN_ORIGIN = "https://mc-site-dr4.pages.dev"
+CONTROL_ORIGIN = "https://mc-site-dr4.pages.dev"
+\`\`\`
+
+\`\`\`bash
+wrangler deploy
+\`\`\`
+
+### Rollback Level 2: Restore Placeholders
+
+Update DNS back to placeholder workers.
+
+### Rollback Level 3: Remove Path Routing Entirely
+
+Comment out console routing in merge-router.js.
+
+---
+
+## Verification Checklist
+
+### Auth Flow
+
+| Test | Expected |
+|------|----------|
+| GET /app (unauthenticated) | 302 → /auth/login?returnTo=/app |
+| POST /auth/login → callback | Set mc_session cookie |
+| GET /app (authenticated) | 200, load console UI |
+| mc_last_console cookie | Set to "app" |
+
+### Console Switching
+
+| Test | Expected |
+|------|----------|
+| GET /wingman (authenticated) | 200, load Wingman |
+| mc_last_console cookie | Updated to "wingman" |
+| GET /control (non-admin) | 302 → /app |
+| GET /control (admin) | 200, load via-dashboard |
+
+### Dashboard Redirect
+
+| Test | Expected |
+|------|----------|
+| GET /dashboard (unauthenticated) | 200, teaser page |
+| GET /dashboard (authenticated) | 302 → /app |
+
+### Deep Links
+
+| Test | Expected |
+|------|----------|
+| GET /app/builders/123 | 200, builder detail |
+| GET /wingman/... | 200, preserve path |
+| GET /control/users | 200, users page |
+
+---
+
+## Environment Variables Reference
+
+### Production (wrangler.toml [vars])
+
+| Variable | Value |
+|----------|-------|
+| OIDC_ISSUER_URL | https://via.mergecombinator.com |
+| COOKIE_DOMAIN | .mergecombinator.com |
+| APP_ORIGIN | https://app.mergecombinator.com |
+| WINGMAN_ORIGIN | https://wingman.mergecombinator.com |
+| CONTROL_ORIGIN | https://control.mergecombinator.com |
+
+### Secrets (wrangler secret)
+
+| Secret | Description |
+|--------|-------------|
+| MC_OAUTH_CLIENT_ID | OAuth client ID |
+| MC_OAUTH_CLIENT_SECRET | OAuth client secret |
+| SESSION_SECRET | AES-GCM encryption key |

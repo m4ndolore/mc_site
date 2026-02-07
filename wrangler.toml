@@ -37,6 +37,7 @@ SIGMABLOX_API_ORIGIN = "https://api.sigmablox.com"
 APP_ORIGIN = "https://app.mergecombinator.com"
 WINGMAN_ORIGIN = "https://wingman.mergecombinator.com"
 CONTROL_ORIGIN = "https://control.mergecombinator.com"
+WINGMAN_CONSOLE_ENABLED = "false"
 
 # -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
@@ -52,3 +53,4 @@ MC_PAGES_ORIGIN = "http://localhost:3000"
 APP_ORIGIN = "http://localhost:3003"
 WINGMAN_ORIGIN = "http://localhost:5173"
 CONTROL_ORIGIN = "http://localhost:3300"
+WINGMAN_CONSOLE_ENABLED = "false"

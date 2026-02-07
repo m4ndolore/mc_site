@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="De-attributed takeaways from trusted defense tech channels. Sources stay private. Insights go public.">
+  <meta name="keywords" content="briefs, defense tech, operators, insights, takeaways, de-attributed">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-2.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/arrows-2.png">
+  <link rel="apple-touch-icon" href="/assets/arrows-2.png">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Briefs — Merge Combinator">
+  <meta property="og:description" content="De-attributed takeaways from trusted defense tech channels. Sources stay private. Insights go public.">
+  <meta property="og:type" content="website">
+
+  <title>Briefs — Merge Combinator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .briefs-hero {
+      padding: 140px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .briefs-hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(800px 360px at 25% 0%, rgba(14, 165, 233, 0.12), transparent 60%),
+        radial-gradient(600px 300px at 75% 20%, rgba(99, 102, 241, 0.08), transparent 55%),
+        linear-gradient(180deg, rgba(8, 12, 18, 0.95), rgba(5, 7, 10, 1));
+      z-index: 0;
+    }
+
+    .briefs-hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .briefs-hero__title {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--offwhite);
+      margin-bottom: 16px;
+    }
+
+    .briefs-hero__subtitle {
+      font-size: 1.125rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .briefs-hero__note {
+      font-size: 0.85rem;
+      color: var(--gray-medium);
+      margin-bottom: 32px;
+    }
+
+    /* Filter Bar */
+    .briefs-filters {
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .briefs-filters__bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .briefs-filters__select {
+      padding: 8px 32px 8px 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      color: var(--gray-light);
+      font-size: 0.875rem;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      cursor: pointer;
+    }
+
+    .briefs-filters__select:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Briefs Grid */
+    .briefs-grid {
+      padding: 48px 0;
+    }
+
+    .briefs-grid__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+    }
+
+    .brief-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+
+    .brief-card:hover {
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .brief-card__tags {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .brief-card__tag {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--signal-blue);
+      padding: 4px 8px;
+      background: rgba(59, 130, 246, 0.1);
+      border-radius: 2px;
+    }
+
+    .brief-card__tag--domain {
+      color: #22c55e;
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .brief-card__title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .brief-card__excerpt {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .brief-card__meta {
+      display: flex;
+      gap: 16px;
+      font-size: 0.8rem;
+      color: var(--gray-medium);
+    }
+
+    .brief-card__meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* CTA Section */
+    .briefs-cta {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .briefs-cta__box {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      padding: 40px;
+      max-width: 600px;
+    }
+
+    .briefs-cta__title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 12px;
+    }
+
+    .briefs-cta__desc {
+      font-size: 0.95rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .briefs-cta__buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* Footer */
+    .briefs-footer {
+      padding: 40px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: center;
+    }
+
+    .briefs-footer__links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .briefs-footer__link {
+      font-size: 0.85rem;
+      color: var(--gray-medium);
+      text-decoration: none;
+    }
+
+    .briefs-footer__link:hover {
+      color: var(--offwhite);
+    }
+
+    .briefs-footer__copy {
+      font-size: 0.8rem;
+      color: var(--gray-dark);
+    }
+
+    @media (max-width: 640px) {
+      .briefs-grid__list {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-text">
+          <span class="nav__logo-merge">Merge</span>
+          <span class="nav__logo-combinator">Combinator</span>
+        </span>
+        <img src="/assets/arrows-2.png" alt="Merge arrows" class="nav__logo-icon">
+      </a>
+
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="/builders" class="nav__link">Defense Builders</a>
+          <a href="/wingman" class="nav__link">Wingman</a>
+          <a href="/guild" class="nav__link">Guild</a>
+          <a href="/programs/the-combine" class="nav__link">The Combine</a>
+          <div class="nav__dropdown">
+            <button class="nav__link nav__dropdown-trigger" aria-expanded="false" aria-haspopup="true">
+              Platform
+              <svg class="nav__dropdown-icon" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="nav__dropdown-menu">
+              <a href="/status" class="nav__dropdown-item">Status</a>
+              <a href="/briefs" class="nav__dropdown-item">Briefs</a>
+              <a href="/knowledge" class="nav__dropdown-item">Knowledge</a>
+              <a href="https://docs.mergecombinator.com" class="nav__dropdown-item">Docs</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__menu-actions">
+          <a href="/auth/login" class="nav__btn nav__btn--secondary">Sign in</a>
+          <a href="/access" class="nav__btn nav__btn--access">Join</a>
+        </div>
+      </nav>
+
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="briefs-hero">
+    <div class="briefs-hero__bg"></div>
+    <div class="container briefs-hero__content">
+      <h1 class="briefs-hero__title">Briefs</h1>
+      <p class="briefs-hero__subtitle">
+        De-attributed takeaways from trusted defense tech channels. Sources stay private. Insights go public.
+      </p>
+      <p class="briefs-hero__note">
+        Summaries are non-attribution and aggregations of multiple distribution channels.
+      </p>
+    </div>
+  </section>
+
+  <!-- Filter Bar -->
+  <section class="briefs-filters">
+    <div class="container">
+      <div class="briefs-filters__bar">
+        <select class="briefs-filters__select">
+          <option value="">Mission Area</option>
+          <option value="indo-pacific">Indo-Pacific</option>
+          <option value="europe">Europe</option>
+          <option value="homeland">Homeland</option>
+        </select>
+        <select class="briefs-filters__select">
+          <option value="">Domain</option>
+          <option value="maritime">Maritime</option>
+          <option value="air">Air</option>
+          <option value="ground">Ground</option>
+          <option value="cyber">Cyber</option>
+          <option value="space">Space</option>
+        </select>
+        <select class="briefs-filters__select">
+          <option value="">Date</option>
+          <option value="2026">2026</option>
+          <option value="2025">2025</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- Briefs Grid -->
+  <section class="briefs-grid">
+    <div class="container">
+      <div class="briefs-grid__list">
+        <!-- Brief Card 1 -->
+        <article class="brief-card">
+          <div class="brief-card__tags">
+            <span class="brief-card__tag">Indo-Pacific</span>
+            <span class="brief-card__tag brief-card__tag--domain">Maritime</span>
+          </div>
+          <h2 class="brief-card__title">Counter-UAS Detection Gaps in Littoral Environments</h2>
+          <p class="brief-card__excerpt">
+            Operators report persistent blind spots in low-altitude tracking during joint exercises. Current systems optimized for fixed-wing threats miss low-slow-small profiles in cluttered coastal terrain.
+          </p>
+          <div class="brief-card__meta">
+            <span class="brief-card__meta-item">3 takeaways</span>
+            <span class="brief-card__meta-item">2 decisions noted</span>
+            <span class="brief-card__meta-item">Jan 2026</span>
+          </div>
+        </article>
+
+        <!-- Brief Card 2 -->
+        <article class="brief-card">
+          <div class="brief-card__tags">
+            <span class="brief-card__tag">Indo-Pacific</span>
+            <span class="brief-card__tag brief-card__tag--domain">Air</span>
+          </div>
+          <h2 class="brief-card__title">Logistics Data Interoperability Between Allied Forces</h2>
+          <p class="brief-card__excerpt">
+            Recurring friction in joint sustainment planning stems from incompatible data formats. Coalition partners operate with different inventory systems, causing delays in resupply coordination.
+          </p>
+          <div class="brief-card__meta">
+            <span class="brief-card__meta-item">4 takeaways</span>
+            <span class="brief-card__meta-item">1 decision noted</span>
+            <span class="brief-card__meta-item">Jan 2026</span>
+          </div>
+        </article>
+
+        <!-- Brief Card 3 -->
+        <article class="brief-card">
+          <div class="brief-card__tags">
+            <span class="brief-card__tag">Europe</span>
+            <span class="brief-card__tag brief-card__tag--domain">Cyber</span>
+          </div>
+          <h2 class="brief-card__title">Secure Communications in Contested Spectrum</h2>
+          <p class="brief-card__excerpt">
+            Field units report degraded comms reliability when operating near peer adversary EW capabilities. Current COTS solutions lack resilience against targeted jamming.
+          </p>
+          <div class="brief-card__meta">
+            <span class="brief-card__meta-item">5 takeaways</span>
+            <span class="brief-card__meta-item">3 decisions noted</span>
+            <span class="brief-card__meta-item">Dec 2025</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="briefs-cta">
+    <div class="container">
+      <div class="briefs-cta__box">
+        <h2 class="briefs-cta__title">Want the full brief?</h2>
+        <p class="briefs-cta__desc">
+          Join Defense Builders to access complete takeaways, decision context, and operator contact paths.
+        </p>
+        <div class="briefs-cta__buttons">
+          <a href="/access" class="btn btn--primary">Join Defense Builders</a>
+          <a href="/access" class="btn btn--ghost">Submit a channel for briefing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="briefs-footer">
+    <div class="container">
+      <div class="briefs-footer__links">
+        <a href="/" class="briefs-footer__link">Home</a>
+        <a href="/builders" class="briefs-footer__link">Defense Builders</a>
+        <a href="/wingman" class="briefs-footer__link">Wingman</a>
+        <a href="/programs/the-combine" class="briefs-footer__link">The Combine</a>
+        <a href="/privacy" class="briefs-footer__link">Privacy</a>
+      </div>
+      <p class="briefs-footer__copy">&copy; 2026 Merge Combinator. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>

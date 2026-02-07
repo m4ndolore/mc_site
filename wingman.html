@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Wingman operationalizes your inbox. Extract takeaways and decisions from your own data. Keep raw information private, surface only the brief.">
+  <meta name="keywords" content="wingman, defense builders, operators, briefs, decisions, operationalize, objectives">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-2.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/arrows-2.png">
+  <link rel="apple-touch-icon" href="/assets/arrows-2.png">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://mergecombinator.com/wingman">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Wingman — Operationalize Your Inbox">
+  <meta property="og:description" content="Extract takeaways and decisions from your own data. Keep raw information private, surface only the brief.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mergecombinator.com/wingman">
+
+  <title>Wingman — Merge Combinator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .wingman-hero {
+      padding: 140px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wingman-hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(800px 360px at 15% 0%, rgba(34, 197, 94, 0.18), transparent 60%),
+        radial-gradient(720px 420px at 85% 10%, rgba(14, 165, 233, 0.12), transparent 65%),
+        linear-gradient(180deg, rgba(8, 12, 18, 0.95), rgba(5, 7, 10, 1));
+      z-index: 0;
+    }
+
+    .wingman-hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .wingman-hero__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #22c55e;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+
+    .wingman-hero__title {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--offwhite);
+      margin-bottom: 16px;
+    }
+
+    .wingman-hero__subtitle {
+      font-size: 1.125rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .wingman-hero__support {
+      font-size: 0.9rem;
+      color: var(--gray-medium);
+      font-style: italic;
+      margin-bottom: 32px;
+    }
+
+    .wingman-hero__ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .wingman-hero__tertiary {
+      font-size: 0.9rem;
+      color: var(--signal-blue);
+      text-decoration: none;
+      margin-left: 8px;
+    }
+
+    .wingman-hero__tertiary:hover {
+      text-decoration: underline;
+    }
+
+    /* Value Props Section */
+    .wingman-value {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .wingman-value__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .wingman-value__item {
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+    }
+
+    .wingman-value__icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(34, 197, 94, 0.1);
+      border-radius: 4px;
+      margin-bottom: 16px;
+      color: #22c55e;
+    }
+
+    .wingman-value__title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 8px;
+    }
+
+    .wingman-value__desc {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      line-height: 1.5;
+    }
+
+    /* CTA Section */
+    .wingman-cta {
+      padding: 80px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: center;
+    }
+
+    .wingman-cta__title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 12px;
+    }
+
+    .wingman-cta__desc {
+      font-size: 1rem;
+      color: var(--gray-light);
+      margin-bottom: 24px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .wingman-cta__buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    /* Footer */
+    .wingman-footer {
+      padding: 40px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: center;
+    }
+
+    .wingman-footer__links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .wingman-footer__link {
+      font-size: 0.85rem;
+      color: var(--gray-medium);
+      text-decoration: none;
+    }
+
+    .wingman-footer__link:hover {
+      color: var(--offwhite);
+    }
+
+    .wingman-footer__copy {
+      font-size: 0.8rem;
+      color: var(--gray-dark);
+    }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-text">
+          <span class="nav__logo-merge">Merge</span>
+          <span class="nav__logo-combinator">Combinator</span>
+        </span>
+        <img src="/assets/arrows-2.png" alt="Merge arrows" class="nav__logo-icon">
+      </a>
+
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="/builders" class="nav__link">Defense Builders</a>
+          <a href="/wingman" class="nav__link">Wingman</a>
+          <a href="/guild" class="nav__link">Guild</a>
+          <a href="/programs/the-combine" class="nav__link">The Combine</a>
+          <div class="nav__dropdown">
+            <button class="nav__link nav__dropdown-trigger" aria-expanded="false" aria-haspopup="true">
+              Platform
+              <svg class="nav__dropdown-icon" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="nav__dropdown-menu">
+              <a href="/status" class="nav__dropdown-item">Status</a>
+              <a href="/briefs" class="nav__dropdown-item">Briefs</a>
+              <a href="/knowledge" class="nav__dropdown-item">Knowledge</a>
+              <a href="https://docs.mergecombinator.com" class="nav__dropdown-item">Docs</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__menu-actions">
+          <a href="/auth/login" class="nav__btn nav__btn--secondary">Sign in</a>
+          <a href="/access" class="nav__btn nav__btn--access">Join</a>
+        </div>
+      </nav>
+
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="wingman-hero">
+    <div class="wingman-hero__bg"></div>
+    <div class="container wingman-hero__content">
+      <div class="wingman-hero__badge">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1L10 5L14 6L11 9L12 14L8 11.5L4 14L5 9L2 6L6 5L8 1Z" fill="currentColor"/>
+        </svg>
+        Turn your device into your superpower
+      </div>
+      <h1 class="wingman-hero__title">Operationalize your inbox.</h1>
+      <p class="wingman-hero__subtitle">
+        Extract takeaways and decisions from your own data. Keep raw information private, surface only the brief.
+      </p>
+      <p class="wingman-hero__support">Your data. Your device. Your Wingman.</p>
+      <div class="wingman-hero__ctas">
+        <a href="/app/wingman" class="btn btn--primary" id="open-wingman-btn" style="display: none;">Open Wingman</a>
+        <a href="/access" class="btn btn--primary" id="request-wingman-btn">Request Wingman Access</a>
+        <a href="/access" class="btn btn--ghost">Request a pilot for my team</a>
+        <a href="/briefs" class="wingman-hero__tertiary">See sample briefs →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value Props Section -->
+  <section class="wingman-value">
+    <div class="container">
+      <div class="wingman-value__grid">
+        <div class="wingman-value__item">
+          <div class="wingman-value__icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 2L12.5 7.5L18 8.5L14 12.5L15 18L10 15L5 18L6 12.5L2 8.5L7.5 7.5L10 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3 class="wingman-value__title">Surface What Matters</h3>
+          <p class="wingman-value__desc">Stop drowning in notifications. Wingman surfaces what matters for your objectives.</p>
+        </div>
+        <div class="wingman-value__item">
+          <div class="wingman-value__icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M10 6V10L13 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="wingman-value__title">Track Your Objectives</h3>
+          <p class="wingman-value__desc">Wingman tracks your objectives and pulls the highest-value takeaways from your trusted sources.</p>
+        </div>
+        <div class="wingman-value__item">
+          <div class="wingman-value__icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="3" y="3" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M7 10H13M10 7V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="wingman-value__title">Organize Around Decisions</h3>
+          <p class="wingman-value__desc">Wingman organizes your conversations around objectives, decisions, and next actions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="wingman-cta">
+    <div class="container">
+      <h2 class="wingman-cta__title">Ready to operationalize?</h2>
+      <p class="wingman-cta__desc">Request access for yourself or your team. Wingman is rolling out to Defense Builders members first.</p>
+      <div class="wingman-cta__buttons">
+        <a href="/access" class="btn btn--primary">Request Wingman Access</a>
+        <a href="/builders" class="btn btn--ghost">Join Defense Builders</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Simple Footer -->
+  <footer class="wingman-footer">
+    <div class="container">
+      <div class="wingman-footer__links">
+        <a href="/" class="wingman-footer__link">Home</a>
+        <a href="/builders" class="wingman-footer__link">Defense Builders</a>
+        <a href="/programs/the-combine" class="wingman-footer__link">The Combine</a>
+        <a href="/briefs" class="wingman-footer__link">Briefs</a>
+        <a href="/privacy" class="wingman-footer__link">Privacy</a>
+      </div>
+      <p class="wingman-footer__copy">&copy; 2026 Merge Combinator. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="script.js"></script>
+  <script>
+    // Feature flag: show "Open Wingman" button when console is enabled
+    // MC_CONFIG is injected by the worker based on WINGMAN_CONSOLE_ENABLED env var
+    (function() {
+      const config = window.MC_CONFIG || {};
+      const openBtn = document.getElementById('open-wingman-btn');
+      const requestBtn = document.getElementById('request-wingman-btn');
+      if (config.wingmanConsoleEnabled) {
+        if (openBtn) openBtn.style.display = '';
+        if (requestBtn) requestBtn.style.display = 'none';
+      }
+    })();
+  </script>
+</body>
+</html>

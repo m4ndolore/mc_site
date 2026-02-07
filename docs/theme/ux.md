@@ -115,7 +115,7 @@ Operational workspace for capability development
 
 Collaboration under constraints
 
-Marketplace as controlled transactions with audit and permissions
+Guild as controlled transactions with audit and permissions
 
 So: keep the features, re-skin + re-structure the environment.
 
@@ -142,7 +142,7 @@ Invitations → Access provisioning
 
 Profiles/companies → Entities / Orgs / Teams
 
-Marketplace
+Guild
 
 Listings → Capabilities / Offers
 
@@ -184,7 +184,7 @@ Use whitespace only to separate operational regions, not to feel “premium”
 
 Provide progressive disclosure via expand/collapse panels, not separate pages
 
-“Marketplace” still works in C2UX if it looks like procurement/tasking, not ecommerce
+“Guild” still works in C2UX if it looks like procurement/tasking, not ecommerce
 
 7) Concrete module map (use this to guide rebuild scope)
 Replace CMS split view with these C2UX modules:
@@ -244,4 +244,4 @@ It reassures instead of instructing
 9) Quick directive for your team (paste this into your repo as the “why”)
 
 We are rebuilding SigmaBlox into a Command and Control operating environment.
-We will keep incubator features (sharing, collaboration, marketplace), but the UI must read like an operations console: panel-driven, stateful, instrumented, serious. Renaming labels is insufficient—modules must be re-architected into queues, workspaces, and status rails with explicit validation and provenance.
+We will keep incubator features (sharing, collaboration, guild), but the UI must read like an operations console: panel-driven, stateful, instrumented, serious. Renaming labels is insufficient—modules must be re-architected into queues, workspaces, and status rails with explicit validation and provenance.

@@ -40,6 +40,37 @@ This site is a static Vite build and works on Cloudflare Pages without feature l
 - `_redirects` provides clean URLs for `/about`, `/blog`, and `/portfolio`.
 - `cloudflare/merge-router.js` can be deployed as a Worker to route `/combine`, `/builders`, `/opportunities`, `/knowledge`, and `/merch`.
 
+### Production Routing Safety Plan (Consoles)
+Before enabling path-based routing to `/app`, `/wingman`, and `/control`, ensure the subdomain origins are live to avoid routing users into a 404/connection failure.
+
+**Sequence**
+1. Stand up placeholders (200 OK) at:
+   - `app.mergecombinator.com`
+   - `wingman.mergecombinator.com`
+   - `control.mergecombinator.com` (temporary reverse proxy to `control.sigmablox.com` or deploy via-dashboard here)
+2. Deploy the Worker routing updates (mc-router).
+3. Deploy the real apps behind those subdomains.
+
+**Rollback (if needed)**
+1. Set `APP_ORIGIN`, `WINGMAN_ORIGIN`, and `CONTROL_ORIGIN` back to `MC_PAGES_ORIGIN` or a stable placeholder in `wrangler.toml`.
+2. Redeploy the Worker.
+
+### Placeholder Subdomains (200 OK)
+Use one of the options below to stand up temporary placeholders for:
+`app.mergecombinator.com`, `wingman.mergecombinator.com`, `control.mergecombinator.com`.
+
+**Option A: Cloudflare Pages (fastest)**
+1. Create three Pages projects and connect each to a folder:
+`deploy/placeholders/app`, `deploy/placeholders/wingman`, `deploy/placeholders/control`.
+2. Build command: `None` (or blank).
+3. Output directory: `.`.
+4. Assign each project to its matching subdomain and verify 200 OK.
+
+**Option B: Cloudflare Workers Sites**
+1. Create three Workers that serve the static `index.html` from each folder.
+2. Bind each Worker to its matching subdomain and verify 200 OK.
+3. Keep the Worker simple and cacheable until the real app is live.
+
 ## What Was Changed
 
 ### 1. Multi-Page Build Configuration

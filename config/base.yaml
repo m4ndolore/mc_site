@@ -32,16 +32,17 @@ AIRTABLE_COACHES_BASE_ID: PLACEHOLDER_AIRTABLE_BASE_ID
 AIRTABLE_COMPANIES_TABLE_NAME: Companies
 AIRTABLE_COACHES_TABLE_NAME: Coaches
 
-# OAuth Endpoints (OpenPass/Authentik) - MUST BE CONFIGURED
-OAUTH_AUTHORIZE_URL: https://auth.sigmablox.com/application/o/authorize/
-OAUTH_TOKEN_URL: https://auth.sigmablox.com/application/o/token/
-OAUTH_USERINFO_URL: https://auth.sigmablox.com/application/o/userinfo/
-OAUTH_JWKS_URL: https://auth.sigmablox.com/application/o/mergecombinator/jwks/
-OAUTH_LOGOUT_URL: https://auth.sigmablox.com/application/o/mergecombinator/end-session/
+# OAuth Endpoints (VIA/Authentik) - MUST BE CONFIGURED
+# VIA = Verified Identity Access (Merge Combinator auth system)
+OAUTH_AUTHORIZE_URL: https://via.mergecombinator.com/application/o/authorize/
+OAUTH_TOKEN_URL: https://via.mergecombinator.com/application/o/token/
+OAUTH_USERINFO_URL: https://via.mergecombinator.com/application/o/userinfo/
+OAUTH_JWKS_URL: https://via.mergecombinator.com/application/o/mergecombinator/jwks/
+OAUTH_LOGOUT_URL: https://via.mergecombinator.com/application/o/mergecombinator/end-session/
 OAUTH_SCOPES: openid email profile groups
 
 # OIDC (also used by Cloudflare Worker - keep wrangler.toml [vars] in sync)
-OIDC_ISSUER_URL: https://auth.sigmablox.com
+OIDC_ISSUER_URL: https://via.mergecombinator.com
 
 # Admin Configuration - MUST BE CONFIGURED
 ADMIN_EMAIL: PLACEHOLDER_ADMIN_EMAIL
