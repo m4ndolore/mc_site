@@ -2,4 +2,5 @@
 # Note: CF Pages automatically serves .html files without extension
 # Only add redirects for non-standard routing here
 /marketplace /guild 301
+/guild/ /guild 301
 /combine /programs/the-combine 301

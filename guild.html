@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Guild - Where validated solutions meet funded requirements. Combine draft picks and vetted builders listed for mission owners and partners.">
-  <meta name="keywords" content="guild, defense tech, marketplace, validated solutions, requirements, mission owners">
+  <meta name="description" content="Guild — the vetted builder network for national security work.">
+  <meta name="keywords" content="guild, defense builders, vetted network, listings, national security">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-2.png">
@@ -13,9 +13,10 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="Guild — Merge Combinator">
-  <meta property="og:description" content="Where validated solutions meet funded requirements.">
+  <meta property="og:description" content="The vetted builder network for national security work.">
   <meta property="og:type" content="website">
 
+    <link rel="canonical" href="https://mergecombinator.com/guild">
   <title>Guild — Merge Combinator</title>
 
   <!-- Fonts -->
@@ -27,7 +28,7 @@
   <link rel="stylesheet" href="styles.css">
   <style>
     .guild-hero {
-      padding: 140px 0 80px;
+      padding: 140px 0 110px;
       position: relative;
       overflow: hidden;
     }
@@ -36,8 +37,8 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(800px 360px at 20% 0%, rgba(168, 85, 247, 0.12), transparent 60%),
-        radial-gradient(600px 300px at 80% 15%, rgba(236, 72, 153, 0.08), transparent 55%),
+        radial-gradient(800px 360px at 12% 0%, rgba(59, 130, 246, 0.18), transparent 60%),
+        radial-gradient(720px 420px at 85% 10%, rgba(16, 185, 129, 0.12), transparent 65%),
         linear-gradient(180deg, rgba(8, 12, 18, 0.95), rgba(5, 7, 10, 1));
       z-index: 0;
     }
@@ -45,27 +46,19 @@
     .guild-hero__content {
       position: relative;
       z-index: 1;
-      max-width: 720px;
+      max-width: 760px;
     }
 
-    .guild-hero__badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      background: rgba(168, 85, 247, 0.15);
-      border: 1px solid rgba(168, 85, 247, 0.3);
-      border-radius: 4px;
+    .guild-hero__eyebrow {
       font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: #a855f7;
-      margin-bottom: 20px;
+      color: var(--gray-medium);
+      margin-bottom: 14px;
     }
 
     .guild-hero__title {
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(2rem, 5vw, 3.25rem);
       font-weight: 600;
       letter-spacing: -0.02em;
       color: var(--offwhite);
@@ -73,155 +66,73 @@
     }
 
     .guild-hero__subtitle {
-      font-size: 1.125rem;
+      font-size: 1rem;
       color: var(--gray-light);
       line-height: 1.6;
-      margin-bottom: 12px;
+      margin-bottom: 28px;
     }
 
-    .guild-hero__body {
-      font-size: 1rem;
-      color: var(--gray-medium);
-      line-height: 1.6;
-      margin-bottom: 40px;
+    .guild-hero__list {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 28px;
     }
 
-    /* Status Panel */
-    .guild-status {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 4px;
-      padding: 24px;
-      max-width: 400px;
-      margin-bottom: 40px;
-    }
-
-    .guild-status__header {
+    .guild-hero__list-item {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      gap: 12px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--ghost-gray);
     }
 
-    .guild-status__indicator {
+    .guild-hero__dot {
       width: 8px;
       height: 8px;
-      background: #a855f7;
+      margin-top: 6px;
       border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .guild-status__label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: #a855f7;
-    }
-
-    .guild-status__desc {
-      font-size: 0.9rem;
-      color: var(--gray-light);
-      margin-bottom: 16px;
-    }
-
-    .guild-status__stats {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .guild-status__stat {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-    }
-
-    .guild-status__stat-label {
-      color: var(--gray-medium);
-    }
-
-    .guild-status__stat-value {
-      color: var(--offwhite);
-      font-weight: 500;
-      font-family: 'Space Mono', monospace;
+      background: var(--operator-green);
+      flex-shrink: 0;
     }
 
     .guild-hero__ctas {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
+      align-items: center;
+      margin-bottom: 18px;
     }
 
-    /* CTA Section */
-    .guild-cta {
-      padding: 80px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    .guild-hero__panel {
+      margin-top: 26px;
+      padding: 16px 18px;
+      border: 1px solid var(--ghost-gray);
+      background: rgba(255, 255, 255, 0.04);
     }
 
-    .guild-cta__box {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 4px;
-      padding: 40px;
-      max-width: 600px;
-    }
-
-    .guild-cta__title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--offwhite);
-      margin-bottom: 12px;
-    }
-
-    .guild-cta__desc {
-      font-size: 0.95rem;
-      color: var(--gray-light);
-      line-height: 1.6;
-      margin-bottom: 24px;
-    }
-
-    .guild-cta__buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    /* Footer */
-    .guild-footer {
-      padding: 40px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.06);
-      text-align: center;
-    }
-
-    .guild-footer__links {
-      display: flex;
-      gap: 24px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    .guild-footer__link {
-      font-size: 0.85rem;
+    .guild-hero__panel-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
       color: var(--gray-medium);
-      text-decoration: none;
+      margin-bottom: 8px;
     }
 
-    .guild-footer__link:hover {
-      color: var(--offwhite);
+    .guild-hero__panel-item {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      margin-bottom: 6px;
     }
 
-    .guild-footer__copy {
+    .guild-hero__panel-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .guild-hero__footnote {
       font-size: 0.8rem;
-      color: var(--gray-dark);
+      color: var(--gray-medium);
+      margin-top: 18px;
     }
   </style>
 </head>
@@ -241,7 +152,8 @@
           <a href="/builders" class="nav__link">Defense Builders</a>
           <a href="/wingman" class="nav__link">Wingman</a>
           <a href="/guild" class="nav__link">Guild</a>
-          <a href="/programs/the-combine" class="nav__link">The Combine</a>
+          <a href="/programs/the-combine" class="nav__link">Combine</a>
+          <a href="/merch" class="nav__link">Merch</a>
           <div class="nav__dropdown">
             <button class="nav__link nav__dropdown-trigger" aria-expanded="false" aria-haspopup="true">
               Platform
@@ -251,15 +163,14 @@
             </button>
             <div class="nav__dropdown-menu">
               <a href="/status" class="nav__dropdown-item">Status</a>
-              <a href="/briefs" class="nav__dropdown-item">Briefs</a>
+              <a href="/opportunities" class="nav__dropdown-item">Opportunities</a>
               <a href="/knowledge" class="nav__dropdown-item">Knowledge</a>
               <a href="https://docs.mergecombinator.com" class="nav__dropdown-item">Docs</a>
             </div>
           </div>
         </div>
         <div class="nav__menu-actions">
-          <a href="/auth/login" class="nav__btn nav__btn--secondary">Sign in</a>
-          <a href="/access" class="nav__btn nav__btn--access">Join</a>
+          <a href="/access" class="nav__btn nav__btn--access">Access</a>
         </div>
       </nav>
 
@@ -271,80 +182,48 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
   <section class="guild-hero">
     <div class="guild-hero__bg"></div>
     <div class="container guild-hero__content">
-      <div class="guild-hero__badge">Beta</div>
+      <div class="guild-hero__eyebrow">Guild</div>
       <h1 class="guild-hero__title">Guild</h1>
-      <p class="guild-hero__subtitle">
-        Where validated solutions meet funded requirements.
-      </p>
-      <p class="guild-hero__body">
-        Combine draft picks and vetted builders are listed for mission owners and industry partners with active needs.
-      </p>
+      <p class="guild-hero__subtitle">The vetted builder network for national security work.</p>
 
-      <!-- Status Panel -->
-      <div class="guild-status">
-        <div class="guild-status__header">
-          <div class="guild-status__indicator"></div>
-          <span class="guild-status__label">Private Beta</span>
+      <div class="guild-hero__list">
+        <div class="guild-hero__list-item">
+          <span class="guild-hero__dot"></span>
+          <span>Curated builders, operators, and partners (de-risked signal)</span>
         </div>
-        <p class="guild-status__desc">
-          Currently serving Combine alumni and select government partners.
-        </p>
-        <div class="guild-status__stats">
-          <div class="guild-status__stat">
-            <span class="guild-status__stat-label">Builders listed</span>
-            <span class="guild-status__stat-value">40+</span>
-          </div>
-          <div class="guild-status__stat">
-            <span class="guild-status__stat-label">Active requirements</span>
-            <span class="guild-status__stat-value">12</span>
-          </div>
-          <div class="guild-status__stat">
-            <span class="guild-status__stat-label">Matches made</span>
-            <span class="guild-status__stat-value">--</span>
-          </div>
+        <div class="guild-hero__list-item">
+          <span class="guild-hero__dot"></span>
+          <span>Listings tied to validated problem sets (not generic RFP spam)</span>
+        </div>
+        <div class="guild-hero__list-item">
+          <span class="guild-hero__dot"></span>
+          <span>Introductions and workflows through Defense Builders (when there’s fit)</span>
         </div>
       </div>
 
       <div class="guild-hero__ctas">
-        <a href="/access" class="btn btn--primary">Join Defense Builders</a>
-        <a href="/programs/the-combine" class="btn btn--ghost">Apply to The Combine</a>
+        <a class="btn btn--primary" href="/access">Join Defense Builders</a>
+        <a class="btn btn--ghost" href="/programs/the-combine">Apply to The Combine</a>
       </div>
-    </div>
-  </section>
 
-  <!-- CTA Section -->
-  <section class="guild-cta">
-    <div class="container">
-      <div class="guild-cta__box">
-        <h2 class="guild-cta__title">Request Early Access</h2>
-        <p class="guild-cta__desc">
-          Guild access is currently limited to Combine alumni and vetted government partners. Join Defense Builders to get on the path.
-        </p>
-        <div class="guild-cta__buttons">
-          <a href="/access" class="btn btn--primary">Join Defense Builders</a>
-          <a href="/programs/the-combine" class="btn btn--ghost">Apply to The Combine</a>
+      <div class="guild-hero__panel">
+        <div class="guild-hero__panel-title">Private Beta</div>
+        <div class="guild-hero__panel-item">
+          Currently serving Combine alumni and select mission/industry partners.
+        </div>
+        <div class="guild-hero__panel-item">
+          Request access to be considered for listing or sourcing.
         </div>
       </div>
+
+      <div class="guild-hero__footnote">
+        No procurement claims. Participation is not an endorsement.
+      </div>
     </div>
   </section>
-
-  <!-- Footer -->
-  <footer class="guild-footer">
-    <div class="container">
-      <div class="guild-footer__links">
-        <a href="/" class="guild-footer__link">Home</a>
-        <a href="/builders" class="guild-footer__link">Defense Builders</a>
-        <a href="/wingman" class="guild-footer__link">Wingman</a>
-        <a href="/programs/the-combine" class="guild-footer__link">The Combine</a>
-        <a href="/privacy" class="guild-footer__link">Privacy</a>
-      </div>
-      <p class="guild-footer__copy">&copy; 2026 Merge Combinator. All rights reserved.</p>
-    </div>
-  </footer>
 
   <script type="module" src="script.js"></script>
 </body>

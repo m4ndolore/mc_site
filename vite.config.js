@@ -34,6 +34,7 @@ export default defineConfig({
         contribute: resolve(__dirname, 'contribute.html'),
         combine: resolve(__dirname, 'combine.html'),
         wingman: resolve(__dirname, 'wingman.html'),
+        guild: resolve(__dirname, 'guild.html'),
         '404': resolve(__dirname, '404.html'),
         // Blog articles
         'blog-counter-drone': resolve(__dirname, 'blog/counter-drone-jiatf-401.html'),
