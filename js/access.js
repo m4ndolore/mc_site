@@ -11,6 +11,15 @@ const successEl = document.getElementById('request-success');
 const errorEl = document.getElementById('request-error');
 const errorLink = document.getElementById('request-error-link');
 const config = window.MCAccessConfig || {};
+const turnstileWidget = document.querySelector('.cf-turnstile');
+const turnstileSiteKey = turnstileWidget
+  ? turnstileWidget.getAttribute('data-sitekey') || ''
+  : '';
+const turnstileDebug = {
+  hasWidget: !!turnstileWidget,
+  hasSiteKey: !!turnstileSiteKey,
+  host: window.location.hostname
+};
 
 // Guard for partial renders
 if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !successEl || !errorEl) {
@@ -68,6 +77,8 @@ async function submitToEndpoint(data) {
         organization: data.org || '',
         reason: data.why || '',
         building: data.building || '',
+        turnstileToken: window.turnstileToken || '',
+        turnstileMissing: !window.turnstileToken,
         userAgent: String(navigator.userAgent || ''),
         referrer: String(document.referrer || ''),
         requestedAt: new Date().toISOString(),
@@ -114,6 +125,20 @@ async function submitToEndpoint(data) {
       building: String(formData.get('building') || '')
     };
 
+    if (!turnstileDebug.hasWidget || !turnstileDebug.hasSiteKey) {
+      const textEl = errorEl.querySelector('.request-drawer__error-text');
+      if (textEl) {
+        textEl.textContent = 'Turnstile is not configured for this host. We will still submit this request.';
+      }
+      errorEl.style.display = 'block';
+    } else if (!window.turnstileToken) {
+      const textEl = errorEl.querySelector('.request-drawer__error-text');
+      if (textEl) {
+        textEl.textContent = 'Couldn’t verify Turnstile. We will still submit this request.';
+      }
+      errorEl.style.display = 'block';
+    }
+
     const result = await submitToEndpoint(data);
 
   if (!result.ok) {
@@ -133,6 +158,12 @@ async function submitToEndpoint(data) {
       const textEl = errorEl.querySelector('.request-drawer__error-text');
       if (textEl) {
         textEl.textContent = result.message;
+      }
+    }
+    if (!result.message) {
+      const textEl = errorEl.querySelector('.request-drawer__error-text');
+      if (textEl) {
+        textEl.textContent = 'Couldn’t verify or submit. Please try again or email access@mergecombinator.com.';
       }
     }
     return;
