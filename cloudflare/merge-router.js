@@ -728,6 +728,7 @@ var merge_router_default = {
         const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
         return withLastConsoleCookie(redirect, "app", env, request);
       }
+    }
 
     const route = routes.find(
       (entry) => url.pathname === entry.prefix || url.pathname.startsWith(`${entry.prefix}/`)
@@ -875,7 +876,6 @@ var merge_router_default = {
         element.append(BANNER_FOOTER_HTML, { html: true });
       }
     }).transform(response);
-  }
   }
 };
 
