@@ -35,7 +35,17 @@ export default defineConfig({
         combine: resolve(__dirname, 'combine.html'),
         wingman: resolve(__dirname, 'wingman.html'),
         guild: resolve(__dirname, 'guild.html'),
+        briefs: resolve(__dirname, 'briefs.html'),
+        about: resolve(__dirname, 'about.html'),
         '404': resolve(__dirname, '404.html'),
+        // Programs
+        'programs-index': resolve(__dirname, 'programs/index.html'),
+        'programs-combine': resolve(__dirname, 'programs/the-combine.html'),
+        // Knowledge base
+        'knowledge-gtm': resolve(__dirname, 'knowledge/go-to-market.html'),
+        'knowledge-acq': resolve(__dirname, 'knowledge/acquisition.html'),
+        'knowledge-sbir': resolve(__dirname, 'knowledge/sbir.html'),
+        'knowledge-compliance': resolve(__dirname, 'knowledge/compliance.html'),
         // Blog articles
         'blog-counter-drone': resolve(__dirname, 'blog/counter-drone-jiatf-401.html'),
         'blog-ndaa': resolve(__dirname, 'blog/ndaa-speed-act.html'),
