@@ -72,6 +72,30 @@ const BANNER_FOOTER_HTML = `
   </div>
 `;
 
+// ────────────────────────────────────────────────────────────────────────────
+// MC Pages HTML Transformation (Turnstile injection)
+// ────────────────────────────────────────────────────────────────────────────
+
+function transformMcPagesHtml(response, env) {
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("text/html")) {
+    return response;
+  }
+
+  const turnstileKey = env.TURNSTILE_SITE_KEY || "";
+  if (!turnstileKey) {
+    return response;
+  }
+
+  return new HTMLRewriter()
+    .on("body", {
+      element(element) {
+        element.setAttribute("data-turnstile-site-key", turnstileKey);
+      },
+    })
+    .transform(response);
+}
+
 const SHIM_HTML = `
   <script>
     (function () {
@@ -488,7 +512,8 @@ export default {
         }
       }
 
-      return response;
+      // Inject Turnstile key into HTML responses
+      return transformMcPagesHtml(response, env);
     }
 
     // 6) API route handling

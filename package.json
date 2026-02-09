@@ -14,6 +14,7 @@
     "preview": "vite preview",
     "deploy": "npm run deploy:worker",
     "deploy:worker": "wrangler deploy",
+    "deploy:pages": "wrangler pages deploy dist --project-name mc-site",
     "deploy:status": "wrangler pages deployment list --project-name mc-site | head -10"
   },
   "devDependencies": {

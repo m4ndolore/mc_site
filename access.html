@@ -663,9 +663,9 @@
         </div>
 
         <!-- Turnstile widget - requires TURNSTILE_SITE_KEY in production -->
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAAA_placeholder_key" data-theme="dark" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError"></div>
+        <div class="cf-turnstile" data-sitekey="" data-theme="dark" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError"></div>
 
-        <button type="submit" class="request-drawer__submit" id="submit-btn" disabled>
+        <button type="submit" class="request-drawer__submit" id="submit-btn">
           Submit Request
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -692,26 +692,31 @@
   </div>
 
   <script>
+    const widget = document.querySelector('.cf-turnstile');
+    const turnstileSiteKey = (document.body.dataset.turnstileSiteKey || '');
+    if (widget && turnstileSiteKey) {
+      widget.setAttribute('data-sitekey', turnstileSiteKey);
+    }
     window.MCAccessConfig = {
       requestEndpoint: 'https://api.sigmablox.com/api/access-request',
       notifyEmail: 'access@mergecombinator.com',
-      // Turnstile site key - replace with real key in production
-      // Dev: use '1x00000000000000000000AA' (always passes)
-      // Prod: get from Cloudflare Dashboard > Turnstile
-      turnstileSiteKey: '0x4AAAAAAA_placeholder_key'
+      turnstileSiteKey: turnstileSiteKey
     };
 
     // Turnstile callbacks
     window.turnstileToken = null;
+    window.turnstileError = false;
     window.onTurnstileSuccess = function(token) {
       window.turnstileToken = token;
+      window.turnstileError = false;
       const btn = document.getElementById('submit-btn');
       if (btn) btn.disabled = false;
     };
     window.onTurnstileError = function() {
       window.turnstileToken = null;
+      window.turnstileError = true;
       const btn = document.getElementById('submit-btn');
-      if (btn) btn.disabled = true;
+      if (btn) btn.disabled = false;
     };
   </script>
 

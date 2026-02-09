@@ -39,6 +39,9 @@ WINGMAN_ORIGIN = "https://wingman.mergecombinator.com"
 CONTROL_ORIGIN = "https://control.mergecombinator.com"
 WINGMAN_CONSOLE_ENABLED = "false"
 
+# Cloudflare Turnstile (public site key - NOT a secret)
+TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
+
 # -----------------------------------------------------------------------------
 # Staging environment - for testing changes before production
 # Deploy with: wrangler deploy --env staging
@@ -60,6 +63,7 @@ APP_ORIGIN = "https://app.mergecombinator.com"
 WINGMAN_ORIGIN = "https://wingman.mergecombinator.com"
 CONTROL_ORIGIN = "https://control.mergecombinator.com"
 WINGMAN_CONSOLE_ENABLED = "false"
+TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
 
 # -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
@@ -76,3 +80,5 @@ APP_ORIGIN = "http://localhost:3003"
 WINGMAN_ORIGIN = "http://localhost:5173"
 CONTROL_ORIGIN = "http://localhost:3300"
 WINGMAN_CONSOLE_ENABLED = "false"
+# Use Turnstile test key for local dev (always passes)
+TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
