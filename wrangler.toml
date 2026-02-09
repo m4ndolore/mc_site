@@ -40,6 +40,28 @@ CONTROL_ORIGIN = "https://control.mergecombinator.com"
 WINGMAN_CONSOLE_ENABLED = "false"
 
 # -----------------------------------------------------------------------------
+# Staging environment - for testing changes before production
+# Deploy with: wrangler deploy --env staging
+# Test at: https://mc-router-staging.<account>.workers.dev
+# Secrets: wrangler secret put MC_OAUTH_CLIENT_ID --env staging (copy from prod)
+# -----------------------------------------------------------------------------
+[env.staging]
+name = "mc-router-staging"
+
+[env.staging.vars]
+# Same as prod - we're testing the router logic, not the backends
+OIDC_ISSUER_URL = "https://via.mergecombinator.com"
+OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/mergecombinator/end-session/"
+COOKIE_DOMAIN = ".mergecombinator.com"
+MC_PAGES_ORIGIN = "https://mc-site-dr4.pages.dev"
+SIGMABLOX_ORIGIN = "https://www.sigmablox.com"
+SIGMABLOX_API_ORIGIN = "https://api.sigmablox.com"
+APP_ORIGIN = "https://app.mergecombinator.com"
+WINGMAN_ORIGIN = "https://wingman.mergecombinator.com"
+CONTROL_ORIGIN = "https://control.mergecombinator.com"
+WINGMAN_CONSOLE_ENABLED = "false"
+
+# -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
 # Run with: wrangler dev --env dev
 # -----------------------------------------------------------------------------
