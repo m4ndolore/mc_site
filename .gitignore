@@ -42,3 +42,4 @@ plugin.zip
 .wrangler/
 .playwright-mcp.wrangler/
 .playwright-mcp/
+.worktrees/
