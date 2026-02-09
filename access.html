@@ -23,8 +23,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <!-- Cloudflare Turnstile (explicit render - key injected by Worker) -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadTurnstileCallback" async defer></script>
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
@@ -663,7 +663,8 @@
         </div>
 
         <!-- Turnstile widget - requires TURNSTILE_SITE_KEY in production -->
-        <div class="cf-turnstile" data-sitekey="" data-theme="dark" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError"></div>
+        <!-- Turnstile widget container (rendered explicitly via JS) -->
+        <div class="cf-turnstile"></div>
 
         <button type="submit" class="request-drawer__submit" id="submit-btn">
           Submit Request
@@ -692,18 +693,7 @@
   </div>
 
   <script>
-    const widget = document.querySelector('.cf-turnstile');
-    const turnstileSiteKey = (document.body.dataset.turnstileSiteKey || '');
-    if (widget && turnstileSiteKey) {
-      widget.setAttribute('data-sitekey', turnstileSiteKey);
-    }
-    window.MCAccessConfig = {
-      requestEndpoint: 'https://api.sigmablox.com/api/access-request',
-      notifyEmail: 'access@mergecombinator.com',
-      turnstileSiteKey: turnstileSiteKey
-    };
-
-    // Turnstile callbacks
+    // Turnstile callbacks (must be defined before render)
     window.turnstileToken = null;
     window.turnstileError = false;
     window.onTurnstileSuccess = function(token) {
@@ -717,6 +707,27 @@
       window.turnstileError = true;
       const btn = document.getElementById('submit-btn');
       if (btn) btn.disabled = false;
+    };
+
+    // Get site key from Worker-injected body attribute
+    const turnstileSiteKey = (document.body.dataset.turnstileSiteKey || '');
+    window.MCAccessConfig = {
+      requestEndpoint: 'https://api.sigmablox.com/api/access-request',
+      notifyEmail: 'access@mergecombinator.com',
+      turnstileSiteKey: turnstileSiteKey
+    };
+
+    // Explicit Turnstile render after API loads
+    window.onloadTurnstileCallback = function() {
+      const container = document.querySelector('.cf-turnstile');
+      if (container && turnstileSiteKey) {
+        turnstile.render(container, {
+          sitekey: turnstileSiteKey,
+          theme: 'dark',
+          callback: window.onTurnstileSuccess,
+          'error-callback': window.onTurnstileError
+        });
+      }
     };
   </script>
 
