@@ -138,8 +138,8 @@ async function init() {
         const data = await fetchCompanies({ limit: 100 });
         console.log('[Builders] Fetched data:', data);
 
-        // Extract and normalize companies
-        allCompanies = extractCompanies(data, { filterAttended: false });
+        // Extract and normalize companies (filter to only SigmaBlox attendees)
+        allCompanies = extractCompanies(data, { filterAttended: true });
         console.log('[Builders] Processed companies:', allCompanies.length);
 
         // Try to get filter options from API, fall back to extracting from data
