@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Go-to-market resources for defense tech founders. Find champions, land pilot programs, navigate OTAs, and price for government contracts.">
+  <meta name="keywords" content="compliance, defense tech, government sales, pilot programs, OTA, champions, DoD">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-2.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/arrows-2.png">
+  <link rel="apple-touch-icon" href="/assets/arrows-2.png">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://mergecombinator.com/knowledge/compliance">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Go-to-Market — Knowledge Base — Merge Combinator">
+  <meta property="og:description" content="Find champions, land pilot programs, and price for government contracts.">
+  <meta property="og:type" content="website">
+
+  <title>Go-to-Market — Knowledge — Merge Combinator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    /* ============================================
+       CATEGORY PAGE STYLES
+       ============================================ */
+
+    :root {
+      --category-color: #22c55e;
+    }
+
+    .category-hero {
+      padding: 120px 0 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .category-hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(800px 350px at 20% 0%, rgba(34, 197, 94, 0.12), transparent 55%),
+        linear-gradient(180deg, rgba(8, 12, 18, 0.95), rgba(5, 7, 10, 1));
+      z-index: 0;
+    }
+
+    .category-hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+    }
+
+    .category-hero__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--gray-medium);
+      text-decoration: none;
+      margin-bottom: 24px;
+      transition: color 0.2s;
+    }
+
+    .category-hero__back:hover {
+      color: var(--offwhite);
+    }
+
+    .category-hero__back svg {
+      transition: transform 0.2s;
+    }
+
+    .category-hero__back:hover svg {
+      transform: translateX(-2px);
+    }
+
+    .category-hero__title {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--offwhite);
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+
+    .category-hero__subtitle {
+      font-size: 1.1rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       RESOURCE SECTIONS
+       ============================================ */
+
+    .resources-section {
+      padding: 48px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .resources-section__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .resources-section__title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-medium);
+    }
+
+    .resources-section__badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    .resources-section__badge--public {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+    }
+
+    .resources-section__badge--members {
+      background: rgba(139, 92, 246, 0.1);
+      color: #a78bfa;
+    }
+
+    .resources-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Quick Link Resource */
+    .resource-link {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .resource-link:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .resource-link__icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--category-color);
+      margin-top: 2px;
+    }
+
+    .resource-link__content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .resource-link__title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--offwhite);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .resource-link__external {
+      color: var(--gray-medium);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .resource-link:hover .resource-link__external {
+      opacity: 1;
+    }
+
+    .resource-link__description {
+      font-size: 0.875rem;
+      color: var(--gray-light);
+      line-height: 1.5;
+    }
+
+    .resource-link__source {
+      font-size: 0.75rem;
+      color: var(--gray-medium);
+      margin-top: 6px;
+    }
+
+    /* Gated Resource */
+    .resource-gated {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      background: rgba(139, 92, 246, 0.03);
+      border: 1px solid rgba(139, 92, 246, 0.1);
+      border-radius: 6px;
+    }
+
+    .resource-gated__icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: #a78bfa;
+      margin-top: 2px;
+    }
+
+    .resource-gated__content {
+      flex: 1;
+    }
+
+    .resource-gated__title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--offwhite);
+      margin-bottom: 4px;
+    }
+
+    .resource-gated__description {
+      font-size: 0.875rem;
+      color: var(--gray-light);
+      line-height: 1.5;
+    }
+
+    /* Sign in CTA */
+    .resources-section__cta {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .resources-section__cta a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.875rem;
+      color: #a78bfa;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .resources-section__cta a:hover {
+      color: #c4b5fd;
+    }
+
+    /* ============================================
+       RELATED SECTION
+       ============================================ */
+
+    .related-section {
+      padding: 48px 0 80px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .related-section__title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-medium);
+      margin-bottom: 16px;
+    }
+
+    .related-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .related-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      font-size: 0.875rem;
+      color: var(--gray-light);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .related-link:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--offwhite);
+    }
+
+    .related-link--external {
+      color: var(--gray-medium);
+    }
+
+    .related-link--external:hover {
+      color: var(--gray-light);
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-text">
+          <span class="nav__logo-merge">Merge</span>
+          <span class="nav__logo-combinator">Combinator</span>
+        </span>
+        <img src="/assets/arrows-2.png" alt="Merge arrows" class="nav__logo-icon">
+      </a>
+
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="/builders" class="nav__link">Defense Builders</a>
+          <a href="/wingman" class="nav__link">Wingman</a>
+          <a href="/guild" class="nav__link">Guild</a>
+          <a href="/programs/the-combine" class="nav__link">The Combine</a>
+          <div class="nav__dropdown">
+            <button class="nav__link nav__dropdown-trigger" aria-expanded="false" aria-haspopup="true">
+              Platform
+              <svg class="nav__dropdown-icon" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="nav__dropdown-menu">
+              <a href="/status" class="nav__dropdown-item">Status</a>
+              <a href="/briefs" class="nav__dropdown-item">Briefs</a>
+              <a href="/knowledge" class="nav__dropdown-item">Knowledge</a>
+              <a href="https://docs.mergecombinator.com" class="nav__dropdown-item">Docs</a>
+            </div>
+          </div>
+        </div>
+        <div class="nav__menu-actions">
+          <a href="/auth/login" class="nav__btn nav__btn--secondary">Sign in</a>
+          <a href="/access" class="nav__btn nav__btn--access">Join</a>
+        </div>
+      </nav>
+
+      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="category-hero">
+    <div class="category-hero__bg"></div>
+    <div class="container category-hero__content">
+      <a href="/knowledge" class="category-hero__back">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Knowledge
+      </a>
+      <h1 class="category-hero__title" id="category-title">Go-to-Market</h1>
+      <p class="category-hero__subtitle" id="category-description">
+        Find champions, land pilot programs, price for government.
+      </p>
+    </div>
+  </section>
+
+  <!-- Public Resources -->
+  <section class="resources-section">
+    <div class="container">
+      <div class="resources-section__header">
+        <h2 class="resources-section__title">Quick Links</h2>
+        <span class="resources-section__badge resources-section__badge--public">Public</span>
+      </div>
+      <div class="resources-list" id="public-resources">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Member Resources -->
+  <section class="resources-section" id="members-section">
+    <div class="container">
+      <div class="resources-section__header">
+        <h2 class="resources-section__title">Deep Dives</h2>
+        <span class="resources-section__badge resources-section__badge--members">Members</span>
+      </div>
+      <div class="resources-list" id="member-resources">
+        <!-- Populated by JavaScript -->
+      </div>
+      <div class="resources-section__cta" id="signin-cta">
+        <a href="/auth/login">
+          Sign in to access
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="related-section">
+    <div class="container">
+      <h2 class="related-section__title">Related</h2>
+      <div class="related-links">
+        <a href="/knowledge/acquisition" class="related-link">Acquisition 101</a>
+        <a href="/knowledge/sbir" class="related-link">SBIR / STTR</a>
+        <a href="https://irregularpedia.org" target="_blank" rel="noopener" class="related-link related-link--external">
+          Operator tradecraft
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+            <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <span class="footer__logo-mark">M</span>
+            <span class="footer__logo-text">Merge Combinator</span>
+          </a>
+          <p class="footer__tagline">The builder-led venture studio for national security.</p>
+        </div>
+
+        <div class="footer__links">
+          <div class="footer__column">
+            <h4 class="footer__heading">Platform</h4>
+            <ul class="footer__list">
+              <li><a href="/programs/the-combine">The Combine</a></li>
+              <li><a href="/builders">Defense Builders</a></li>
+              <li><a href="/opportunities">Opportunities</a></li>
+              <li><a href="/merch">Merch</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Company</h4>
+            <ul class="footer__list">
+              <li><a href="/#hero">About</a></li>
+              <li><a href="/access">Contact</a></li>
+              <li><a href="/builders">Careers</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Resources</h4>
+            <ul class="footer__list">
+              <li><a href="/blog">Blog</a></li>
+              <li><a href="/portfolio">Case Studies</a></li>
+              <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="https://docs.mergecombinator.com">Docs</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
+        <p class="footer__location">San Francisco &bull; Tokyo &bull; Singapore</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/script.js"></script>
+  <script src="/js/auth-nav.js"></script>
+  <script>
+    const CATEGORY_ID = 'compliance';
+
+    async function loadResources() {
+      try {
+        const response = await fetch('/data/knowledge.json');
+        const data = await response.json();
+
+        const category = data.categories.find(c => c.id === CATEGORY_ID);
+        const resources = data.resources.filter(r => r.category === CATEGORY_ID);
+
+        // Update hero
+        if (category) {
+          document.getElementById('category-title').textContent = category.title;
+          document.getElementById('category-description').textContent = category.description;
+          document.documentElement.style.setProperty('--category-color', category.color);
+        }
+
+        // Render public resources
+        const publicResources = resources.filter(r => r.access === 'public');
+        const publicList = document.getElementById('public-resources');
+
+        publicResources.forEach(resource => {
+          const el = document.createElement('a');
+          el.href = resource.url;
+          el.target = '_blank';
+          el.rel = 'noopener';
+          el.className = 'resource-link';
+
+          const domain = new URL(resource.url).hostname.replace('www.', '');
+
+          el.innerHTML = `
+            <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+              <polyline points="15,3 21,3 21,9"/>
+              <line x1="10" y1="14" x2="21" y2="3"/>
+            </svg>
+            <div class="resource-link__content">
+              <div class="resource-link__title">
+                ${resource.title}
+                <svg class="resource-link__external" width="12" height="12" viewBox="0 0 16 16" fill="none">
+                  <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="resource-link__description">${resource.description}</div>
+              <div class="resource-link__source">${domain}</div>
+            </div>
+          `;
+
+          publicList.appendChild(el);
+        });
+
+        // Render member resources (gated)
+        const memberResources = resources.filter(r => r.access === 'members');
+        const memberList = document.getElementById('member-resources');
+
+        if (memberResources.length === 0) {
+          document.getElementById('members-section').style.display = 'none';
+        } else {
+          memberResources.forEach(resource => {
+            const el = document.createElement('div');
+            el.className = 'resource-gated';
+
+            el.innerHTML = `
+              <svg class="resource-gated__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <div class="resource-gated__content">
+                <div class="resource-gated__title">${resource.title}</div>
+                <div class="resource-gated__description">${resource.description}</div>
+              </div>
+            `;
+
+            memberList.appendChild(el);
+          });
+        }
+
+      } catch (error) {
+        console.error('Failed to load resources:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadResources);
+  </script>
+</body>
+</html>
