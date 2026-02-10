@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Merge Combinator Design System - C2UX operational interface standards and marketing guidelines.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <title>Design System — Merge Combinator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Style Guide Specific Styles */
+    .styleguide {
+      background: var(--black);
+      color: var(--offwhite);
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    .styleguide__hero {
+      padding: 120px 0 60px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .styleguide__hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 16px;
+    }
+
+    .styleguide__hero-eyebrow::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--blue);
+      border-radius: 2px;
+    }
+
+    .styleguide__hero-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+
+    .styleguide__hero-subtitle {
+      font-size: 1.125rem;
+      color: var(--gray-light);
+      max-width: 600px;
+      line-height: 1.6;
+    }
+
+    .styleguide__nav {
+      position: sticky;
+      top: var(--nav-height);
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px 0;
+      z-index: 100;
+    }
+
+    .styleguide__nav-list {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .styleguide__nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-light);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+
+    .styleguide__nav-link:hover {
+      color: var(--white);
+    }
+
+    .styleguide__section {
+      padding: 60px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .styleguide__section-header {
+      margin-bottom: 40px;
+    }
+
+    .styleguide__section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    .styleguide__section-desc {
+      font-size: 1rem;
+      color: var(--gray-light);
+      max-width: 600px;
+    }
+
+    /* Philosophy Section */
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .philosophy-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .philosophy-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      padding: 28px;
+    }
+
+    .philosophy-card__label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 12px;
+    }
+
+    .philosophy-card__title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .philosophy-card__text {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      line-height: 1.6;
+    }
+
+    .philosophy-card--marketing {
+      border-top: 2px solid var(--blue);
+    }
+
+    .philosophy-card--c2ux {
+      border-top: 2px solid var(--operator-green);
+    }
+
+    .philosophy-card--c2ux .philosophy-card__label {
+      color: var(--operator-green);
+    }
+
+    /* Transition Flow */
+    .transition-flow {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 40px;
+      padding: 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+    }
+
+    .transition-flow__step {
+      flex: 1;
+      text-align: center;
+      padding: 16px;
+    }
+
+    .transition-flow__step-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-medium);
+      margin-bottom: 8px;
+    }
+
+    .transition-flow__step-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .transition-flow__arrow {
+      color: var(--gray-medium);
+      flex-shrink: 0;
+    }
+
+    /* Color Palette */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .color-swatch {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .color-swatch__preview {
+      height: 80px;
+    }
+
+    .color-swatch__info {
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .color-swatch__name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .color-swatch__value {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gray-medium);
+    }
+
+    .color-swatch__var {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gray-medium);
+      margin-top: 4px;
+    }
+
+    /* Typography */
+    .type-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .type-sample {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 24px;
+      align-items: baseline;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .type-sample__meta {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gray-medium);
+    }
+
+    .type-sample__text {
+      color: var(--white);
+    }
+
+    .type-sample__text--h1 {
+      font-size: var(--text-h1);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: var(--lh-tight);
+    }
+
+    .type-sample__text--h2 {
+      font-size: var(--text-h2);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: var(--lh-snug);
+    }
+
+    .type-sample__text--h3 {
+      font-size: var(--text-h3);
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      line-height: var(--lh-snug);
+    }
+
+    .type-sample__text--body {
+      font-size: var(--text-body);
+      line-height: var(--lh-normal);
+    }
+
+    .type-sample__text--small {
+      font-size: var(--text-small);
+      line-height: var(--lh-normal);
+      color: var(--gray-light);
+    }
+
+    .type-sample__text--mono {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+    }
+
+    .type-sample__text--label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    .type-sample__text--serif {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Spacing */
+    .spacing-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .spacing-row__label {
+      width: 120px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--gray-medium);
+    }
+
+    .spacing-row__bar {
+      height: 24px;
+      background: linear-gradient(90deg, var(--blue), var(--blue-light));
+      border-radius: 2px;
+    }
+
+    .spacing-row__value {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gray-light);
+      min-width: 60px;
+    }
+
+    /* Radius */
+    .radius-grid {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .radius-sample {
+      text-align: center;
+    }
+
+    .radius-sample__box {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 12px;
+    }
+
+    .radius-sample__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gray-medium);
+    }
+
+    .radius-sample__value {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gray-medium);
+      margin-top: 4px;
+    }
+
+    /* Components */
+    .component-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .component-block {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .component-block__header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .component-block__title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+
+    .component-block__preview {
+      padding: 32px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .component-block__preview--dark {
+      background: var(--black);
+    }
+
+    .component-block__preview--light {
+      background: var(--offwhite);
+    }
+
+    /* Status Colors */
+    .status-grid {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .status-sample {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+    }
+
+    .status-sample__dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .status-sample__label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--white);
+    }
+
+    .status-sample__var {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--gray-medium);
+    }
+
+    /* Design Principles */
+    .principles-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .principle {
+      display: flex;
+      gap: 16px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+    }
+
+    .principle__number {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      min-width: 24px;
+    }
+
+    .principle__content {
+      flex: 1;
+    }
+
+    .principle__title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .principle__text {
+      font-size: 14px;
+      color: var(--gray-light);
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="nav" id="nav">
+    <div class="nav__container">
+      <a href="/" class="nav__logo">
+        <span class="nav__logo-text">
+          <span class="nav__logo-merge">Merge</span>
+          <span class="nav__logo-combinator">Combinator</span>
+        </span>
+        <img src="/assets/arrows-2.png" alt="Merge arrows" class="nav__logo-icon">
+      </a>
+
+      <nav class="nav__menu" aria-label="Primary navigation">
+        <div class="nav__menu-links">
+          <a href="/builders" class="nav__link">Defense Builders</a>
+          <a href="/wingman" class="nav__link">Wingman</a>
+          <a href="/guild" class="nav__link">Guild</a>
+          <a href="/programs/the-combine" class="nav__link">The Combine</a>
+        </div>
+        <div class="nav__menu-actions">
+          <a href="/auth/login" class="nav__btn nav__btn--secondary">Sign in</a>
+          <a href="/access" class="nav__btn nav__btn--access">Join</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="styleguide">
+    <!-- Hero -->
+    <section class="styleguide__hero">
+      <div class="container">
+        <span class="styleguide__hero-eyebrow">Internal Reference</span>
+        <h1 class="styleguide__hero-title">Design System</h1>
+        <p class="styleguide__hero-subtitle">
+          C2UX operational interface standards and component library.
+          A unified design language bridging marketing presence and mission-critical interfaces.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section Navigation -->
+    <nav class="styleguide__nav">
+      <div class="container">
+        <ul class="styleguide__nav-list">
+          <li><a href="#philosophy" class="styleguide__nav-link">Philosophy</a></li>
+          <li><a href="#colors" class="styleguide__nav-link">Colors</a></li>
+          <li><a href="#typography" class="styleguide__nav-link">Typography</a></li>
+          <li><a href="#spacing" class="styleguide__nav-link">Spacing</a></li>
+          <li><a href="#radius" class="styleguide__nav-link">Radius</a></li>
+          <li><a href="#components" class="styleguide__nav-link">Components</a></li>
+          <li><a href="#principles" class="styleguide__nav-link">Principles</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Philosophy Section -->
+    <section id="philosophy" class="styleguide__section">
+      <div class="container">
+        <header class="styleguide__section-header">
+          <h2 class="styleguide__section-title">Design Philosophy</h2>
+          <p class="styleguide__section-desc">
+            Merge Combinator operates across two interface tiers: public marketing and authenticated C2UX operational consoles.
+            The transition between them should feel natural and seamless.
+          </p>
+        </header>
+
+        <div class="philosophy-grid">
+          <div class="philosophy-card philosophy-card--marketing">
+            <div class="philosophy-card__label">Marketing Tier</div>
+            <h3 class="philosophy-card__title">Aspirational & Accessible</h3>
+            <p class="philosophy-card__text">
+              Public-facing pages emphasize mission and vision. Gradient backgrounds, animated visuals,
+              and bento grid layouts communicate innovation and credibility. Typography is larger,
+              spacing is generous. The goal is to inspire and convert.
+            </p>
+          </div>
+
+          <div class="philosophy-card philosophy-card--c2ux">
+            <div class="philosophy-card__label">C2UX Operational Tier</div>
+            <h3 class="philosophy-card__title">Dense & Functional</h3>
+            <p class="philosophy-card__text">
+              Authenticated interfaces prioritize information density and task completion. Panel-based layouts,
+              monospace data displays, and status indicators create a command-center aesthetic.
+              Sharp edges (2px max) and minimal shadows reinforce operational credibility.
+            </p>
+          </div>
+        </div>
+
+        <div class="transition-flow">
+          <div class="transition-flow__step">
+            <div class="transition-flow__step-label">Public</div>
+            <div class="transition-flow__step-name">Homepage</div>
+          </div>
+          <svg class="transition-flow__arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <div class="transition-flow__step">
+            <div class="transition-flow__step-label">Onboarding</div>
+            <div class="transition-flow__step-name">Access Page</div>
+          </div>
+          <svg class="transition-flow__arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <div class="transition-flow__step">
+            <div class="transition-flow__step-label">Authenticated</div>
+            <div class="transition-flow__step-name">Dashboard</div>
+          </div>
+          <svg class="transition-flow__arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <div class="transition-flow__step">
+            <div class="transition-flow__step-label">Operational</div>
+            <div class="transition-flow__step-name">Defense Builders</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Colors Section -->
+    <section id="colors" class="styleguide__section">
+      <div class="container">
+        <header class="styleguide__section-header">
+          <h2 class="styleguide__section-title">Color Palette</h2>
+          <p class="styleguide__section-desc">
+            Subdued base with high-signal highlights. The palette is intentionally restrained
+            to let status colors and data stand out.
+          </p>
+        </header>
+
+        <h3 style="font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 16px;">Base Colors</h3>
+        <div class="color-grid" style="margin-bottom: 32px;">
+          <div class="color-swatch">
+            <div class="color-swatch__preview" style="background: #0a0a0a;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Black</div>
+              <div class="color-swatch__value">#0a0a0a</div>
+              <div class="color-swatch__var">--black</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__preview" style="background: #171717;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Charcoal</div>
+              <div class="color-swatch__value">#171717</div>
+              <div class="color-swatch__var">--charcoal</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__preview" style="background: #262626;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Slate</div>
+              <div class="color-swatch__value">#262626</div>
+              <div class="color-swatch__var">--slate</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__preview" style="background: #e5e5e5;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Off-white</div>
+              <div class="color-swatch__value">#e5e5e5</div>
+              <div class="color-swatch__var">--offwhite</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 16px;">Signal Blue</h3>
+        <div class="color-grid" style="margin-bottom: 32px;">
+          <div class="color-swatch">
+            <div class="color-swatch__preview" style="background: #2563eb;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Blue Dark</div>
+              <div class="color-swatch__value">#2563eb</div>
+              <div class="color-swatch__var">--blue-dark</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__preview" style="background: #3b82f6;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Signal Blue</div>
+              <div class="color-swatch__value">#3b82f6</div>
+              <div class="color-swatch__var">--blue, --signal-blue</div>
+            </div>
+          </div>
+          <div class="color-swatch">
+            <div class="color-swatch__preview" style="background: #60a5fa;"></div>
+            <div class="color-swatch__info">
+              <div class="color-swatch__name">Blue Light</div>
+              <div class="color-swatch__value">#60a5fa</div>
+              <div class="color-swatch__var">--blue-light</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 16px;">Status Colors</h3>
+        <div class="status-grid">
+          <div class="status-sample">
+            <div class="status-sample__dot" style="background: #22c55e;"></div>
+            <div>
+              <div class="status-sample__label">Operational</div>
+              <div class="status-sample__var">--operator-green</div>
+            </div>
+          </div>
+          <div class="status-sample">
+            <div class="status-sample__dot" style="background: #4ade80;"></div>
+            <div>
+              <div class="status-sample__label">Active</div>
+              <div class="status-sample__var">--green-light</div>
+            </div>
+          </div>
+          <div class="status-sample">
+            <div class="status-sample__dot" style="background: #eab308;"></div>
+            <div>
+              <div class="status-sample__label">Pending</div>
+              <div class="status-sample__var">--status-yellow</div>
+            </div>
+          </div>
+          <div class="status-sample">
+            <div class="status-sample__dot" style="background: #ef4444;"></div>
+            <div>
+              <div class="status-sample__label">Critical</div>
+              <div class="status-sample__var">--status-red</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Typography Section -->
+    <section id="typography" class="styleguide__section">
+      <div class="container">
+        <header class="styleguide__section-header">
+          <h2 class="styleguide__section-title">Typography</h2>
+          <p class="styleguide__section-desc">
+            Three font families: Inter for UI, Lora for brand accent, Space Mono for data and labels.
+          </p>
+        </header>
+
+        <div class="type-scale">
+          <div class="type-sample">
+            <div class="type-sample__meta">
+              H1<br>
+              28-36px<br>
+              700 weight
+            </div>
+            <div class="type-sample__text type-sample__text--h1">Build What Warfighters Need.</div>
+          </div>
+
+          <div class="type-sample">
+            <div class="type-sample__meta">
+              H2<br>
+              22-28px<br>
+              600 weight
+            </div>
+            <div class="type-sample__text type-sample__text--h2">A vertically integrated, warfighter-centered builder studio.</div>
+          </div>
+
+          <div class="type-sample">
+            <div class="type-sample__meta">
+              H3<br>
+              18-22px<br>
+              600 weight
+            </div>
+            <div class="type-sample__text type-sample__text--h3">Defense Builders Platform</div>
+          </div>
+
+          <div class="type-sample">
+            <div class="type-sample__meta">
+              Body<br>
+              16px<br>
+              400 weight
+            </div>
+            <div class="type-sample__text type-sample__text--body">Merge connects real operational problems, technical builders, and field deployments into one end-to-end pipeline.</div>
+          </div>
+
+          <div class="type-sample">
+            <div class="type-sample__meta">
+              Small<br>
+              14px<br>
+              400 weight
+            </div>
+            <div class="type-sample__text type-sample__text--small">Last refresh: 14:32:05 UTC</div>
+          </div>
+
+          <div class="type-sample">
+            <div class="type-sample__meta">
+              Label<br>
+              11px mono<br>
+              600 weight
+            </div>
+            <div class="type-sample__text type-sample__text--label">Ecosystem Status</div>
+          </div>
+
+          <div class="type-sample">
+            <div class="type-sample__meta">
+              Mono<br>
+              12px<br>
+              SF Mono
+            </div>
+            <div class="type-sample__text type-sample__text--mono">Auto-refresh: 60s | Records: 127</div>
+          </div>
+
+          <div class="type-sample">
+            <div class="type-sample__meta">
+              Serif<br>
+              14px italic<br>
+              Lora
+            </div>
+            <div class="type-sample__text type-sample__text--serif">Merge</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spacing Section -->
+    <section id="spacing" class="styleguide__section">
+      <div class="container">
+        <header class="styleguide__section-header">
+          <h2 class="styleguide__section-title">Spacing</h2>
+          <p class="styleguide__section-desc">
+            Compact, dense spacing for operational interfaces. Generous spacing for marketing.
+          </p>
+        </header>
+
+        <div class="spacing-grid">
+          <div class="spacing-row">
+            <div class="spacing-row__label">--section-xs</div>
+            <div class="spacing-row__bar" style="width: 24px;"></div>
+            <div class="spacing-row__value">24px</div>
+          </div>
+          <div class="spacing-row">
+            <div class="spacing-row__label">--section-sm</div>
+            <div class="spacing-row__bar" style="width: 40px;"></div>
+            <div class="spacing-row__value">40px</div>
+          </div>
+          <div class="spacing-row">
+            <div class="spacing-row__label">--section-md</div>
+            <div class="spacing-row__bar" style="width: 60px;"></div>
+            <div class="spacing-row__value">60px</div>
+          </div>
+          <div class="spacing-row">
+            <div class="spacing-row__label">--section-lg</div>
+            <div class="spacing-row__bar" style="width: 80px;"></div>
+            <div class="spacing-row__value">80px</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Border Radius Section -->
+    <section id="radius" class="styleguide__section">
+      <div class="container">
+        <header class="styleguide__section-header">
+          <h2 class="styleguide__section-title">Border Radius</h2>
+          <p class="styleguide__section-desc">
+            Sharp edges for C2UX operational credibility. Maximum 2px for panels and cards.
+            100px only for pill-style buttons on marketing pages.
+          </p>
+        </header>
+
+        <div class="radius-grid">
+          <div class="radius-sample">
+            <div class="radius-sample__box" style="border-radius: 0;"></div>
+            <div class="radius-sample__label">None</div>
+            <div class="radius-sample__value">0px</div>
+          </div>
+          <div class="radius-sample">
+            <div class="radius-sample__box" style="border-radius: 2px;"></div>
+            <div class="radius-sample__label">Sharp</div>
+            <div class="radius-sample__value">2px (default)</div>
+          </div>
+          <div class="radius-sample">
+            <div class="radius-sample__box" style="border-radius: 4px;"></div>
+            <div class="radius-sample__label">Subtle</div>
+            <div class="radius-sample__value">4px (progress bars)</div>
+          </div>
+          <div class="radius-sample">
+            <div class="radius-sample__box" style="border-radius: 100px;"></div>
+            <div class="radius-sample__label">Pill</div>
+            <div class="radius-sample__value">100px (marketing only)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Components Section -->
+    <section id="components" class="styleguide__section">
+      <div class="container">
+        <header class="styleguide__section-header">
+          <h2 class="styleguide__section-title">Components</h2>
+          <p class="styleguide__section-desc">
+            Core UI components following the C2UX design language.
+          </p>
+        </header>
+
+        <div class="component-grid">
+          <!-- Buttons -->
+          <div class="component-block">
+            <div class="component-block__header">
+              <div class="component-block__title">Buttons</div>
+            </div>
+            <div class="component-block__preview component-block__preview--dark">
+              <a href="#" class="btn btn--primary">Primary Action</a>
+              <a href="#" class="btn btn--ghost">Ghost Button</a>
+              <a href="#" class="btn btn--primary btn--small">Small</a>
+            </div>
+          </div>
+
+          <!-- Nav Buttons -->
+          <div class="component-block">
+            <div class="component-block__header">
+              <div class="component-block__title">Navigation Buttons</div>
+            </div>
+            <div class="component-block__preview component-block__preview--dark">
+              <a href="#" class="nav__btn nav__btn--secondary">Sign in</a>
+              <a href="#" class="nav__btn nav__btn--access">Join</a>
+            </div>
+          </div>
+
+          <!-- Panels -->
+          <div class="component-block">
+            <div class="component-block__header">
+              <div class="component-block__title">Panel (C2UX)</div>
+            </div>
+            <div class="component-block__preview component-block__preview--dark">
+              <div style="width: 100%; max-width: 400px; border: 1px solid rgba(229, 229, 229, 0.14); border-radius: 2px; background: rgba(255, 255, 255, 0.02);">
+                <div style="display: flex; align-items: baseline; justify-content: space-between; padding: 14px 16px; border-bottom: 1px solid rgba(229, 229, 229, 0.1); background: rgba(255, 255, 255, 0.01);">
+                  <span style="font-size: 16px; font-weight: 600; color: #fff;">Panel Title</span>
+                  <span style="font-size: 12px; color: rgba(229, 229, 229, 0.7); font-family: var(--font-mono);">Auto-refresh: 60s</span>
+                </div>
+                <div style="padding: 16px;">
+                  <p style="font-size: 14px; color: var(--gray-light);">Panel content area. Used for operational data display.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Status Indicators -->
+          <div class="component-block">
+            <div class="component-block__header">
+              <div class="component-block__title">Status Indicators</div>
+            </div>
+            <div class="component-block__preview component-block__preview--dark">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%;"></span>
+                <span style="font-size: 13px; color: var(--offwhite);">Operational</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 8px; height: 8px; background: #eab308; border-radius: 50%;"></span>
+                <span style="font-size: 13px; color: var(--offwhite);">Pending</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="width: 8px; height: 8px; background: #ef4444; border-radius: 50%;"></span>
+                <span style="font-size: 13px; color: var(--offwhite);">Critical</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Labels -->
+          <div class="component-block">
+            <div class="component-block__header">
+              <div class="component-block__title">Labels & Badges</div>
+            </div>
+            <div class="component-block__preview component-block__preview--dark">
+              <span class="section-label">Section Label</span>
+              <span style="display: inline-flex; padding: 4px 10px; font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 2px; background: rgba(34, 197, 94, 0.1); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3);">Open</span>
+              <span style="display: inline-flex; padding: 4px 10px; font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 2px; background: rgba(59, 130, 246, 0.1); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);">Beta</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Design Principles Section -->
+    <section id="principles" class="styleguide__section">
+      <div class="container">
+        <header class="styleguide__section-header">
+          <h2 class="styleguide__section-title">Design Principles</h2>
+          <p class="styleguide__section-desc">
+            Core tenets guiding all interface decisions.
+          </p>
+        </header>
+
+        <div class="principles-list">
+          <div class="principle">
+            <div class="principle__number">01</div>
+            <div class="principle__content">
+              <div class="principle__title">Operational Credibility</div>
+              <p class="principle__text">Every interface element should reinforce that this is a serious platform for national security work. Sharp edges, dense information, and operational language build trust.</p>
+            </div>
+          </div>
+
+          <div class="principle">
+            <div class="principle__number">02</div>
+            <div class="principle__content">
+              <div class="principle__title">Signal Over Noise</div>
+              <p class="principle__text">Subdued backgrounds let status colors and data stand out. Blue is the primary signal color. Green, yellow, and red are reserved for status.</p>
+            </div>
+          </div>
+
+          <div class="principle">
+            <div class="principle__number">03</div>
+            <div class="principle__content">
+              <div class="principle__title">Seamless Transition</div>
+              <p class="principle__text">The journey from marketing to operational interface should feel like one cohesive experience, not two different products. Shared navigation, typography, and color language create continuity.</p>
+            </div>
+          </div>
+
+          <div class="principle">
+            <div class="principle__number">04</div>
+            <div class="principle__content">
+              <div class="principle__title">Dense by Default</div>
+              <p class="principle__text">C2UX interfaces prioritize information density. Users should see more data with less scrolling. Marketing pages can breathe; operational pages should work.</p>
+            </div>
+          </div>
+
+          <div class="principle">
+            <div class="principle__number">05</div>
+            <div class="principle__content">
+              <div class="principle__title">Monospace for Data</div>
+              <p class="principle__text">Timestamps, counts, codes, and labels use monospace typography. This creates a terminal-like credibility and improves scanability of numerical information.</p>
+            </div>
+          </div>
+
+          <div class="principle">
+            <div class="principle__number">06</div>
+            <div class="principle__content">
+              <div class="principle__title">No Decorative Excess</div>
+              <p class="principle__text">Shadows are minimal. Gradients are reserved for marketing heroes. Animations serve function, not decoration. Every visual element must earn its place.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
