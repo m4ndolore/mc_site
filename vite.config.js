@@ -3,8 +3,10 @@ import { resolve } from 'path'
 
 export default defineConfig({
   server: {
+    host: '0.0.0.0',
     port: 3000,
     open: true,
+    allowedHosts: ['macbook-pro.tail45afa7.ts.net'],
     proxy: {
       '/api': {
         target: 'https://webhook-667608980042.us-central1.run.app',
