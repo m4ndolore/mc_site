@@ -96,9 +96,15 @@ body {
   font-family: var(--font-primary);
   font-size: var(--text-body);
   line-height: var(--lh-normal);
+  color: var(--offwhite);
+  background-color: var(--black);
+  overflow-x: hidden;
+}
+
+/* Light theme opt-in for specific pages */
+body.light-theme {
   color: var(--charcoal);
   background-color: var(--white);
-  overflow-x: hidden;
 }
 
 img, video {
