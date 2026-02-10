@@ -1836,6 +1836,49 @@ h4, .h4 {
   gap: 12px;
 }
 
+
+.bento-card__list {
+  margin: 16px 0 0;
+  padding-left: 18px;
+  color: var(--slate);
+  font-size: 14px;
+  line-height: 1.5;
+  display: grid;
+  gap: 8px;
+}
+
+.bento-card__list li {
+  margin: 0;
+}
+
+.ecosystem__footer {
+  margin-top: 24px;
+}
+
+.ecosystem__link {
+  color: var(--slate);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.ecosystem__link:hover {
+  color: var(--blue);
+}
+
+
+.bento-card__link {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--slate);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.bento-card__link:hover {
+  color: var(--blue);
+}
+
 /* Small card metrics */
 .bento-card--small .bento-card__content {
   justify-content: center;

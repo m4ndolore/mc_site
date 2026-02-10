@@ -1,9 +1,20 @@
+/**
+ * Merge Combinator Edge Router
+ *
+ * Routes requests to appropriate backends based on path prefix.
+ * Handles authentication, console access gating, and Sigmablox content proxying.
+ */
+
 import {
   handleAuthRoute,
   isAuthRoute,
   getSession,
   createLastConsoleCookie,
 } from "./auth.js";
+
+// ────────────────────────────────────────────────────────────────────────────
+// Configuration
+// ────────────────────────────────────────────────────────────────────────────
 
 const DEFAULT_ORIGINS = {
   mcPages: "https://mc-site-dr4.pages.dev",
@@ -16,12 +27,8 @@ const DEFAULT_ORIGINS = {
 
 const SIGMABLOX_HOSTNAMES = new Set(["www.sigmablox.com", "sigmablox.com"]);
 
-// Allowed origins for CORS on /api/* routes
 const API_CORS_ORIGINS = new Set([
   "https://console.mergecombinator.com",
-  "https://app.mergecombinator.com",
-  "https://wingman.mergecombinator.com",
-  "https://control.mergecombinator.com",
   "https://mergecombinator.com",
   "https://www.mergecombinator.com",
   "http://localhost:3000",
@@ -40,10 +47,16 @@ const HOP_BY_HOP_HEADERS = new Set([
   "upgrade",
 ]);
 
-const CONSOLE_PATHS = new Set(["/app", "/wingman", "/control"]);
+const CONSOLE_PATHS = new Set(["/app", "/control"]);
 const DEFAULT_CONSOLE_PATH = "/app";
 const DEFAULT_ADMIN_GROUPS = ["via-admins", "sigmablox-admins"];
 
+const CANONICAL_HOST = "mergecombinator.com";
+const ALIAS_HOSTS = new Set(["www.mergecombinator.com", "build.mergecombinator.com"]);
+
+// ────────────────────────────────────────────────────────────────────────────
+// HTML Injection Templates
+// ────────────────────────────────────────────────────────────────────────────
 
 const BANNER_HTML = `
   <div data-mc-banner="true" style="position: sticky; top: 0; z-index: 2147483647; font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; background: #0b1116; color: #e9f2ff; border-bottom: 1px solid rgba(233, 242, 255, 0.12); padding: 10px 16px; text-align: center; letter-spacing: 0.02em;">
@@ -123,8 +136,34 @@ const SHIM_HTML = `
         };
       }
     })();
-  </script>
+  <\/script>
 `;
+
+// ────────────────────────────────────────────────────────────────────────────
+// Helper Functions
+// ────────────────────────────────────────────────────────────────────────────
+
+function getOrigins(env) {
+  return {
+    mcPages: env.MC_PAGES_ORIGIN || DEFAULT_ORIGINS.mcPages,
+    sigmablox: env.SIGMABLOX_ORIGIN || DEFAULT_ORIGINS.sigmablox,
+    sigmabloxApi: env.SIGMABLOX_API_ORIGIN || DEFAULT_ORIGINS.sigmabloxApi,
+    app: env.APP_ORIGIN || DEFAULT_ORIGINS.app,
+    wingman: env.WINGMAN_ORIGIN || DEFAULT_ORIGINS.wingman,
+    control: env.CONTROL_ORIGIN || DEFAULT_ORIGINS.control,
+  };
+}
+
+function getRoutes(origins) {
+  return [
+    { prefix: "/app/wingman", origin: origins.wingman, stripPrefix: true, preserveRoot: true },
+    { prefix: "/app", origin: origins.app, stripPrefix: true },
+    { prefix: "/control", origin: origins.control, stripPrefix: true },
+    { prefix: "/api", origin: origins.sigmabloxApi, stripPrefix: false, isApi: true },
+    { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
+    { prefix: "/opportunities", origin: "https://sbir.mergecombinator.com", stripPrefix: true },
+  ];
+}
 
 function resolveTarget(url, route) {
   const target = new URL(route.origin);
@@ -172,8 +211,7 @@ function isAdminSession(session, env) {
 function createLoginRedirect(request) {
   const url = new URL(request.url);
   const loginUrl = new URL("/auth/login", url.origin);
-  const relativeReturnTo = `${url.pathname}${url.search}${url.hash}`;
-  loginUrl.searchParams.set("returnTo", relativeReturnTo);
+  loginUrl.searchParams.set("returnTo", `${url.pathname}${url.search}${url.hash}`);
   return Response.redirect(loginUrl.toString(), 302);
 }
 
@@ -198,6 +236,7 @@ function isWebSocketRequest(request) {
 function buildUpstreamHeaders(request, { stripCookies = false } = {}) {
   const headers = new Headers(request.headers);
   const isWebSocket = isWebSocketRequest(request);
+
   if (!isWebSocket) {
     for (const header of HOP_BY_HOP_HEADERS) {
       headers.delete(header);
@@ -219,6 +258,10 @@ function buildUpstreamHeaders(request, { stripCookies = false } = {}) {
   return headers;
 }
 
+// ────────────────────────────────────────────────────────────────────────────
+// CORS Handling
+// ────────────────────────────────────────────────────────────────────────────
+
 function getCorsHeaders(request) {
   const origin = request.headers.get("Origin");
   if (origin && API_CORS_ORIGINS.has(origin)) {
@@ -233,39 +276,30 @@ function getCorsHeaders(request) {
 }
 
 async function handleApiRoute(request, targetUrl, env) {
-  // Handle CORS preflight
   if (request.method === "OPTIONS") {
     const corsHeaders = getCorsHeaders(request);
     if (corsHeaders) {
-      return new Response(null, {
-        status: 204,
-        headers: corsHeaders,
-      });
+      return new Response(null, { status: 204, headers: corsHeaders });
     }
     return new Response(null, { status: 204 });
   }
 
-  // Build headers for upstream request
   const upstreamHeaders = buildUpstreamHeaders(request, { stripCookies: true });
-  const cloned = request.clone();
-
-  // Check for authenticated session and pass token to SigmaBlox
   const session = await getSession(request, env);
   if (session && session.accessToken) {
     upstreamHeaders.set("Authorization", `Bearer ${session.accessToken}`);
   }
 
-  // Proxy the request to SigmaBlox API
+  const clonedRequest = request.clone();
   const proxyRequest = new Request(targetUrl, {
-    method: cloned.method,
+    method: request.method,
     headers: upstreamHeaders,
-    body: cloned.body,
+    body: clonedRequest.body,
   });
 
   const response = await fetch(proxyRequest);
-
-  // Add CORS headers to response
   const corsHeaders = getCorsHeaders(request);
+
   if (corsHeaders) {
     const newHeaders = new Headers(response.headers);
     for (const [key, value] of Object.entries(corsHeaders)) {
@@ -281,42 +315,13 @@ async function handleApiRoute(request, targetUrl, env) {
   return response;
 }
 
-function getOrigins(env) {
-  return {
-    mcPages: env.MC_PAGES_ORIGIN || DEFAULT_ORIGINS.mcPages,
-    sigmablox: env.SIGMABLOX_ORIGIN || DEFAULT_ORIGINS.sigmablox,
-    sigmabloxApi: env.SIGMABLOX_API_ORIGIN || DEFAULT_ORIGINS.sigmabloxApi,
-    app: env.APP_ORIGIN || DEFAULT_ORIGINS.app,
-    wingman: env.WINGMAN_ORIGIN || DEFAULT_ORIGINS.wingman,
-    control: env.CONTROL_ORIGIN || DEFAULT_ORIGINS.control,
-  };
-}
-
-function getRoutes(origins) {
-  return [
-    { prefix: "/app/wingman", origin: origins.wingman, stripPrefix: true, preserveRoot: true },
-    { prefix: "/app", origin: origins.app, stripPrefix: true },
-    { prefix: "/control", origin: origins.control, stripPrefix: true },
-    { prefix: "/api", origin: origins.sigmabloxApi, stripPrefix: false, isApi: true },
-    { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
-    // /builders is served from MC Pages (default origin), no route entry needed
-    { prefix: "/opportunities", origin: "https://sbir.mergecombinator.com", stripPrefix: true },
-  ];
-}
+// ────────────────────────────────────────────────────────────────────────────
+// Sigmablox URL Rewriting
+// ────────────────────────────────────────────────────────────────────────────
 
 function shouldRewriteBanner(response) {
   const contentType = response.headers.get("content-type") || "";
   return contentType.includes("text/html");
-}
-
-function shouldRewriteWingman(pathname, response) {
-  if (pathname !== "/wingman" && pathname !== "/wingman/") return false;
-  const contentType = response.headers.get("content-type") || "";
-  return contentType.includes("text/html");
-}
-
-function buildWingmanConfigScript(enabled) {
-  return `<script>window.MC_CONFIG={wingmanConsoleEnabled:${enabled}};</script>`;
 }
 
 function isRedirectResponse(response) {
@@ -325,6 +330,7 @@ function isRedirectResponse(response) {
 
 function rewriteSigmabloxLocation(value) {
   if (!value) return null;
+
   if (value.startsWith("//")) {
     const url = new URL(`https:${value}`);
     if (SIGMABLOX_HOSTNAMES.has(url.hostname)) {
@@ -354,6 +360,7 @@ function rewriteSigmabloxLocation(value) {
 function rewriteSigmabloxUrl(value) {
   if (!value) return null;
   const trimmed = value.trim();
+
   if (
     trimmed.startsWith("mailto:") ||
     trimmed.startsWith("tel:") ||
@@ -390,141 +397,134 @@ function rewriteSigmabloxUrl(value) {
   return null;
 }
 
+// ────────────────────────────────────────────────────────────────────────────
+// Main Fetch Handler
+// ────────────────────────────────────────────────────────────────────────────
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const host = request.headers.get("host") || url.hostname;
+
+    // 1) Canonical host redirect
+    if (ALIAS_HOSTS.has(host)) {
+      url.hostname = CANONICAL_HOST;
+      return Response.redirect(url.toString(), 301);
+    }
+
     const origins = getOrigins(env);
     const routes = getRoutes(origins);
-    const wingmanConsoleEnabled = String(env.WINGMAN_CONSOLE_ENABLED || "false")
-      .toLowerCase()
-      .trim() === "true";
 
-    // Handle auth routes first
+    // 2) Auth routes
     if (isAuthRoute(url.pathname)) {
       const authResponse = await handleAuthRoute(request, env);
-      if (authResponse) {
-        return authResponse;
-      }
+      if (authResponse) return authResponse;
     }
 
-    if (url.pathname === "/marketplace" || url.pathname.startsWith("/marketplace/")) {
-      const redirectUrl = new URL("/guild", url.origin);
-      redirectUrl.search = url.search;
-      return Response.redirect(redirectUrl.toString(), 301);
-    }
+    // 3) Console gating
+    const isWingmanMarketing = url.pathname === "/wingman" || url.pathname.startsWith("/wingman/");
 
-    if (url.pathname === "/combine" || url.pathname.startsWith("/combine/")) {
-      const redirectUrl = new URL("/programs/the-combine", url.origin);
-      redirectUrl.search = url.search;
-      return Response.redirect(redirectUrl.toString(), 301);
-    }
-
-    if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
+    if (!isWingmanMarketing && isConsolePath(url.pathname)) {
       const session = await getSession(request, env);
-      if (session) {
+      if (!session) return createLoginRedirect(request);
+
+      const isControl = url.pathname === "/control" || url.pathname.startsWith("/control/");
+      if (isControl && !isAdminSession(session, env)) {
         const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
         return withLastConsoleCookie(redirect, "app", env, request);
       }
     }
 
-    if (isConsolePath(url.pathname)) {
-      const session = await getSession(request, env);
-      if (!session) {
-        return createLoginRedirect(request);
-      }
-
-      if (
-        (url.pathname === "/control" || url.pathname.startsWith("/control/")) &&
-        !isAdminSession(session, env)
-      ) {
-        const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
-        return withLastConsoleCookie(redirect, "app", env, request);
-      }
-    }
-
-    const route = routes.find((entry) =>
-      url.pathname === entry.prefix || url.pathname.startsWith(`${entry.prefix}/`)
+    // 4) Route matching
+    const route = routes.find(
+      (entry) => url.pathname === entry.prefix || url.pathname.startsWith(`${entry.prefix}/`)
     );
 
+    // 5) No route matched - fall through to Pages or Sigmablox
     if (!route) {
-      // Check if this is a SigmaBlox asset request (from /combine pages)
       const referer = request.headers.get("referer") || "";
       const refererUrl = referer ? new URL(referer) : null;
-      const isFromCombine = refererUrl && (
-        refererUrl.pathname.startsWith("/combine") ||
-        SIGMABLOX_HOSTNAMES.has(refererUrl.hostname)
-      );
+      const isFromCombine =
+        refererUrl &&
+        (refererUrl.pathname.startsWith("/combine") || SIGMABLOX_HOSTNAMES.has(refererUrl.hostname));
 
       if (isFromCombine) {
-        // Route to SigmaBlox for assets requested from /combine pages
         const sigmabloxUrl = new URL(url.pathname, origins.sigmablox);
         sigmabloxUrl.search = url.search;
-        const cloned = request.clone();
+        const clonedRequest = request.clone();
         const upstreamHeaders = buildUpstreamHeaders(request);
-        return fetch(new Request(sigmabloxUrl, {
-          method: cloned.method,
-          headers: upstreamHeaders,
-          body: cloned.body,
-        }));
+        return fetch(
+          new Request(sigmabloxUrl, {
+            method: request.method,
+            headers: upstreamHeaders,
+            body: clonedRequest.body,
+          })
+        );
       }
 
-      // Proxy unmatched routes to MC Pages origin (homepage, assets, etc.)
+      // Default to MC Pages
       const mcPagesUrl = new URL(url.pathname, origins.mcPages);
       mcPagesUrl.search = url.search;
-      const cloned = request.clone();
+      const clonedRequest = request.clone();
       const upstreamHeaders = buildUpstreamHeaders(request);
-      let response = await fetch(new Request(mcPagesUrl, {
-        method: cloned.method,
-        headers: upstreamHeaders,
-        body: cloned.body,
-      }));
-      if (shouldRewriteWingman(url.pathname, response)) {
-        const configScript = buildWingmanConfigScript(wingmanConsoleEnabled);
-        response = new HTMLRewriter()
-          .on("head", {
-            element(element) {
-              element.append(configScript, { html: true });
-            },
-          })
-          .transform(response);
-      }
+      let response = await fetch(
+        new Request(mcPagesUrl, {
+          method: request.method,
+          headers: upstreamHeaders,
+          body: clonedRequest.body,
+        })
+      );
+
       if (isConsolePath(url.pathname)) {
         response = withLastConsoleCookie(response, consoleValueFromPath(url.pathname), env, request);
       }
+
+      // Dashboard redirect for authenticated users
+      if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
+        const session = await getSession(request, env);
+        if (session) {
+          const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
+          return withLastConsoleCookie(redirect, "app", env, request);
+        }
+      }
+
       return response;
     }
 
+    // 6) API route handling
     const targetUrl = resolveTarget(url, route);
-
-    // Handle API routes with CORS and auth passthrough
     if (route.isApi) {
       return handleApiRoute(request, targetUrl, env);
     }
 
+    // 7) Standard proxy
+    const clonedRequest = request.clone();
     const upstreamHeaders = buildUpstreamHeaders(request);
-    const cloned = request.clone();
-    let response = await fetch(new Request(targetUrl, {
-      method: cloned.method,
-      headers: upstreamHeaders,
-      body: cloned.body,
-    }));
+    let response = await fetch(
+      new Request(targetUrl, {
+        method: request.method,
+        headers: upstreamHeaders,
+        body: clonedRequest.body,
+      })
+    );
 
     if (isConsolePath(url.pathname)) {
       response = withLastConsoleCookie(response, consoleValueFromPath(url.pathname), env, request);
     }
 
+    // 8) Sigmablox redirect rewriting
     if (route.origin === origins.sigmablox && isRedirectResponse(response)) {
       const location = response.headers.get("location");
       let replacement = rewriteSigmabloxLocation(location);
-      const isCombineDeep =
-        url.pathname === "/combine/combine" || url.pathname === "/combine/combine/";
+
+      const isCombineDeep = url.pathname === "/combine/combine" || url.pathname === "/combine/combine/";
       if (isCombineDeep && (replacement === "/combine" || replacement === "/combine/")) {
         replacement = "/combine/combine/";
       }
+
       if (replacement) {
         const isCombineRoot =
-          route.prefix === "/combine" &&
-          (url.pathname === "/combine" || url.pathname === "/combine/");
+          route.prefix === "/combine" && (url.pathname === "/combine" || url.pathname === "/combine/");
         if (isCombineRoot && replacement.startsWith("/combine")) {
           const followUrl = new URL(replacement, url.origin);
           const followTarget = resolveTarget(followUrl, route);
@@ -539,12 +539,14 @@ export default {
       }
     }
 
+    // 9) Sigmablox HTML rewriting (banner injection + URL rewriting)
     if (route.origin !== origins.sigmablox || !shouldRewriteBanner(response)) {
       return response;
     }
 
     let headerAdjusted = false;
     let shimInjected = false;
+
     return new HTMLRewriter()
       .on("head", {
         element(element) {

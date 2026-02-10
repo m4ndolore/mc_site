@@ -155,7 +155,7 @@ Comment out console routing in merge-router.js.
 
 ## Verification Checklist
 
-### Auth Flow
+### 1. Auth Flow
 
 | Test | Expected |
 |------|----------|
@@ -164,28 +164,29 @@ Comment out console routing in merge-router.js.
 | GET /app (authenticated) | 200, load console UI |
 | mc_last_console cookie | Set to "app" |
 
-### Console Switching
+### 2. Console Switching
 
 | Test | Expected |
 |------|----------|
-| GET /wingman (authenticated) | 200, load Wingman |
+| GET /app/wingman (authenticated) | 200, load Wingman |
+| GET /wingman (marketing) | 200, Wingman marketing page |
 | mc_last_console cookie | Updated to "wingman" |
 | GET /control (non-admin) | 302 → /app |
 | GET /control (admin) | 200, load via-dashboard |
 
-### Dashboard Redirect
+### 3. Dashboard Redirect
 
 | Test | Expected |
 |------|----------|
 | GET /dashboard (unauthenticated) | 200, teaser page |
 | GET /dashboard (authenticated) | 302 → /app |
 
-### Deep Links
+### 4. Deep Links
 
 | Test | Expected |
 |------|----------|
 | GET /app/builders/123 | 200, builder detail |
-| GET /wingman/... | 200, preserve path |
+| GET /app/wingman/... | 200, preserve path |
 | GET /control/users | 200, users page |
 
 ---

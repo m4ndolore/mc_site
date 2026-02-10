@@ -3,121 +3,322 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Defense tech knowledge base - resources, guides, and insights for builders navigating the national security ecosystem.">
-
-  <title>Knowledge — Merge Combinator</title>
+  <meta name="description" content="Resources for building and selling to defense. Curated guides, templates, and insights for founders navigating the national security ecosystem.">
+  <meta name="keywords" content="defense tech, acquisition, SBIR, compliance, go-to-market, government contracts, DoD">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-2.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/arrows-2.png">
   <link rel="apple-touch-icon" href="/assets/arrows-2.png">
 
+  <!-- Canonical -->
+  <link rel="canonical" href="https://mergecombinator.com/knowledge">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Knowledge Base — Merge Combinator">
+  <meta property="og:description" content="Resources for building and selling to defense. Curated guides and insights for founders.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mergecombinator.com/knowledge">
+
+  <title>Knowledge — Merge Combinator</title>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
   <style>
-    .coming-soon {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+    /* ============================================
+       KNOWLEDGE HUB STYLES
+       ============================================ */
+
+    .knowledge-hero {
+      padding: 140px 0 80px;
+      position: relative;
+      overflow: hidden;
     }
 
-    .coming-soon__hero {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: calc(var(--nav-height) + 80px) 20px 80px;
-      background: var(--black);
-      text-align: center;
+    .knowledge-hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(900px 400px at 10% 0%, rgba(59, 130, 246, 0.14), transparent 55%),
+        radial-gradient(700px 350px at 90% 10%, rgba(139, 92, 246, 0.10), transparent 50%),
+        radial-gradient(500px 250px at 50% 80%, rgba(34, 197, 94, 0.06), transparent 45%),
+        linear-gradient(180deg, rgba(8, 12, 18, 0.95), rgba(5, 7, 10, 1));
+      z-index: 0;
     }
 
-    .coming-soon__content {
-      max-width: 600px;
+    /* Subtle grid pattern overlay */
+    .knowledge-hero__bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.5;
     }
 
-    .coming-soon__badge {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--blue);
-      background: rgba(42, 127, 219, 0.1);
-      padding: 8px 16px;
-      border-radius: var(--radius-sm);
-      margin-bottom: 24px;
+    .knowledge-hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
     }
 
-    .coming-soon__title {
-      font-size: clamp(40px, 6vw, 64px);
-      color: var(--white);
-      margin-bottom: 20px;
-      line-height: 1.1;
-    }
-
-    .coming-soon__subtitle {
-      font-size: clamp(16px, 1.5vw, 20px);
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 40px;
-      line-height: 1.6;
-    }
-
-    .coming-soon__cta {
+    .knowledge-hero__eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 14px 28px;
-      background: var(--blue);
-      color: var(--white);
-      font-weight: 600;
-      border-radius: var(--radius-md);
-      text-decoration: none;
-      transition: all var(--transition-fast);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #3b82f6;
+      margin-bottom: 20px;
     }
 
-    .coming-soon__cta:hover {
-      background: var(--blue-light);
+    .knowledge-hero__eyebrow::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: #3b82f6;
+      border-radius: 2px;
+    }
+
+    .knowledge-hero__title {
+      font-size: clamp(2.25rem, 5vw, 3.25rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--offwhite);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .knowledge-hero__subtitle {
+      font-size: 1.125rem;
+      color: var(--gray-light);
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    .knowledge-hero__crosslink {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      color: var(--gray-medium);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .knowledge-hero__crosslink:hover {
+      color: var(--offwhite);
+    }
+
+    .knowledge-hero__crosslink svg {
+      opacity: 0.6;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .knowledge-hero__crosslink:hover svg {
+      opacity: 1;
+      transform: translateX(2px);
+    }
+
+    /* ============================================
+       CATEGORY GRID
+       ============================================ */
+
+    .knowledge-categories {
+      padding: 60px 0 80px;
+      position: relative;
+    }
+
+    .knowledge-categories__grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .knowledge-categories__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .category-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      padding: 28px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      overflow: hidden;
+    }
+
+    .category-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--card-accent);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .category-card:hover {
+      background: rgba(255, 255, 255, 0.035);
+      border-color: rgba(255, 255, 255, 0.1);
       transform: translateY(-2px);
     }
 
-    .coming-soon__features {
+    .category-card:hover::before {
+      opacity: 1;
+    }
+
+    .category-card__icon {
+      width: 40px;
+      height: 40px;
       display: flex;
-      gap: 32px;
+      align-items: center;
       justify-content: center;
-      margin-top: 60px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 8px;
+      margin-bottom: 16px;
+      color: var(--card-accent);
+    }
+
+    .category-card__icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .category-card__title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--offwhite);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .category-card__arrow {
+      opacity: 0;
+      transform: translateX(-4px);
+      transition: all 0.25s;
+      color: var(--card-accent);
+    }
+
+    .category-card:hover .category-card__arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .category-card__description {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .category-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.8rem;
+      color: var(--gray-medium);
+    }
+
+    .category-card__count {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .category-card__count svg {
+      width: 14px;
+      height: 14px;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       CONTRIBUTE SECTION
+       ============================================ */
+
+    .knowledge-contribute {
+      padding: 60px 0 100px;
+    }
+
+    .contribute-card {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.06) 100%);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      border-radius: 8px;
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
       flex-wrap: wrap;
     }
 
-    .coming-soon__feature {
-      text-align: center;
+    .contribute-card__content {
+      flex: 1;
+      min-width: 280px;
     }
 
-    .coming-soon__feature-icon {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 12px;
-      color: var(--blue);
-    }
-
-    .coming-soon__feature-title {
-      font-size: 14px;
+    .contribute-card__title {
+      font-size: 1.25rem;
       font-weight: 600;
-      color: var(--white);
-      margin-bottom: 4px;
+      color: var(--offwhite);
+      margin-bottom: 8px;
     }
 
-    .coming-soon__feature-text {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.5);
+    .contribute-card__text {
+      font-size: 0.95rem;
+      color: var(--gray-light);
+      line-height: 1.5;
+    }
+
+    .contribute-card__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 6px;
+      color: #60a5fa;
+      font-weight: 500;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .contribute-card__cta:hover {
+      background: rgba(59, 130, 246, 0.25);
+      border-color: rgba(59, 130, 246, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .contribute-card__cta svg {
+      transition: transform 0.2s;
+    }
+
+    .contribute-card__cta:hover svg {
+      transform: translateX(2px);
     }
   </style>
 </head>
-<body class="coming-soon">
+<body>
   <!-- Navigation -->
   <header class="nav" id="nav">
     <div class="nav__container">
@@ -129,7 +330,7 @@
         <img src="/assets/arrows-2.png" alt="Merge arrows" class="nav__logo-icon">
       </a>
 
-<nav class="nav__menu" aria-label="Primary navigation">
+      <nav class="nav__menu" aria-label="Primary navigation">
         <div class="nav__menu-links">
           <a href="/builders" class="nav__link">Defense Builders</a>
           <a href="/wingman" class="nav__link">Wingman</a>
@@ -165,50 +366,50 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="coming-soon__hero">
-    <div class="coming-soon__content">
-      <span class="coming-soon__badge">Under Review</span>
-      <h1 class="coming-soon__title">Knowledge</h1>
-      <p class="coming-soon__subtitle">
-        Resources, guides, and insights for builders navigating the defense and national security ecosystem. Learn from operators and founders who've been there.
+  <section class="knowledge-hero">
+    <div class="knowledge-hero__bg"></div>
+    <div class="container knowledge-hero__content">
+      <span class="knowledge-hero__eyebrow">Knowledge Base</span>
+      <h1 class="knowledge-hero__title">Resources for building and selling to defense.</h1>
+      <p class="knowledge-hero__subtitle">
+        Curated guides, templates, and insights for founders navigating acquisition,
+        compliance, and go-to-market in the national security ecosystem.
       </p>
-      <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-        <a href="https://docs.mergecombinator.com" class="coming-soon__cta">
-          Browse Docs
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        <a href="/contribute" class="coming-soon__cta" style="background: transparent; border: 1px solid var(--blue);">
-          Become a Contributor
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-      </div>
+      <a href="https://irregularpedia.org" target="_blank" rel="noopener" class="knowledge-hero__crosslink">
+        For operator tradecraft, visit Irregularpedia
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </section>
 
-      <div class="coming-soon__features">
-        <div class="coming-soon__feature">
-          <svg class="coming-soon__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-          </svg>
-          <div class="coming-soon__feature-title">Guides</div>
-          <div class="coming-soon__feature-text">Acquisition & contracting</div>
+  <!-- Category Cards -->
+  <section class="knowledge-categories">
+    <div class="container">
+      <div class="knowledge-categories__grid" id="categories-grid">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Contribute CTA -->
+  <section class="knowledge-contribute">
+    <div class="container">
+      <div class="contribute-card">
+        <div class="contribute-card__content">
+          <h2 class="contribute-card__title">Know a resource that helped you?</h2>
+          <p class="contribute-card__text">
+            Submit guides, templates, or links that helped you navigate defense acquisition.
+            We'll curate and share the best with the community.
+          </p>
         </div>
-        <div class="coming-soon__feature">
-          <svg class="coming-soon__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+        <a href="/contribute" class="contribute-card__cta">
+          Submit a Resource
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          <div class="coming-soon__feature-title">Insights</div>
-          <div class="coming-soon__feature-text">Operator perspectives</div>
-        </div>
-        <div class="coming-soon__feature">
-          <svg class="coming-soon__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-          </svg>
-          <div class="coming-soon__feature-title">Resources</div>
-          <div class="coming-soon__feature-text">Templates & tools</div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
@@ -229,7 +430,7 @@
           <div class="footer__column">
             <h4 class="footer__heading">Platform</h4>
             <ul class="footer__list">
-              <li><a href="/combine">Combine</a></li>
+              <li><a href="/programs/the-combine">The Combine</a></li>
               <li><a href="/builders">Defense Builders</a></li>
               <li><a href="/opportunities">Opportunities</a></li>
               <li><a href="/merch">Merch</a></li>
@@ -240,7 +441,7 @@
             <h4 class="footer__heading">Company</h4>
             <ul class="footer__list">
               <li><a href="/#hero">About</a></li>
-              <li><a href="/#engage">Contact</a></li>
+              <li><a href="/access">Contact</a></li>
               <li><a href="/builders">Careers</a></li>
             </ul>
           </div>
@@ -248,8 +449,8 @@
           <div class="footer__column">
             <h4 class="footer__heading">Resources</h4>
             <ul class="footer__list">
-              <li><a href="/blog.html">Blog</a></li>
-              <li><a href="/portfolio.html">Case Studies</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li><a href="/portfolio">Case Studies</a></li>
               <li><a href="/knowledge">Knowledge</a></li>
               <li><a href="https://docs.mergecombinator.com">Docs</a></li>
             </ul>
@@ -259,12 +460,89 @@
 
       <div class="footer__bottom">
         <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
-        <p class="footer__location">San Francisco • Tokyo • Singapore</p>
+        <p class="footer__location">San Francisco &bull; Tokyo &bull; Singapore</p>
       </div>
     </div>
   </footer>
 
   <script type="module" src="script.js"></script>
   <script src="js/auth-nav.js"></script>
+  <script>
+    // Icons for each category
+    const icons = {
+      rocket: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+        <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+        <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+      </svg>`,
+      document: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14,2 14,8 20,8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10,9 9,9 8,9"/>
+      </svg>`,
+      lightbulb: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18h6"/>
+        <path d="M10 22h4"/>
+        <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+      </svg>`,
+      shield: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="m9 12 2 2 4-4"/>
+      </svg>`
+    };
+
+    // Fetch and render categories
+    async function loadKnowledge() {
+      try {
+        const response = await fetch('/data/knowledge.json');
+        const data = await response.json();
+
+        const grid = document.getElementById('categories-grid');
+
+        data.categories.forEach(category => {
+          const resourceCount = data.resources.filter(r => r.category === category.id).length;
+          const publicCount = data.resources.filter(r => r.category === category.id && r.access === 'public').length;
+
+          const card = document.createElement('a');
+          card.href = `/knowledge/${category.id}`;
+          card.className = 'category-card';
+          card.style.setProperty('--card-accent', category.color);
+
+          card.innerHTML = `
+            <div class="category-card__icon">
+              ${icons[category.icon] || icons.document}
+            </div>
+            <h2 class="category-card__title">
+              ${category.title}
+              <svg class="category-card__arrow" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </h2>
+            <p class="category-card__description">${category.description}</p>
+            <div class="category-card__meta">
+              <span class="category-card__count">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14,2 14,8 20,8"/>
+                </svg>
+                ${resourceCount} resources
+              </span>
+              <span style="color: var(--gray-medium);">&bull;</span>
+              <span>${publicCount} public</span>
+            </div>
+          `;
+
+          grid.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Failed to load knowledge data:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadKnowledge);
+  </script>
 </body>
 </html>
