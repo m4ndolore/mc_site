@@ -445,6 +445,26 @@ export async function fetchPrivateApi(endpoint, options = {}) {
 }
 
 /**
+ * Build logo URL from stored logo or fall back to logoUrl
+ * storedLogoId indicates a permanent logo exists; served via /api/logo/:companyId
+ * The logo endpoint uses legacyAirtableId or id, not the storedLogoId itself
+ * @param {Object} company - Raw company from API
+ * @returns {string|null} - Logo URL or null
+ */
+function getLogoUrl(company) {
+    // Prefer stored logo (permanent) over Airtable URL (expires)
+    // Logo endpoint uses company ID (legacyAirtableId or id), not storedLogoId
+    if (company.storedLogoId) {
+        const apiBase = getApiBase();
+        const companyId = company.legacyAirtableId || company.id || company.airtableId;
+        if (companyId) {
+            return `${apiBase}/api/logo/${companyId}`;
+        }
+    }
+    return company.logoUrl || null;
+}
+
+/**
  * Normalize company data from API to internal format
  * Handles both API format (id, name) and legacy format (airtableId, companyName)
  *
@@ -491,7 +511,7 @@ export function normalizeCompany(company) {
         name: companyName,
         productName: company.productName || '',
         displayName,
-        logo: company.logoUrl || null,
+        logo: getLogoUrl(company),
         tagline: company.description || company.problemStatement || '',
         description: company.description || company.problemStatement || '',
         website: company.website || '',
