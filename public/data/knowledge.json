@@ -1,0 +1,185 @@
+{
+  "categories": [
+    {
+      "id": "go-to-market",
+      "title": "Go-to-Market",
+      "description": "Find champions, land pilots, price for government.",
+      "color": "#22c55e",
+      "icon": "rocket"
+    },
+    {
+      "id": "acquisition",
+      "title": "Acquisition 101",
+      "description": "How DoD buys, contract types, FAR basics.",
+      "color": "#3b82f6",
+      "icon": "document"
+    },
+    {
+      "id": "sbir",
+      "title": "SBIR / STTR",
+      "description": "Find topics, write proposals, navigate phases.",
+      "color": "#8b5cf6",
+      "icon": "lightbulb"
+    },
+    {
+      "id": "compliance",
+      "title": "Compliance",
+      "description": "CMMC, ITAR, CUI handling, clearances.",
+      "color": "#f59e0b",
+      "icon": "shield"
+    }
+  ],
+  "resources": [
+    {
+      "id": "dau-problem-sponsors",
+      "category": "go-to-market",
+      "type": "quick-link",
+      "access": "public",
+      "title": "Finding Problem Sponsors",
+      "url": "https://www.dau.edu/tools/t/Problem-Sponsor",
+      "description": "DAU guide to identifying and engaging problem sponsors in DoD"
+    },
+    {
+      "id": "afwerx-pathway",
+      "category": "go-to-market",
+      "type": "quick-link",
+      "access": "public",
+      "title": "AFWERX Engagement Pathways",
+      "url": "https://afwerx.com/divisions/",
+      "description": "Overview of Air Force innovation pathways: Spark, Prime, and Ventures"
+    },
+    {
+      "id": "diu-engagement",
+      "category": "go-to-market",
+      "type": "quick-link",
+      "access": "public",
+      "title": "DIU Commercial Solutions Opening",
+      "url": "https://www.diu.mil/work-with-us",
+      "description": "How to engage Defense Innovation Unit through CSO process"
+    },
+    {
+      "id": "ota-guide",
+      "category": "go-to-market",
+      "type": "quick-link",
+      "access": "public",
+      "title": "Other Transaction Authority Guide",
+      "url": "https://aaf.dau.edu/aaf/ota/",
+      "description": "DAU guide to OTA vs traditional FAR-based contracts"
+    },
+    {
+      "id": "pricing-strategies",
+      "category": "go-to-market",
+      "type": "deep-dive",
+      "access": "members",
+      "title": "Pricing Strategies for Government Contracts",
+      "description": "How to structure pricing for FFP, T&M, and CPFF contracts"
+    },
+    {
+      "id": "dau-contracting-cone",
+      "category": "acquisition",
+      "type": "quick-link",
+      "access": "public",
+      "title": "Contracting Cone",
+      "url": "https://www.dau.edu/tools/t/Contracting-Cone",
+      "description": "Visual guide to contract types and dollar thresholds"
+    },
+    {
+      "id": "far-overview",
+      "category": "acquisition",
+      "type": "quick-link",
+      "access": "public",
+      "title": "FAR for Startups",
+      "url": "https://www.acquisition.gov/browse/index/far",
+      "description": "Federal Acquisition Regulation - the rules governing DoD procurement"
+    },
+    {
+      "id": "contract-types",
+      "category": "acquisition",
+      "type": "quick-link",
+      "access": "public",
+      "title": "Contract Types Explained",
+      "url": "https://www.dau.edu/tools/t/Contract-Type-Comparison",
+      "description": "FFP, T&M, CPFF, CPIF - when to use each and what they mean"
+    },
+    {
+      "id": "ppbe-cycle",
+      "category": "acquisition",
+      "type": "quick-link",
+      "access": "public",
+      "title": "Understanding PPBE",
+      "url": "https://acqnotes.com/acqnote/acquisitions/ppbe-overview",
+      "description": "Planning, Programming, Budgeting, and Execution cycle explained"
+    },
+    {
+      "id": "sbir-topic-search",
+      "category": "sbir",
+      "type": "quick-link",
+      "access": "public",
+      "title": "SBIR Topic Search",
+      "url": "https://www.sbir.gov/topics",
+      "description": "Find open SBIR/STTR topics across all federal agencies"
+    },
+    {
+      "id": "sbir-proposal-guide",
+      "category": "sbir",
+      "type": "quick-link",
+      "access": "public",
+      "title": "Phase I Proposal Guide",
+      "url": "https://www.sbir.gov/tutorials/preparing-proposals/tutorial-1",
+      "description": "SBIR.gov official tutorial on writing winning proposals"
+    },
+    {
+      "id": "phase-iii-strategies",
+      "category": "sbir",
+      "type": "quick-link",
+      "access": "public",
+      "title": "Phase III Transition Strategies",
+      "url": "https://www.sbir.gov/sites/default/files/SBA_SBIR_Phase_III_Guide.pdf",
+      "description": "SBA guide to transitioning SBIR tech to production contracts"
+    },
+    {
+      "id": "sbir-success-patterns",
+      "category": "sbir",
+      "type": "deep-dive",
+      "access": "members",
+      "title": "SBIR Success Patterns",
+      "description": "Common patterns from companies that successfully transitioned Phase II to III"
+    },
+    {
+      "id": "cmmc-overview",
+      "category": "compliance",
+      "type": "quick-link",
+      "access": "public",
+      "title": "CMMC 2.0 Requirements",
+      "url": "https://dodcio.defense.gov/CMMC/",
+      "description": "Official DoD CMMC program overview and requirements"
+    },
+    {
+      "id": "itar-basics",
+      "category": "compliance",
+      "type": "quick-link",
+      "access": "public",
+      "title": "ITAR Basics for Startups",
+      "url": "https://www.pmddtc.state.gov/ddtc_public/ddtc_public?id=ddtc_public_portal_itar_landing",
+      "description": "State Department ITAR portal - registration and compliance basics"
+    },
+    {
+      "id": "cui-marking",
+      "category": "compliance",
+      "type": "quick-link",
+      "access": "public",
+      "title": "CUI Marking Handbook",
+      "url": "https://www.archives.gov/cui/registry/cui-handbook",
+      "description": "NARA guide to marking and handling Controlled Unclassified Information"
+    },
+    {
+      "id": "clearance-process",
+      "category": "compliance",
+      "type": "quick-link",
+      "access": "public",
+      "title": "Security Clearance Process",
+      "url": "https://www.dcsa.mil/is/security-clearance-faqs/",
+      "description": "DCSA FAQ on obtaining and maintaining security clearances"
+    }
+  ]
+}
