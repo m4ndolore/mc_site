@@ -16,25 +16,7 @@ import {
 // Configuration
 // ────────────────────────────────────────────────────────────────────────────
 
-const DEFAULT_ORIGINS = {
-  mcPages: "https://mc-site-dr4.pages.dev",
-  sigmablox: "https://www.sigmablox.com",
-  sigmabloxApi: "https://api.sigmablox.com",
-  app: "https://app.mergecombinator.com",
-  wingman: "https://wingman.mergecombinator.com",
-  control: "https://control.mergecombinator.com",
-};
-
 const SIGMABLOX_HOSTNAMES = new Set(["www.sigmablox.com", "sigmablox.com"]);
-
-const API_CORS_ORIGINS = new Set([
-  "https://console.mergecombinator.com",
-  "https://mergecombinator.com",
-  "https://www.mergecombinator.com",
-  "http://localhost:3000",
-  "http://localhost:3002",
-  "http://localhost:5173",
-]);
 
 const HOP_BY_HOP_HEADERS = new Set([
   "connection",
@@ -71,6 +53,44 @@ const BANNER_FOOTER_HTML = `
     <a href="/builders" style="margin-left: 12px; color: #7fd1ff; text-decoration: none; font-weight: 600;">Explore our Defense Builders -&gt;</a>
   </div>
 `;
+
+// ────────────────────────────────────────────────────────────────────────────
+// MC Pages HTML Transformation (Turnstile injection)
+// ────────────────────────────────────────────────────────────────────────────
+
+function maskKey(key) {
+  if (!key || key.length < 8) return "****";
+  return "****" + key.slice(-4);
+}
+
+function transformMcPagesHtml(response, env, url) {
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("text/html")) {
+    return response;
+  }
+
+  const turnstileKey = env.TURNSTILE_SITE_KEY || "";
+  if (!turnstileKey) {
+    console.log("[mc-router] TURNSTILE_SITE_KEY not configured");
+    return response;
+  }
+
+  const isDebug = url.searchParams.get("debug") === "1";
+  const debugScript = isDebug
+    ? `<script>console.log("[mc-router] Turnstile key injected: ${maskKey(turnstileKey)}");</script>`
+    : "";
+
+  return new HTMLRewriter()
+    .on("body", {
+      element(element) {
+        element.setAttribute("data-turnstile-site-key", turnstileKey);
+        if (debugScript) {
+          element.append(debugScript, { html: true });
+        }
+      },
+    })
+    .transform(response);
+}
 
 const SHIM_HTML = `
   <script>
@@ -143,15 +163,34 @@ const SHIM_HTML = `
 // Helper Functions
 // ────────────────────────────────────────────────────────────────────────────
 
+const REQUIRED_ORIGIN_VARS = [
+  "MC_PAGES_ORIGIN",
+  "SIGMABLOX_ORIGIN",
+  "SIGMABLOX_API_ORIGIN",
+  "APP_ORIGIN",
+  "WINGMAN_ORIGIN",
+  "CONTROL_ORIGIN",
+];
+
 function getOrigins(env) {
+  const missing = REQUIRED_ORIGIN_VARS.filter((key) => !env[key]);
+  if (missing.length > 0) {
+    throw new Error(`Missing required origin vars: ${missing.join(", ")}`);
+  }
   return {
-    mcPages: env.MC_PAGES_ORIGIN || DEFAULT_ORIGINS.mcPages,
-    sigmablox: env.SIGMABLOX_ORIGIN || DEFAULT_ORIGINS.sigmablox,
-    sigmabloxApi: env.SIGMABLOX_API_ORIGIN || DEFAULT_ORIGINS.sigmabloxApi,
-    app: env.APP_ORIGIN || DEFAULT_ORIGINS.app,
-    wingman: env.WINGMAN_ORIGIN || DEFAULT_ORIGINS.wingman,
-    control: env.CONTROL_ORIGIN || DEFAULT_ORIGINS.control,
+    mcPages: env.MC_PAGES_ORIGIN,
+    sigmablox: env.SIGMABLOX_ORIGIN,
+    sigmabloxApi: env.SIGMABLOX_API_ORIGIN,
+    app: env.APP_ORIGIN,
+    wingman: env.WINGMAN_ORIGIN,
+    control: env.CONTROL_ORIGIN,
   };
+}
+
+function parseCorsOrigins(env) {
+  const raw = env.API_CORS_ORIGINS || "";
+  if (!raw) return new Set();
+  return new Set(raw.split(",").map((s) => s.trim()).filter(Boolean));
 }
 
 function getRoutes(origins) {
@@ -262,9 +301,10 @@ function buildUpstreamHeaders(request, { stripCookies = false } = {}) {
 // CORS Handling
 // ────────────────────────────────────────────────────────────────────────────
 
-function getCorsHeaders(request) {
+function getCorsHeaders(request, env) {
   const origin = request.headers.get("Origin");
-  if (origin && API_CORS_ORIGINS.has(origin)) {
+  const allowedOrigins = parseCorsOrigins(env);
+  if (origin && allowedOrigins.has(origin)) {
     return {
       "Access-Control-Allow-Origin": origin,
       "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -277,7 +317,7 @@ function getCorsHeaders(request) {
 
 async function handleApiRoute(request, targetUrl, env) {
   if (request.method === "OPTIONS") {
-    const corsHeaders = getCorsHeaders(request);
+    const corsHeaders = getCorsHeaders(request, env);
     if (corsHeaders) {
       return new Response(null, { status: 204, headers: corsHeaders });
     }
@@ -298,7 +338,7 @@ async function handleApiRoute(request, targetUrl, env) {
   });
 
   const response = await fetch(proxyRequest);
-  const corsHeaders = getCorsHeaders(request);
+  const corsHeaders = getCorsHeaders(request, env);
 
   if (corsHeaders) {
     const newHeaders = new Headers(response.headers);
@@ -488,7 +528,8 @@ export default {
         }
       }
 
-      return response;
+      // Inject Turnstile key into HTML responses
+      return transformMcPagesHtml(response, env, url);
     }
 
     // 6) API route handling

@@ -39,6 +39,12 @@ WINGMAN_ORIGIN = "https://wingman.mergecombinator.com"
 CONTROL_ORIGIN = "https://control.mergecombinator.com"
 WINGMAN_CONSOLE_ENABLED = "false"
 
+# Cloudflare Turnstile (public site key - NOT a secret)
+TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
+
+# CORS allowed origins (comma-separated)
+API_CORS_ORIGINS = "https://mergecombinator.com,https://www.mergecombinator.com,https://console.mergecombinator.com"
+
 # -----------------------------------------------------------------------------
 # Staging environment - for testing changes before production
 # Deploy with: wrangler deploy --env staging
@@ -60,6 +66,8 @@ APP_ORIGIN = "https://app.mergecombinator.com"
 WINGMAN_ORIGIN = "https://wingman.mergecombinator.com"
 CONTROL_ORIGIN = "https://control.mergecombinator.com"
 WINGMAN_CONSOLE_ENABLED = "false"
+TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
+API_CORS_ORIGINS = "https://mergecombinator.com,https://www.mergecombinator.com,https://console.mergecombinator.com"
 
 # -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
@@ -72,7 +80,12 @@ name = "mc-router-dev"
 OIDC_ISSUER_URL = "http://localhost:9000"  # Must match config/dev.local.yaml line 16
 OAUTH_LOGOUT_URL = "http://localhost:9000/application/o/mergecombinator/end-session/"
 MC_PAGES_ORIGIN = "http://localhost:3000"
+SIGMABLOX_ORIGIN = "http://localhost:2368"
+SIGMABLOX_API_ORIGIN = "http://localhost:2368"
 APP_ORIGIN = "http://localhost:3003"
 WINGMAN_ORIGIN = "http://localhost:5173"
 CONTROL_ORIGIN = "http://localhost:3300"
 WINGMAN_CONSOLE_ENABLED = "false"
+# Use Turnstile test key for local dev (always passes)
+TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
+API_CORS_ORIGINS = "http://localhost:3000,http://localhost:3002,http://localhost:5173"

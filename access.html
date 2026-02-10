@@ -23,8 +23,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <!-- Cloudflare Turnstile (explicit render - key injected by Worker) -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadTurnstileCallback" async defer></script>
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
@@ -69,12 +69,43 @@
       color: var(--gray-light);
     }
 
-    /* Path Cards Grid */
+    /* Already a member - above cards */
+    .access-member {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+    }
+
+    .access-member__text {
+      font-size: 0.9rem;
+      color: var(--gray-medium);
+    }
+
+    .access-member__link {
+      color: var(--signal-blue);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .access-member__link:hover {
+      text-decoration: underline;
+    }
+
+    /* Path Cards Grid - fixed 3-column on desktop */
     .access-paths {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 20px;
       margin-bottom: 32px;
+    }
+
+    @media (max-width: 1024px) {
+      .access-paths {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     .access-card {
@@ -192,8 +223,8 @@
       font-weight: 600;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      background: rgba(59, 130, 246, 0.15);
-      color: var(--signal-blue);
+      background: rgba(59, 130, 246, 0.2);
+      color: #60a5fa;
       border: 1px solid rgba(59, 130, 246, 0.35);
       border-radius: 2px;
       margin-bottom: 12px;
@@ -551,6 +582,13 @@
         <p class="access-header__subtitle">Choose your path into Defense Builders.</p>
       </header>
 
+      <!-- Already a member -->
+      <div class="access-member">
+        <p class="access-member__text">
+          Already a member? <a href="/auth/login" class="access-member__link">Sign in</a>
+        </p>
+      </div>
+
       <!-- Path Cards -->
       <div class="access-paths">
         <!-- Join Defense Builders -->
@@ -593,7 +631,7 @@
       <!-- The Combine Callout -->
       <div class="access-callout">
         <div class="access-callout__content">
-          <span class="access-callout__badge">Selection-Based</span>
+          <span class="access-callout__badge">2026 Cohort Selection</span>
           <h3 class="access-callout__title">Looking for The Combine?</h3>
           <p class="access-callout__desc">One week, in person, with operators. For funded teams ready for validation.</p>
         </div>
@@ -603,11 +641,6 @@
       </div>
 
       <!-- Footer -->
-      <footer class="access-footer">
-        <p class="access-footer__text">
-          Already a member? <a href="/auth/login" class="access-footer__link">Sign in</a>
-        </p>
-      </footer>
     </div>
   </main>
 
@@ -663,9 +696,10 @@
         </div>
 
         <!-- Turnstile widget - requires TURNSTILE_SITE_KEY in production -->
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAAA_placeholder_key" data-theme="dark" data-callback="onTurnstileSuccess" data-error-callback="onTurnstileError"></div>
+        <!-- Turnstile widget container (rendered explicitly via JS) -->
+        <div class="cf-turnstile"></div>
 
-        <button type="submit" class="request-drawer__submit" id="submit-btn" disabled>
+        <button type="submit" class="request-drawer__submit" id="submit-btn">
           Submit Request
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -692,26 +726,41 @@
   </div>
 
   <script>
-    window.MCAccessConfig = {
-      requestEndpoint: 'https://api.sigmablox.com/api/access-request',
-      notifyEmail: 'access@mergecombinator.com',
-      // Turnstile site key - replace with real key in production
-      // Dev: use '1x00000000000000000000AA' (always passes)
-      // Prod: get from Cloudflare Dashboard > Turnstile
-      turnstileSiteKey: '0x4AAAAAAA_placeholder_key'
-    };
-
-    // Turnstile callbacks
+    // Turnstile callbacks (must be defined before render)
     window.turnstileToken = null;
+    window.turnstileError = false;
     window.onTurnstileSuccess = function(token) {
       window.turnstileToken = token;
+      window.turnstileError = false;
       const btn = document.getElementById('submit-btn');
       if (btn) btn.disabled = false;
     };
     window.onTurnstileError = function() {
       window.turnstileToken = null;
+      window.turnstileError = true;
       const btn = document.getElementById('submit-btn');
-      if (btn) btn.disabled = true;
+      if (btn) btn.disabled = false;
+    };
+
+    // Get site key from Worker-injected body attribute
+    const turnstileSiteKey = (document.body.dataset.turnstileSiteKey || '');
+    window.MCAccessConfig = {
+      requestEndpoint: 'https://api.sigmablox.com/api/access-request',
+      notifyEmail: 'access@mergecombinator.com',
+      turnstileSiteKey: turnstileSiteKey
+    };
+
+    // Explicit Turnstile render after API loads
+    window.onloadTurnstileCallback = function() {
+      const container = document.querySelector('.cf-turnstile');
+      if (container && turnstileSiteKey) {
+        turnstile.render(container, {
+          sitekey: turnstileSiteKey,
+          theme: 'dark',
+          callback: window.onTurnstileSuccess,
+          'error-callback': window.onTurnstileError
+        });
+      }
     };
   </script>
 

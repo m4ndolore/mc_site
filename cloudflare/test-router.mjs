@@ -147,6 +147,7 @@ async function smokeTest(baseUrl) {
     ["/", 200, "Homepage"],
     ["/wingman", 200, "Wingman marketing page"],
     ["/builders", 200, "Builders page"],
+    ["/access", 200, "Access/signup page"],
     ["/app", 302, "App console (should redirect to login)"],
     ["/control", 302, "Control console (should redirect to login)"],
     ["/combine", 200, "Sigmablox proxy"],
@@ -180,6 +181,140 @@ async function smokeTest(baseUrl) {
   return failed === 0;
 }
 
+async function testTurnstileInjection(baseUrl) {
+  console.log("Testing Turnstile key injection...\n");
+
+  let passed = 0;
+  let failed = 0;
+
+  try {
+    const response = await fetch(`${baseUrl}/access`);
+    const html = await response.text();
+
+    // Check body has data-turnstile-site-key attribute
+    if (html.includes('data-turnstile-site-key="0x4AAAAAACLB7AvgydG3i6FP"')) {
+      console.log("  ✓ Turnstile site key injected on body");
+      passed++;
+    } else if (html.includes('data-turnstile-site-key=')) {
+      console.log("  ✓ Turnstile site key injected (different key)");
+      passed++;
+    } else {
+      console.log("  ✗ Turnstile site key NOT found on body");
+      failed++;
+    }
+
+    // Check explicit render setup
+    if (html.includes('render=explicit') && html.includes('onloadTurnstileCallback')) {
+      console.log("  ✓ Turnstile explicit render configured");
+      passed++;
+    } else {
+      console.log("  ✗ Turnstile explicit render NOT configured");
+      failed++;
+    }
+  } catch (error) {
+    console.log(`  ✗ ERROR: ${error.message}`);
+    failed += 2;
+  }
+
+  console.log(`\nTurnstile tests: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
+async function testCanonicalRedirects(baseUrl) {
+  // Only test in prod (www redirect)
+  if (!baseUrl.includes("mergecombinator.com")) {
+    console.log("Skipping canonical redirect tests (staging only)\n");
+    return true;
+  }
+
+  console.log("Testing canonical redirects...\n");
+
+  let passed = 0;
+  let failed = 0;
+
+  const testCases = [
+    ["https://www.mergecombinator.com/", 301, "mergecombinator.com"],
+    ["https://www.mergecombinator.com/builders", 301, "mergecombinator.com"],
+  ];
+
+  for (const [url, expectedStatus, expectedHost] of testCases) {
+    try {
+      const response = await fetch(url, { redirect: "manual" });
+      const location = response.headers.get("location") || "";
+
+      if (response.status === expectedStatus && location.includes(expectedHost)) {
+        console.log(`  ✓ ${url} → ${response.status} (redirects to ${expectedHost})`);
+        passed++;
+      } else {
+        console.log(`  ✗ ${url} → ${response.status} location=${location}`);
+        failed++;
+      }
+    } catch (error) {
+      console.log(`  ✗ ${url} → ERROR: ${error.message}`);
+      failed++;
+    }
+  }
+
+  console.log(`\nCanonical redirects: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
+async function testCorsHeaders(baseUrl) {
+  console.log("Testing CORS headers...\n");
+
+  let passed = 0;
+  let failed = 0;
+
+  // Test with allowed origin
+  try {
+    const response = await fetch(`${baseUrl}/api/health`, {
+      method: "OPTIONS",
+      headers: {
+        "Origin": "https://mergecombinator.com",
+        "Access-Control-Request-Method": "GET"
+      }
+    });
+
+    const allowOrigin = response.headers.get("access-control-allow-origin");
+    if (allowOrigin === "https://mergecombinator.com") {
+      console.log("  ✓ CORS allows https://mergecombinator.com");
+      passed++;
+    } else {
+      console.log(`  ✗ CORS header missing or wrong: ${allowOrigin}`);
+      failed++;
+    }
+  } catch (error) {
+    console.log(`  ✗ CORS test error: ${error.message}`);
+    failed++;
+  }
+
+  // Test with disallowed origin
+  try {
+    const response = await fetch(`${baseUrl}/api/health`, {
+      method: "OPTIONS",
+      headers: {
+        "Origin": "https://evil.com",
+        "Access-Control-Request-Method": "GET"
+      }
+    });
+
+    const allowOrigin = response.headers.get("access-control-allow-origin");
+    if (!allowOrigin) {
+      console.log("  ✓ CORS blocks https://evil.com");
+      passed++;
+    } else {
+      console.log(`  ✗ CORS should block evil.com but got: ${allowOrigin}`);
+      failed++;
+    }
+  } catch (error) {
+    console.log(`  ✗ CORS block test error: ${error.message}`);
+    failed++;
+  }
+
+  console.log(`\nCORS tests: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
 // ============================================================================
 // Main
 // ============================================================================
@@ -188,9 +323,9 @@ async function main() {
   const env = process.argv[2] || "staging";
   const baseUrl = env === "prod" ? PROD_URL : STAGING_URL;
 
-  console.log("=" .repeat(60));
+  console.log("=".repeat(60));
   console.log("MC Router Test Suite");
-  console.log("=" .repeat(60));
+  console.log("=".repeat(60));
   console.log();
 
   // Unit tests
@@ -201,9 +336,19 @@ async function main() {
   console.log("-".repeat(60));
   const smokeTestsPassed = await smokeTest(baseUrl);
 
+  console.log("-".repeat(60));
+  const turnstileTestsPassed = await testTurnstileInjection(baseUrl);
+
+  console.log("-".repeat(60));
+  const canonicalTestsPassed = await testCanonicalRedirects(baseUrl);
+
+  console.log("-".repeat(60));
+  const corsTestsPassed = await testCorsHeaders(baseUrl);
+
   // Summary
   console.log("=".repeat(60));
-  const allPassed = routeTestsPassed && sanitizeTestsPassed && smokeTestsPassed;
+  const allPassed = routeTestsPassed && sanitizeTestsPassed && smokeTestsPassed &&
+                    turnstileTestsPassed && canonicalTestsPassed && corsTestsPassed;
 
   if (allPassed) {
     console.log("✓ All tests passed!");
