@@ -4,3 +4,8 @@
 # Note: Cloudflare Pages automatically serves .html files without extension
 # Only add redirects here for non-standard routing (external URLs, etc.)
 # DO NOT add rewrites like "/builders /builders.html 200" - this causes redirect loops
+
+# Legacy path redirects
+/marketplace /guild 301
+/guild/ /guild 301
+/combine /programs/the-combine 301
