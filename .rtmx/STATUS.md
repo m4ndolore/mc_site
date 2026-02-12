@@ -1,21 +1,21 @@
 # Ralph Status
 
 ## Current Session
-- **Started**: 2026-02-11 00:00
-- **Task**: REQ-INFRA-003 - Complete MC Router restructuring (PARTIAL)
+- **Started**: 2026-02-11 20:35
+- **Task**: REQ-UX-002 - Unify dark theme across all pages (COMPLETE)
 
 ## Queue (Next 5)
-1. REQ-INFRA-003 - Subdomain DNS setup (needs human)
-2. REQ-AUTH-005 - VIA local dev integration (PARTIAL)
-3. REQ-BUG-001 - VIA passkey flow error UX (PARTIAL)
-4. REQ-DOCS-003 - Contributor access workflow (PARTIAL)
-5. REQ-AUTH-004 - Passkey setup prompt (BLOCKED - needs VIA lift-and-shift)
+1. REQ-UX-003 - Add missing footers (PENDING)
+2. REQ-UX-004 - Mobile navigation polish (PENDING)
+3. REQ-INFRA-003 - Subdomain DNS setup (BLOCKED - needs human)
+4. REQ-AUTH-005 - VIA local dev integration (PARTIAL)
+5. REQ-BUG-001 - VIA passkey flow error UX (PARTIAL)
 
 ## Recently Completed
+- REQ-UX-002 - Dark theme unified, deleted dark-theme.css and builders-dark.css (2026-02-11)
 - REQ-INFRA-003 - Turnstile verification, config hardening, test expansion (2026-02-11)
 - REQ-BUG-007 - Identified /opportunities 500 error from Railway origin (2026-02-11)
 - REQ-C2UX-001 scope revision - marketing vs operational split (2026-01-31)
-- Unified navbar with Platform dropdown (2026-01-31)
 - REQ-UX-001 - Mobile UI/UX review - all pages pass (2026-01-31)
 
 ## Blocked / Needs Human
@@ -112,4 +112,36 @@
 **Result:** COMPLETE - No fixes required, site is well-optimized for mobile.
 
 ---
-_Last updated: 2026-02-11 06:35_
+
+### REQ-UX-002: Dark Theme Unification (COMPLETE)
+
+**Work completed:**
+
+1. **Investigation**
+   - Found `styles.css` already has dark body defaults (lines 95-108)
+   - Found dark theme rules already merged into `styles.css` (lines 4695-5588)
+   - Found `builders.css` already dark-native
+   - Found `dark-theme.css` only imported by `programs/the-combine.html`
+
+2. **Cleanup**
+   - Removed `dark-theme.css` import from `programs/the-combine.html`
+   - Deleted `dark-theme.css` (930 lines - redundant)
+   - Deleted `styles/builders-dark.css` (169 lines - never imported)
+
+3. **RTMX Database Maintenance**
+   - Added REQ-UX-002 through REQ-UX-007 to database.csv (were missing)
+   - Created REQ-BUG-007.md requirement file
+
+4. **Visual Verification**
+   - Tested: homepage, builders, blog, portfolio, knowledge, combine pages
+   - All pages render with consistent dark theme
+   - Build passes cleanly
+
+**CSS Architecture (final state):**
+- `styles.css` - All base styles + dark theme rules (5588 lines)
+- `styles/builders.css` - Builders page dark-native (1189 lines)
+- `styles/dashboard.css` - Dashboard C2UX (287 lines)
+- `subpage.css` - Subpage styles (717 lines)
+
+---
+_Last updated: 2026-02-11 20:50_
