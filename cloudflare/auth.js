@@ -34,6 +34,18 @@ function getOAuthUrls(env) {
   };
 }
 
+/**
+ * Validate required OAuth environment variables.
+ * Throws on missing configuration to fail fast.
+ */
+function validateOAuthConfig(env) {
+  const required = ["MC_OAUTH_CLIENT_ID", "MC_OAUTH_CLIENT_SECRET", "SESSION_SECRET"];
+  const missing = required.filter((key) => !env[key]);
+  if (missing.length > 0) {
+    throw new Error(`Missing required OAuth env vars: ${missing.join(", ")}`);
+  }
+}
+
 // Cookie settings
 const SESSION_COOKIE_NAME = "mc_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
@@ -231,6 +243,9 @@ export function createLastConsoleCookie(value, env, isSecure) {
  * This survives cross-site redirects where cookies may be blocked.
  */
 async function handleLogin(request, env) {
+  // Validate OAuth configuration - fail fast if misconfigured
+  validateOAuthConfig(env);
+
   const url = new URL(request.url);
   const returnTo = url.searchParams.get("returnTo") || "/";
 

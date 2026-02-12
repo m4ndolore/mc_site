@@ -1,30 +1,74 @@
 # Ralph Status
 
 ## Current Session
-- **Started**: 2026-01-31 00:00
-- **Task**: REQ-C2UX-001 scope revision + unified navbar (COMPLETE)
+- **Started**: 2026-02-11 00:00
+- **Task**: REQ-INFRA-003 - Complete MC Router restructuring (PARTIAL)
 
 ## Queue (Next 5)
-1. REQ-AUTH-004 - Passkey setup prompt (BLOCKED - needs VIA admin API token)
-2. REQ-INFRA-001 - api.mergecombinator.com (BLOCKED - needs DNS record)
-3. REQ-DOCS-003 - Contributor access workflow Phase 3 (BLOCKED - needs API endpoint)
-4. -
-5. -
+1. REQ-INFRA-003 - Subdomain DNS setup (needs human)
+2. REQ-AUTH-005 - VIA local dev integration (PARTIAL)
+3. REQ-BUG-001 - VIA passkey flow error UX (PARTIAL)
+4. REQ-DOCS-003 - Contributor access workflow (PARTIAL)
+5. REQ-AUTH-004 - Passkey setup prompt (BLOCKED - needs VIA lift-and-shift)
 
 ## Recently Completed
+- REQ-INFRA-003 - Turnstile verification, config hardening, test expansion (2026-02-11)
+- REQ-BUG-007 - Identified /opportunities 500 error from Railway origin (2026-02-11)
 - REQ-C2UX-001 scope revision - marketing vs operational split (2026-01-31)
 - Unified navbar with Platform dropdown (2026-01-31)
 - REQ-UX-001 - Mobile UI/UX review - all pages pass (2026-01-31)
-- REQ-BUG-006 - Portfolio case study links fixed with pending state (2026-01-30)
-- REQ-BUG-005 - Script loading inconsistency fixed (2026-01-30)
-- REQ-BUG-004 - Partner logo path fix in index.html (2026-01-30)
-- REQ-BUG-003 - Missing /combine page fixed (2026-01-30)
 
 ## Blocked / Needs Human
-- REQ-AUTH-004: Requires AUTHENTIK_ADMIN_TOKEN in .env.local for VIA API access
+- REQ-INFRA-003: DNS records needed for app/wingman/control.mergecombinator.com
+- REQ-AUTH-004: VIA lift-and-shift in progress
 - REQ-INFRA-001: DNS record for api.mergecombinator.com
-- REQ-INFRA-002: Create mc-docs-contributors group in VIA + Outline (manual admin setup)
-- REQ-DOCS-003 Phase 3: API endpoint at api.sigmablox.com/api/contributor-request
+- REQ-BUG-007: Railway origin returning 500 for /opportunities proxy
+
+## Session Notes - 2026-02-11
+
+### REQ-INFRA-003: MC Router Restructuring
+
+**Work completed:**
+
+1. **Turnstile Verification** (Section 2)
+   - All tests pass on production
+   - Site key injection confirmed working
+   - Explicit render with onloadTurnstileCallback configured
+
+2. **Configuration Hardening** (Section 3)
+   - Added `validateOAuthConfig()` in auth.js - fails fast on missing MC_OAUTH_CLIENT_ID, MC_OAUTH_CLIENT_SECRET, SESSION_SECRET
+   - Added CORS warning when API_CORS_ORIGINS empty (console.warn instead of throw for graceful degradation)
+   - No DEFAULT_ORIGINS fallbacks found
+   - Secrets not logged to console
+
+3. **Test Coverage Expansion** (Section 6)
+   - Expanded test-router.mjs from 35 to 47 assertions
+   - Added testPublicPaths (8 paths)
+   - Added testAuthRedirects (returnTo validation, URL encoding)
+   - Added testAuthMeEndpoint (JSON structure check)
+   - Added CORS credentials test
+   - All tests pass on production
+
+4. **Subdomain Origin Readiness** (Section 8)
+   - DNS check results:
+     - app.mergecombinator.com: NO DNS ❌
+     - wingman.mergecombinator.com: NO DNS ❌
+     - control.mergecombinator.com: NO DNS ❌
+     - docs.mergecombinator.com: Has DNS ✅
+     - sbir.mergecombinator.com: Has DNS ✅
+   - Documented status in wrangler.toml comments
+
+5. **Bug Discovery**
+   - REQ-BUG-007: /opportunities returns 500 from Railway origin
+   - sbir.mergecombinator.com works when accessed directly, fails when proxied
+
+**Remaining work (blocked on human action):**
+- DNS records for app/wingman/control subdomains
+- Placeholder deployments for each console subdomain
+- DEPLOYMENT.md secrets management documentation
+- CI/CD test integration documentation
+
+---
 
 ## Session Notes - 2026-01-31
 
@@ -68,31 +112,4 @@
 **Result:** COMPLETE - No fixes required, site is well-optimized for mobile.
 
 ---
-
-## Session Notes - 2026-01-30
-
-### Bug Fix Session (23:30)
-- Ran automated codebase scan for bugs via Explore agent
-- Found and fixed 2 issues:
-
-**REQ-BUG-005: Script Loading Inconsistency**
-- `dashboard.html` and `combine.html` had `script.js` without `type="module"`
-- `builders.html` had `auth-nav.js` with unnecessary `type="module"`
-- Fixed to standardize: `script.js` always module, `auth-nav.js` never module
-
-**REQ-BUG-006: Portfolio Case Study Links**
-- 7 "View Case Study" links pointing to `href="#"` - non-functional
-- Following C2UX explicit state doctrine, replaced with disabled spans
-- Added "PENDING" badge with amber styling (matches access.html pattern)
-- CSS: dashed border, 50% opacity, pointer-events: none
-
-### Console Errors (Expected in Local Dev)
-- `/auth/me` returns HTML 404 (Cloudflare Worker not running locally)
-- Builder images 404 (Cloudflare Image Resizing not available locally)
-- These resolve in production environment
-
-### Build Warnings (Non-blocking)
-- `<script>` tags for `auth-nav.js` without `type="module"` - expected, IIFE doesn't need module
-
----
-_Last updated: 2026-01-31 00:30_
+_Last updated: 2026-02-11 06:35_
