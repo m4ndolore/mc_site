@@ -538,7 +538,7 @@
     padding: 80px 20px;
     background: var(--bg-card);
     border: 1px solid var(--border-light);
-    border-radius: 12px;
+    border-radius: 2px;
 }
 
 .loading-spinner {
@@ -565,7 +565,7 @@
     padding: 80px 20px;
     background: var(--bg-card);
     border: 1px solid var(--border-light);
-    border-radius: 12px;
+    border-radius: 2px;
 }
 
 .empty-state h3 {
