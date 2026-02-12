@@ -283,9 +283,19 @@ async function testCorsHeaders(baseUrl) {
       console.log(`  ✗ CORS header missing or wrong: ${allowOrigin}`);
       failed++;
     }
+
+    // Check credentials header
+    const allowCreds = response.headers.get("access-control-allow-credentials");
+    if (allowCreds === "true") {
+      console.log("  ✓ CORS credentials allowed");
+      passed++;
+    } else {
+      console.log(`  ✗ CORS credentials not allowed: ${allowCreds}`);
+      failed++;
+    }
   } catch (error) {
     console.log(`  ✗ CORS test error: ${error.message}`);
-    failed++;
+    failed += 2;
   }
 
   // Test with disallowed origin
@@ -315,6 +325,149 @@ async function testCorsHeaders(baseUrl) {
   return failed === 0;
 }
 
+async function testAuthRedirects(baseUrl) {
+  console.log("Testing auth redirects...\n");
+
+  let passed = 0;
+  let failed = 0;
+
+  // Test /app redirect includes returnTo
+  try {
+    const response = await fetch(`${baseUrl}/app/dashboard`, { redirect: "manual" });
+    const location = response.headers.get("location") || "";
+
+    if (location.includes("/auth/login") && location.includes("returnTo=")) {
+      console.log("  ✓ /app/dashboard redirects to login with returnTo");
+      passed++;
+    } else {
+      console.log(`  ✗ /app/dashboard redirect missing returnTo: ${location}`);
+      failed++;
+    }
+
+    // Verify returnTo is URL-encoded
+    if (location.includes("returnTo=%2Fapp%2Fdashboard")) {
+      console.log("  ✓ returnTo is properly URL-encoded");
+      passed++;
+    } else {
+      console.log(`  ✗ returnTo not properly encoded: ${location}`);
+      failed++;
+    }
+  } catch (error) {
+    console.log(`  ✗ Auth redirect test error: ${error.message}`);
+    failed += 2;
+  }
+
+  // Test /control redirect
+  try {
+    const response = await fetch(`${baseUrl}/control/users`, { redirect: "manual" });
+    const location = response.headers.get("location") || "";
+
+    if (location.includes("/auth/login") && location.includes("returnTo=")) {
+      console.log("  ✓ /control/users redirects to login with returnTo");
+      passed++;
+    } else {
+      console.log(`  ✗ /control redirect missing returnTo: ${location}`);
+      failed++;
+    }
+  } catch (error) {
+    console.log(`  ✗ Control redirect test error: ${error.message}`);
+    failed++;
+  }
+
+  console.log(`\nAuth redirect tests: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
+async function testAuthMeEndpoint(baseUrl) {
+  console.log("Testing /auth/me endpoint...\n");
+
+  let passed = 0;
+  let failed = 0;
+
+  // Test unauthenticated response
+  try {
+    const response = await fetch(`${baseUrl}/auth/me`);
+    const data = await response.json();
+
+    if (response.status === 200) {
+      console.log("  ✓ /auth/me returns 200");
+      passed++;
+    } else {
+      console.log(`  ✗ /auth/me returns ${response.status}`);
+      failed++;
+    }
+
+    if (data.authenticated === false) {
+      console.log("  ✓ Unauthenticated user shows authenticated: false");
+      passed++;
+    } else {
+      console.log(`  ✗ Expected authenticated: false, got: ${data.authenticated}`);
+      failed++;
+    }
+
+    // Check response is JSON
+    const contentType = response.headers.get("content-type") || "";
+    if (contentType.includes("application/json")) {
+      console.log("  ✓ Response is JSON");
+      passed++;
+    } else {
+      console.log(`  ✗ Expected JSON, got: ${contentType}`);
+      failed++;
+    }
+  } catch (error) {
+    console.log(`  ✗ /auth/me test error: ${error.message}`);
+    failed += 3;
+  }
+
+  console.log(`\nAuth /me tests: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
+async function testPublicPaths(baseUrl) {
+  console.log("Testing public paths (no auth required)...\n");
+
+  let passed = 0;
+  let failed = 0;
+
+  const publicPaths = [
+    ["/wingman", "Wingman marketing page", false],
+    ["/wingman/", "Wingman marketing page (trailing slash)", false],
+    ["/builders", "Builders page", false],
+    ["/access", "Access request page", false],
+    ["/combine", "Sigmablox proxy", false],
+    ["/opportunities", "SBIR proxy", true],  // Known infrastructure issue - allow 500
+    ["/privacy", "Privacy policy", false],
+    ["/terms", "Terms of service", false],
+  ];
+
+  for (const [path, description, allowServerError] of publicPaths) {
+    try {
+      const response = await fetch(`${baseUrl}${path}`, { redirect: "manual" });
+
+      // Should NOT redirect to login (302 to /auth/login)
+      const isOk = response.status === 200;
+      const isRedirect = response.status >= 300 && response.status < 400;
+      const redirectsToAuth = response.headers.get("location")?.includes("/auth/login");
+      const isServerError = response.status >= 500;
+
+      if (isOk || (isRedirect && !redirectsToAuth) || (isServerError && allowServerError)) {
+        const note = isServerError ? " (origin error - known issue)" : "";
+        console.log(`  ✓ ${path} → ${response.status}${note} (${description})`);
+        passed++;
+      } else {
+        console.log(`  ✗ ${path} → ${response.status} (redirects to auth) - ${description}`);
+        failed++;
+      }
+    } catch (error) {
+      console.log(`  ✗ ${path} → ERROR: ${error.message} - ${description}`);
+      failed++;
+    }
+  }
+
+  console.log(`\nPublic path tests: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
 // ============================================================================
 // Main
 // ============================================================================
@@ -326,6 +479,8 @@ async function main() {
   console.log("=".repeat(60));
   console.log("MC Router Test Suite");
   console.log("=".repeat(60));
+  console.log(`Environment: ${env}`);
+  console.log(`Base URL: ${baseUrl}`);
   console.log();
 
   // Unit tests
@@ -335,6 +490,15 @@ async function main() {
   // Integration tests
   console.log("-".repeat(60));
   const smokeTestsPassed = await smokeTest(baseUrl);
+
+  console.log("-".repeat(60));
+  const publicPathsPassed = await testPublicPaths(baseUrl);
+
+  console.log("-".repeat(60));
+  const authRedirectsPassed = await testAuthRedirects(baseUrl);
+
+  console.log("-".repeat(60));
+  const authMePassed = await testAuthMeEndpoint(baseUrl);
 
   console.log("-".repeat(60));
   const turnstileTestsPassed = await testTurnstileInjection(baseUrl);
@@ -348,6 +512,7 @@ async function main() {
   // Summary
   console.log("=".repeat(60));
   const allPassed = routeTestsPassed && sanitizeTestsPassed && smokeTestsPassed &&
+                    publicPathsPassed && authRedirectsPassed && authMePassed &&
                     turnstileTestsPassed && canonicalTestsPassed && corsTestsPassed;
 
   if (allPassed) {

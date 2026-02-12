@@ -189,8 +189,15 @@ function getOrigins(env) {
 
 function parseCorsOrigins(env) {
   const raw = env.API_CORS_ORIGINS || "";
-  if (!raw) return new Set();
-  return new Set(raw.split(",").map((s) => s.trim()).filter(Boolean));
+  if (!raw) {
+    console.warn("[mc-router] API_CORS_ORIGINS not configured - CORS disabled for /api/* routes");
+    return new Set();
+  }
+  const origins = new Set(raw.split(",").map((s) => s.trim()).filter(Boolean));
+  if (origins.size === 0) {
+    console.warn("[mc-router] API_CORS_ORIGINS is empty - CORS disabled for /api/* routes");
+  }
+  return origins;
 }
 
 function getRoutes(origins) {
