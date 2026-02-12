@@ -1301,6 +1301,28 @@
       "cohortId": "25-1"
     },
     {
+      "id": "cml176zh800101tydr84ymdir",
+      "legacyAirtableId": null,
+      "name": "Merge Combinator, LLC",
+      "productName": "DOMINUS",
+      "website": "www.mergecombinator.com",
+      "logoUrl": null,
+      "storedLogoId": null,
+      "location": null,
+      "missionArea": "Cyber",
+      "warfareDomain": "air",
+      "description": "We build what warfighters need.",
+      "trlLevel": 6,
+      "technicalMaturity": null,
+      "fundingStage": "pre_seed",
+      "teamSize": "1-10",
+      "tulsaAttended": null,
+      "combineStandout": null,
+      "upvoteCount": 0,
+      "cohort": null,
+      "cohortId": null
+    },
+    {
       "id": "cmknqigx7000ts601ajlm61og",
       "legacyAirtableId": "recGg9KlZzxxMlHfI",
       "name": "Modular Misfits",
@@ -2475,9 +2497,9 @@
     ]
   },
   "metadata": {
-    "fetchedAt": "2026-01-27T06:05:40.307Z",
-    "buildAt": "2026-01-27T08:25:24.000Z",
-    "source": "cache",
+    "fetchedAt": "2026-02-12T06:41:55.646Z",
+    "buildAt": "2026-02-12T06:41:55.647Z",
+    "source": "api",
     "apiBase": "https://api.sigmablox.com"
   }
 }
