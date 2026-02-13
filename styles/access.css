@@ -1,0 +1,501 @@
+/* ============================================
+   ACCESS PAGE STYLES
+   ============================================ */
+
+.access-page {
+  min-height: 100vh;
+  padding: 120px 0 80px;
+  position: relative;
+}
+
+.access-page__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(800px 400px at 30% 0%, rgba(59, 130, 246, 0.1), transparent 60%),
+    radial-gradient(600px 300px at 70% 30%, rgba(34, 197, 94, 0.08), transparent 55%),
+    linear-gradient(180deg, rgba(8, 12, 18, 0.95), rgba(5, 7, 10, 1));
+  z-index: 0;
+}
+
+.access-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.access-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.access-header__title {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 600;
+  color: var(--offwhite);
+  margin-bottom: 12px;
+}
+
+.access-header__subtitle {
+  font-size: 1.1rem;
+  color: var(--gray-light);
+}
+
+/* Already a member - above cards */
+.access-member {
+  text-align: center;
+  margin-bottom: 24px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+}
+
+.access-member__text {
+  font-size: 0.9rem;
+  color: var(--gray-medium);
+}
+
+.access-member__link {
+  color: var(--signal-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.access-member__link:hover {
+  text-decoration: underline;
+}
+
+/* Path Cards Grid - fixed 3-column on desktop */
+.access-paths {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 1024px) {
+  .access-paths {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.access-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s;
+}
+
+.access-card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.access-card__badge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 4px 10px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+
+.access-card__badge--open {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.access-card__badge--pilot {
+  background: rgba(14, 165, 233, 0.1);
+  color: #0ea5e9;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.access-card__badge--contribute {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.access-card__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--offwhite);
+  margin-bottom: 10px;
+}
+
+.access-card__desc {
+  font-size: 0.9rem;
+  color: var(--gray-light);
+  line-height: 1.5;
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.access-card__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+  color: var(--offwhite);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s;
+  cursor: pointer;
+}
+
+.access-card__cta:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.access-card__cta--primary {
+  background: var(--signal-blue);
+  border-color: var(--signal-blue);
+}
+
+.access-card__cta--primary:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+/* Selection-based Callout */
+.access-callout {
+  background: rgba(59, 130, 246, 0.05);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 4px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.access-callout__content {
+  flex: 1;
+}
+
+.access-callout__badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 2px;
+  margin-bottom: 12px;
+}
+
+.access-callout__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--offwhite);
+  margin-bottom: 6px;
+}
+
+.access-callout__desc {
+  font-size: 0.9rem;
+  color: var(--gray-light);
+}
+
+.access-callout__cta {
+  flex-shrink: 0;
+}
+
+/* Footer */
+.access-footer {
+  text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.access-footer__text {
+  font-size: 0.95rem;
+  color: var(--gray-medium);
+}
+
+.access-footer__link {
+  color: var(--signal-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.access-footer__link:hover {
+  text-decoration: underline;
+}
+
+/* Request Drawer */
+.request-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.request-drawer.is-open {
+  pointer-events: auto;
+}
+
+.request-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.request-drawer.is-open .request-drawer__backdrop {
+  opacity: 1;
+}
+
+.request-drawer__panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 480px;
+  max-width: 100%;
+  background: rgba(17, 24, 39, 0.98);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 48px 32px;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+
+.request-drawer.is-open .request-drawer__panel {
+  transform: translateX(0);
+}
+
+.request-drawer__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  color: var(--gray-light);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.request-drawer__close:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--offwhite);
+}
+
+.request-drawer__header {
+  margin-bottom: 28px;
+}
+
+.request-drawer__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--offwhite);
+  margin-bottom: 6px;
+}
+
+.request-drawer__subtitle {
+  font-size: 0.9rem;
+  color: var(--gray-light);
+}
+
+.request-drawer__form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1;
+}
+
+.request-drawer__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.request-drawer__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-medium);
+}
+
+.request-drawer__input,
+.request-drawer__select {
+  padding: 12px 14px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  color: var(--offwhite);
+  font-family: inherit;
+  font-size: 0.9rem;
+  transition: border-color 0.15s;
+}
+
+.request-drawer__input::placeholder {
+  color: var(--gray-dark);
+}
+
+.request-drawer__input:focus,
+.request-drawer__select:focus {
+  outline: none;
+  border-color: var(--signal-blue);
+}
+
+.request-drawer__select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.request-drawer__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 14px 20px;
+  background: var(--signal-blue);
+  border: none;
+  border-radius: 2px;
+  color: white;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.request-drawer__submit:hover {
+  background: #2563eb;
+}
+
+.request-drawer__success,
+.request-drawer__error {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.request-drawer__success-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  border-radius: 50%;
+  color: #22c55e;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.request-drawer__success-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--offwhite);
+  margin-bottom: 6px;
+}
+
+.request-drawer__success-text {
+  font-size: 0.9rem;
+  color: var(--gray-light);
+}
+
+.request-drawer__error {
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  background: rgba(127, 29, 29, 0.2);
+  border-radius: 4px;
+}
+
+.request-drawer__error-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(248, 113, 113, 0.5);
+  border-radius: 4px;
+  color: #fca5a5;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.request-drawer__error-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fca5a5;
+  margin-bottom: 6px;
+}
+
+.request-drawer__error-text {
+  font-size: 0.9rem;
+  color: rgba(252, 165, 165, 0.85);
+}
+
+.request-drawer__footer {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.85rem;
+  color: var(--gray-medium);
+  text-align: center;
+}
+
+.request-drawer__footer a {
+  color: var(--signal-blue);
+  text-decoration: none;
+}
+
+.request-drawer__footer a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .access-paths {
+    grid-template-columns: 1fr;
+  }
+
+  .access-callout {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .request-drawer__panel {
+    width: 100%;
+    padding: 32px 24px;
+  }
+}
