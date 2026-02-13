@@ -3,8 +3,10 @@ import type {
   OpportunityDetailResponse,
 } from "../types/opportunity";
 
+// In dev, Vite proxies /api to the production worker (avoids CORS).
+// In prod, use the full worker URL.
 const API_BASE = import.meta.env.DEV
-  ? "http://localhost:8787"
+  ? ""
   : "https://opportunities-api.defensebuilders.workers.dev";
 
 export async function fetchOpportunities(
