@@ -34,12 +34,11 @@ COOKIE_DOMAIN = ".mergecombinator.com"  # Enables cross-subdomain sessions (www,
 MC_PAGES_ORIGIN = "https://mc-site-dr4.pages.dev"
 SIGMABLOX_ORIGIN = "https://www.sigmablox.com"
 SIGMABLOX_API_ORIGIN = "https://api.sigmablox.com"
-# Console origins - DNS not yet configured (2026-02-11)
-# TODO: Create DNS records and deploy placeholder pages
+# Console origins - DNS configured 2026-02-13, placeholder pages deployed
 # See REQ-INFRA-003 for subdomain readiness tracking
-APP_ORIGIN = "https://app.mergecombinator.com"         # NO DNS - routes to /app/* return 522
-WINGMAN_ORIGIN = "https://wingman.mergecombinator.com" # NO DNS - routes to /app/wingman/* return 522
-CONTROL_ORIGIN = "https://control.mergecombinator.com" # NO DNS - routes to /control/* return 522
+APP_ORIGIN = "https://app.mergecombinator.com"         # CNAME → mc-app-placeholder.pages.dev
+WINGMAN_ORIGIN = "https://wingman.mergecombinator.com" # CNAME → mc-wingman-placeholder.pages.dev
+CONTROL_ORIGIN = "https://control.mergecombinator.com" # CNAME → mc-control-placeholder.pages.dev
 SBIR_ORIGIN = "https://sbir.mergecombinator.com"       # Railway deployment
 OPPORTUNITIES_PAGES_URL = "https://mc-opportunities.pages.dev"
 WINGMAN_CONSOLE_ENABLED = "false"
