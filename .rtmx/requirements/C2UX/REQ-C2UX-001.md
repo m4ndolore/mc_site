@@ -118,7 +118,7 @@ Apply C2UX design doctrine to **operational pages only** (dashboards, consoles, 
 
 4. **Language Audit**
    - "Build What Warfighters Need" → "Merge Combinator" (just the name)
-   - "National Security Innovation" → "OPERATIONAL" status
+   - "National Security Innovation" → Three badges: "National Security", "Problem to Solution", "1 to n"
    - "Watch Overview" → removed
    - "Get Involved" → "Access Protocols"
    - "Testimonials" → removed entirely

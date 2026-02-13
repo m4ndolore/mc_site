@@ -352,14 +352,19 @@
       const h = canvas.offsetHeight;
       const area = w * h;
 
+      // Scale density for large viewports
+      const isLarge = w >= 1400;
+      const hubDivisor = isLarge ? 60000 : 80000;
+      const nodeDivisor = isLarge ? 9000 : 12000;
+
       // Hub nodes (larger, fewer)
-      const hubCount = Math.max(5, Math.floor(area / 80000));
+      const hubCount = Math.max(5, Math.floor(area / hubDivisor));
       for (let i = 0; i < hubCount; i++) {
         nodes.push(new Node(true));
       }
 
       // Regular nodes
-      const nodeCount = Math.max(30, Math.floor(area / 12000));
+      const nodeCount = Math.max(30, Math.floor(area / nodeDivisor));
       for (let i = 0; i < nodeCount; i++) {
         nodes.push(new Node(false));
       }
@@ -387,7 +392,7 @@
             ctx.stroke();
 
             // Occasionally spawn data particles
-            if (Math.random() < 0.001 && particles.length < 20) {
+            if (Math.random() < 0.002 && particles.length < 30) {
               particles.push(new DataParticle(nodes[i], nodes[j]));
             }
           }
@@ -642,22 +647,34 @@
   function initHeroParallax() {
     const heroGrid = document.querySelector('.hero__grid');
     const heroGradient = document.querySelector('.hero__gradient');
+    const heroCanvas = document.querySelector('.hero__canvas');
 
     if (!heroGrid) return;
 
-    const handleScroll = debounce(() => {
+    let ticking = false;
+
+    function updateParallax() {
       const scrolled = window.pageYOffset;
 
       if (scrolled < window.innerHeight) {
-        const rate = scrolled * 0.15;
+        const rate = scrolled * 0.25;
         heroGrid.style.transform = `translateY(${rate}px)`;
         if (heroGradient) {
           heroGradient.style.transform = `translateY(${rate * 0.5}px)`;
         }
+        if (heroCanvas) {
+          heroCanvas.style.opacity = Math.max(0.3, 0.75 - scrolled / window.innerHeight * 0.45);
+        }
       }
-    }, 10);
+      ticking = false;
+    }
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
   }
 
   // ============================================
