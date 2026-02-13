@@ -1,0 +1,15 @@
+name = "mc-playwright-mcp"
+main = "src/index.ts"
+compatibility_date = "2026-02-06"
+compatibility_flags = ["nodejs_compat"]
+
+[browser]
+binding = "BROWSER"
+
+[[durable_objects.bindings]]
+name = "MCP_OBJECT"
+class_name = "PlaywrightMCP"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["PlaywrightMCP"]
