@@ -338,7 +338,7 @@ function Layout(): React.JSX.Element {
 
       <header className="nav" id="nav">
         <div className="nav__container">
-          <a href="https://mergecombinator.com" className="nav__logo">
+          <a href="/" className="nav__logo">
             <span className="nav__logo-text">
               <span className="nav__logo-merge">Merge</span>
               <span className="nav__logo-combinator">Combinator</span>
@@ -352,17 +352,17 @@ function Layout(): React.JSX.Element {
 
           <nav className="nav__menu" aria-label="Primary navigation">
             <div className="nav__menu-links">
-              <a href="https://mergecombinator.com/builders" className="nav__link">
+              <a href="/builders" className="nav__link">
                 Defense Builders
               </a>
-              <a href="https://mergecombinator.com/wingman" className="nav__link">
+              <a href="/wingman" className="nav__link">
                 Wingman
               </a>
-              <a href="https://mergecombinator.com/guild" className="nav__link">
+              <a href="/guild" className="nav__link">
                 Guild
               </a>
               <a
-                href="https://mergecombinator.com/programs/the-combine"
+                href="/programs/the-combine"
                 className="nav__link"
               >
                 The Combine
@@ -397,25 +397,25 @@ function Layout(): React.JSX.Element {
                 </button>
                 <div className="nav__dropdown-menu">
                   <a
-                    href="https://mergecombinator.com/opportunities"
+                    href="/opportunities"
                     className="nav__dropdown-item nav__link--active"
                   >
                     Opportunities
                   </a>
                   <a
-                    href="https://mergecombinator.com/status"
+                    href="/status"
                     className="nav__dropdown-item"
                   >
                     Status
                   </a>
                   <a
-                    href="https://mergecombinator.com/briefs"
+                    href="/briefs"
                     className="nav__dropdown-item"
                   >
                     Briefs
                   </a>
                   <a
-                    href="https://mergecombinator.com/knowledge"
+                    href="/knowledge"
                     className="nav__dropdown-item"
                   >
                     Knowledge
@@ -431,13 +431,13 @@ function Layout(): React.JSX.Element {
             </div>
             <div className="nav__menu-actions">
               <a
-                href="https://mergecombinator.com/auth/login"
+                href="/auth/login"
                 className="nav__btn nav__btn--secondary"
               >
                 Sign in
               </a>
               <a
-                href="https://mergecombinator.com/access"
+                href="/access"
                 className="nav__btn nav__btn--access"
               >
                 Join
@@ -455,7 +455,7 @@ function Layout(): React.JSX.Element {
         <div className="footer__container">
           <div className="footer__grid">
             <div className="footer__brand">
-              <a href="https://mergecombinator.com" className="footer__logo">
+              <a href="/" className="footer__logo">
                 <span className="footer__logo-text">
                   <span className="footer__logo-merge">Merge</span>
                   <span className="footer__logo-combinator">Combinator</span>
@@ -499,37 +499,37 @@ function Layout(): React.JSX.Element {
               <div>
                 <h4 className="footer__heading">Platform</h4>
                 <ul className="footer__list">
-                  <li><a href="https://mergecombinator.com/builders">Defense Builders</a></li>
-                  <li><a href="https://mergecombinator.com/wingman">Wingman</a></li>
-                  <li><a href="https://mergecombinator.com/guild">Guild</a></li>
-                  <li><a href="https://mergecombinator.com/programs/the-combine">The Combine</a></li>
-                  <li><a href="https://mergecombinator.com/opportunities">Opportunities</a></li>
-                  <li><a href="https://mergecombinator.com/briefs">Briefs</a></li>
+                  <li><a href="/builders">Defense Builders</a></li>
+                  <li><a href="/wingman">Wingman</a></li>
+                  <li><a href="/guild">Guild</a></li>
+                  <li><a href="/programs/the-combine">The Combine</a></li>
+                  <li><a href="/opportunities">Opportunities</a></li>
+                  <li><a href="/briefs">Briefs</a></li>
                 </ul>
               </div>
               <div>
                 <h4 className="footer__heading">Company</h4>
                 <ul className="footer__list">
-                  <li><a href="https://mergecombinator.com/#hero">About</a></li>
-                  <li><a href="https://mergecombinator.com/access">Contact</a></li>
-                  <li><a href="https://mergecombinator.com/builders">Careers</a></li>
+                  <li><a href="/#hero">About</a></li>
+                  <li><a href="/access">Contact</a></li>
+                  <li><a href="/builders">Careers</a></li>
                 </ul>
               </div>
               <div>
                 <h4 className="footer__heading">Resources</h4>
                 <ul className="footer__list">
-                  <li><a href="https://mergecombinator.com/blog">Blog</a></li>
-                  <li><a href="https://mergecombinator.com/portfolio">Case Studies</a></li>
-                  <li><a href="https://mergecombinator.com/knowledge">Knowledge</a></li>
+                  <li><a href="/blog">Blog</a></li>
+                  <li><a href="/portfolio">Case Studies</a></li>
+                  <li><a href="/knowledge">Knowledge</a></li>
                   <li><a href="https://docs.mergecombinator.com">Docs</a></li>
                 </ul>
               </div>
               <div>
                 <h4 className="footer__heading">Legal</h4>
                 <ul className="footer__list">
-                  <li><a href="https://mergecombinator.com/privacy">Privacy Policy</a></li>
-                  <li><a href="https://mergecombinator.com/terms">Terms of Service</a></li>
-                  <li><a href="https://mergecombinator.com/security">Security</a></li>
+                  <li><a href="/privacy">Privacy Policy</a></li>
+                  <li><a href="/terms">Terms of Service</a></li>
+                  <li><a href="/security">Security</a></li>
                 </ul>
               </div>
             </div>
