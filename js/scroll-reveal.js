@@ -105,4 +105,28 @@
     });
   });
 
+  // ============================================
+  // LINK PREFETCH ON HOVER
+  // ============================================
+
+  const prefetched = new Set();
+
+  function prefetchLink(href) {
+    if (prefetched.has(href)) return;
+    if (!href.startsWith('/') && !href.startsWith(location.origin)) return;
+
+    prefetched.add(href);
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = href;
+    document.head.appendChild(link);
+  }
+
+  document.addEventListener('pointerenter', (e) => {
+    const anchor = e.target.closest('a[href]');
+    if (anchor && anchor.href && !anchor.href.startsWith('#')) {
+      prefetchLink(anchor.href);
+    }
+  }, { capture: true, passive: true });
+
 })();

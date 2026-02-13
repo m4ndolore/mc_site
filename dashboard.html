@@ -83,22 +83,22 @@
           <div class="panel__content metrics">
             <article class="metric">
               <div class="metric__label">Builder records</div>
-              <div class="metric__value" id="metric-builders">--</div>
+              <div class="metric__value" id="metric-builders"><span class="skeleton skeleton-metric"></span></div>
               <div class="metric__delta" id="metric-builders-delta">Baseline</div>
             </article>
             <article class="metric">
               <div class="metric__label">Mission areas</div>
-              <div class="metric__value" id="metric-missions">--</div>
+              <div class="metric__value" id="metric-missions"><span class="skeleton skeleton-metric"></span></div>
               <div class="metric__delta">Unique</div>
             </article>
             <article class="metric">
               <div class="metric__label">Warfare domains</div>
-              <div class="metric__value" id="metric-domains">--</div>
+              <div class="metric__value" id="metric-domains"><span class="skeleton skeleton-metric"></span></div>
               <div class="metric__delta">Unique</div>
             </article>
             <article class="metric">
               <div class="metric__label">Recent additions</div>
-              <div class="metric__value" id="metric-recent">--</div>
+              <div class="metric__value" id="metric-recent"><span class="skeleton skeleton-metric"></span></div>
               <div class="metric__delta">Last 7 days</div>
             </article>
           </div>
@@ -111,7 +111,9 @@
           </header>
           <div class="panel__content">
             <ol class="activity-list" id="activity-list">
-              <li class="activity-list__item activity-list__item--empty">Retrieving records…</li>
+              <li class="activity-list__item" aria-hidden="true"><div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div style="flex:1"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text--short"></div></div></div></li>
+              <li class="activity-list__item" aria-hidden="true"><div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div style="flex:1"><div class="skeleton skeleton-text--medium skeleton"></div><div class="skeleton skeleton-text--short"></div></div></div></li>
+              <li class="activity-list__item" aria-hidden="true"><div class="skeleton-row"><div class="skeleton skeleton-avatar"></div><div style="flex:1"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text--short"></div></div></div></li>
             </ol>
           </div>
         </section>
@@ -122,7 +124,9 @@
             <div class="panel__meta">Top missions by record count</div>
           </header>
           <div class="panel__content coverage" id="coverage-list">
-            <div class="coverage__row coverage__row--empty">Coverage pending data.</div>
+            <div class="coverage__row" aria-hidden="true"><div class="skeleton skeleton-text--medium"></div><div class="skeleton skeleton-text--short"></div></div>
+            <div class="coverage__row" aria-hidden="true"><div class="skeleton skeleton-text--medium"></div><div class="skeleton skeleton-text--short"></div></div>
+            <div class="coverage__row" aria-hidden="true"><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text--short"></div></div>
           </div>
         </section>
       </div>
