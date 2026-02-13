@@ -1,50 +1,60 @@
 # REQ-BUG-007: /opportunities returns 500 from SBIR origin
 
 ## Metadata
-- **Status**: PENDING
+- **Status**: RESOLVED (WORKAROUND)
 - **Priority**: LOW
 - **Phase**: 2
 - **Effort**: 0.5 weeks
 - **Dependencies**: None
 - **Blocks**: None
+- **Resolved Date**: 2026-02-12
 
 ## Bug Description
 The `/opportunities` route on mergecombinator.com returns a 500 error when proxied through the MC Router, despite the SBIR origin (sbir.mergecombinator.com) working correctly when accessed directly.
 
-## Steps to Reproduce
-1. Navigate to https://www.mergecombinator.com/opportunities
-2. Observe 500 error response
+## Root Cause Analysis (2026-02-12)
+**Root Cause**: Cloudflare Worker subrequest to sbir.mergecombinator.com triggers an infinite redirect loop.
 
-## Expected Behavior
-Page should load SBIR opportunities content from sbir.mergecombinator.com
+### Investigation Details
+1. Initial error was `1101` (DNS resolution/connection error)
+2. After adding `redirect: "manual"`, discovered Railway was returning 301 redirects
+3. The redirect pointed to the same URL: `https://sbir.mergecombinator.com/` → `https://sbir.mergecombinator.com/`
+4. This created an infinite redirect loop (21+ redirects)
 
-## Actual Behavior
-500 Internal Server Error returned
+### Tests Performed
+- Direct curl to sbir.mergecombinator.com: 200 OK ✓
+- Curl with wrong Host header: 404 (confirms Host sensitivity)
+- Curl with X-Forwarded-* headers: 200 OK ✓
+- Worker subrequest: Redirect loop ✗
 
-## Technical Details
-- **Origin**: sbir.mergecombinator.com (Railway deployment)
-- **Route**: `merge-router.js:210`
-- **Direct access**: Works (200 OK)
-- **Proxied access**: Fails (500 Error)
+### Likely Cause
+Railway edge may be detecting Cloudflare Worker traffic and redirecting it, possibly due to:
+- Worker IP range detection
+- Internal Cloudflare routing behavior
+- Railway's edge handling of CNAME-resolved traffic from CF nameservers
 
-## Likely Causes
-1. Header handling issue with `X-Forwarded-*` headers at Railway origin
-2. Host header mismatch between proxy request and origin expectation
-3. Railway-specific configuration expecting certain headers
+## Resolution
+**Implemented**: Redirect-only route instead of proxy
 
-## Investigation Notes
-- sbir.mergecombinator.com has valid DNS
-- Direct curl to origin returns 200
-- Proxy adds `X-Forwarded-For`, `X-Forwarded-Host`, `X-Forwarded-Proto`
-- Railway may be rejecting based on unexpected Host header
+```javascript
+{ prefix: "/opportunities", origin: origins.sbir, stripPrefix: true, redirectOnly: true }
+```
 
-## Resolution Path
-1. Check Railway origin logs for error details
-2. Verify header passthrough in MC Router
-3. Test with explicit Host header override
-4. Consider Railway configuration changes
+The router now returns a 302 redirect to `sbir.mergecombinator.com` instead of proxying the content.
+
+### Trade-offs
+- ✓ Feature works - users can access opportunities
+- ✓ No complex proxy debugging required
+- ✗ Users see subdomain URL in browser bar
+- ✗ No unified URL experience
+
+## Future Improvement
+To achieve full proxy support (unified URL), consider:
+1. **Migrate SBIR frontend to CF Pages** - Eliminates proxy need entirely
+2. **Use CF Access service tokens** - May bypass Railway edge behavior
+3. **Direct Railway internal URL** - Would require Railway config for Host acceptance
 
 ## Acceptance Criteria
-- [ ] `/opportunities` returns 200 with SBIR content
-- [ ] No errors in MC Router logs
-- [ ] No errors in Railway origin logs
+- [x] `/opportunities` returns usable content (via redirect)
+- [x] No errors in MC Router logs
+- [x] Feature accessible to users

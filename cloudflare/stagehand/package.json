@@ -1,0 +1,16 @@
+{
+  "name": "mc-stagehand-tests",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@browserbasehq/stagehand": "2.5.7",
+    "@cloudflare/playwright": "^1.1.0",
+    "zod": "3.25.67",
+    "zod-to-json-schema": "^3.24.6"
+  }
+}

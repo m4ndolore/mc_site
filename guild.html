@@ -138,6 +138,36 @@
       color: var(--gray-medium);
       margin-top: 18px;
     }
+
+    /* Footer */
+    .guild-footer {
+      padding: 40px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: center;
+    }
+
+    .guild-footer__links {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .guild-footer__link {
+      font-size: 0.85rem;
+      color: var(--gray-medium);
+      text-decoration: none;
+    }
+
+    .guild-footer__link:hover {
+      color: var(--offwhite);
+    }
+
+    .guild-footer__copy {
+      font-size: 0.8rem;
+      color: var(--gray-dark);
+    }
   </style>
 </head>
 <body>
@@ -228,6 +258,20 @@
       </div>
     </div>
   </section>
+
+  <!-- Footer -->
+  <footer class="guild-footer">
+    <div class="container">
+      <div class="guild-footer__links">
+        <a href="/" class="guild-footer__link">Home</a>
+        <a href="/builders" class="guild-footer__link">Defense Builders</a>
+        <a href="/wingman" class="guild-footer__link">Wingman</a>
+        <a href="/programs/the-combine" class="guild-footer__link">The Combine</a>
+        <a href="/privacy" class="guild-footer__link">Privacy</a>
+      </div>
+      <p class="guild-footer__copy">&copy; 2026 Merge Combinator. All rights reserved.</p>
+    </div>
+  </footer>
 
   <script type="module" src="script.js"></script>
 </body>

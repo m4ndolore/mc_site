@@ -669,15 +669,53 @@
 
     if (!toggle || !menu) return;
 
+    const closeDropdowns = () => {
+      document.querySelectorAll('.nav__dropdown.active').forEach((dropdown) => {
+        dropdown.classList.remove('active');
+        const trigger = dropdown.querySelector('.nav__dropdown-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      });
+    };
+
+    const setMenuState = (isOpen) => {
+      toggle.classList.toggle('active', isOpen);
+      menu.classList.toggle('active', isOpen);
+      toggle.setAttribute('aria-expanded', String(isOpen));
+      if (!isOpen) closeDropdowns();
+    };
+
+    const isOpen = () => toggle.classList.contains('active');
+
     toggle.setAttribute('aria-expanded', 'false');
 
     toggle.addEventListener('click', () => {
-      toggle.classList.toggle('active');
-      menu.classList.toggle('active');
-
-      const expanded = toggle.classList.contains('active');
-      toggle.setAttribute('aria-expanded', String(expanded));
+      setMenuState(!isOpen());
     });
+
+    menu.addEventListener('click', (event) => {
+      const link = event.target.closest('a');
+      if (!link) return;
+      setMenuState(false);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!isOpen()) return;
+      const target = event.target;
+      if (menu.contains(target) || toggle.contains(target)) return;
+      setMenuState(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      if (!isOpen()) return;
+      setMenuState(false);
+    });
+
+    window.addEventListener('resize', debounce(() => {
+      if (window.innerWidth > 1024 && isOpen()) {
+        setMenuState(false);
+      }
+    }, 150));
   }
 
   // ============================================
@@ -689,6 +727,8 @@
     dropdowns.forEach(dropdown => {
       const trigger = dropdown.querySelector('.nav__dropdown-trigger');
       if (!trigger) return;
+
+      trigger.setAttribute('aria-expanded', 'false');
 
       trigger.addEventListener('click', (e) => {
         // Only handle click on mobile (when dropdown menu is not hover-based)

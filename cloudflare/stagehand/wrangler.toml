@@ -1,0 +1,16 @@
+name = "mc-stagehand-tests"
+main = "src/index.ts"
+compatibility_date = "2026-02-06"
+compatibility_flags = ["nodejs_compat"]
+
+[browser]
+binding = "BROWSER"
+
+[ai]
+binding = "AI"
+
+[alias]
+playwright = "@cloudflare/playwright"
+
+[vars]
+STAGING_URL = "https://mc-router-staging.defensebuilders.workers.dev"

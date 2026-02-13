@@ -1,0 +1,13 @@
+{
+  "name": "mc-playwright-mcp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@cloudflare/playwright-mcp": "^0.0.5"
+  }
+}

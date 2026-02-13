@@ -40,6 +40,7 @@ SIGMABLOX_API_ORIGIN = "https://api.sigmablox.com"
 APP_ORIGIN = "https://app.mergecombinator.com"         # NO DNS - routes to /app/* return 522
 WINGMAN_ORIGIN = "https://wingman.mergecombinator.com" # NO DNS - routes to /app/wingman/* return 522
 CONTROL_ORIGIN = "https://control.mergecombinator.com" # NO DNS - routes to /control/* return 522
+SBIR_ORIGIN = "https://sbir.mergecombinator.com"       # Railway deployment
 WINGMAN_CONSOLE_ENABLED = "false"
 
 # Cloudflare Turnstile (public site key - NOT a secret)
@@ -68,6 +69,7 @@ SIGMABLOX_API_ORIGIN = "https://api.sigmablox.com"
 APP_ORIGIN = "https://app.mergecombinator.com"
 WINGMAN_ORIGIN = "https://wingman.mergecombinator.com"
 CONTROL_ORIGIN = "https://control.mergecombinator.com"
+SBIR_ORIGIN = "https://sbir.mergecombinator.com"       # Railway deployment
 WINGMAN_CONSOLE_ENABLED = "false"
 TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
 API_CORS_ORIGINS = "https://mergecombinator.com,https://www.mergecombinator.com,https://console.mergecombinator.com"

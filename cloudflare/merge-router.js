@@ -184,6 +184,7 @@ function getOrigins(env) {
     app: env.APP_ORIGIN,
     wingman: env.WINGMAN_ORIGIN,
     control: env.CONTROL_ORIGIN,
+    sbir: env.SBIR_ORIGIN || "https://sbir.mergecombinator.com",
   };
 }
 
@@ -207,7 +208,7 @@ function getRoutes(origins) {
     { prefix: "/control", origin: origins.control, stripPrefix: true },
     { prefix: "/api", origin: origins.sigmabloxApi, stripPrefix: false, isApi: true },
     { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
-    { prefix: "/opportunities", origin: "https://sbir.mergecombinator.com", stripPrefix: true },
+    { prefix: "/opportunities", origin: origins.sbir, stripPrefix: true, redirectOnly: true },
   ];
 }
 
@@ -300,6 +301,9 @@ function buildUpstreamHeaders(request, { stripCookies = false } = {}) {
   }
   headers.set("x-original-path", originalUrl.pathname);
   headers.set("x-forwarded-proto", originalUrl.protocol.replace(":", ""));
+
+  // Remove original Host header so fetch() sets it correctly for the target URL
+  headers.delete("host");
 
   return headers;
 }
@@ -543,6 +547,11 @@ export default {
     const targetUrl = resolveTarget(url, route);
     if (route.isApi) {
       return handleApiRoute(request, targetUrl, env);
+    }
+
+    // 6.5) Redirect-only routes (external services that can't be proxied)
+    if (route.redirectOnly) {
+      return Response.redirect(targetUrl.toString(), 302);
     }
 
     // 7) Standard proxy
