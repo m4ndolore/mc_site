@@ -1,0 +1,47 @@
+:root {
+  --mc-bg: #0b1116;
+  --mc-bg-secondary: #111820;
+  --mc-bg-tertiary: #1a222c;
+  --mc-border: rgba(255, 255, 255, 0.1);
+  --mc-text: #e5e7eb;
+  --mc-text-muted: rgba(229, 231, 235, 0.6);
+  --mc-accent: #0ea5e9;
+  --mc-accent-hover: #38bdf8;
+  --mc-success: #22c55e;
+  --mc-warning: #f59e0b;
+  --mc-error: #ef4444;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
+  background-color: var(--mc-bg);
+  color: var(--mc-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--mc-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--mc-accent-hover);
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
