@@ -473,21 +473,31 @@ async function testPublicPaths(baseUrl) {
 // ============================================================================
 
 async function main() {
-  const env = process.argv[2] || "staging";
+  const args = process.argv.slice(2);
+  const unitOnly = args.includes("--unit");
+  const env = args.find(a => a !== "--unit") || "staging";
   const baseUrl = env === "prod" ? PROD_URL : STAGING_URL;
 
   console.log("=".repeat(60));
   console.log("MC Router Test Suite");
   console.log("=".repeat(60));
-  console.log(`Environment: ${env}`);
-  console.log(`Base URL: ${baseUrl}`);
+  console.log(`Mode: ${unitOnly ? "unit only" : "full (unit + integration)"}`);
+  if (!unitOnly) console.log(`Environment: ${env}\nBase URL: ${baseUrl}`);
   console.log();
 
-  // Unit tests
+  // Unit tests (always run — no network required)
   const routeTestsPassed = testRouteMatching();
   const sanitizeTestsPassed = testSanitizeReturnTo();
 
-  // Integration tests
+  if (unitOnly) {
+    console.log("=".repeat(60));
+    const allPassed = routeTestsPassed && sanitizeTestsPassed;
+    console.log(allPassed ? "✓ All unit tests passed!" : "✗ Some unit tests failed!");
+    process.exit(allPassed ? 0 : 1);
+    return;
+  }
+
+  // Integration tests (require live worker)
   console.log("-".repeat(60));
   const smokeTestsPassed = await smokeTest(baseUrl);
 

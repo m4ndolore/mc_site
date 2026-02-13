@@ -23,3 +23,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Router unit tests
+        run: node cloudflare/test-router.mjs --unit
