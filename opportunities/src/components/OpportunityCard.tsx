@@ -5,7 +5,8 @@ interface OpportunityCardProps {
   onClick: (opportunity: Opportunity) => void;
 }
 
-function truncate(text: string, maxLength: number): string {
+function truncate(text: string | undefined, maxLength: number): string {
+  if (!text) return "";
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength).trimEnd() + "...";
 }

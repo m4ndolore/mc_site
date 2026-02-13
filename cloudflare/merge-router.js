@@ -185,6 +185,7 @@ function getOrigins(env) {
     wingman: env.WINGMAN_ORIGIN,
     control: env.CONTROL_ORIGIN,
     sbir: env.SBIR_ORIGIN || "https://sbir.mergecombinator.com",
+    opportunities: env.OPPORTUNITIES_PAGES_URL || "https://mc-opportunities.pages.dev",
   };
 }
 
@@ -208,7 +209,7 @@ function getRoutes(origins) {
     { prefix: "/control", origin: origins.control, stripPrefix: true },
     { prefix: "/api", origin: origins.sigmabloxApi, stripPrefix: false, isApi: true },
     { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
-    { prefix: "/opportunities", origin: origins.sbir, stripPrefix: true, redirectOnly: true },
+    { prefix: "/opportunities", origin: origins.opportunities, stripPrefix: true, preserveRoot: true },
   ];
 }
 

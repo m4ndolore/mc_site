@@ -202,7 +202,7 @@ function OpportunityList({
         <div className="opp-list__grid">
           {opportunities.map((opp) => (
             <OpportunityCard
-              key={opp.id}
+              key={opp.id || opp.topicId}
               opportunity={opp}
               onClick={onSelect}
             />

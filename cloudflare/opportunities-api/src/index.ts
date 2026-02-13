@@ -14,6 +14,7 @@ app.use(
     origin: [
       "https://mergecombinator.com",
       "https://www.mergecombinator.com",
+      "https://mc-opportunities.pages.dev",
       "http://localhost:5174",
     ],
     allowMethods: ["GET", "OPTIONS"],
