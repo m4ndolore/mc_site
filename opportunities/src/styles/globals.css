@@ -1,12 +1,35 @@
 :root {
-  --mc-bg: #0b1116;
-  --mc-bg-secondary: #111820;
-  --mc-bg-tertiary: #1a222c;
-  --mc-border: rgba(255, 255, 255, 0.1);
-  --mc-text: #e5e7eb;
-  --mc-text-muted: rgba(229, 231, 235, 0.6);
-  --mc-accent: #0ea5e9;
-  --mc-accent-hover: #38bdf8;
+  /* Match homepage design tokens */
+  --black: #0a0a0a;
+  --charcoal: #171717;
+  --slate: #262626;
+  --blue: #3b82f6;
+  --blue-dark: #2563eb;
+  --blue-light: #60a5fa;
+  --white: #fafafa;
+  --offwhite: #e5e5e5;
+  --gray-light: #a3a3a3;
+  --gray-medium: #737373;
+  --ghost-gray: #525252;
+  --operator-green: #22c55e;
+
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Lora', 'Georgia', serif;
+
+  --nav-height: 56px;
+  --max-width: 1400px;
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+
+  /* Compat aliases for card/list components */
+  --mc-bg: #0a0a0a;
+  --mc-bg-secondary: #171717;
+  --mc-bg-tertiary: #262626;
+  --mc-border: rgba(255, 255, 255, 0.08);
+  --mc-text: #e5e5e5;
+  --mc-text-muted: rgba(255, 255, 255, 0.5);
+  --mc-accent: #3b82f6;
+  --mc-accent-hover: #60a5fa;
   --mc-success: #22c55e;
   --mc-warning: #f59e0b;
   --mc-error: #ef4444;
@@ -21,9 +44,9 @@
 }
 
 body {
-  font-family: "Space Grotesk", system-ui, -apple-system, sans-serif;
-  background-color: var(--mc-bg);
-  color: var(--mc-text);
+  font-family: var(--font-primary);
+  background-color: var(--black);
+  color: var(--offwhite);
   line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
@@ -31,13 +54,13 @@ body {
 }
 
 a {
-  color: var(--mc-accent);
+  color: inherit;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--transition-fast);
 }
 
-a:hover {
-  color: var(--mc-accent-hover);
+ul, ol {
+  list-style: none;
 }
 
 #root {
