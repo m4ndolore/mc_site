@@ -863,7 +863,7 @@ h4, .h4 {
   width: 100%;
   height: 100%;
   z-index: 1;
-  opacity: 0.6;
+  opacity: 0.75;
 }
 
 .hero__vignette {
@@ -886,6 +886,13 @@ h4, .h4 {
   max-width: 600px;
 }
 
+.hero__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
 .hero__badge {
   display: inline-flex;
   align-items: center;
@@ -897,7 +904,6 @@ h4, .h4 {
   font-size: 13px;
   font-weight: 500;
   color: var(--blue-light);
-  margin-bottom: 24px;
 }
 
 .hero__badge-dot {
@@ -987,6 +993,19 @@ h4, .h4 {
 .hero__diagram {
   width: 100%;
   max-width: 420px;
+  transition: max-width 0.3s ease;
+}
+
+@media (min-width: 1400px) {
+  .hero__diagram {
+    max-width: 520px;
+  }
+}
+
+@media (min-width: 1800px) {
+  .hero__diagram {
+    max-width: 600px;
+  }
 }
 
 .hero__flow {
@@ -2860,6 +2879,10 @@ h4, .h4 {
 
   .hero__text {
     max-width: 100%;
+  }
+
+  .hero__badges {
+    justify-content: center;
   }
 
   .hero__ctas {
