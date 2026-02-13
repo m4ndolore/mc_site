@@ -1,0 +1,142 @@
+/* guild.html */
+.guild-hero {
+  padding: 140px 0 110px;
+  position: relative;
+  overflow: hidden;
+}
+
+.guild-hero__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(800px 360px at 12% 0%, rgba(59, 130, 246, 0.18), transparent 60%),
+    radial-gradient(720px 420px at 85% 10%, rgba(16, 185, 129, 0.12), transparent 65%),
+    linear-gradient(180deg, rgba(8, 12, 18, 0.95), rgba(5, 7, 10, 1));
+  z-index: 0;
+}
+
+.guild-hero__content {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+}
+
+.guild-hero__eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gray-medium);
+  margin-bottom: 14px;
+}
+
+.guild-hero__title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--offwhite);
+  margin-bottom: 16px;
+}
+
+.guild-hero__subtitle {
+  font-size: 1rem;
+  color: var(--gray-light);
+  line-height: 1.6;
+  margin-bottom: 28px;
+}
+
+.guild-hero__list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.guild-hero__list-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  color: var(--gray-light);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.guild-hero__dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: var(--operator-green);
+  flex-shrink: 0;
+}
+
+.guild-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.guild-hero__panel {
+  margin-top: 26px;
+  padding: 16px 18px;
+  border: 1px solid var(--ghost-gray);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.guild-hero__panel-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-medium);
+  margin-bottom: 8px;
+}
+
+.guild-hero__panel-item {
+  font-size: 0.9rem;
+  color: var(--gray-light);
+  margin-bottom: 6px;
+}
+
+.guild-hero__panel-item:last-child {
+  margin-bottom: 0;
+}
+
+.guild-hero__footnote {
+  font-size: 0.8rem;
+  color: var(--gray-medium);
+  margin-top: 18px;
+}
+
+/* Footer */
+.guild-footer {
+  padding: 40px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+.guild-footer__links {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.guild-footer__link {
+  font-size: 0.85rem;
+  color: var(--gray-medium);
+  text-decoration: none;
+}
+
+.guild-footer__link:hover {
+  color: var(--offwhite);
+}
+
+.guild-footer__copy {
+  font-size: 0.8rem;
+  color: var(--gray-dark);
+}
