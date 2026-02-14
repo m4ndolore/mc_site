@@ -550,37 +550,6 @@ h4, .h4 {
   font-size: 0.8rem;
 }
 
-/* Auth Nav */
-.auth-nav__user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.auth-nav__avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--blue);
-  color: var(--black);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.auth-nav__name {
-  color: var(--offwhite);
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-@media (max-width: 768px) {
-  .auth-nav__name {
-    display: none;
-  }
-}
 
 /* Nav Dropdown */
 .nav__dropdown {
