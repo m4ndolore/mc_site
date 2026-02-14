@@ -52,7 +52,7 @@
         // Play video when visible
         video.play().catch(() => {
           // Autoplay failed (browser policy), that's ok
-          console.log('Video autoplay prevented by browser');
+          // Autoplay prevented by browser policy
         });
 
         videoObserver.unobserve(video);
@@ -84,8 +84,6 @@
       }
     });
 
-    console.log(`Scroll reveal initialized: ${revealElements.length} elements`);
-    console.log(`Video backgrounds initialized: ${videos.length} videos`);
   }
 
   // Run on DOM ready

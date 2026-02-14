@@ -118,15 +118,12 @@ function updateRailFilters(filters, resultsCount) {
  * Initialize the builder directory
  */
 async function init() {
-    console.log('[Builders] Initializing...');
-
     // Show loading state
     if (grid) grid.innerHTML = renderLoadingState();
 
     // Check auth status in parallel with data fetch
     checkAuth().then(state => {
         authState = state;
-        console.log('[Builders] Auth state:', authState.authenticated ? 'authenticated' : 'anonymous');
         updateRailAuth(authState);
     }).catch(err => {
         console.warn('[Builders] Auth check failed:', err.message);
@@ -136,17 +133,14 @@ async function init() {
     try {
         // Fetch companies from API
         const data = await fetchCompanies({ limit: 100 });
-        console.log('[Builders] Fetched data:', data);
 
         // Extract and normalize companies (filter to only SigmaBlox attendees)
         allCompanies = extractCompanies(data, { filterAttended: true });
-        console.log('[Builders] Processed companies:', allCompanies.length);
 
         // Try to get filter options from API, fall back to extracting from data
         let filterOptions;
         try {
             filterOptions = await fetchFilterOptions();
-            console.log('[Builders] Fetched filter options from API');
         } catch (filterError) {
             console.warn('[Builders] Filter API unavailable, extracting from data');
             filterOptions = extractFilterOptions(allCompanies);
@@ -176,7 +170,6 @@ async function init() {
         // Setup event listeners
         setupEventListeners();
 
-        console.log('[Builders] Initialization complete');
     } catch (error) {
         console.error('[Builders] Failed to initialize:', error);
         if (grid) grid.innerHTML = renderErrorState(error.message);

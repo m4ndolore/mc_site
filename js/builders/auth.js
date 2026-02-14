@@ -145,7 +145,7 @@ export function handleApiResponse(response, options = {}) {
 
     // Handle 401 Unauthorized
     if (response.status === 401 && redirectOn401) {
-        console.log('[Auth] 401 response - session expired or unauthorized');
+        console.debug('[Auth] 401 response - session expired or unauthorized');
         clearAuthCache();
         redirectToLogin();
         // Throw to prevent further processing
@@ -154,7 +154,7 @@ export function handleApiResponse(response, options = {}) {
 
     // Handle 403 Forbidden
     if (response.status === 403 && redirectOn403) {
-        console.log('[Auth] 403 response - access denied');
+        console.debug('[Auth] 403 response - access denied');
         clearAuthCache();
         redirectToLogin();
         throw new Error('Access denied. Redirecting to login.');
