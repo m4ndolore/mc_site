@@ -117,7 +117,7 @@
   // ============================================
   function initNavigation() {
     const nav = document.getElementById('nav');
-    if (!nav) return;
+    if (!nav || document.getElementById('mc-navbar')?.dataset?.initialized) return;
 
     let lastScroll = 0;
 
@@ -681,6 +681,7 @@
   // MOBILE MENU TOGGLE
   // ============================================
   function initMobileMenu() {
+    if (document.getElementById('mc-navbar')?.dataset?.initialized) return;
     const toggle = document.getElementById('mobile-toggle');
     const menu = document.querySelector('.nav__menu');
 
@@ -739,6 +740,7 @@
   // DROPDOWN MENU (Mobile)
   // ============================================
   function initDropdownMenu() {
+    if (document.getElementById('mc-navbar')?.dataset?.initialized) return;
     const dropdowns = document.querySelectorAll('.nav__dropdown');
 
     dropdowns.forEach(dropdown => {
