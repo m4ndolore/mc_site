@@ -171,6 +171,9 @@ async function initAuth() {
     const response = await fetch('/auth/me', { credentials: 'same-origin' });
     if (!response.ok) return; // Keep default sign-in/join buttons
 
+    const ct = response.headers.get('content-type') || '';
+    if (!ct.includes('application/json')) return; // Non-JSON (e.g. HTML fallback)
+
     const data = await response.json();
     if (data.authenticated && data.user) {
       const displayName = data.user.name || data.user.email?.split('@')[0] || 'Operator';

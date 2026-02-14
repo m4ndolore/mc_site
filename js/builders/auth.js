@@ -38,7 +38,20 @@ export async function checkAuth(forceRefresh = false) {
         });
 
         if (!response.ok) {
-            throw new Error(`Auth check failed: ${response.status}`);
+            // Auth endpoint unavailable — treat as unauthenticated
+            const fallback = { authenticated: false, user: null };
+            authCache = fallback;
+            authCacheTimestamp = Date.now();
+            return fallback;
+        }
+
+        const ct = response.headers.get('content-type') || '';
+        if (!ct.includes('application/json')) {
+            // Non-JSON response (e.g. HTML fallback on dev server)
+            const fallback = { authenticated: false, user: null };
+            authCache = fallback;
+            authCacheTimestamp = Date.now();
+            return fallback;
         }
 
         const data = await response.json();
@@ -46,7 +59,7 @@ export async function checkAuth(forceRefresh = false) {
         authCacheTimestamp = Date.now();
         return data;
     } catch (error) {
-        console.error('[Auth] Failed to check auth status:', error.message);
+        console.debug('[Auth] Auth endpoint unavailable:', error.message);
         // Return unauthenticated on error
         const fallback = { authenticated: false, user: null };
         authCache = fallback;
