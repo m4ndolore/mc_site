@@ -246,7 +246,6 @@ async function loadSeededData() {
         }
         const data = await response.json();
         if (data.companies && Array.isArray(data.companies) && data.companies.length > 0) {
-            console.log('[Portfolio] Loaded seeded data:', data.companies.length, 'companies');
             return data.companies;
         }
         return null;
@@ -314,11 +313,8 @@ function escapeHtml(str) {
  * Initialize portfolio page
  */
 async function init() {
-    console.log('[Portfolio] Initializing...');
-
     // Load companies
     allCompanies = await loadCompanies();
-    console.log('[Portfolio] Loaded', allCompanies.length, 'companies');
 
     if (allCompanies.length === 0) {
         console.warn('[Portfolio] No company data available');
@@ -337,7 +333,6 @@ async function init() {
     // Update initial count
     updateResultsCount(allCompanies.length, allCompanies.length);
 
-    console.log('[Portfolio] Initialization complete');
 }
 
 // Initialize when DOM is ready

@@ -76,7 +76,7 @@ async function fetchWithRetry(url, options = {}, retryConfig = {}) {
                     delayMs = calculateBackoffDelay(attempt, config.baseDelayMs, config.maxDelayMs);
                 }
 
-                console.log(`[Builders] Rate limited (${response.status}), retrying in ${Math.round(delayMs / 1000)}s (attempt ${attempt + 1}/${config.maxRetries})`);
+                console.debug(`[Builders] Rate limited (${response.status}), retrying in ${Math.round(delayMs / 1000)}s (attempt ${attempt + 1}/${config.maxRetries})`);
                 await sleep(delayMs);
                 continue;
             }
@@ -88,7 +88,7 @@ async function fetchWithRetry(url, options = {}, retryConfig = {}) {
             // Network errors are retryable
             if (attempt < config.maxRetries) {
                 const delayMs = calculateBackoffDelay(attempt, config.baseDelayMs, config.maxDelayMs);
-                console.log(`[Builders] Network error, retrying in ${Math.round(delayMs / 1000)}s (attempt ${attempt + 1}/${config.maxRetries})`);
+                console.debug(`[Builders] Network error, retrying in ${Math.round(delayMs / 1000)}s (attempt ${attempt + 1}/${config.maxRetries})`);
                 await sleep(delayMs);
                 continue;
             }
@@ -241,12 +241,10 @@ async function loadSeededData() {
         const data = await response.json();
         // Validate seeded data has companies
         if (data.companies && data.companies.length > 0) {
-            console.log(`[Builders] Loaded seeded data: ${data.companies.length} companies`);
             return data;
         }
         return null;
     } catch (error) {
-        console.log('[Builders] No seeded data available');
         return null;
     }
 }
@@ -353,7 +351,6 @@ export async function fetchFilterOptions() {
 
     // On localhost, use mock filters to avoid CORS/network delays
     if (location.hostname === 'localhost') {
-        console.log('[Builders] Using mock filters (localhost)');
         return MOCK_FILTERS;
     }
 

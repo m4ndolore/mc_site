@@ -2,7 +2,7 @@
 
 ## Current Session
 - **Started**: 2026-02-14
-- **Task**: REQ-BUG-008 - Auth check console errors fix — COMPLETE
+- **Task**: REQ-BUG-009/010/011/012 - Site audit cleanup batch — COMPLETE
 
 ## Queue (Next 5)
 1. REQ-DOCS-003 - Contributor access workflow (PARTIAL - blocked on human)
@@ -12,11 +12,11 @@
 5. REQ-INFRA-002 - mc-docs-contributors group infrastructure (PENDING - blocked on human)
 
 ## Recently Completed
+- REQ-BUG-009/010/011/012 - Site audit: footer links, case study PENDING badges, stale file removal, console.log cleanup (2026-02-14)
 - REQ-BUG-008 - Auth check console errors silenced on all pages (2026-02-14)
 - REQ-UX-008 - Unified modular navbar across 28 pages (2026-02-14)
 - REQ-DOCS-004 - Docs review and archive completed tasks (2026-02-14)
 - REQ-INFRA-003 - Control layer deployed to Cloud Run, placeholder pages for subdomains (2026-02-14)
-- REQ-BUG-007 - Opportunities platform replacing SBIR proxy (2026-02-13)
 
 ## Blocked / Needs Human
 - REQ-AUTH-004: VIA lift-and-shift in progress

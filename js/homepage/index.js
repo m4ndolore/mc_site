@@ -45,7 +45,6 @@ async function loadSeededData() {
         }
         const data = await response.json();
         if (data.companies && Array.isArray(data.companies) && data.companies.length > 0) {
-            console.log('[Homepage] Loaded seeded data:', data.companies.length, 'companies');
             return data;
         }
         return null;
@@ -134,15 +133,12 @@ function updateStatElements(stats) {
         el.textContent = stats.problemSets;
     });
 
-    console.log('[Homepage] Stats updated:', stats);
 }
 
 /**
  * Initialize homepage stats
  */
 async function init() {
-    console.log('[Homepage] Initializing...');
-
     // Fetch stats from live API
     const data = await fetchCompanyStats();
 
@@ -152,10 +148,7 @@ async function init() {
         updateStatElements(stats);
     } else {
         // Use defaults (already in HTML, no update needed)
-        console.log('[Homepage] Using default stats');
     }
-
-    console.log('[Homepage] Initialization complete');
 }
 
 // Initialize when DOM is ready
