@@ -1,7 +1,7 @@
 # REQ-BUG-007: /opportunities returns 500 from SBIR origin
 
 ## Metadata
-- **Status**: RESOLVED (WORKAROUND)
+- **Status**: COMPLETE
 - **Priority**: LOW
 - **Phase**: 2
 - **Effort**: 0.5 weeks

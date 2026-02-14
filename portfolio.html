@@ -22,53 +22,7 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- ============================================
-       NAVIGATION (Same as index.html)
-       ============================================ -->
-  <header class="nav" id="nav">
-    <div class="nav__container">
-      <a href="/" class="nav__logo">
-        <span class="nav__logo-text">
-          <span class="nav__logo-merge">Merge</span>
-          <span class="nav__logo-combinator">Combinator</span>
-        </span>
-        <img src="/assets/arrows-2.png" alt="Merge arrows" class="nav__logo-icon">
-      </a>
-
-<nav class="nav__menu" aria-label="Primary navigation">
-        <div class="nav__menu-links">
-          <a href="/builders" class="nav__link">Defense Builders</a>
-          <a href="/wingman" class="nav__link">Wingman</a>
-          <a href="/guild" class="nav__link">Guild</a>
-          <a href="/programs/the-combine" class="nav__link">The Combine</a>
-          <div class="nav__dropdown">
-            <button class="nav__link nav__dropdown-trigger" aria-expanded="false" aria-haspopup="true">
-              Platform
-              <svg class="nav__dropdown-icon" width="10" height="6" viewBox="0 0 10 6" fill="none">
-                <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <div class="nav__dropdown-menu">
-              <a href="/status" class="nav__dropdown-item">Status</a>
-              <a href="/briefs" class="nav__dropdown-item">Briefs</a>
-              <a href="/knowledge" class="nav__dropdown-item">Knowledge</a>
-              <a href="https://docs.mergecombinator.com" class="nav__dropdown-item">Docs</a>
-            </div>
-          </div>
-        </div>
-        <div class="nav__menu-actions">
-          <a href="/auth/login" class="nav__btn nav__btn--secondary">Sign in</a>
-          <a href="/access" class="nav__btn nav__btn--access">Join</a>
-        </div>
-      </nav>
-
-      <button class="nav__mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </header>
+  <div id="mc-navbar"></div>
 
   <!-- ============================================
        PORTFOLIO HERO SECTION
@@ -472,8 +426,8 @@
   </footer>
 
   <!-- Scripts -->
+  <script type="module" src="/js/navbar.js"></script>
   <script type="module" src="/script.js"></script>
   <script type="module" src="/js/portfolio/index.js"></script>
-  <script type="module" src="js/auth-nav.js"></script>
 </body>
 </html>
