@@ -2,14 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+    // FOUC prevention: apply theme before first paint
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Apply to become a contributor to the Merge Combinator knowledge base. Help document defense tech insights and best practices.">
   <meta name="keywords" content="defense tech, contributor, knowledge base, documentation">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-2.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/arrows-2.png">
-  <link rel="apple-touch-icon" href="/assets/arrows-2.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="apple-touch-icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Contribute to Knowledge Base — Merge Combinator">
@@ -24,6 +28,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles/contribute.css">
+  <link rel="stylesheet" href="styles/light-theme.css">
 </head>
 <body>
   <div id="mc-navbar"></div>
@@ -36,7 +41,7 @@
           <span class="contribute-context__logo-text">
             <span class="contribute-context__logo-combinator">Merge Combinator</span>
           </span>
-          <img src="/assets/arrows-2.png" alt="" class="contribute-context__logo-icon">
+          <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="" class="contribute-context__logo-icon">
         </a>
 
         <span class="contribute-context__badge">Contributor Access</span>

@@ -2,14 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+    // FOUC prevention: apply theme before first paint
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Wingman operationalizes your inbox. Extract takeaways and decisions from your own data. Keep raw information private, surface only the brief.">
   <meta name="keywords" content="wingman, defense builders, operators, briefs, decisions, operationalize, objectives">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-2.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/arrows-2.png">
-  <link rel="apple-touch-icon" href="/assets/arrows-2.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="apple-touch-icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
   <!-- Canonical -->
   <link rel="canonical" href="https://mergecombinator.com/wingman">
@@ -30,6 +34,7 @@
   <!-- Styles -->
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="styles/wingman.css">
+  <link rel="stylesheet" href="/styles/light-theme.css">
 </head>
 <body>
   <div id="mc-navbar"></div>
