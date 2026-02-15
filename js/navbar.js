@@ -1,5 +1,6 @@
 // js/navbar.js — Single source of truth for MC navbar
 // Renders into <div id="mc-navbar"></div> on any page
+import { toggleTheme } from './theme.js';
 
 const NAV_LINKS = [
   { href: '/builders', label: 'Defense Builders' },
@@ -49,7 +50,7 @@ function renderNavHTML(activePath) {
           <span class="nav__logo-merge">Merge</span>
           <span class="nav__logo-combinator">Combinator</span>
         </span>
-        <img src="/assets/arrows-2.png" alt="Merge arrows" class="nav__logo-icon">
+        <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="Merge arrows" class="nav__logo-icon">
       </a>
 
       <nav class="nav__menu" aria-label="Primary navigation">
@@ -68,6 +69,14 @@ function renderNavHTML(activePath) {
           </div>
         </div>
         <div class="nav__menu-actions" id="auth-nav">
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+            <svg class="theme-toggle__sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+            <svg class="theme-toggle__moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
           <a href="/auth/login" class="nav__btn nav__btn--secondary">Sign in</a>
           <a href="/access" class="nav__btn nav__btn--access">Join</a>
         </div>
@@ -215,7 +224,15 @@ export default function initNavbar() {
   initScrollBehavior();
   initMobileMenu();
   initDropdown();
+  initThemeToggle();
   initAuth();
+}
+
+// ── Theme toggle ──
+function initThemeToggle() {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  btn.addEventListener('click', toggleTheme);
 }
 
 // Auto-init when loaded as a script tag (not just imported)

@@ -2,15 +2,19 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+    // FOUC prevention: apply theme before first paint
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Merge Combinator is the builder-led venture studio for national security. Build what warfighters need with operators across the Indo-Pacific.">
   <meta name="keywords" content="defense tech, national security, venture studio, Indo-Pacific, warfighter, dual-use technology">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-2.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/arrows-2.png">
-  <link rel="apple-touch-icon" href="/assets/arrows-2.png">
-  <link rel="shortcut icon" href="/assets/arrows-2.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="apple-touch-icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="shortcut icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Merge Combinator — Build What Warfighters Need">
@@ -26,6 +30,7 @@
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/light-theme.css">
 </head>
 <body>
   <!-- ============================================
@@ -751,29 +756,29 @@
 
       <div class="logo-marquee fade-up">
         <div class="logo-marquee__track">
-          <div class="logo-marquee__item"><img src="assets/logos/indopacom.svg" alt="INDOPACOM"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/DIU.svg" alt="DIU"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/AFSOC.svg" alt="AFSOC"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/AFRL.svg" alt="AFRL"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/613_aoc.svg" alt="613 AOC"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/sofwerx.svg" alt="SOFWERX"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/tak_product_center.svg" alt="TAK Product Center"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/overmatch.svg" alt="Overmatch"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/diu_onramp_hawaii.svg" alt="DIU Onramp Hawaii"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/bravo_hackathon.svg" alt="Bravo Hackathon"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/mchmr.svg" alt="MCHMR"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-indopacom/public" alt="INDOPACOM"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-DIU/public" alt="DIU"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFSOC/public" alt="AFSOC"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFRL/public" alt="AFRL"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-613_aoc/public" alt="613 AOC"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-sofwerx/public" alt="SOFWERX"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-tak_product_center/public" alt="TAK Product Center"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-overmatch/public" alt="Overmatch"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-diu_onramp_hawaii/public" alt="DIU Onramp Hawaii"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-bravo_hackathon/public" alt="Bravo Hackathon"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-mchmr/public" alt="MCHMR"></div>
           <!-- Duplicate for seamless loop -->
-          <div class="logo-marquee__item"><img src="assets/logos/indopacom.svg" alt="INDOPACOM"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/DIU.svg" alt="DIU"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/AFSOC.svg" alt="AFSOC"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/AFRL.svg" alt="AFRL"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/613_aoc.svg" alt="613 AOC"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/sofwerx.svg" alt="SOFWERX"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/tak_product_center.svg" alt="TAK Product Center"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/overmatch.svg" alt="Overmatch"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/diu_onramp_hawaii.svg" alt="DIU Onramp Hawaii"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/bravo_hackathon.svg" alt="Bravo Hackathon"></div>
-          <div class="logo-marquee__item"><img src="assets/logos/mchmr.svg" alt="MCHMR"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-indopacom/public" alt="INDOPACOM"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-DIU/public" alt="DIU"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFSOC/public" alt="AFSOC"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFRL/public" alt="AFRL"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-613_aoc/public" alt="613 AOC"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-sofwerx/public" alt="SOFWERX"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-tak_product_center/public" alt="TAK Product Center"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-overmatch/public" alt="Overmatch"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-diu_onramp_hawaii/public" alt="DIU Onramp Hawaii"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-bravo_hackathon/public" alt="Bravo Hackathon"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-mchmr/public" alt="MCHMR"></div>
         </div>
       </div>
 
@@ -966,7 +971,7 @@
               <span class="footer__logo-merge">Merge</span>
               <span class="footer__logo-combinator">Combinator</span>
             </span>
-            <img src="/assets/arrows-2.png" alt="Merge arrows" class="footer__logo-icon">
+            <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="Merge arrows" class="footer__logo-icon">
           </a>
           <p class="footer__tagline">The builder-led venture studio for national security.</p>
           <div class="footer__social">

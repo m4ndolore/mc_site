@@ -30,10 +30,10 @@ compatibility_date = "2024-01-01"
 MC_PUBLIC_URL = "https://www.mergecombinator.com"
 VIA_ISSUER_URL = "https://via.mergecombinator.com"
 
-# Production route - requires DNS setup first
-# [[routes]]
-# pattern = "api.mergecombinator.com/*"
-# zone_name = "mergecombinator.com"
+# Production route
+[[routes]]
+pattern = "api.mergecombinator.com/*"
+zone_name = "mergecombinator.com"
 
 # -----------------------------------------------------------------------------
 # Local development

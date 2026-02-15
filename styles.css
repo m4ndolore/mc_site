@@ -101,11 +101,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Light theme opt-in for specific pages */
-body.light-theme {
-  color: var(--charcoal);
-  background-color: var(--white);
-}
+/* Light theme handled by styles/light-theme.css (REQ-C2UX-008) */
 
 img, video {
   max-width: 100%;
