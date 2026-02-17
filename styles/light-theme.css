@@ -1,0 +1,901 @@
+/* ============================================
+   LIGHT THEME OVERRIDES
+   REQ-C2UX-008: Global light/dark mode system
+
+   Applied via body.light-theme class.
+   C2UX doctrine: dense, scannable, operational.
+   NOT friendly whitespace — just inverted contrast.
+   ============================================ */
+
+/* ── Design Token Overrides ──────────────────── */
+.light-theme {
+  --black: #f8f9fa;
+  --charcoal: #f0f1f3;
+  --slate: #e5e7eb;
+  --white: #111827;
+  --offwhite: #1f2937;
+  --gray-light: #4b5563;
+  --gray-medium: #6b7280;
+  --ghost-gray: #d1d5db;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  color: var(--offwhite);
+  background-color: var(--black);
+}
+
+/* ── Transition for theme switch ─────────────── */
+html.light-theme *,
+html.light-theme *::before,
+html.light-theme *::after {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Disable transition on initial load to prevent FOUC flash */
+html.light-theme.no-transitions *,
+html.light-theme.no-transitions *::before,
+html.light-theme.no-transitions *::after {
+  transition: none !important;
+}
+
+
+/* ── Navigation ──────────────────────────────── */
+.light-theme .nav::before {
+  background: var(--black);
+  border-bottom-color: var(--ghost-gray);
+}
+
+.light-theme .nav--scrolled::before {
+  background: rgba(248, 249, 250, 0.92);
+  border-bottom-color: var(--ghost-gray);
+}
+
+.light-theme .nav__logo-merge {
+  color: var(--gray-medium);
+}
+
+.light-theme .nav__logo-combinator {
+  color: var(--offwhite);
+}
+
+.light-theme .nav__link {
+  color: var(--gray-light);
+}
+
+.light-theme .nav__link:hover,
+.light-theme .nav__link:focus-visible {
+  color: var(--offwhite);
+}
+
+.light-theme .nav__link--active {
+  color: var(--offwhite);
+}
+
+.light-theme .nav__link::after {
+  background: var(--blue);
+}
+
+.light-theme .nav__dropdown-menu {
+  background: #ffffff;
+  border: 1px solid var(--ghost-gray);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .nav__dropdown-item {
+  color: var(--gray-light);
+}
+
+.light-theme .nav__dropdown-item:hover {
+  background: var(--charcoal);
+  color: var(--offwhite);
+}
+
+.light-theme .nav__dropdown-divider {
+  background: var(--ghost-gray);
+}
+
+.light-theme .nav__btn--secondary {
+  color: var(--gray-light);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .nav__btn--secondary:hover,
+.light-theme .nav__btn--secondary:focus-visible {
+  color: var(--offwhite);
+  border-color: var(--gray-light);
+  background: var(--charcoal);
+}
+
+.light-theme .nav__btn--access {
+  background: var(--blue);
+  color: #ffffff;
+}
+
+.light-theme .nav__user-avatar {
+  background: var(--blue);
+  color: #ffffff;
+}
+
+/* Mobile menu */
+.light-theme .nav__mobile-toggle span {
+  background: var(--offwhite);
+}
+
+@media (max-width: 1024px) {
+  .light-theme .nav__menu.active {
+    background: #ffffff;
+    border-color: var(--ghost-gray);
+  }
+
+  .light-theme .nav__menu-links {
+    border-bottom-color: var(--ghost-gray);
+  }
+}
+
+
+/* ── Hero Section ────────────────────────────── */
+.light-theme .hero {
+  background: var(--black);
+}
+
+.light-theme .hero__gradient {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(42, 127, 219, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(93, 160, 111, 0.04) 0%, transparent 50%);
+}
+
+.light-theme .hero__grid {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+.light-theme .hero__vignette {
+  background: radial-gradient(ellipse at center, transparent 0%, var(--black) 100%);
+}
+
+.light-theme .hero__subtitle {
+  color: var(--gray-light);
+}
+
+.light-theme .hero__stat-label {
+  color: var(--gray-medium);
+}
+
+.light-theme .hero__stats {
+  border-top-color: var(--ghost-gray);
+}
+
+.light-theme .hero__stat-divider {
+  background: var(--ghost-gray);
+}
+
+.light-theme .hero__badge {
+  background: rgba(42, 127, 219, 0.08);
+  border-color: rgba(42, 127, 219, 0.2);
+}
+
+
+/* ── Buttons ─────────────────────────────────── */
+.light-theme .btn--ghost {
+  color: var(--offwhite);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .btn--ghost:hover {
+  background: var(--charcoal);
+  border-color: var(--gray-light);
+}
+
+.light-theme .btn--contacts {
+  background: var(--offwhite);
+  color: #ffffff;
+}
+
+.light-theme .btn--contacts:hover {
+  background: #111827;
+}
+
+.light-theme .btn--ghost-dark {
+  color: var(--offwhite);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .btn--ghost-dark:hover {
+  background: var(--charcoal);
+  border-color: var(--gray-light);
+  color: var(--offwhite);
+}
+
+
+/* ── Dark theme section overrides → Light ────── */
+
+/* Sections using #111111 elevated background → light elevated */
+.light-theme .ecosystem,
+.light-theme .social-proof,
+.light-theme .about,
+.light-theme .blog-featured,
+.light-theme .featured-case,
+.light-theme .archive-resources {
+  background: #ffffff;
+}
+
+/* Sections using var(--black) base */
+.light-theme .platform,
+.light-theme .capabilities,
+.light-theme .engage,
+.light-theme .blog-hero,
+.light-theme .blog-grid,
+.light-theme .portfolio-filters,
+.light-theme .portfolio-grid,
+.light-theme .archive-hero,
+.light-theme .archive-content {
+  background: var(--black);
+}
+
+/* Borders: rgba(255,255,255,0.04-0.1) → dark equivalents */
+.light-theme .platform,
+.light-theme .ecosystem,
+.light-theme .capabilities,
+.light-theme .engage,
+.light-theme .social-proof,
+.light-theme .blog-hero,
+.light-theme .about {
+  border-top-color: var(--ghost-gray);
+}
+
+.light-theme .social-proof {
+  border-bottom-color: var(--ghost-gray);
+}
+
+/* Cards: rgba(255,255,255,0.03) bg → light surface */
+.light-theme .bento-card,
+.light-theme .capability-card,
+.light-theme .engage-card,
+.light-theme .blog-card,
+.light-theme .portfolio-card,
+.light-theme .archive-item,
+.light-theme .archive-resource,
+.light-theme .blog-related__link,
+.light-theme .featured-post {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+/* Card hover */
+.light-theme .bento-card:hover,
+.light-theme .capability-card:hover,
+.light-theme .engage-card:hover,
+.light-theme .blog-card:hover,
+.light-theme .portfolio-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.light-theme .archive-item:hover,
+.light-theme .archive-resource:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.light-theme .featured-post:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .blog-related__link:hover {
+  background: var(--charcoal);
+}
+
+/* Card dark variant */
+.light-theme .bento-card--dark {
+  background: var(--charcoal);
+  border-color: var(--ghost-gray);
+}
+
+/* Bento card pattern */
+.light-theme .bento-card__pattern {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+}
+
+/* Card icon backgrounds */
+.light-theme .bento-card__icon,
+.light-theme .capability-card__icon,
+.light-theme .engage-card__icon,
+.light-theme .archive-resource__icon {
+  background: var(--charcoal);
+}
+
+/* Card stat borders */
+.light-theme .bento-card__stats {
+  border-top-color: var(--ghost-gray);
+}
+
+/* Featured post badge */
+.light-theme .featured-post__badge {
+  background: var(--charcoal);
+}
+
+/* Featured post category */
+.light-theme .featured-post__category {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* Engage featured card */
+.light-theme .engage-card--featured {
+  border-color: rgba(59, 130, 246, 0.25);
+  box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.25);
+}
+
+/* Platform tabs */
+.light-theme .platform__tabs {
+  background: var(--charcoal);
+}
+
+.light-theme .platform__tab--active {
+  background: #ffffff;
+}
+
+.light-theme .platform__panel-content {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+/* Logo marquee */
+.light-theme .logo-marquee::before {
+  background: linear-gradient(to right, #ffffff, transparent);
+}
+
+.light-theme .logo-marquee::after {
+  background: linear-gradient(to left, #ffffff, transparent);
+}
+
+.light-theme .logo-marquee__item {
+  background: var(--charcoal);
+}
+
+.light-theme .logo-marquee__item img {
+  filter: grayscale(100%) brightness(0.6);
+}
+
+.light-theme .logo-marquee__item:hover img {
+  filter: grayscale(0%) brightness(1);
+}
+
+/* About expertise */
+.light-theme .about__expertise-item {
+  background: var(--charcoal);
+}
+
+.light-theme .about__expertise-icon {
+  background: var(--slate);
+}
+
+/* About image grid */
+.light-theme .about__image-cell {
+  background: var(--charcoal);
+}
+
+/* Filter tags */
+.light-theme .filter-tag {
+  background: var(--charcoal);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .filter-tag:hover {
+  background: var(--slate);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.light-theme .filter-tag--active {
+  background: var(--blue);
+  color: #ffffff;
+  border-color: var(--blue);
+}
+
+/* Blog callouts */
+.light-theme .blog-callout--quote {
+  background: var(--charcoal);
+}
+
+.light-theme .blog-callout--takeaways {
+  background: rgba(59, 130, 246, 0.04);
+}
+
+.light-theme .blog-callout--action {
+  background: rgba(34, 197, 94, 0.04);
+}
+
+/* Blog article */
+.light-theme .blog-article__header {
+  border-bottom-color: var(--ghost-gray);
+}
+
+.light-theme .blog-article__tag {
+  background: var(--charcoal);
+}
+
+.light-theme .blog-article__divider {
+  color: var(--ghost-gray);
+}
+
+.light-theme .blog-article__hero-image figcaption {
+  background: var(--charcoal);
+}
+
+/* Blog table */
+.light-theme .blog-table th {
+  background: var(--charcoal);
+}
+
+.light-theme .blog-table td {
+  border-bottom-color: var(--ghost-gray);
+}
+
+.light-theme .blog-table th {
+  border-bottom-color: var(--ghost-gray);
+}
+
+/* Blog related */
+.light-theme .blog-related {
+  border-top-color: var(--ghost-gray);
+}
+
+/* Portfolio border */
+.light-theme .portfolio-filters {
+  border-bottom-color: var(--ghost-gray);
+}
+
+
+/* ── Footer ──────────────────────────────────── */
+.light-theme .footer {
+  background: #ffffff;
+  border-top-color: var(--ghost-gray);
+}
+
+.light-theme .footer__logo-merge {
+  color: var(--gray-medium);
+}
+
+.light-theme .footer__social-link {
+  color: var(--gray-light);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .footer__social-link:hover {
+  color: var(--offwhite);
+  border-color: var(--gray-light);
+}
+
+.light-theme .footer__list a {
+  color: var(--gray-light);
+}
+
+.light-theme .footer__list a:hover {
+  color: var(--offwhite);
+}
+
+.light-theme .footer__heading {
+  color: var(--offwhite);
+}
+
+.light-theme .footer__copyright,
+.light-theme .footer__location {
+  color: var(--gray-medium);
+}
+
+.light-theme .footer__bottom {
+  border-top-color: var(--ghost-gray);
+}
+
+
+/* ── Bento card metric labels ────────────────── */
+.light-theme .bento-card__metric-label {
+  color: var(--gray-light);
+}
+
+.light-theme .bento-card--accent .bento-card__metric-label {
+  color: var(--offwhite);
+}
+
+
+/* ── Final CTA Section ───────────────────────── */
+.light-theme .final-cta {
+  background: var(--charcoal);
+}
+
+.light-theme .final-cta__grid {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+}
+
+.light-theme .final-cta__subtitle {
+  color: var(--gray-light);
+}
+
+.light-theme .section-canvas-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(240, 241, 243, 0.3) 0%,
+    rgba(240, 241, 243, 0.6) 50%,
+    rgba(240, 241, 243, 0.8) 100%
+  );
+}
+
+
+/* ── Scrollbar ───────────────────────────────── */
+.light-theme ::-webkit-scrollbar-track {
+  background: var(--charcoal);
+}
+
+.light-theme ::-webkit-scrollbar-thumb {
+  background: var(--ghost-gray);
+}
+
+.light-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-medium);
+}
+
+
+/* ── Selection ───────────────────────────────── */
+.light-theme ::selection {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--offwhite);
+}
+
+
+/* ── Theme Toggle Button ─────────────────────── */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  background: transparent;
+  color: var(--gray-light);
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--offwhite);
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.theme-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Light theme toggle appearance */
+.light-theme .theme-toggle {
+  border-color: var(--ghost-gray);
+  color: var(--gray-light);
+}
+
+.light-theme .theme-toggle:hover {
+  color: var(--offwhite);
+  border-color: var(--gray-light);
+  background: var(--charcoal);
+}
+
+/* Icon visibility: show moon in dark mode, sun in light mode */
+.theme-toggle__sun { display: none; }
+.theme-toggle__moon { display: block; }
+
+.light-theme .theme-toggle__sun { display: block; }
+.light-theme .theme-toggle__moon { display: none; }
+
+
+/* ============================================
+   PAGE-SPECIFIC OVERRIDES
+   ============================================ */
+
+/* ── Hero gradient backgrounds (knowledge, wingman, guild, programs, briefs) ── */
+.light-theme .knowledge-hero__bg,
+.light-theme .wingman-hero__bg,
+.light-theme .guild-hero__bg,
+.light-theme .programs-hero__bg,
+.light-theme .briefs-hero__bg,
+.light-theme .category-hero__bg {
+  background: linear-gradient(180deg, var(--black) 0%, var(--charcoal) 100%);
+}
+
+/* ── Dashboard ───────────────────────────────── */
+.light-theme .dashboard {
+  background: var(--black);
+}
+
+.light-theme .dashboard__header {
+  border-bottom-color: var(--ghost-gray);
+}
+
+.light-theme .panel {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .panel__header {
+  border-bottom-color: var(--ghost-gray);
+}
+
+.light-theme .metric {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .activity-list__item {
+  border-bottom-color: var(--ghost-gray);
+}
+
+.light-theme .coverage__row {
+  border-bottom-color: var(--ghost-gray);
+}
+
+
+/* ── Builders ────────────────────────────────── */
+.light-theme .builders-page {
+  background: var(--black);
+}
+
+.light-theme .builders-console__bar {
+  background: var(--charcoal);
+  border-bottom-color: var(--ghost-gray);
+}
+
+.light-theme .rail-panel {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .builders-stats__grid {
+  background: #ffffff;
+}
+
+.light-theme .builders-filters__input,
+.light-theme .builders-filters__select {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+  color: var(--offwhite);
+}
+
+.light-theme .builders-filters__select option {
+  background: #ffffff;
+  color: var(--offwhite);
+}
+
+.light-theme .builder-card {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .builder-card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.light-theme .builder-card__upvote-btn:hover {
+  background: rgba(59, 130, 246, 0.06);
+}
+
+/* Builder modals */
+.light-theme .modal-overlay {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.light-theme .modal-content,
+.light-theme .modal__content {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+
+/* ── Access page ─────────────────────────────── */
+.light-theme .access-page__bg {
+  background: linear-gradient(180deg, var(--black) 0%, var(--charcoal) 100%);
+}
+
+.light-theme .access-card {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .request-drawer__panel {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .request-drawer__input,
+.light-theme .request-drawer__select,
+.light-theme .request-drawer__textarea {
+  background: var(--charcoal);
+  border-color: var(--ghost-gray);
+  color: var(--offwhite);
+}
+
+
+/* ── Knowledge ───────────────────────────────── */
+.light-theme .category-card {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .category-card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.light-theme .resource-link {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .resource-link:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.light-theme .resource-gated {
+  background: rgba(139, 92, 246, 0.04);
+  border-color: rgba(139, 92, 246, 0.15);
+}
+
+.light-theme .contribute-card {
+  background: rgba(59, 130, 246, 0.04);
+  border-color: rgba(59, 130, 246, 0.15);
+}
+
+
+/* ── Legal pages (privacy, terms, security) ──── */
+.light-theme .legal-page {
+  background: var(--black);
+}
+
+.light-theme .legal-content .highlight-box {
+  background: rgba(59, 130, 246, 0.04);
+  border-color: rgba(59, 130, 246, 0.15);
+}
+
+.light-theme .toc {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+
+/* ── Contribute page ─────────────────────────── */
+.light-theme .contribute-context {
+  background: var(--charcoal);
+}
+
+.light-theme .contribute-form-section {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+
+/* ── 404 page ────────────────────────────────── */
+.light-theme .error-hero {
+  background: var(--black);
+}
+
+.light-theme .error-text {
+  color: var(--gray-light);
+}
+
+
+/* ── Combine page ────────────────────────────── */
+.light-theme .combine {
+  background: var(--black);
+}
+
+.light-theme .timeline__day {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .requirement {
+  background: var(--charcoal);
+  border-color: var(--ghost-gray);
+}
+
+
+/* ── Merch page ──────────────────────────────── */
+.light-theme .merch-hero {
+  background: var(--black);
+}
+
+.light-theme .merch-grid {
+  background: var(--charcoal);
+}
+
+.light-theme .merch-card {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+
+/* ── Opportunities page ──────────────────────── */
+.light-theme .coming-soon__hero {
+  background: var(--black);
+}
+
+.light-theme .coming-soon__badge {
+  background: rgba(42, 127, 219, 0.08);
+}
+
+
+/* ── Status / Console page ───────────────────── */
+.light-theme .console {
+  background: var(--black);
+}
+
+.light-theme .console__cell,
+.light-theme .stats-grid__item {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+
+/* ── Blog article base styles (use original semantics) ── */
+/* These styles were written with --black = dark text, --slate = gray text,
+   but light theme swaps --black to light bg. Override explicitly. */
+.light-theme .blog-article__title {
+  color: var(--offwhite);
+}
+
+.light-theme .blog-article__subtitle,
+.light-theme .blog-article__byline {
+  color: var(--gray-light);
+}
+
+.light-theme .blog-article__author {
+  color: var(--offwhite);
+}
+
+.light-theme .blog-article__back {
+  color: var(--gray-light);
+}
+
+.light-theme .blog-article__tag {
+  background: var(--charcoal);
+  color: var(--gray-light);
+}
+
+.light-theme .blog-article__content h2,
+.light-theme .blog-article__content h3 {
+  color: var(--offwhite);
+}
+
+.light-theme .blog-article__content p,
+.light-theme .blog-article__content li {
+  color: var(--offwhite);
+}
+
+.light-theme .blog-article__content strong {
+  color: var(--offwhite);
+}
+
+
+/* ── SVG / diagram adjustments ───────────────── */
+.light-theme .hero__diagram svg text {
+  fill: var(--offwhite);
+}
+
+.light-theme .hero__diagram svg path[stroke] {
+  stroke: var(--gray-light);
+}
+
+
+/* ── Logo icon inversion ─────────────────────── */
+.light-theme .nav__logo-icon {
+  filter: invert(1) brightness(0.2);
+}
+
+.light-theme .footer__logo-icon {
+  filter: invert(1) brightness(0.2);
+}
