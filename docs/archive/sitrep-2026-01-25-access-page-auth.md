@@ -108,7 +108,7 @@ AUTH FLOW (Turnstile disabled)
 When ready to re-enable bot protection:
 
 ```bash
-TOKEN="5Lk9G0MXtIYFBl984LaJG7mGMpDrYs2lD4mR66nQFzUWEKs6DH57Z9xi4AgJ"
+TOKEN="$AUTHENTIK_ADMIN_TOKEN" # use env var (do not paste raw tokens)
 
 # Re-add via-captcha at order -5 (runs first)
 curl -X POST "https://via.mergecombinator.com/api/v3/flows/bindings/" \
