@@ -43,3 +43,7 @@ plugin.zip
 .playwright-mcp.wrangler/
 .playwright-mcp/
 .worktrees/
+**/*.tsbuildinfo
+verification-*.png
+homepage-header.png
+opportunities-live.png
