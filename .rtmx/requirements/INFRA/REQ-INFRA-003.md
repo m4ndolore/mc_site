@@ -7,7 +7,7 @@
 
 ## Requirement
 
-Complete the foundational restructuring work outlined in `docs/refactor/restructure.md` to stabilize the mergecombinator.com platform routing, authentication, and configuration.
+Complete the foundational restructuring work outlined in `docs/completed/restructure.md` to stabilize the mergecombinator.com platform routing, authentication, and configuration.
 
 ## Acceptance Criteria
 
@@ -85,7 +85,7 @@ Once DNS is configured:
 
 ## References
 
-- docs/refactor/restructure.md
+- docs/completed/restructure.md
 - cloudflare/merge-router.js
 - cloudflare/test-router.mjs
 - wrangler.toml

@@ -1545,12 +1545,12 @@
       "legacyAirtableId": null,
       "name": "Merge Combinator, LLC",
       "productName": "DOMINUS",
-      "website": "www.mergecombinator.com",
+      "website": "https://www.mergecombinator.com",
       "logoUrl": null,
       "storedLogoId": null,
       "location": null,
       "missionArea": "Cyber",
-      "warfareDomain": "air",
+      "warfareDomain": "Air, Information, Land, Sea",
       "description": "We build what warfighters need.",
       "trlLevel": 6,
       "technicalMaturity": null,
@@ -2819,6 +2819,7 @@
     "warfareDomains": [
       "Air",
       "Air, Cyber, Information, Land, Multi, Sea, Space",
+      "Air, Information, Land, Sea",
       "Air, Land, Sea",
       "Air, Land, Sea, Multi",
       "Air, Land, Sea, Space",
@@ -2854,7 +2855,6 @@
       "Space",
       "Space, Air",
       "Space, Air, Land, Sea",
-      "air",
       "multi_domain"
     ],
     "fundingStages": [
@@ -2874,8 +2874,8 @@
     ]
   },
   "metadata": {
-    "fetchedAt": "2026-02-13T17:17:29.315Z",
-    "buildAt": "2026-02-13T17:17:29.315Z",
+    "fetchedAt": "2026-02-17T17:14:46.473Z",
+    "buildAt": "2026-02-17T17:14:46.474Z",
     "source": "api",
     "apiBase": "https://api.sigmablox.com"
   }

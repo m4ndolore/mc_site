@@ -143,7 +143,7 @@ export function renderBuilderModal(company, options = {}) {
             // Authenticated: show actual resource links
             const linksHtml = [];
             if (company.videoUrl) {
-                linksHtml.push(`<a href="${escapeHtml(company.videoUrl)}" target="_blank" rel="noopener" class="modal-link">Watch Video</a>`);
+                linksHtml.push(`<a href="${escapeHtml(company.videoUrl)}" target="_blank" rel="noopener" class="modal-link">View Demo</a>`);
             }
             if (company.pitchUrl) {
                 linksHtml.push(`<a href="${escapeHtml(company.pitchUrl)}" target="_blank" rel="noopener" class="modal-link">View Pitch</a>`);

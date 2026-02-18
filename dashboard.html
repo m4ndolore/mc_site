@@ -2,8 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+    // FOUC prevention: apply theme before first paint
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Operational ecosystem status console for Merge Combinator.">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Ecosystem Status Console — Merge Combinator">
+  <meta property="og:description" content="Operational ecosystem status console for Merge Combinator.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <meta property="og:url" content="https://mergecombinator.com/dashboard">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Ecosystem Status Console — Merge Combinator">
+  <meta name="twitter:description" content="Operational ecosystem status console for Merge Combinator.">
+  <meta name="twitter:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+
   <title>Ecosystem Status Console — Merge Combinator</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,6 +30,7 @@
 
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/dashboard.css">
+  <link rel="stylesheet" href="styles/light-theme.css">
 </head>
 <body>
   <div id="mc-navbar"></div>
