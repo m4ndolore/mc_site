@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mergecombinator.com/schemas/claims.schema.json",
+  "title": "Merge Combinator Claim Inventory",
+  "description": "Schema for tracked content claims extracted from frontend pages.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generated_at",
+    "generator",
+    "records"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generator": {
+      "type": "string",
+      "minLength": 1
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/claimRecord"
+      }
+    }
+  },
+  "$defs": {
+    "claimRecord": {
+      "type": "object",
+      "required": [
+        "id",
+        "page_path",
+        "source_file",
+        "selector_hint",
+        "line",
+        "claim_text",
+        "claim_type",
+        "materiality",
+        "risk_level",
+        "source_status",
+        "status",
+        "owner",
+        "last_reviewed",
+        "review_interval_days",
+        "evidence_notes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CLAIM-[a-z0-9-]+-\\d{3}$"
+        },
+        "page_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "selector_hint": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "claim_text": {
+          "type": "string",
+          "minLength": 10
+        },
+        "claim_type": {
+          "type": "string",
+          "enum": [
+            "unclassified",
+            "factual",
+            "aspirational",
+            "opinion"
+          ]
+        },
+        "materiality": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "risk_level": {
+          "type": "string",
+          "enum": [
+            "high",
+            "medium",
+            "low"
+          ]
+        },
+        "source_status": {
+          "type": "string",
+          "enum": [
+            "unsourced",
+            "source-linked",
+            "attested"
+          ]
+        },
+        "source_reference": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "validated",
+            "rewrite",
+            "remove"
+          ]
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "last_reviewed": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "review_interval_days": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "evidence_notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
