@@ -1524,6 +1524,11 @@ h4, .h4 {
   overflow: hidden;
 }
 
+.why-merge > .container {
+  position: relative;
+  z-index: 1;
+}
+
 .why-merge__content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -2721,9 +2726,17 @@ h4, .h4 {
   100% { background-position: 0% 50%; }
 }
 
-/* Hide video-bg in hero (using canvas instead) */
-.hero .video-bg {
-  display: none;
+/* When video loads, fade out placeholder */
+.video-bg--loaded .video-bg__placeholder {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* Mobile: disable video for performance, show placeholder only */
+@media (max-width: 768px) {
+  .video-bg__video {
+    display: none;
+  }
 }
 
 /* ============================================

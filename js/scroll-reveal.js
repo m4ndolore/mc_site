@@ -49,10 +49,15 @@
           video.load();
         }
 
+        // Fade out placeholder when video starts playing
+        video.addEventListener('playing', () => {
+          const container = video.closest('.video-bg');
+          if (container) container.classList.add('video-bg--loaded');
+        }, { once: true });
+
         // Play video when visible
         video.play().catch(() => {
-          // Autoplay failed (browser policy), that's ok
-          // Autoplay prevented by browser policy
+          // Autoplay prevented by browser policy — placeholder stays visible
         });
 
         videoObserver.unobserve(video);
@@ -74,12 +79,23 @@
     // Initialize video lazy loading
     const videos = document.querySelectorAll('.video-bg__video');
     videos.forEach(video => {
-      // Only lazy load videos below the fold
+      // Load data-src for above-fold videos immediately
+      const source = video.querySelector('source[data-src]');
       const rect = video.getBoundingClientRect();
+
       if (rect.top > window.innerHeight) {
+        // Below fold — lazy load via observer
         videoObserver.observe(video);
       } else {
-        // Video is above fold, play immediately
+        // Above fold — load and play immediately
+        if (source && source.dataset.src) {
+          source.src = source.dataset.src;
+          video.load();
+        }
+        video.addEventListener('playing', () => {
+          const container = video.closest('.video-bg');
+          if (container) container.classList.add('video-bg--loaded');
+        }, { once: true });
         video.play().catch(() => {});
       }
     });
@@ -121,9 +137,12 @@
   }
 
   document.addEventListener('pointerenter', (e) => {
-    const anchor = e.target.closest('a[href]');
-    if (anchor && anchor.href && !anchor.href.startsWith('#')) {
-      prefetchLink(anchor.href);
+    let el = e.target;
+    while (el && el.tagName !== 'A') {
+      el = el.parentElement;
+    }
+    if (el && el.href && !el.href.startsWith('#')) {
+      prefetchLink(el.href);
     }
   }, { capture: true, passive: true });
 

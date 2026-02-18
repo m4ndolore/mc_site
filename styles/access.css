@@ -49,7 +49,7 @@
   padding: 12px 20px;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .access-member__text {
@@ -84,7 +84,7 @@
 .access-card {
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 28px;
   display: flex;
   flex-direction: column;
@@ -176,7 +176,7 @@
 .access-callout {
   background: rgba(59, 130, 246, 0.05);
   border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 28px;
   display: flex;
   align-items: center;
@@ -335,6 +335,15 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  padding: 12px 14px;
+  background: rgba(15, 23, 42, 0.26);
+  transition: border-color 0.15s;
+}
+
+.request-drawer__field:focus-within {
+  border-color: rgba(59, 130, 246, 0.4);
 }
 
 .request-drawer__label {
@@ -347,10 +356,11 @@
 
 .request-drawer__input,
 .request-drawer__select {
-  padding: 12px 14px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
+  padding: 8px 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
   color: var(--offwhite);
   font-family: inherit;
   font-size: 0.9rem;
@@ -364,7 +374,7 @@
 .request-drawer__input:focus,
 .request-drawer__select:focus {
   outline: none;
-  border-color: var(--signal-blue);
+  border-bottom-color: var(--signal-blue);
 }
 
 .request-drawer__select {
@@ -438,7 +448,7 @@
 .request-drawer__error {
   border: 1px solid rgba(248, 113, 113, 0.35);
   background: rgba(127, 29, 29, 0.2);
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 .request-drawer__error-icon {
@@ -448,7 +458,7 @@
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(248, 113, 113, 0.5);
-  border-radius: 4px;
+  border-radius: 2px;
   color: #fca5a5;
   font-size: 24px;
   margin-bottom: 16px;

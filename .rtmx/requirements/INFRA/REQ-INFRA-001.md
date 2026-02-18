@@ -1,41 +1,33 @@
 # REQ-INFRA-001: Create api.mergecombinator.com for VIA webhook services
 
+## Status: COMPLETE
+
+Superseded by REQ-INFRA-004 which deployed the mc-api Cloudflare Worker. All core functionality delivered.
+
 ## Summary
 Migrate VIA-specific webhook/API services from api.sigmablox.com to api.mergecombinator.com.
 
-## Current State
-- `api.sigmablox.com` exists (Cloud Run via ghs.googlehosted.com)
-- `api.mergecombinator.com` does NOT exist (NXDOMAIN)
-- VIA flow templates reference api.sigmablox.com as default
-- Templates are config-driven via `{{ api_base|default:"..." }}`
+## Completed (via REQ-INFRA-004)
+1. [x] DNS record — api.mergecombinator.com resolves to Cloudflare (proxied A record)
+2. [x] Service deployed — mc-api Cloudflare Worker with route `api.mergecombinator.com/*`
+3. [x] Endpoints implemented:
+   - `GET /auth/post-2fa` — Post-2FA redirect handler (GET for browser redirect, not POST)
+   - `POST /api/verify-email` — Email verification
+   - `GET /health` — Health check endpoint
+4. [x] Template defaults updated — `via-2fa-complete.html` and `via-welcome.html` now default to `https://api.mergecombinator.com`
+5. [x] Health endpoint verified live
 
-## Scope
-**Migrate to api.mergecombinator.com:**
+## Scope Completed
+**Migrated to api.mergecombinator.com:**
 - VIA 2FA completion redirect (`/auth/post-2fa`)
 - VIA email verification (`/api/verify-email`)
-- VIA-specific webhooks
 
-**Keep on api.sigmablox.com:**
+**Kept on api.sigmablox.com:**
 - Ghost user database sync
 - SigmaBlox-specific content/webhooks
 
-## Tasks
-1. [ ] Create DNS record for api.mergecombinator.com
-2. [ ] Deploy service (Cloudflare Worker or Cloud Run)
-3. [ ] Implement required endpoints:
-   - `POST /auth/post-2fa` - Post-2FA redirect handler
-   - `POST /api/verify-email` - Email verification
-4. [ ] Update VIA config to set `api_base` to new URL
-5. [ ] Update template defaults (currently hardcoded to sigmablox)
-6. [ ] Test flows end-to-end
-
-## Files Affected
-- `via/authentik/custom-templates/flows/via-2fa-complete.html` - uses `{{ api_base }}`
-- `via/authentik/custom-templates/flows/via-welcome.html` - uses `{{ api_base }}`
-- `via/config/*.yaml` - needs `api_base` config key
+## Note on VIA Config
+Templates use `{{ api_base|default:"https://api.mergecombinator.com" }}` — the default is now the MC endpoint. A dedicated `api_base` config variable in VIA YAML was not added since the template defaults are sufficient for production. If per-environment overrides are needed in the future, add `api_base` to `via/config/schema.js` and `via/config/prod.yaml`.
 
 ## Dependencies
-None - can proceed independently
-
-## Effort
-~2 weeks
+None
