@@ -77,6 +77,28 @@
 }
 
 /* ============================================
+   SKIP LINK (Accessibility)
+   ============================================ */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 10000;
+  padding: 8px 16px;
+  background: var(--blue);
+  color: var(--white);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 4px 4px;
+  transition: top 0.15s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ============================================
    RESET & BASE STYLES
    ============================================ */
 *, *::before, *::after {
@@ -546,6 +568,13 @@ h4, .h4 {
   font-size: 0.8rem;
 }
 
+/* Theme toggle & mobile toggle focus */
+.theme-toggle:focus-visible,
+.nav__mobile-toggle:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 
 /* Nav Dropdown */
 .nav__dropdown {
@@ -2903,6 +2932,18 @@ h4, .h4 {
   .hero__node-pulse,
   .hero__scroll-line {
     animation: none;
+  }
+
+  .hero__particle animateMotion {
+    animation: none;
+  }
+
+  .hero__particle {
+    display: none;
+  }
+
+  .logo-marquee__track {
+    animation: none !important;
   }
 }
 

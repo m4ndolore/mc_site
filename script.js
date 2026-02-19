@@ -152,8 +152,12 @@
         const targetId = tab.dataset.tab;
 
         // Update tabs
-        tabs.forEach(t => t.classList.remove('platform__tab--active'));
+        tabs.forEach(t => {
+          t.classList.remove('platform__tab--active');
+          t.setAttribute('aria-selected', 'false');
+        });
         tab.classList.add('platform__tab--active');
+        tab.setAttribute('aria-selected', 'true');
 
         // Update panels
         panels.forEach(panel => {
