@@ -19,9 +19,12 @@
     "deploy": "npm run deploy:worker",
     "deploy:worker": "wrangler deploy",
     "deploy:pages": "wrangler pages deploy dist --project-name mc-site",
-    "deploy:status": "wrangler pages deployment list --project-name mc-site | head -10"
+    "deploy:status": "wrangler pages deployment list --project-name mc-site | head -10",
+    "test:visual": "npx playwright test",
+    "test:visual:update": "npx playwright test --update-snapshots"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4.1.17",
     "autoprefixer": "^10.4.22",
     "postcss": "^8.5.6",

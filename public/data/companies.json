@@ -2518,7 +2518,7 @@
       "storedLogoId": "68b8020547d0cbf71b898baa",
       "location": "Newbury Park, CA",
       "missionArea": "Information",
-      "warfareDomain": "Air, Cyber, Information, Land, Multi, Sea, Space",
+      "warfareDomain": "Air, Cyber, Information, Land, Multi-Domain, Sea, Space",
       "description": "Trackable Health AI delivers a suite of AI products that transforms human performance oversight by pivoting from reactive care to proactive, real-time support, - a solution currently validated by the United States Air Force. Our hardware-agnostic platform, powered by Vantiq and hosted on AWS GovCloud, ingests non-interoperable data from diverse inputs (including SCIF-approved wearables like Garmin, Oura, and Whoop) to eliminate health \"blind spots\" between interactions and establish accurate precision medicine baselines to guide AI decision making. By providing gamification and user device choices to sustain engagement we deliver trustworthy, actionable data that enhances operational readiness while meeting strict enterprise compliance and security mandates. Deloitte and Vantiq provide the guardrails for the data to remain trustworthy and free from hallucinations.",
       "trlLevel": 9,
       "technicalMaturity": "Deployed",
@@ -2818,7 +2818,7 @@
     ],
     "warfareDomains": [
       "Air",
-      "Air, Cyber, Information, Land, Multi, Sea, Space",
+      "Air, Cyber, Information, Land, Multi-Domain, Sea, Space",
       "Air, Information, Land, Sea",
       "Air, Land, Sea",
       "Air, Land, Sea, Multi",
@@ -2874,8 +2874,8 @@
     ]
   },
   "metadata": {
-    "fetchedAt": "2026-02-18T04:34:00.754Z",
-    "buildAt": "2026-02-18T04:34:00.754Z",
+    "fetchedAt": "2026-02-19T22:26:38.299Z",
+    "buildAt": "2026-02-19T22:26:38.299Z",
     "source": "api",
     "apiBase": "https://api.sigmablox.com"
   }
