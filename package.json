@@ -9,9 +9,11 @@
   "scripts": {
     "dev": "vite",
     "dev:worker": "wrangler dev --env dev",
+    "hooks:install": "git config core.hooksPath .githooks && chmod +x .githooks/pre-commit",
     "seed": "node scripts/seed-companies.mjs",
     "claims:extract": "node scripts/extract-claims.mjs",
     "claims:classify": "node scripts/classify-claims.mjs",
+    "secrets:scan": "node scripts/scan-secrets.mjs",
     "build": "npm run seed && vite build",
     "preview": "vite preview",
     "deploy": "npm run deploy:worker",
