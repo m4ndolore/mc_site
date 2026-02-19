@@ -29,10 +29,14 @@
 
   <title>Merge Combinator — Build What Warfighters Need</title>
 
+  <!-- Resource Hints -->
+  <link rel="preconnect" href="https://imagedelivery.net">
+  <link rel="dns-prefetch" href="https://imagedelivery.net">
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
@@ -62,6 +66,8 @@
   </script>
 </head>
 <body>
+  <a href="#hero" class="skip-link">Skip to main content</a>
+
   <!-- ============================================
        NAVIGATION (Enhanced glass effect sticky header)
        ============================================ -->
@@ -238,16 +244,16 @@
       </header>
 
       <!-- Horizontal tabs (Palantir-style) -->
-      <div class="platform__tabs fade-up">
-        <button class="platform__tab platform__tab--active" data-tab="discover">
+      <div class="platform__tabs fade-up" role="tablist" aria-label="Platform sections">
+        <button class="platform__tab platform__tab--active" data-tab="discover" role="tab" id="tab-discover" aria-selected="true" aria-controls="panel-discover">
           <span class="platform__tab-number">01</span>
           Discover
         </button>
-        <button class="platform__tab" data-tab="build">
+        <button class="platform__tab" data-tab="build" role="tab" id="tab-build" aria-selected="false" aria-controls="panel-build">
           <span class="platform__tab-number">02</span>
           Build
         </button>
-        <button class="platform__tab" data-tab="deploy">
+        <button class="platform__tab" data-tab="deploy" role="tab" id="tab-deploy" aria-selected="false" aria-controls="panel-deploy">
           <span class="platform__tab-number">03</span>
           Deploy
         </button>
@@ -255,7 +261,7 @@
 
       <!-- Tab content panels -->
       <div class="platform__panels">
-        <div class="platform__panel platform__panel--active" id="panel-discover">
+        <div class="platform__panel platform__panel--active" id="panel-discover" role="tabpanel" aria-labelledby="tab-discover">
           <div class="platform__panel-content">
             <div class="platform__panel-text">
               <h3 class="platform__panel-title">SigmaBlox: The Defense Tech Combine</h3>
@@ -322,7 +328,7 @@
           </div>
         </div>
 
-        <div class="platform__panel" id="panel-build">
+        <div class="platform__panel" id="panel-build" role="tabpanel" aria-labelledby="tab-build">
           <div class="platform__panel-content">
             <div class="platform__panel-text">
               <h3 class="platform__panel-title">Merge Studio: Venture Formation</h3>
@@ -370,7 +376,7 @@
           </div>
         </div>
 
-        <div class="platform__panel" id="panel-deploy">
+        <div class="platform__panel" id="panel-deploy" role="tabpanel" aria-labelledby="tab-deploy">
           <div class="platform__panel-content">
             <div class="platform__panel-text">
               <h3 class="platform__panel-title">Defense Builders: Deployment Platform</h3>
@@ -801,31 +807,31 @@
         </p>
       </header>
 
-      <div class="logo-marquee fade-up">
+      <div class="logo-marquee fade-up" role="img" aria-label="Logos of partner organizations including INDOPACOM, DIU, AFSOC, AFRL, and others">
         <div class="logo-marquee__track">
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-indopacom/public" alt="INDOPACOM"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-DIU/public" alt="DIU"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFSOC/public" alt="AFSOC"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFRL/public" alt="AFRL"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-613_aoc/public" alt="613 AOC"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-sofwerx/public" alt="SOFWERX"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-tak_product_center/public" alt="TAK Product Center"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-overmatch/public" alt="Overmatch"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-diu_onramp_hawaii/public" alt="DIU Onramp Hawaii"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-bravo_hackathon/public" alt="Bravo Hackathon"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-mchmr/public" alt="MCHMR"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-indopacom/public" alt="INDOPACOM" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-DIU/public" alt="DIU" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFSOC/public" alt="AFSOC" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFRL/public" alt="AFRL" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-613_aoc/public" alt="613 AOC" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-sofwerx/public" alt="SOFWERX" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-tak_product_center/public" alt="TAK Product Center" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-overmatch/public" alt="Overmatch" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-diu_onramp_hawaii/public" alt="DIU Onramp Hawaii" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-bravo_hackathon/public" alt="Bravo Hackathon" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-mchmr/public" alt="MCHMR" width="100" height="50" loading="lazy" decoding="async"></div>
           <!-- Duplicate for seamless loop -->
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-indopacom/public" alt="INDOPACOM"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-DIU/public" alt="DIU"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFSOC/public" alt="AFSOC"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFRL/public" alt="AFRL"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-613_aoc/public" alt="613 AOC"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-sofwerx/public" alt="SOFWERX"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-tak_product_center/public" alt="TAK Product Center"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-overmatch/public" alt="Overmatch"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-diu_onramp_hawaii/public" alt="DIU Onramp Hawaii"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-bravo_hackathon/public" alt="Bravo Hackathon"></div>
-          <div class="logo-marquee__item"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-mchmr/public" alt="MCHMR"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-indopacom/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-DIU/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFSOC/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-AFRL/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-613_aoc/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-sofwerx/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-tak_product_center/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-overmatch/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-diu_onramp_hawaii/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-bravo_hackathon/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
+          <div class="logo-marquee__item" aria-hidden="true"><img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-mchmr/public" alt="" width="100" height="50" loading="lazy" decoding="async"></div>
         </div>
       </div>
 
@@ -1027,7 +1033,7 @@
               <span class="footer__logo-merge">Merge</span>
               <span class="footer__logo-combinator">Combinator</span>
             </span>
-            <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="Merge arrows" class="footer__logo-icon">
+            <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="Merge arrows" class="footer__logo-icon" width="24" height="24" loading="lazy" decoding="async">
           </a>
           <p class="footer__tagline">The builder-led venture studio for national security.</p>
           <div class="footer__social">

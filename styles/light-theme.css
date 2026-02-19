@@ -135,6 +135,31 @@ html.light-theme.no-transitions *::after {
 }
 
 
+/* ── Video Background (light-mode overrides) ─── */
+.light-theme .video-bg__overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(248, 249, 250, 0.7) 0%,
+    rgba(248, 249, 250, 0.8) 50%,
+    rgba(248, 249, 250, 0.9) 100%
+  );
+}
+
+.light-theme .video-bg__placeholder {
+  background: linear-gradient(
+    135deg,
+    var(--black) 0%,
+    rgba(59, 130, 246, 0.08) 50%,
+    var(--black) 100%
+  );
+}
+
+.light-theme .video-bg__tint {
+  background: rgba(59, 130, 246, 0.04);
+  mix-blend-mode: normal;
+}
+
+
 /* ── Hero Section ────────────────────────────── */
 .light-theme .hero {
   background: var(--black);
@@ -497,6 +522,53 @@ html.light-theme.no-transitions *::after {
 
 .light-theme .bento-card--accent .bento-card__metric-label {
   color: var(--offwhite);
+}
+
+
+/* ── Why Merge Section ───────────────────────── */
+.light-theme .why-merge {
+  background: var(--black);
+}
+
+.light-theme .why-merge__title {
+  color: var(--offwhite);
+}
+
+.light-theme .why-merge__body {
+  color: var(--gray-light);
+}
+
+.light-theme .why-merge__emphasis {
+  color: var(--offwhite);
+}
+
+.light-theme .why-merge__logos-label {
+  color: var(--gray-medium);
+}
+
+.light-theme .why-merge__logo-text {
+  color: var(--offwhite);
+}
+
+.light-theme .why-merge__stats-card {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .why-merge__stat-value {
+  color: var(--offwhite);
+}
+
+.light-theme .why-merge__stat-unit {
+  color: var(--gray-medium);
+}
+
+.light-theme .why-merge__stat-desc {
+  color: var(--gray-medium);
+}
+
+.light-theme .why-merge__stat-bar {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 
