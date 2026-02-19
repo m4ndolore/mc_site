@@ -29,3 +29,108 @@ jobs:
 
       - name: Router unit tests
         run: node cloudflare/test-router.mjs --unit
+
+      # Visual Regression Tests
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run visual regression tests
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: tests/visual/playwright-report/
+          retention-days: 14
+
+      - name: Upload screenshot diffs
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshot-diffs
+          path: tests/visual/test-results/
+          retention-days: 14
+
+      # Upload dist for preview deployment
+      - name: Upload dist artifact
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  # Cloudflare Pages preview deployment (PRs only)
+  preview:
+    runs-on: ubuntu-latest
+    needs: build
+    if: ${{ github.event_name == 'pull_request' }}
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Deploy to Cloudflare Pages (preview)
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name mc-site --branch ${{ github.head_ref }}
+
+      - name: Comment preview URL on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployUrl = '${{ steps.deploy.outputs.deployment-url }}';
+            const branch = '${{ github.head_ref }}'.replace(/[^a-z0-9-]/gi, '-').toLowerCase();
+            const branchUrl = `https://${branch}.mc-site.pages.dev`;
+            const previewUrl = deployUrl || branchUrl;
+
+            const body = [
+              '## Preview Deployment',
+              '',
+              `**Preview URL:** ${previewUrl}`,
+              '',
+              `Branch: \`${{ github.head_ref }}\``,
+              `Commit: \`${{ github.event.pull_request.head.sha }}\``,
+              '',
+              'Visual regression tests passed. Review the preview for any visual issues.',
+              '',
+              '---',
+              '*Deployed automatically by CI*'
+            ].join('\n');
+
+            // Find existing bot comment to update (avoid spam)
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(c =>
+              c.user.type === 'Bot' && c.body.includes('Preview Deployment')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
