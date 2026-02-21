@@ -45,7 +45,7 @@ Build a repeatable system where the frontend is:
 |---|---|---|---|---|---|
 | TRUTH-001 | P0 | Build site claim inventory | Content Ops | In Progress | Initial inventory generated for `/`, `/access`, `/programs/the-combine`; expand to remaining priority pages |
 | TRUTH-002 | P0 | Add claim classification tags | Content Ops | In Progress | Auto-classification generated for initial 53 claims; human overrides pending |
-| TRUTH-003 | P0 | Source-of-truth mapping | Content Ops + Leadership | Todo | Every `factual` claim mapped to internal source, public source, or owner attestation |
+| TRUTH-003 | P0 | Source-of-truth mapping | Content Ops + Leadership | In Progress | Initial source map generated (`docs/content/claims/claims-source-map-2026-02-21.csv`); source references and attestations pending |
 | TRUTH-004 | P0 | Remove or rewrite unverifiable claims | Content | Todo | Zero `factual` claims without source/attestation |
 | TRUTH-005 | P1 | Add freshness metadata policy | Content Ops | Todo | Claims with time sensitivity include `last reviewed` date and review interval |
 | TRUTH-006 | P1 | Standardize confidence language | Content | Todo | Terms like `proven`, `guaranteed`, `best` replaced unless evidence threshold met |
