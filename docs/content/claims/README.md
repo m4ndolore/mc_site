@@ -37,3 +37,16 @@ Outputs:
 - Classified inventory (`claim_type` auto-assigned).
 - CSV export for editorial review.
 - Prioritized review queue (`P0/P1/P2`) for human override.
+
+## Source Mapping (TRUTH-003)
+
+```bash
+npm run claims:source-map -- \
+  --input docs/content/claims/claims-inventory-YYYY-MM-DD-classified.json \
+  --out-csv docs/content/claims/claims-source-map-YYYY-MM-DD.csv \
+  --out-json docs/content/claims/claims-source-map-YYYY-MM-DD.json
+```
+
+Outputs:
+- Source-map CSV for editorial/source assignment.
+- Source-map JSON for automation and queue generation.
