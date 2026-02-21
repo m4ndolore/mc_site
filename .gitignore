@@ -51,4 +51,3 @@ opportunities-live.png
 # Playwright
 tests/visual/test-results/
 tests/visual/playwright-report/
-tests/visual/screenshots/
