@@ -7,8 +7,8 @@
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Join Defense Builders, request Wingman access, or apply to The Combine. Choose your path into the Merge Combinator network.">
-  <meta name="keywords" content="defense builders, wingman, the combine, access, join, defense tech">
+  <meta name="description" content="Sign in or request access to Defense Builders. Browse opportunities, meet operators, and connect with the defense tech community.">
+  <meta name="keywords" content="defense builders, wingman, the combine, access, join, defense tech, sign in">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
@@ -17,13 +17,13 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="Join the Network — Merge Combinator">
-  <meta property="og:description" content="Choose your path into Defense Builders.">
+  <meta property="og:description" content="Sign in or request access to Defense Builders.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
   <meta property="og:url" content="https://mergecombinator.com/access">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Join the Network — Merge Combinator">
-  <meta name="twitter:description" content="Join Defense Builders, request Wingman access, or apply to The Combine. Choose your path into the Merge Combinator network.">
+  <meta name="twitter:description" content="Sign in or request access to Defense Builders.">
   <meta name="twitter:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
   <title>Join the Network — Merge Combinator</title>
@@ -31,9 +31,9 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <!-- Cloudflare Turnstile (explicit render - key injected by Worker) -->
+  <!-- Cloudflare Turnstile (explicit render) -->
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onloadTurnstileCallback" async defer></script>
 
   <!-- Styles -->
@@ -42,316 +42,183 @@
   <link rel="stylesheet" href="styles/light-theme.css">
 </head>
 <body>
-  <div id="mc-navbar"></div>
-
   <main class="access-page">
-    <div class="access-page__bg"></div>
-    <div class="container access-content">
-      <header class="access-header">
-        <h1 class="access-header__title">Join the Network</h1>
-        <p class="access-header__subtitle">Choose your path into Defense Builders.</p>
-      </header>
-
-      <!-- Already a member -->
-      <div class="access-member">
-        <p class="access-member__text">
-          Already a member? <a href="/auth/login" class="access-member__link">Sign in</a>
-        </p>
-      </div>
-
-      <!-- Path Cards -->
-      <div class="access-paths">
-        <!-- Join Defense Builders -->
-        <article class="access-card">
-          <span class="access-card__badge access-card__badge--open">Open Access</span>
-          <h2 class="access-card__title">Join Defense Builders</h2>
-          <p class="access-card__desc">
-            Directory access, briefs, and execution workflows. Open to founders, operators, and mission owners.
-          </p>
-          <button class="access-card__cta access-card__cta--primary" id="open-builders-drawer">
-            Request Access
-          </button>
-        </article>
-
-        <!-- Request Wingman Access -->
-        <article class="access-card">
-          <span class="access-card__badge access-card__badge--pilot">Team Pilot</span>
-          <h2 class="access-card__title">Request Wingman Access</h2>
-          <p class="access-card__desc">
-            Operationalize your team's insights. Extract takeaways and decisions from your own data. Your data. Your device.
-          </p>
-          <button class="access-card__cta" id="open-wingman-drawer">
-            Request Pilot
-          </button>
-        </article>
-
-        <!-- Submit Channel -->
-        <article class="access-card">
-          <span class="access-card__badge access-card__badge--contribute">Contribute</span>
-          <h2 class="access-card__title">Submit a Channel for Briefing</h2>
-          <p class="access-card__desc">
-            Submit a channel for briefing (de-attributed). Summaries are non-attribution and aggregations of multiple channels.
-          </p>
-          <button class="access-card__cta" id="open-channel-drawer">
-            Submit Channel
-          </button>
-        </article>
-      </div>
-
-      <!-- The Combine Callout -->
-      <div class="access-callout">
-        <div class="access-callout__content">
-          <span class="access-callout__badge">2026 Cohort Selection</span>
-          <h3 class="access-callout__title">Looking for The Combine?</h3>
-          <p class="access-callout__desc">One week, in person, with operators. For funded teams ready for validation.</p>
-        </div>
-        <a href="/programs/the-combine" class="access-card__cta access-callout__cta">
-          Apply to The Combine
+    <!-- Left: Hero Section -->
+    <section class="access-hero">
+      <div class="access-hero__content">
+        <a href="/" class="access-hero__logo">
+          <span class="access-hero__logo-text">
+            <span class="access-hero__logo-merge">Merge</span>
+            <span class="access-hero__logo-combinator">Combinator</span>
+          </span>
+          <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/arrows/public" alt="" class="access-hero__logo-icon">
         </a>
-      </div>
 
-      <!-- Footer -->
-      <footer class="access-footer">
-        <p class="access-footer__text">
-          Already have access? <a href="/auth/login" class="access-footer__link">Sign in</a>
+        <h1 class="access-hero__title">Defense Builders Portal</h1>
+        <p class="access-hero__subtitle">
+          Your gateway to the defense tech community. This is not an application to an incubator—it's
+          access to a members-only portal where you can connect, learn, and find opportunities.
         </p>
-      </footer>
-    </div>
+
+        <div class="access-hero__features">
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#10003;</span>
+            <span class="access-hero__feature-text">Browse and track defense tech opportunities</span>
+          </div>
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#10003;</span>
+            <span class="access-hero__feature-text">Meet our trusted operators, founders, and advisors</span>
+          </div>
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#10003;</span>
+            <span class="access-hero__feature-text"><strong>Get to work:</strong> Match with champions, mission owners, and problem solvers</span>
+          </div>
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#10003;</span>
+            <span class="access-hero__feature-text">Access exclusive resources and events</span>
+          </div>
+          <div class="access-hero__feature">
+            <span class="access-hero__feature-icon">&#9650;</span>
+            <span class="access-hero__feature-text"><strong>SigmaBlox alumni:</strong> 1 year free access included</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: Sign In + Request Access -->
+    <section class="access-form-section">
+      <div class="access-form-section__inner">
+
+        <!-- Sign In Card -->
+        <div class="access-signin">
+          <div class="access-signin__header">
+            <h2 class="access-signin__title">Sign In</h2>
+            <div class="access-signin__secured">
+              <img src="/assets/logos/via2_rect_backed.jpg" alt="VIA" class="access-signin__secured-icon">
+              <span class="access-signin__secured-text">Secured by VIA</span>
+            </div>
+          </div>
+
+          <div class="access-signin__methods">
+            <a href="/auth/login" class="access-signin__method access-signin__method--primary">
+              <div class="access-signin__method-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
+                </svg>
+              </div>
+              <div class="access-signin__method-content">
+                <div class="access-signin__method-title">Continue with Email or Username</div>
+                <div class="access-signin__method-desc">Email, magic link, or passkey</div>
+              </div>
+              <div class="access-signin__method-arrow">&#8594;</div>
+            </a>
+          </div>
+
+          <div class="access-signin__divider">
+            <span class="access-signin__divider-line"></span>
+            <span class="access-signin__divider-text">or continue with</span>
+            <span class="access-signin__divider-line"></span>
+          </div>
+
+          <div class="access-signin__sso">
+            <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://www.mergecombinator.com/" class="access-signin__sso-btn">
+              <div class="access-signin__sso-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+              </div>
+              <span>Google</span>
+            </a>
+            <a href="#" class="access-signin__sso-btn access-signin__sso-btn--disabled">
+              <div class="access-signin__sso-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="16" rx="2"/>
+                  <circle cx="9" cy="10" r="2"/>
+                  <path d="M15 8h2M15 12h2"/>
+                  <path d="M7 16h10"/>
+                </svg>
+              </div>
+              <span>CAC / PIV</span>
+              <span class="access-signin__sso-badge">Pending</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Section Divider -->
+        <div class="access-section-divider">
+          <span class="access-section-divider__line"></span>
+          <span class="access-section-divider__text">or</span>
+          <span class="access-section-divider__line"></span>
+        </div>
+
+        <!-- Request Access Form -->
+        <div class="access-request">
+          <div class="access-request__header">
+            <h2 class="access-request__title">Request Access</h2>
+            <p class="access-request__subtitle">New here? Tell us who you are and what you're interested in.</p>
+          </div>
+
+          <form class="access-request__form" id="access-form">
+            <div class="access-field">
+              <label for="access-name" class="access-field__label">Name</label>
+              <input type="text" id="access-name" name="name" class="access-field__input" placeholder="Your name" autocomplete="name" required>
+            </div>
+
+            <div class="access-field">
+              <label for="access-email" class="access-field__label">Email</label>
+              <input type="email" id="access-email" name="email" class="access-field__input" placeholder="you@company.com" autocomplete="email" required>
+            </div>
+
+            <div class="access-field access-field--chips">
+              <label class="access-field__label">Interested in</label>
+              <div class="access-chips" id="access-chips">
+                <button type="button" class="access-chip access-chip--builders" data-value="builders">Defense Builders</button>
+                <button type="button" class="access-chip access-chip--wingman" data-value="wingman">Wingman</button>
+                <button type="button" class="access-chip access-chip--channel" data-value="channel">Channel</button>
+                <button type="button" class="access-chip access-chip--combine" data-value="combine">The Combine</button>
+              </div>
+            </div>
+
+            <div class="cf-turnstile" id="turnstile-container"></div>
+
+            <button type="submit" class="access-request__submit" id="access-submit">
+              Request Access
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </form>
+
+          <!-- Success State -->
+          <div class="access-request__success" id="access-success" style="display: none;">
+            <div class="access-request__success-icon">&#10003;</div>
+            <h3 class="access-request__success-title">Request Submitted</h3>
+            <p class="access-request__success-text">We'll review your request and get back to you shortly.</p>
+          </div>
+
+          <!-- Error State -->
+          <div class="access-request__error" id="access-error" style="display: none;">
+            <div class="access-request__error-icon">!</div>
+            <h3 class="access-request__error-title">Something went wrong</h3>
+            <p class="access-request__error-text">Please try again or email <a href="mailto:access@mergecombinator.com">access@mergecombinator.com</a>.</p>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="access-form-section__footer">
+          <p class="access-form-section__footer-text">
+            Questions? <a href="/" class="access-form-section__footer-link">Learn more about Merge Combinator</a>
+          </p>
+        </div>
+
+      </div>
+    </section>
   </main>
 
-  <!-- Request Drawer -->
-  <div class="request-drawer" id="request-drawer">
-    <div class="request-drawer__backdrop" id="drawer-backdrop"></div>
-    <div class="request-drawer__panel">
-      <button class="request-drawer__close" id="close-drawer" aria-label="Close">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 6L6 18M6 6l12 12"/>
-        </svg>
-      </button>
-
-      <div class="request-drawer__header">
-        <h2 class="request-drawer__title" id="drawer-title">Request Access</h2>
-        <p class="request-drawer__subtitle" id="drawer-subtitle">Tell us a bit about you and what access you are requesting.</p>
-      </div>
-
-      <form class="request-drawer__form" id="request-form">
-        <input type="hidden" id="request-type" name="type" value="builders">
-
-        <div class="request-drawer__field">
-          <label for="request-name" class="request-drawer__label">Name</label>
-          <input type="text" id="request-name" name="name" class="request-drawer__input" placeholder="Your name" autocomplete="name" required>
-        </div>
-
-        <div class="request-drawer__field">
-          <label for="request-email" class="request-drawer__label">Email</label>
-          <input type="email" id="request-email" name="email" class="request-drawer__input" placeholder="you@company.com" autocomplete="email" inputmode="email" required>
-        </div>
-
-        <div class="request-drawer__field">
-          <label for="request-role" class="request-drawer__label">Role</label>
-          <select id="request-role" name="role" class="request-drawer__select" required>
-            <option value="" disabled selected>Select your role</option>
-            <option value="operator">Operator</option>
-            <option value="founder">Founder</option>
-            <option value="champion">Champion / Program Office</option>
-            <option value="advisor">Advisor</option>
-            <option value="investor">Investor</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        <div class="request-drawer__field">
-          <label for="request-org" class="request-drawer__label">Organization</label>
-          <input type="text" id="request-org" name="org" class="request-drawer__input" placeholder="Unit, company, or agency" autocomplete="organization" required>
-        </div>
-
-        <div class="request-drawer__field" id="field-context">
-          <label for="request-context" class="request-drawer__label" id="label-context">What you're working on</label>
-          <input type="text" id="request-context" name="context" class="request-drawer__input" placeholder="Program, product, or mission area" required>
-        </div>
-
-        <!-- Turnstile widget - requires TURNSTILE_SITE_KEY in production -->
-        <!-- Turnstile widget container (rendered explicitly via JS) -->
-        <div class="cf-turnstile"></div>
-
-        <button type="submit" class="request-drawer__submit" id="submit-btn">
-          Submit Request
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </button>
-      </form>
-
-      <div class="request-drawer__success" id="request-success" style="display: none;">
-        <div class="request-drawer__success-icon">&#10003;</div>
-        <h3 class="request-drawer__success-title">Request Submitted</h3>
-        <p class="request-drawer__success-text">We'll review your request and get back to you shortly.</p>
-      </div>
-
-      <div class="request-drawer__error" id="request-error" style="display: none;">
-        <div class="request-drawer__error-icon">!</div>
-        <h3 class="request-drawer__error-title">Request Failed</h3>
-        <p class="request-drawer__error-text">Please try again or email access@mergecombinator.com.</p>
-      </div>
-
-      <p class="request-drawer__footer">
-        Already have access? <a href="/auth/login">Sign in</a>
-      </p>
-    </div>
-  </div>
-
-  <script>
-    // Turnstile callbacks (must be defined before render)
-    window.turnstileToken = null;
-    window.turnstileError = false;
-    window.onTurnstileSuccess = function(token) {
-      window.turnstileToken = token;
-      window.turnstileError = false;
-      const btn = document.getElementById('submit-btn');
-      if (btn) btn.disabled = false;
-    };
-    window.onTurnstileError = function() {
-      window.turnstileToken = null;
-      window.turnstileError = true;
-      const btn = document.getElementById('submit-btn');
-      if (btn) btn.disabled = false;
-    };
-
-    // Get site key from Worker-injected body attribute
-    const turnstileSiteKey = (document.body.dataset.turnstileSiteKey || '');
-    window.MCAccessConfig = {
-      requestEndpoint: 'https://api.sigmablox.com/api/access-request',
-      notifyEmail: 'access@mergecombinator.com',
-      turnstileSiteKey: turnstileSiteKey
-    };
-
-    // Explicit Turnstile render after API loads
-    window.onloadTurnstileCallback = function() {
-      const container = document.querySelector('.cf-turnstile');
-      if (container && turnstileSiteKey) {
-        turnstile.render(container, {
-          sitekey: turnstileSiteKey,
-          theme: 'dark',
-          callback: window.onTurnstileSuccess,
-          'error-callback': window.onTurnstileError
-        });
-      }
-    };
-  </script>
-
-  <script>
-    (function() {
-      const drawer = document.getElementById('request-drawer');
-      const backdrop = document.getElementById('drawer-backdrop');
-      const closeBtn = document.getElementById('close-drawer');
-      const form = document.getElementById('request-form');
-      const successEl = document.getElementById('request-success');
-      const errorEl = document.getElementById('request-error');
-      const titleEl = document.getElementById('drawer-title');
-      const subtitleEl = document.getElementById('drawer-subtitle');
-      const typeInput = document.getElementById('request-type');
-      const contextLabel = document.getElementById('label-context');
-
-      const drawerConfigs = {
-        builders: {
-          title: 'Join Defense Builders',
-          subtitle: 'Request access to the platform.',
-          contextLabel: 'What you\'re working on',
-          contextPlaceholder: 'Program, product, or mission area'
-        },
-        wingman: {
-          title: 'Request Wingman Access',
-          subtitle: 'Request a pilot for yourself or your team.',
-          contextLabel: 'Team size and use case',
-          contextPlaceholder: 'e.g., 5-person team, daily standup briefs'
-        },
-        channel: {
-          title: 'Submit a Channel for Briefing',
-          subtitle: 'Share a trusted source for de-attributed briefing.',
-          contextLabel: 'Channel or source description',
-          contextPlaceholder: 'e.g., Slack workspace, Signal group, mailing list'
-        }
-      };
-
-      function openDrawer(type) {
-        const config = drawerConfigs[type] || drawerConfigs.builders;
-        titleEl.textContent = config.title;
-        subtitleEl.textContent = config.subtitle;
-        contextLabel.textContent = config.contextLabel;
-        document.getElementById('request-context').placeholder = config.contextPlaceholder;
-        typeInput.value = type;
-
-        form.style.display = 'flex';
-        successEl.style.display = 'none';
-        errorEl.style.display = 'none';
-        form.reset();
-
-        // Reset Turnstile widget and disable submit
-        window.turnstileToken = null;
-        const submitBtn = document.getElementById('submit-btn');
-        if (submitBtn) submitBtn.disabled = true;
-        if (window.turnstile) {
-          const widget = document.querySelector('.cf-turnstile');
-          if (widget) window.turnstile.reset(widget);
-        }
-
-        drawer.classList.add('is-open');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeDrawer() {
-        drawer.classList.remove('is-open');
-        document.body.style.overflow = '';
-      }
-
-      document.getElementById('open-builders-drawer').addEventListener('click', () => openDrawer('builders'));
-      document.getElementById('open-wingman-drawer').addEventListener('click', () => openDrawer('wingman'));
-      document.getElementById('open-channel-drawer').addEventListener('click', () => openDrawer('channel'));
-
-      closeBtn.addEventListener('click', closeDrawer);
-      backdrop.addEventListener('click', closeDrawer);
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
-          closeDrawer();
-        }
-      });
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // Verify Turnstile token exists
-        if (!window.turnstileToken) {
-          alert('Please complete the verification challenge.');
-          return;
-        }
-
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        data['cf-turnstile-response'] = window.turnstileToken;
-
-        try {
-          const response = await fetch(window.MCAccessConfig.requestEndpoint, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-
-          if (response.ok) {
-            form.style.display = 'none';
-            successEl.style.display = 'flex';
-          } else {
-            throw new Error('Request failed');
-          }
-        } catch (err) {
-          form.style.display = 'none';
-          errorEl.style.display = 'flex';
-        }
-      });
-    })();
-  </script>
-
-  <script type="module" src="/js/navbar.js"></script>
-  <script type="module" src="/script.js"></script>
+  <script type="module" src="/js/access.js"></script>
 </body>
 </html>
