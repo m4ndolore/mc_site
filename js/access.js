@@ -1,187 +1,122 @@
 // js/access.js
-// Request Access drawer wiring and submission handling
+// Access page: chip selection, Turnstile, form submission
 
-const drawer = document.getElementById('request-drawer');
-const openBtn = document.getElementById('open-request-drawer');
-const closeBtn = document.getElementById('close-drawer');
-const backdrop = document.getElementById('drawer-backdrop');
-const signInLink = document.getElementById('drawer-sign-in');
-const form = document.getElementById('request-form');
-const successEl = document.getElementById('request-success');
-const errorEl = document.getElementById('request-error');
-const errorLink = document.getElementById('request-error-link');
-const config = window.MCAccessConfig || {};
-const turnstileWidget = document.querySelector('.cf-turnstile');
-const turnstileSiteKey = turnstileWidget
-  ? turnstileWidget.getAttribute('data-sitekey') || ''
-  : '';
-const turnstileDebug = {
-  hasWidget: !!turnstileWidget,
-  hasSiteKey: !!turnstileSiteKey,
-  host: window.location.hostname
-};
+(function () {
+  const form = document.getElementById('access-form');
+  const successEl = document.getElementById('access-success');
+  const errorEl = document.getElementById('access-error');
+  const submitBtn = document.getElementById('access-submit');
+  const chipsContainer = document.getElementById('access-chips');
 
-// Guard for partial renders
-if (!drawer || !openBtn || !closeBtn || !backdrop || !signInLink || !form || !successEl || !errorEl) {
-  console.warn('[Access] Drawer elements missing; skipping drawer wiring.');
-} else {
-  function openDrawer(e) {
-    e.preventDefault();
-    drawer.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-  }
+  if (!form || !chipsContainer) return;
 
-  function resetDrawerState() {
-    form.reset();
-    form.style.display = '';
-    successEl.style.display = 'none';
-    errorEl.style.display = 'none';
-    if (errorLink) errorLink.style.display = 'none';
-  }
+  const ENDPOINT = 'https://api.sigmablox.com/api/access-request';
+  const selectedInterests = new Set();
 
-  function closeDrawer(e) {
-    if (e) e.preventDefault();
-    drawer.classList.remove('is-open');
-    document.body.style.overflow = '';
-    setTimeout(resetDrawerState, 300);
-  }
+  // ── Chip toggle ───────────────────────────────
+  chipsContainer.addEventListener('click', (e) => {
+    const chip = e.target.closest('.access-chip');
+    if (!chip) return;
 
-  function buildMailtoUrl(data) {
-    const to = config.notifyEmail || 'access@mergecombinator.com';
-    const subject = encodeURIComponent('Access Request — mergecombinator.com');
-    const body = encodeURIComponent(
-      [
-        'Access request submitted:',
-        `Role: ${data.role || ''}`,
-        `Organization: ${data.org || ''}`,
-        `Email: ${data.email || ''}`,
-        `Why: ${data.why || ''}`,
-        `Building: ${data.building || ''}`,
-        `Source: ${window.location.href}`,
-        `Timestamp: ${new Date().toISOString()}`
-      ].join('\n')
-    );
-    return `mailto:${to}?subject=${subject}&body=${body}`;
-  }
-
-async function submitToEndpoint(data) {
-  const endpoint = config.requestEndpoint;
-  if (!endpoint) {
-    return { ok: false, skipped: true };
-  }
-
-  try {
-      const payload = {
-        email: data.email || '',
-        role: data.role || 'general',
-        organization: data.org || '',
-        reason: data.why || '',
-        building: data.building || '',
-        turnstileToken: window.turnstileToken || '',
-        turnstileMissing: !window.turnstileToken,
-        userAgent: String(navigator.userAgent || ''),
-        referrer: String(document.referrer || ''),
-        requestedAt: new Date().toISOString(),
-        source: window.location.href
-      };
-
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify(payload)
-    });
-
-    if (!response.ok) {
-      const contentType = response.headers.get('content-type') || '';
-      const isJson = contentType.includes('application/json');
-      const data = isJson ? await response.json().catch(() => null) : null;
-      const text = !isJson ? await response.text().catch(() => '') : '';
-      const message = (data && (data.error || data.message)) || text || 'Request failed';
-      const code = data && (data.code || data.errorCode);
-      return { ok: false, status: response.status, message, code };
-    }
-
-    return { ok: true };
-  } catch (error) {
-    console.error('[Access] Endpoint submission failed:', error);
-    return { ok: false, error };
-  }
-}
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-    errorEl.style.display = 'none';
-
-    const formData = new FormData(form);
-    const data = {
-      role: String(formData.get('role') || ''),
-      org: String(formData.get('org') || ''),
-      email: String(formData.get('email') || ''),
-      why: String(formData.get('why') || ''),
-      building: String(formData.get('building') || '')
-    };
-
-    if (!turnstileDebug.hasWidget || !turnstileDebug.hasSiteKey) {
-      const textEl = errorEl.querySelector('.request-drawer__error-text');
-      if (textEl) {
-        textEl.textContent = 'Turnstile is not configured for this host. We will still submit this request.';
-      }
-      errorEl.style.display = 'block';
-    } else if (!window.turnstileToken) {
-      const textEl = errorEl.querySelector('.request-drawer__error-text');
-      if (textEl) {
-        textEl.textContent = 'Couldn’t verify Turnstile. We will still submit this request.';
-      }
-      errorEl.style.display = 'block';
-    }
-
-    const result = await submitToEndpoint(data);
-
-  if (!result.ok) {
-    if (config.allowMailtoFallback) {
-      try {
-        const mailtoUrl = buildMailtoUrl(data);
-        window.location.href = mailtoUrl;
-      } catch (error) {
-        console.error('[Access] Mailto fallback failed:', error);
-        errorEl.style.display = 'block';
-        return;
-      }
-    }
-
-    errorEl.style.display = 'block';
-    if (result.message) {
-      const textEl = errorEl.querySelector('.request-drawer__error-text');
-      if (textEl) {
-        textEl.textContent = result.message;
-      }
-    }
-    if (!result.message) {
-      const textEl = errorEl.querySelector('.request-drawer__error-text');
-      if (textEl) {
-        textEl.textContent = 'Couldn’t verify or submit. Please try again or email access@mergecombinator.com.';
-      }
-    }
-    return;
-  }
-
-  form.style.display = 'none';
-  successEl.style.display = 'block';
-}
-
-  openBtn.addEventListener('click', openDrawer);
-  closeBtn.addEventListener('click', closeDrawer);
-  backdrop.addEventListener('click', closeDrawer);
-  signInLink.addEventListener('click', closeDrawer);
-  form.addEventListener('submit', handleSubmit);
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
-      closeDrawer();
+    const value = chip.dataset.value;
+    if (selectedInterests.has(value)) {
+      selectedInterests.delete(value);
+      chip.classList.remove('access-chip--active');
+    } else {
+      selectedInterests.add(value);
+      chip.classList.add('access-chip--active');
     }
   });
-}
+
+  // ── Turnstile ─────────────────────────────────
+  let turnstileToken = null;
+  const turnstileSiteKey = document.body.dataset.turnstileSiteKey || '';
+  const isLightTheme = document.documentElement.classList.contains('light-theme');
+
+  window.onTurnstileSuccess = function (token) {
+    turnstileToken = token;
+  };
+
+  window.onTurnstileError = function () {
+    turnstileToken = null;
+  };
+
+  window.onloadTurnstileCallback = function () {
+    const container = document.getElementById('turnstile-container');
+    if (container && turnstileSiteKey && window.turnstile) {
+      window.turnstile.render(container, {
+        sitekey: turnstileSiteKey,
+        theme: isLightTheme ? 'light' : 'dark',
+        callback: window.onTurnstileSuccess,
+        'error-callback': window.onTurnstileError,
+      });
+    }
+  };
+
+  // ── Form submission ───────────────────────────
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (selectedInterests.size === 0) {
+      highlightChips();
+      return;
+    }
+
+    if (!turnstileToken && turnstileSiteKey) {
+      showError('Please complete the verification challenge.');
+      return;
+    }
+
+    submitBtn.disabled = true;
+
+    const formData = new FormData(form);
+    const payload = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      interests: Array.from(selectedInterests),
+      'cf-turnstile-response': turnstileToken || '',
+      source: window.location.href,
+      requestedAt: new Date().toISOString(),
+    };
+
+    try {
+      const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        form.style.display = 'none';
+        successEl.style.display = 'flex';
+      } else {
+        throw new Error('Request failed');
+      }
+    } catch (err) {
+      form.style.display = 'none';
+      errorEl.style.display = 'flex';
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  function highlightChips() {
+    chipsContainer.style.outline = '1px solid rgba(248, 113, 113, 0.5)';
+    chipsContainer.style.outlineOffset = '4px';
+    chipsContainer.style.borderRadius = '8px';
+    setTimeout(() => {
+      chipsContainer.style.outline = '';
+      chipsContainer.style.outlineOffset = '';
+      chipsContainer.style.borderRadius = '';
+    }, 2000);
+  }
+
+  function showError(message) {
+    const textEl = errorEl.querySelector('.access-request__error-text');
+    if (textEl) textEl.textContent = message;
+    errorEl.style.display = 'flex';
+    setTimeout(() => {
+      errorEl.style.display = 'none';
+    }, 4000);
+  }
+})();

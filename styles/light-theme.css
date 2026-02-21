@@ -769,26 +769,120 @@ html.light-theme.no-transitions *::after {
 
 
 /* ── Access page ─────────────────────────────── */
-.light-theme .access-page__bg {
-  background: linear-gradient(180deg, var(--black) 0%, var(--charcoal) 100%);
+
+/* Left panel stays dark-themed regardless of global theme */
+.light-theme .access-hero {
+  background: #0b0f14;
 }
 
-.light-theme .access-card {
+.light-theme .access-hero__logo-merge {
+  color: rgba(242, 245, 247, 0.7);
+}
+
+.light-theme .access-hero__logo-combinator {
+  color: #e5e5e5;
+}
+
+.light-theme .access-hero__title {
+  color: #e5e5e5;
+}
+
+.light-theme .access-hero__subtitle {
+  color: #a3a3a3;
+}
+
+.light-theme .access-hero__feature {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.light-theme .access-hero__feature-icon {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: rgba(16, 185, 129, 0.50);
+  color: rgba(209, 250, 229, 0.95);
+}
+
+.light-theme .access-hero__feature-text {
+  color: #a3a3a3;
+}
+
+.light-theme .access-hero__feature-text strong {
+  color: #e5e5e5;
+}
+
+.light-theme .access-form-section {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .access-signin,
+.light-theme .access-request {
   background: #ffffff;
   border-color: var(--ghost-gray);
 }
 
-.light-theme .request-drawer__panel {
-  background: #ffffff;
+.light-theme .access-signin__secured {
+  background: rgba(0, 0, 0, 0.02);
   border-color: var(--ghost-gray);
 }
 
-.light-theme .request-drawer__input,
-.light-theme .request-drawer__select,
-.light-theme .request-drawer__textarea {
-  background: var(--charcoal);
+.light-theme .access-signin__method {
+  background: rgba(0, 0, 0, 0.02);
   border-color: var(--ghost-gray);
+}
+
+.light-theme .access-signin__method--primary {
+  background: rgba(59, 130, 246, 0.06);
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+.light-theme .access-signin__method-icon {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .access-signin__method--primary .access-signin__method-icon {
+  background: rgba(59, 130, 246, 0.10);
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+.light-theme .access-signin__divider-line,
+.light-theme .access-section-divider__line {
+  background: var(--ghost-gray);
+}
+
+.light-theme .access-signin__sso-btn {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .access-field {
+  background: rgba(0, 0, 0, 0.02);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .access-field__input {
+  border-bottom-color: var(--ghost-gray);
   color: var(--offwhite);
+}
+
+.light-theme .access-field__input::placeholder {
+  color: var(--gray-light);
+}
+
+.light-theme .access-chip {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: var(--ghost-gray);
+  color: var(--gray-medium);
+}
+
+.light-theme .access-chip:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: var(--gray-light);
+}
+
+.light-theme .access-form-section__footer {
+  border-color: var(--ghost-gray);
 }
 
 
