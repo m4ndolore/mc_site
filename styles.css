@@ -5794,3 +5794,471 @@ p {
 .footer {
   border-top-color: rgba(255, 255, 255, 0.04);
 }
+
+
+/* ============================================
+   MOBILE USABILITY FIXES
+   Addresses touch targets, overflow, spacing,
+   form UX, and accessibility on mobile devices
+   ============================================ */
+
+/* ── Fix #1: Touch Targets ──────────────────────
+   Ensure all interactive elements meet 48px min
+   touch target size per WCAG 2.5.8 / Google recs
+   ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Nav buttons already min-height: 44px, bump to 48px */
+  .nav__link {
+    min-height: 48px;
+  }
+
+  .nav__btn {
+    min-height: 48px;
+  }
+
+  .nav__dropdown-trigger {
+    min-height: 48px;
+  }
+
+  .nav__dropdown-item {
+    min-height: 48px;
+  }
+
+  .nav__mobile-toggle {
+    min-width: 48px;
+    min-height: 48px;
+  }
+}
+
+/* ── Fix #6: Footer links mobile spacing ────────
+   Increase tap area and spacing for footer links
+   ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .footer__list a {
+    display: block;
+    padding: 6px 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .footer__list li {
+    margin-bottom: 4px;
+  }
+
+  .footer__social-link {
+    width: 48px;
+    height: 48px;
+  }
+
+  .subpage-footer__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 8px 4px;
+  }
+
+  .subpage-footer__links {
+    gap: 16px;
+  }
+}
+
+/* ── Fix #2: Horizontal Overflow ────────────────
+   Prevent content from breaking viewport width
+   ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  /* Hero stats: already goes column, ensure no overflow */
+  .hero__stats {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .hero__stat-number {
+    font-size: 24px;
+  }
+
+  /* Platform panel content can be wide */
+  .platform__panel-content {
+    padding: 24px;
+    gap: 32px;
+  }
+
+  /* Pipeline diagram can overflow */
+  .pipeline-visual {
+    overflow-x: hidden;
+  }
+
+  /* Pipeline connectors need containment */
+  .pipeline-connector {
+    height: 40px;
+  }
+
+  /* Why Merge stat values too large on mobile */
+  .why-merge__stat-value {
+    font-size: 36px;
+  }
+
+  .why-merge__stat-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .why-merge__stats-card {
+    padding: 32px 24px;
+  }
+
+  /* Bento card stats can overflow */
+  .bento-card__stats {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bento-card__stat-value {
+    font-size: 28px;
+  }
+
+  /* Platform diagram nodes overflow on small screens */
+  .platform__diagram {
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .platform__diagram-connector {
+    display: none;
+  }
+
+  .platform__diagram-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .platform__diagram-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* ── Fix #7: Code/pre blocks overflow ───────────
+   Add horizontal scroll for code blocks that
+   exceed the viewport width
+   ─────────────────────────────────────────────── */
+.blog-article__content pre,
+.blog-article__content code {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.blog-article__content pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  margin: 24px 0;
+}
+
+.blog-article__content code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 2px 6px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+}
+
+.blog-article__content pre code {
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+/* Platform code block already has container, but ensure scroll */
+.platform__code {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Fix #8: Tables responsive on mobile ────────
+   Wrap tables in scrollable container behavior
+   ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .blog-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  .blog-table th,
+  .blog-table td {
+    padding: 8px 10px;
+  }
+}
+
+/* ── Fix #9: Hero text overlap on small screens ─
+   Ensure hero title doesn't clip or overlap
+   ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .hero {
+    padding-top: calc(var(--nav-height) + 40px);
+    padding-bottom: 40px;
+    min-height: auto;
+  }
+
+  .hero__title {
+    font-size: clamp(28px, 8vw, 36px);
+  }
+
+  .hero__subtitle {
+    font-size: 16px;
+    margin-bottom: 28px;
+  }
+
+  .hero__ctas {
+    flex-direction: column;
+    align-items: stretch;
+    margin-bottom: 32px;
+  }
+
+  .hero__ctas .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero__tertiary-link {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .hero__badge {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  /* Subpage hero same treatment */
+  .subpage-hero {
+    padding: 100px 0 48px;
+  }
+
+  .subpage-hero__title {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+  }
+
+  .subpage-hero__subtitle {
+    font-size: 1rem;
+  }
+}
+
+/* ── Fix #10: Status page indicators ────────────
+   Make status indicators touch-friendly
+   ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .stats-grid__item {
+    padding: 16px 12px;
+  }
+
+  .stats-grid__value {
+    font-size: 24px;
+  }
+
+  .module {
+    padding: 20px 16px;
+  }
+
+  .module__link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 0;
+  }
+
+  .protocol__btn {
+    min-height: 48px;
+    padding: 12px 20px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .capability {
+    padding: 16px 14px;
+  }
+}
+
+/* ── Fix #12: Skip link mobile improvements ─────
+   Make skip link more visible and touch-friendly
+   ─────────────────────────────────────────────── */
+.skip-link {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* Better focus styles on mobile */
+@media (max-width: 1024px) {
+  :focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+
+  /* Don't double-outline items that already handle it */
+  .theme-toggle:focus-visible,
+  .nav__mobile-toggle:focus-visible,
+  .nav__btn:focus-visible {
+    outline-offset: 2px;
+  }
+}
+
+/* ── Fix #13: Theme toggle size on mobile ───────
+   Increase theme toggle size for easier tapping
+   ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .theme-toggle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .theme-toggle svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* ── Fix #14: Image aspect ratios on mobile ─────
+   Constrain images to prevent distortion
+   ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .about__image-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    aspect-ratio: auto;
+  }
+
+  .about__image-cell {
+    min-height: 180px;
+  }
+
+  .about__image-cell--1 {
+    grid-row: span 1;
+  }
+
+  /* Blog card images maintain ratio */
+  .blog-card__image {
+    aspect-ratio: 16 / 9;
+    height: auto;
+  }
+
+  /* Featured post image */
+  .featured-post__image {
+    min-height: 200px;
+    max-height: 300px;
+  }
+
+  /* Logo marquee items */
+  .logo-marquee__item {
+    height: 64px;
+    padding: 8px 16px;
+  }
+
+  .logo-marquee__item img {
+    height: 48px;
+    max-width: 140px;
+  }
+}
+
+/* ── Fix #5: Blog/portfolio card mobile spacing ─
+   Better spacing and readable cards on mobile
+   ─────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .blog-card__content {
+    padding: 20px;
+  }
+
+  .blog-card__title a {
+    font-size: 18px;
+  }
+
+  .blog-card__excerpt {
+    font-size: 14px;
+  }
+
+  /* Portfolio cards */
+  .portfolio-card__content {
+    padding: 20px;
+  }
+
+  .portfolio-card__title {
+    font-size: 18px;
+  }
+
+  /* Testimonial cards */
+  .testimonial-card {
+    padding: 24px;
+  }
+
+  /* Engage cards */
+  .engage-card {
+    padding: 28px 24px;
+  }
+
+  /* Capability cards */
+  .capability-card {
+    padding: 24px;
+  }
+}
+
+/* ── Fix #4: Form inputs for mobile ─────────────
+   Larger touch areas and better UX for forms.
+   Also: font-size >= 16px prevents iOS zoom.
+   ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .request-drawer__input,
+  .request-drawer__select {
+    font-size: 16px;
+    padding: 12px 0;
+    min-height: 44px;
+  }
+
+  .request-drawer__submit {
+    min-height: 48px;
+    font-size: 16px;
+    padding: 14px 24px;
+  }
+
+  .request-drawer__field {
+    padding: 14px 16px;
+  }
+
+  .request-drawer__close {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+/* ── Fix #3: Mobile nav dropdown ────────────────
+   Better dropdown UX for mobile users
+   ─────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  /* Ensure the mobile menu doesn't get cut off on short screens */
+  .nav__menu {
+    max-height: calc(100vh - var(--nav-height));
+    max-height: calc(100dvh - var(--nav-height));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav__menu.active {
+    max-height: calc(100vh - var(--nav-height));
+    max-height: calc(100dvh - var(--nav-height));
+  }
+
+  /* Give dropdown items better visual distinction */
+  .nav__dropdown-item {
+    padding-left: 24px;
+    font-size: 15px;
+  }
+}

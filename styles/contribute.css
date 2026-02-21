@@ -467,4 +467,18 @@ body {
   .contribute-card {
     padding: 28px 24px;
   }
+
+  /* Mobile form UX: prevent iOS zoom, larger touch targets */
+  .contribute-card__input,
+  .contribute-card__select,
+  .contribute-card__textarea {
+    font-size: 16px;
+    padding: 14px 14px;
+    min-height: 44px;
+  }
+
+  .contribute-card__submit {
+    min-height: 48px;
+    font-size: 16px;
+  }
 }
