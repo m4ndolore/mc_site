@@ -9,8 +9,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -34,7 +38,33 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
+      - name: Check for missing baselines
+        id: baselines
+        run: |
+          MISSING=$(npx playwright test --list 2>/dev/null | grep -c "test" || true)
+          SNAPSHOTS=$(find tests/visual/screenshots -name "*.png" 2>/dev/null | wc -l | tr -d ' ')
+          echo "snapshot_count=$SNAPSHOTS" >> "$GITHUB_OUTPUT"
+          if [ "$SNAPSHOTS" -eq 0 ]; then
+            echo "need_update=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "need_update=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update snapshots (missing baselines)
+        if: steps.baselines.outputs.need_update == 'true'
+        run: npx playwright test --update-snapshots
+
+      - name: Commit updated snapshots
+        if: steps.baselines.outputs.need_update == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add tests/visual/screenshots/
+          git commit -m "chore(ci): update visual regression baselines [skip ci]" || echo "No changes to commit"
+          git push
+
       - name: Run visual regression tests
+        if: steps.baselines.outputs.need_update == 'false'
         run: npx playwright test
 
       - name: Upload Playwright report
