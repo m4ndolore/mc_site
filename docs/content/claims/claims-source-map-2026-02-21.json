@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-02-21T04:39:50.443Z",
-  "generator": "scripts/prepare-claim-source-map.mjs",
+  "generated_at": "2026-02-21T15:32:58.554Z",
+  "generator": "scripts/prepare-claim-source-map.mjs + manual P0 overrides",
   "source_inventory": "docs/content/claims/claims-inventory-2026-02-17-revised-classified.json",
   "total_rows": 53,
   "rows": [
@@ -140,13 +140,13 @@
       "priority": "P0",
       "source_requirement": "required",
       "proposed_source_type": "public-evidence+owner-attestation",
-      "source_reference": "",
+      "source_reference": "Internal program operations attestation (Combine track record metrics) + dated delivery logs required to substantiate \"days, not months\" phrasing",
       "source_owner": "content-ops",
-      "verification_status": "needs-source",
-      "verification_method": "",
+      "verification_status": "needs-ops-proof",
+      "verification_method": "ops-metrics-audit",
       "last_verified": "",
       "next_review_date": "",
-      "evidence_notes": ""
+      "evidence_notes": "High-risk speed claim: keep in rewrite queue unless cycle-time dataset is published."
     },
     {
       "claim_id": "CLAIM-home-009",
@@ -266,13 +266,13 @@
       "priority": "P0",
       "source_requirement": "required",
       "proposed_source_type": "public-evidence+owner-attestation",
-      "source_reference": "",
+      "source_reference": "Security posture attestation by platform/security owner; supporting artifacts: environment controls + handling procedures for sensitive workflows",
       "source_owner": "content-ops",
-      "verification_status": "needs-source",
-      "verification_method": "",
+      "verification_status": "needs-security-attestation",
+      "verification_method": "security-owner-attestation",
       "last_verified": "",
       "next_review_date": "",
-      "evidence_notes": ""
+      "evidence_notes": "High-risk claim: should reference concrete controls (e.g., process boundary, data handling model) before final validation."
     },
     {
       "claim_id": "CLAIM-home-016",
@@ -374,13 +374,13 @@
       "priority": "P0",
       "source_requirement": "required",
       "proposed_source_type": "public-evidence+owner-attestation",
-      "source_reference": "",
+      "source_reference": "Named testimonial source (company + approver) required. Draft currently uses placeholder attribution in homepage testimonial card.",
       "source_owner": "content-ops",
-      "verification_status": "needs-source",
-      "verification_method": "",
+      "verification_status": "needs-quote-approval",
+      "verification_method": "signed-quote-approval",
       "last_verified": "",
       "next_review_date": "",
-      "evidence_notes": ""
+      "evidence_notes": "Do not mark validated until quote owner and organization approve exact text."
     },
     {
       "claim_id": "CLAIM-home-022",
@@ -788,13 +788,13 @@
       "priority": "P0",
       "source_requirement": "required",
       "proposed_source_type": "public-evidence+owner-attestation",
-      "source_reference": "",
+      "source_reference": "Program operations attestation: Combine 01 (Tulsa, OK) had 83 companies; Finalists round had 21 matched companies (Honolulu + distributed locations).",
       "source_owner": "content-ops",
-      "verification_status": "needs-source",
-      "verification_method": "",
+      "verification_status": "attested-pending-doc-link",
+      "verification_method": "ops-record-review",
       "last_verified": "",
       "next_review_date": "",
-      "evidence_notes": ""
+      "evidence_notes": "User-provided correction applied to programs/the-combine.html track record section on 2026-02-21."
     },
     {
       "claim_id": "CLAIM-programs-the-combine-006",
@@ -806,13 +806,13 @@
       "priority": "P0",
       "source_requirement": "required",
       "proposed_source_type": "public-evidence+owner-attestation",
-      "source_reference": "",
+      "source_reference": "Program format attestation: one-week in-person combine structure with operator and mission-owner participation (operations owner confirmation required).",
       "source_owner": "content-ops",
-      "verification_status": "needs-source",
-      "verification_method": "",
+      "verification_status": "attested-pending-doc-link",
+      "verification_method": "program-format-attestation",
       "last_verified": "",
       "next_review_date": "",
-      "evidence_notes": ""
+      "evidence_notes": "Marketing headline; keep phrasing aligned to documented schedule artifacts."
     },
     {
       "claim_id": "CLAIM-programs-the-combine-007",
@@ -878,13 +878,13 @@
       "priority": "P0",
       "source_requirement": "required",
       "proposed_source_type": "public-evidence+owner-attestation",
-      "source_reference": "",
+      "source_reference": "Pipeline evidence required: problem-set logs and validation outcomes tied to Indo-Pacific mission context (internal ops records).",
       "source_owner": "content-ops",
-      "verification_status": "needs-source",
-      "verification_method": "",
+      "verification_status": "needs-ops-proof",
+      "verification_method": "ops-problemset-audit",
       "last_verified": "",
       "next_review_date": "",
-      "evidence_notes": ""
+      "evidence_notes": "High-risk factual framing; keep unless internal validation records support this statement."
     },
     {
       "claim_id": "CLAIM-programs-the-combine-011",
