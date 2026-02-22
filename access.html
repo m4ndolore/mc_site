@@ -85,81 +85,15 @@
       </div>
     </section>
 
-    <!-- Right: Sign In + Request Access -->
+    <!-- Right: Request Access + Sign In -->
     <section class="access-form-section">
       <div class="access-form-section__inner">
 
-        <!-- Sign In Card -->
-        <div class="access-signin">
-          <div class="access-signin__header">
-            <h2 class="access-signin__title">Sign In</h2>
-            <div class="access-signin__secured">
-              <img src="/assets/logos/via2_rect_backed.jpg" alt="VIA" class="access-signin__secured-icon">
-              <span class="access-signin__secured-text">Secured by VIA</span>
-            </div>
-          </div>
-
-          <div class="access-signin__methods">
-            <a href="/auth/login" class="access-signin__method access-signin__method--primary">
-              <div class="access-signin__method-icon">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                  <polyline points="22,6 12,13 2,6"/>
-                </svg>
-              </div>
-              <div class="access-signin__method-content">
-                <div class="access-signin__method-title">Continue with Email or Username</div>
-                <div class="access-signin__method-desc">Email, magic link, or passkey</div>
-              </div>
-              <div class="access-signin__method-arrow">&#8594;</div>
-            </a>
-          </div>
-
-          <div class="access-signin__divider">
-            <span class="access-signin__divider-line"></span>
-            <span class="access-signin__divider-text">or continue with</span>
-            <span class="access-signin__divider-line"></span>
-          </div>
-
-          <div class="access-signin__sso">
-            <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://www.mergecombinator.com/" class="access-signin__sso-btn">
-              <div class="access-signin__sso-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                  <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                  <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                  <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                </svg>
-              </div>
-              <span>Google</span>
-            </a>
-            <a href="#" class="access-signin__sso-btn access-signin__sso-btn--disabled">
-              <div class="access-signin__sso-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="4" width="18" height="16" rx="2"/>
-                  <circle cx="9" cy="10" r="2"/>
-                  <path d="M15 8h2M15 12h2"/>
-                  <path d="M7 16h10"/>
-                </svg>
-              </div>
-              <span>CAC / PIV</span>
-              <span class="access-signin__sso-badge">Pending</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Section Divider -->
-        <div class="access-section-divider">
-          <span class="access-section-divider__line"></span>
-          <span class="access-section-divider__text">or</span>
-          <span class="access-section-divider__line"></span>
-        </div>
-
-        <!-- Request Access Form -->
+        <!-- Request Access Form (primary action) -->
         <div class="access-request">
           <div class="access-request__header">
             <h2 class="access-request__title">Request Access</h2>
-            <p class="access-request__subtitle">New here? Tell us who you are and what you're interested in.</p>
+            <p class="access-request__subtitle">Tell us who you are and what you're interested in.</p>
           </div>
 
           <form class="access-request__form" id="access-form">
@@ -176,10 +110,9 @@
             <div class="access-field access-field--chips">
               <label class="access-field__label">Interested in</label>
               <div class="access-chips" id="access-chips">
-                <button type="button" class="access-chip access-chip--builders" data-value="builders">Defense Builders</button>
-                <button type="button" class="access-chip access-chip--wingman" data-value="wingman">Wingman</button>
-                <button type="button" class="access-chip access-chip--channel" data-value="channel">Channel</button>
+                <button type="button" class="access-chip access-chip--builders" data-value="builders">Builders</button>
                 <button type="button" class="access-chip access-chip--combine" data-value="combine">The Combine</button>
+                <button type="button" class="access-chip access-chip--guild" data-value="guild">Guild</button>
               </div>
             </div>
 
@@ -205,6 +138,40 @@
             <div class="access-request__error-icon">!</div>
             <h3 class="access-request__error-title">Something went wrong</h3>
             <p class="access-request__error-text">Please try again or email <a href="mailto:access@mergecombinator.com">access@mergecombinator.com</a>.</p>
+          </div>
+        </div>
+
+        <!-- Sign In (secondary) -->
+        <div class="access-signin">
+          <span class="access-signin__label">Already a member?</span>
+          <a href="/auth/login" class="access-signin__email-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+            Sign in with Email
+            <span class="access-signin__email-arrow">&#8594;</span>
+          </a>
+          <div class="access-signin__sso-row">
+            <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://www.mergecombinator.com/" class="access-signin__sso-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              <span>Google</span>
+            </a>
+            <a href="#" class="access-signin__sso-btn access-signin__sso-btn--disabled">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="16" rx="2"/>
+                <circle cx="9" cy="10" r="2"/>
+                <path d="M15 8h2M15 12h2"/>
+                <path d="M7 16h10"/>
+              </svg>
+              <span>CAC / PIV</span>
+              <span class="access-signin__sso-badge">Soon</span>
+            </a>
           </div>
         </div>
 
