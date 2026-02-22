@@ -3,7 +3,6 @@
 import { toggleTheme } from './theme.js';
 
 const NAV_LINKS = [
-  { href: '/about', label: 'About' },
   { href: '/builders', label: 'Defense Builders' },
   { href: '/wingman', label: 'Wingman' },
   { href: '/guild', label: 'Guild' },
