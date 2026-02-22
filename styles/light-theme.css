@@ -815,40 +815,14 @@ html.light-theme.no-transitions *::after {
   border-color: var(--ghost-gray);
 }
 
-.light-theme .access-signin,
 .light-theme .access-request {
   background: #ffffff;
   border-color: var(--ghost-gray);
 }
 
-.light-theme .access-signin__secured {
-  background: rgba(0, 0, 0, 0.02);
+.light-theme .access-signin {
+  background: rgba(255, 255, 255, 0.8);
   border-color: var(--ghost-gray);
-}
-
-.light-theme .access-signin__method {
-  background: rgba(0, 0, 0, 0.02);
-  border-color: var(--ghost-gray);
-}
-
-.light-theme .access-signin__method--primary {
-  background: rgba(59, 130, 246, 0.06);
-  border-color: rgba(59, 130, 246, 0.25);
-}
-
-.light-theme .access-signin__method-icon {
-  background: rgba(0, 0, 0, 0.04);
-  border-color: var(--ghost-gray);
-}
-
-.light-theme .access-signin__method--primary .access-signin__method-icon {
-  background: rgba(59, 130, 246, 0.10);
-  border-color: rgba(59, 130, 246, 0.25);
-}
-
-.light-theme .access-signin__divider-line,
-.light-theme .access-section-divider__line {
-  background: var(--ghost-gray);
 }
 
 .light-theme .access-signin__sso-btn {
