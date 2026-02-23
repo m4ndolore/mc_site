@@ -365,3 +365,270 @@ The two systems serve different surfaces and do not need to merge. Visual consis
 | API Integration Spec | `specs/sigmablox-api-integration.md` | Phased API integration plan |
 | User Migration Scripts | `scripts/README-MIGRATION.md` | Ghost CMS → MC user migration |
 | Signal-Incubator Plans | `../signal-incubator/docs/plans/` | Console/dashboard architecture (11 files) |
+
+---
+
+## Appendix A: Auth & Session Contract (OIDC + VIA)
+
+This appendix defines the normative authentication and session requirements for all MC platform surfaces. Phase 0 depends on correct callback configuration; deviations here derail the entire convergence.
+
+### A.1 Identity Provider
+
+- **VIA** at `via.mergecombinator.com` is the current OIDC issuer.
+- VIA is **swappable**. Guild depends only on standard OIDC contracts:
+  - Discovery document at `/.well-known/openid-configuration`
+  - JWKS endpoint for token verification
+  - Standard claims: `sub`, `email`, `name`, `groups`
+- The **IdP Adapter** in Guild abstracts all VIA-specific behavior. Changing IdP requires updating the adapter only — no product API or frontend changes.
+- VIA's Authentik instance handles MFA, CAC/PIV assertions, and enrollment policies. These are IdP concerns, opaque to Guild.
+
+### A.2 Client Types & Flows
+
+All clients use **OIDC Authorization Code + PKCE**. No implicit flow. No client secrets in browser environments.
+
+| Client | Flow | Notes |
+|--------|------|-------|
+| Guild SPA | Authorization Code + PKCE | System browser redirect to VIA, callback on Guild origin |
+| Wingman SPA | Authorization Code + PKCE | Same flow, callback on Wingman origin |
+| Mobile (iOS/Android) | Authorization Code + PKCE | System browser or ASWebAuthenticationSession / Custom Tabs. No embedded WebView. |
+| mc_site | **None** | mc_site does not perform auth flows. CTAs redirect to Guild or VIA. |
+
+### A.3 Redirect URIs
+
+The following redirect URIs **MUST** be registered in VIA for each OAuth client:
+
+**Guild client:**
+```
+https://guild.mergecombinator.com/login/callback
+```
+
+**Wingman client:**
+```
+https://wingman.mergecombinator.com/login/callback
+```
+
+**Mobile clients** (per-platform callback schemes):
+```
+com.mergecombinator.guild://login/callback
+com.mergecombinator.wingman://login/callback
+```
+
+**mc_site:** No callback URI. `mergecombinator.com` does not handle OAuth callbacks. If a user clicks "Sign in" on mc_site, they are redirected to `guild.mergecombinator.com` which initiates the OIDC flow — mc_site is never in the redirect chain.
+
+**Development/staging URIs** (register separately, never in production client config):
+```
+http://localhost:3003/login/callback    (Guild dev)
+http://localhost:5173/login/callback    (Wingman dev)
+```
+
+### A.4 Token Storage Policy
+
+| Surface | Access Token | Refresh Token | Rule |
+|---------|-------------|---------------|------|
+| `mergecombinator.com` | **Forbidden** | **Forbidden** | No tokens stored. No localStorage, sessionStorage, or cookies. |
+| `guild.mergecombinator.com` | In-memory (preferred) or `sessionStorage` scoped to origin | Secure `httpOnly` cookie or in-memory only | Tokens must never be accessible from other origins. |
+| `wingman.mergecombinator.com` | Same as Guild | Same as Guild | Same policy, separate origin. |
+| Mobile apps | Secure platform keychain (iOS Keychain / Android Keystore) | Secure platform keychain | Never in plain-text storage or shared preferences. |
+
+- **No cross-domain cookie coupling.** Guild and Wingman maintain independent sessions. mc_site has no session.
+- **Refresh token rotation:** Supported if VIA issues rotating refresh tokens. If not, define re-auth UX: after access token expiry (typically 5–15 min), attempt silent refresh via hidden iframe or background fetch. If refresh fails, redirect to VIA login with `prompt=login`.
+- **Tab/window persistence:** Access token in memory is lost on page refresh. Use refresh token (if available) or silent re-auth to restore session without full login redirect.
+
+### A.5 Token Verification (API-Wide)
+
+All API modules (`/guild/*`, `/builders/*`, `/wingman/*`) validate tokens **locally** using shared OIDC verification middleware. No runtime calls to Guild or VIA on the hot path.
+
+**Verification steps (in order):**
+1. Extract `Authorization: Bearer <token>` header.
+2. Decode JWT header; extract `kid` (key ID).
+3. Fetch JWKS from VIA discovery endpoint. **Cache aggressively** (TTL 1 hour minimum; refresh on `kid` miss).
+4. Verify signature against matching JWKS key.
+5. Validate claims:
+   - `iss` (issuer) must be in the **issuer allowlist** (currently: `https://via.mergecombinator.com/application/o/defense-builders/`).
+   - `aud` (audience) must match the API's expected audience.
+   - `exp` must be in the future (with clock skew tolerance of 30 seconds).
+   - `iat` must be in the past.
+6. Extract `sub` claim.
+7. Map `(issuer, sub)` → `guild_user_id`. This is the **canonical identity**. Never key on `email`.
+
+**Failure responses:**
+- Missing/malformed token → `401 Unauthorized`
+- Expired token → `401 Unauthorized` with `WWW-Authenticate: Bearer error="invalid_token"`
+- Invalid signature or issuer → `401 Unauthorized`
+- Insufficient role/entitlement → `403 Forbidden`
+
+### A.6 Authorization
+
+- **Roles and entitlements** are included in token claims if stable and small (e.g., `groups` claim from VIA).
+- If roles are too dynamic or large for token claims, Guild resolves roles on login and issues a **Guild session token** (short-lived, signed by Guild) containing resolved entitlements. Builders/Wingman validate this token locally.
+- **Builders and Wingman APIs must not call Guild synchronously on request hot paths** for identity or authorization. All authorization data must be derivable from the token or cached locally.
+- Role hierarchy (from SigmaBlox, carried forward):
+  ```
+  admin (4) > trusted (3) > industry (2.5) > member (2) > guest (1.5) > restricted (0.5)
+  ```
+
+### A.7 Logout & Revocation
+
+**"Logout" means:**
+1. **Client-side:** Clear all tokens from memory and storage. Clear session cookies on the client origin.
+2. **Refresh token revocation:** If VIA supports token revocation endpoint (`/o/revoke`), call it to invalidate the refresh token. If not supported, accept that the refresh token lives until expiry.
+3. **VIA session termination:** Redirect to VIA's end-session endpoint (`/o/logout?post_logout_redirect_uri=...`) to terminate the IdP session. This prevents silent re-auth from immediately restoring the session.
+4. **Cross-surface logout:** Logging out of Guild does **not** automatically log out of Wingman (independent sessions). If unified logout is desired, implement via VIA's back-channel logout or front-channel logout if supported.
+5. **Mobile:** Clear keychain entries for tokens. Revoke refresh token if endpoint exists.
+
+**Post-logout redirect:**
+- Guild logout → `https://mergecombinator.com/access`
+- Wingman logout → `https://mergecombinator.com/access`
+- Mobile logout → app login screen
+
+---
+
+## Appendix B: Mobile & Notifications Contract
+
+This appendix defines the normative requirements for mobile clients and the Guild Notification Service. These primitives are near-term deliverables (Phase 2), not aspirational.
+
+### B.1 Mobile as a First-Class Client
+
+Mobile apps (iOS/Android) are **first-class Guild clients** using the identical API and auth flows as web:
+
+- **API:** `https://api.mergecombinator.com/*` — single origin, same endpoints.
+- **Auth:** OIDC Authorization Code + PKCE via system browser (ASWebAuthenticationSession on iOS, Custom Tabs on Android). No embedded WebView auth.
+- **API client:** `@mc/api-client` — same versioned package used by Guild SPA and Wingman SPA.
+- **Token storage:** Platform secure keychain only (iOS Keychain / Android Keystore).
+- **No mobile-specific backend fork.** Mobile consumes the exact same API as web. If mobile needs a different response shape, use content negotiation or query parameters — never a separate endpoint.
+
+### B.2 Device Registration
+
+**Endpoint:** `POST /guild/devices/register`
+**Auth:** Bearer token (authenticated user)
+
+**Request body:**
+```json
+{
+  "platform": "ios" | "android",
+  "push_token": "<APNs device token or FCM registration token>",
+  "device_id": "<stable device identifier>",
+  "app_version": "1.2.0",
+  "app_name": "guild" | "wingman"
+}
+```
+
+**Behavior:**
+- Upserts device registration keyed on `(guild_user_id, device_id)`.
+- If `push_token` changes (APNs/FCM rotation), update in place.
+- Returns `201 Created` on new registration, `200 OK` on update.
+
+**Device removal:** `DELETE /guild/devices/:device_id`
+**Auth:** Bearer token (must own the device)
+
+**Behavior:**
+- Removes the device registration. No further push notifications to this device.
+- Called on explicit logout, app uninstall (if detectable), or user-initiated device management.
+
+**Device listing:** `GET /guild/devices`
+**Auth:** Bearer token
+
+**Behavior:**
+- Returns all registered devices for the authenticated user.
+- Used for "manage your devices" UI and multi-device debugging.
+
+### B.3 Guild Notification Service
+
+The Guild Notification Service is the **single notification layer** for the entire platform. No product-specific notification systems.
+
+**Routing channels:**
+
+| Channel | Provider | Use Case |
+|---------|----------|----------|
+| In-app | Guild API (`GET /guild/notifications`) | Notification center in Guild SPA and Wingman SPA |
+| Email | SendGrid | Digest emails, approval notifications, security alerts |
+| Push (iOS) | APNs | Real-time alerts to mobile |
+| Push (Android) | FCM | Real-time alerts to mobile |
+
+**Notification creation (internal):**
+Builders API and Wingman API create notifications by calling Guild API internally (service-to-service, not user-facing):
+
+```
+POST /guild/notifications (internal)
+{
+  "recipient_user_id": "<guild_user_id>",
+  "type": "builder_claim_approved" | "new_interest" | "brief_ready" | ...,
+  "title": "Your company claim was approved",
+  "body": "You now have edit access to Acme Corp.",
+  "deep_link": "https://guild.mergecombinator.com/company/abc123",
+  "channels": ["in_app", "push", "email"],
+  "priority": "normal" | "high"
+}
+```
+
+**Channel routing rules:**
+- `in_app`: always delivered (stored in `guild_db.notifications` table).
+- `push`: delivered to all registered devices for the user via APNs/FCM. Respects user's notification preferences.
+- `email`: delivered via SendGrid. Respects user's email notification preferences (e.g., digest vs. real-time, opt-out per type).
+- `high` priority: push delivered immediately (no batching). Email sent immediately (not digested).
+
+**Notification consumption (user-facing):**
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /guild/notifications` | Paginated list, filterable by `read`/`unread`, `type` |
+| `PATCH /guild/notifications/:id` | Mark as read |
+| `POST /guild/notifications/mark-all-read` | Bulk mark as read |
+| `GET /guild/notifications/unread-count` | Badge count for notification center UI |
+
+**User preferences:**
+- `GET /guild/notifications/preferences` — returns per-type channel preferences.
+- `PUT /guild/notifications/preferences` — update preferences (e.g., disable email for `new_interest`, disable push for `digest`).
+
+### B.4 Deep Links
+
+Deep links are canonical URLs owned by their respective surface. Push notification payloads always include a `deep_link` field.
+
+**Route ownership:**
+
+| Surface | Routes | Examples |
+|---------|--------|----------|
+| Guild | Platform routes | `/invite/:token`, `/builders/:id`, `/company/:id`, `/notes/:id`, `/watchlist`, `/problems/:id`, `/admin/*` |
+| Wingman | Intelligence routes | `/brief/:id`, `/advisor`, `/conversations/:id`, `/connectors` |
+
+**Rules:**
+- Deep links **resolve to their owning surface**. Never proxied through another SPA.
+- Mobile apps register URL handlers for `guild.mergecombinator.com` and `wingman.mergecombinator.com`.
+- If a deep link targets a surface the user doesn't have installed (e.g., Wingman link on a device with only Guild app), fall back to opening the URL in system browser.
+- Push payloads include:
+  ```json
+  {
+    "title": "New brief available",
+    "body": "Weekly intelligence digest is ready",
+    "deep_link": "https://wingman.mergecombinator.com/brief/abc123",
+    "notification_id": "<guild notification ID for read-tracking>"
+  }
+  ```
+- On push tap: app opens, navigates to deep link route, marks notification as read via `PATCH /guild/notifications/:id`.
+
+### B.5 @mc/api-client Versioning & Backward Compatibility
+
+`@mc/api-client` is consumed simultaneously by Guild SPA, Wingman SPA, and mobile apps. Mobile apps cannot update instantly (App Store / Play Store review delays of 1–7 days).
+
+**Versioning rules:**
+
+1. **Semantic versioning** (semver) is mandatory. Major version bumps = breaking changes.
+2. **API endpoints must remain backward compatible for at least N-2 client versions.** If the latest mobile app is v1.4, endpoints must still work for v1.2 clients.
+3. **Breaking API changes** (removed fields, changed semantics, new required parameters) require:
+   - API version header or URL prefix (e.g., `/v2/guild/notifications`)
+   - Minimum 30-day deprecation window for the old version
+   - Old version continues to function during the deprecation window
+4. **Additive changes** (new optional fields, new endpoints) are non-breaking and do not require version bumps.
+5. **`@mc/api-client` package versions** must be pinned in each consuming app's lockfile. Apps update the client package on their own release cadence.
+6. **API response envelopes** must be stable:
+   ```json
+   {
+     "data": { ... },
+     "meta": { "page": 1, "total": 42 }
+   }
+   ```
+   Adding fields to `data` is non-breaking. Removing or renaming fields in `data` is breaking.
+
+**Enforcement:**
+- CI validates that API response schemas are backward compatible with the previous release (schema diffing).
+- Mobile release process includes a compatibility check against the current API version before App Store submission.
