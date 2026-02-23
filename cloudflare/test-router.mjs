@@ -14,14 +14,13 @@ const PROD_URL = "https://mergecombinator.com";
 // ============================================================================
 
 // Inline the route matching logic for testing
+// NOTE: /app/*, /app/wingman/*, /wingman, and /api/* are now 301 redirects
+// handled in step 1.5 (before route matching). They no longer appear in the route table.
 function getRoutes() {
   return [
-    { prefix: "/app/wingman", origin: "wingman", stripPrefix: true, preserveRoot: true },
-    { prefix: "/app", origin: "app", stripPrefix: true },
     { prefix: "/control", origin: "control", stripPrefix: true },
-    { prefix: "/api", origin: "api", stripPrefix: false, isApi: true },
     { prefix: "/combine", origin: "sigmablox", stripPrefix: true, preserveRoot: true },
-    { prefix: "/opportunities", origin: "sbir", stripPrefix: true },
+    { prefix: "/opportunities", origin: "sbir", stripPrefix: true, preserveRoot: true },
   ];
 }
 
@@ -32,27 +31,160 @@ function matchRoute(pathname) {
   );
 }
 
-// Test route matching order
+// Platform convergence redirects (step 1.5 in merge-router)
+// These fire before route matching, so they never reach the route table.
+const GUILD_HOST = "guild.mergecombinator.com";
+const WINGMAN_HOST = "wingman.mergecombinator.com";
+const API_HOST = "api.mergecombinator.com";
+
+function convergenceRedirect(pathname, search) {
+  search = search || "";
+  // /app/wingman/* → wingman.mergecombinator.com (wins precedence over /app/*)
+  if (pathname.startsWith("/app/wingman")) {
+    const suffix = pathname.slice("/app/wingman".length) || "/";
+    return { status: 301, location: `https://${WINGMAN_HOST}${suffix}${search}` };
+  }
+  // /app/* → guild.mergecombinator.com
+  if (pathname === "/app" || pathname.startsWith("/app/")) {
+    const suffix = pathname.slice("/app".length) || "/";
+    return { status: 301, location: `https://${GUILD_HOST}${suffix}${search}` };
+  }
+  // /wingman → wingman.mergecombinator.com
+  if (pathname === "/wingman" || pathname.startsWith("/wingman/")) {
+    const suffix = pathname.slice("/wingman".length) || "/";
+    return { status: 301, location: `https://${WINGMAN_HOST}${suffix}${search}` };
+  }
+  // /api/* → api.mergecombinator.com (canonical API host, not proxied)
+  if (pathname === "/api" || pathname.startsWith("/api/")) {
+    return { status: 301, location: `https://${API_HOST}${pathname}${search}` };
+  }
+  return null; // no redirect, proceed to route matching
+}
+
+// Test platform convergence redirects
+function testConvergenceRedirects() {
+  console.log("Testing platform convergence redirects (step 1.5)...");
+
+  const testCases = [
+    // [pathname, search, expected status, expected location]
+    ["/app", "", 301, `https://${GUILD_HOST}/`],
+    ["/app/", "", 301, `https://${GUILD_HOST}/`],
+    ["/app/dashboard", "", 301, `https://${GUILD_HOST}/dashboard`],
+    ["/app/dashboard", "?tab=overview", 301, `https://${GUILD_HOST}/dashboard?tab=overview`],
+    ["/app/wingman", "", 301, `https://${WINGMAN_HOST}/`],
+    ["/app/wingman/", "", 301, `https://${WINGMAN_HOST}/`],
+    ["/app/wingman/chat", "", 301, `https://${WINGMAN_HOST}/chat`],
+    ["/app/wingman/chat", "?id=123", 301, `https://${WINGMAN_HOST}/chat?id=123`],
+    ["/wingman", "", 301, `https://${WINGMAN_HOST}/`],
+    ["/wingman/", "", 301, `https://${WINGMAN_HOST}/`],
+    ["/wingman/pricing", "", 301, `https://${WINGMAN_HOST}/pricing`],
+    // /api/* → api.mergecombinator.com (preserves full pathname)
+    ["/api", "", 301, `https://${API_HOST}/api`],
+    ["/api/v1/users", "", 301, `https://${API_HOST}/api/v1/users`],
+    ["/api/health", "?verbose=1", 301, `https://${API_HOST}/api/health?verbose=1`],
+    // These should NOT be redirected (return null → proceed to route matching)
+    ["/", "", null, null],
+    ["/builders", "", null, null],
+    ["/control", "", null, null],
+    ["/combine", "", null, null],
+    ["/access", "", null, null],
+  ];
+
+  let passed = 0;
+  let failed = 0;
+
+  for (const [pathname, search, expectedStatus, expectedLocation] of testCases) {
+    const result = convergenceRedirect(pathname, search);
+
+    if (expectedStatus === null) {
+      if (result === null) {
+        console.log(`  ✓ ${pathname}${search} → (no redirect, continues to route matching)`);
+        passed++;
+      } else {
+        console.log(`  ✗ ${pathname}${search} → ${result.status} ${result.location} (expected: no redirect)`);
+        failed++;
+      }
+    } else {
+      if (result && result.status === expectedStatus && result.location === expectedLocation) {
+        console.log(`  ✓ ${pathname}${search} → ${result.status} ${result.location}`);
+        passed++;
+      } else {
+        const actual = result ? `${result.status} ${result.location}` : "null";
+        console.log(`  ✗ ${pathname}${search} → ${actual} (expected: ${expectedStatus} ${expectedLocation})`);
+        failed++;
+      }
+    }
+  }
+
+  console.log(`\nConvergence redirects: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
+// Test no-redirect-loop safety and status code consistency
+function testRedirectSafety() {
+  console.log("Testing redirect safety (no loops, consistent 301s)...");
+
+  let passed = 0;
+  let failed = 0;
+
+  // Verify redirects point to external hosts (not back to mergecombinator.com paths)
+  const loopCases = [
+    ["/app", "should not redirect back to mergecombinator.com/app"],
+    ["/app/dashboard", "should not redirect back to mergecombinator.com/app/*"],
+    ["/wingman", "should not redirect back to mergecombinator.com/wingman"],
+    ["/wingman/pricing", "should not redirect back to mergecombinator.com/wingman/*"],
+    ["/api/v1/users", "should not redirect back to mergecombinator.com/api/*"],
+    ["/app/wingman/chat", "should not redirect back to mergecombinator.com/app/wingman/*"],
+  ];
+
+  for (const [pathname, description] of loopCases) {
+    const result = convergenceRedirect(pathname, "");
+    if (!result) {
+      console.log(`  ✗ ${pathname} → no redirect (expected redirect) - ${description}`);
+      failed++;
+      continue;
+    }
+
+    // The redirect location must NOT point back to the same path on mergecombinator.com
+    const locationUrl = new URL(result.location);
+    const wouldLoop = locationUrl.hostname === "mergecombinator.com" &&
+                      locationUrl.pathname === pathname;
+    if (wouldLoop) {
+      console.log(`  ✗ ${pathname} → ${result.location} (redirect loop!) - ${description}`);
+      failed++;
+    } else {
+      console.log(`  ✓ ${pathname} → ${result.location} (no loop)`);
+      passed++;
+    }
+
+    // All convergence redirects must be 301 (permanent), never 302
+    if (result.status !== 301) {
+      console.log(`  ✗ ${pathname} → status ${result.status} (expected 301 for canonicalization)`);
+      failed++;
+    } else {
+      console.log(`  ✓ ${pathname} → 301 (correct status for canonicalization)`);
+      passed++;
+    }
+  }
+
+  console.log(`\nRedirect safety: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
+// Test route matching order (only proxy routes — redirected paths never reach here)
 function testRouteMatching() {
-  console.log("Testing route matching order...");
+  console.log("Testing route matching order (proxy routes only)...");
 
   const testCases = [
     // [pathname, expected origin or null]
     ["/", null],  // Should fall through to Pages
-    ["/app", "app"],
-    ["/app/", "app"],
-    ["/app/dashboard", "app"],
-    ["/app/wingman", "wingman"],  // More specific route should match
-    ["/app/wingman/chat", "wingman"],
     ["/control", "control"],
     ["/control/users", "control"],
-    ["/api", "api"],
-    ["/api/v1/users", "api"],
     ["/combine", "sigmablox"],
     ["/combine/blog", "sigmablox"],
     ["/opportunities", "sbir"],
-    ["/wingman", null],  // Marketing page, no route match
-    ["/builders", null],  // Static page
+    ["/builders", null],  // Static page, falls through to Pages
+    ["/access", null],    // Static page, falls through to Pages
   ];
 
   let passed = 0;
@@ -145,10 +277,10 @@ async function smokeTest(baseUrl) {
   const testCases = [
     // [path, expected status, description]
     ["/", 200, "Homepage"],
-    ["/wingman", 200, "Wingman marketing page"],
+    ["/wingman", 301, "Wingman → wingman.mergecombinator.com (convergence redirect)"],
     ["/builders", 200, "Builders page"],
     ["/access", 200, "Access/signup page"],
-    ["/app", 302, "App console (should redirect to login)"],
+    ["/app", 301, "App → guild.mergecombinator.com (convergence redirect)"],
     ["/control", 302, "Control console (should redirect to login)"],
     ["/combine", 200, "Sigmablox proxy"],
     ["/auth/me", 200, "Auth me endpoint"],
@@ -259,71 +391,8 @@ async function testCanonicalRedirects(baseUrl) {
   return failed === 0;
 }
 
-async function testCorsHeaders(baseUrl) {
-  console.log("Testing CORS headers...\n");
-
-  let passed = 0;
-  let failed = 0;
-
-  // Test with allowed origin
-  try {
-    const response = await fetch(`${baseUrl}/api/health`, {
-      method: "OPTIONS",
-      headers: {
-        "Origin": "https://mergecombinator.com",
-        "Access-Control-Request-Method": "GET"
-      }
-    });
-
-    const allowOrigin = response.headers.get("access-control-allow-origin");
-    if (allowOrigin === "https://mergecombinator.com") {
-      console.log("  ✓ CORS allows https://mergecombinator.com");
-      passed++;
-    } else {
-      console.log(`  ✗ CORS header missing or wrong: ${allowOrigin}`);
-      failed++;
-    }
-
-    // Check credentials header
-    const allowCreds = response.headers.get("access-control-allow-credentials");
-    if (allowCreds === "true") {
-      console.log("  ✓ CORS credentials allowed");
-      passed++;
-    } else {
-      console.log(`  ✗ CORS credentials not allowed: ${allowCreds}`);
-      failed++;
-    }
-  } catch (error) {
-    console.log(`  ✗ CORS test error: ${error.message}`);
-    failed += 2;
-  }
-
-  // Test with disallowed origin
-  try {
-    const response = await fetch(`${baseUrl}/api/health`, {
-      method: "OPTIONS",
-      headers: {
-        "Origin": "https://evil.com",
-        "Access-Control-Request-Method": "GET"
-      }
-    });
-
-    const allowOrigin = response.headers.get("access-control-allow-origin");
-    if (!allowOrigin) {
-      console.log("  ✓ CORS blocks https://evil.com");
-      passed++;
-    } else {
-      console.log(`  ✗ CORS should block evil.com but got: ${allowOrigin}`);
-      failed++;
-    }
-  } catch (error) {
-    console.log(`  ✗ CORS block test error: ${error.message}`);
-    failed++;
-  }
-
-  console.log(`\nCORS tests: ${passed} passed, ${failed} failed\n`);
-  return failed === 0;
-}
+// CORS tests removed — /api/* is now a 301 redirect to api.mergecombinator.com.
+// CORS handling belongs on the api.mergecombinator.com Workers, not the merge-router.
 
 async function testAuthRedirects(baseUrl) {
   console.log("Testing auth redirects...\n");
@@ -331,33 +400,24 @@ async function testAuthRedirects(baseUrl) {
   let passed = 0;
   let failed = 0;
 
-  // Test /app redirect includes returnTo
+  // /app/dashboard is now a 301 convergence redirect to guild, NOT a login redirect
   try {
     const response = await fetch(`${baseUrl}/app/dashboard`, { redirect: "manual" });
     const location = response.headers.get("location") || "";
 
-    if (location.includes("/auth/login") && location.includes("returnTo=")) {
-      console.log("  ✓ /app/dashboard redirects to login with returnTo");
+    if (response.status === 301 && location.includes("guild.mergecombinator.com/dashboard")) {
+      console.log("  ✓ /app/dashboard → 301 to guild.mergecombinator.com/dashboard");
       passed++;
     } else {
-      console.log(`  ✗ /app/dashboard redirect missing returnTo: ${location}`);
-      failed++;
-    }
-
-    // Verify returnTo is URL-encoded
-    if (location.includes("returnTo=%2Fapp%2Fdashboard")) {
-      console.log("  ✓ returnTo is properly URL-encoded");
-      passed++;
-    } else {
-      console.log(`  ✗ returnTo not properly encoded: ${location}`);
+      console.log(`  ✗ /app/dashboard → ${response.status} ${location} (expected 301 to guild)`);
       failed++;
     }
   } catch (error) {
-    console.log(`  ✗ Auth redirect test error: ${error.message}`);
-    failed += 2;
+    console.log(`  ✗ /app/dashboard redirect test error: ${error.message}`);
+    failed++;
   }
 
-  // Test /control redirect
+  // /control still requires auth → login redirect
   try {
     const response = await fetch(`${baseUrl}/control/users`, { redirect: "manual" });
     const location = response.headers.get("location") || "";
@@ -371,6 +431,23 @@ async function testAuthRedirects(baseUrl) {
     }
   } catch (error) {
     console.log(`  ✗ Control redirect test error: ${error.message}`);
+    failed++;
+  }
+
+  // /app/wingman/* → 301 to wingman.mergecombinator.com
+  try {
+    const response = await fetch(`${baseUrl}/app/wingman/chat`, { redirect: "manual" });
+    const location = response.headers.get("location") || "";
+
+    if (response.status === 301 && location.includes("wingman.mergecombinator.com/chat")) {
+      console.log("  ✓ /app/wingman/chat → 301 to wingman.mergecombinator.com/chat");
+      passed++;
+    } else {
+      console.log(`  ✗ /app/wingman/chat → ${response.status} ${location} (expected 301 to wingman)`);
+      failed++;
+    }
+  } catch (error) {
+    console.log(`  ✗ /app/wingman redirect test error: ${error.message}`);
     failed++;
   }
 
@@ -430,8 +507,7 @@ async function testPublicPaths(baseUrl) {
   let failed = 0;
 
   const publicPaths = [
-    ["/wingman", "Wingman marketing page", false],
-    ["/wingman/", "Wingman marketing page (trailing slash)", false],
+    // /wingman is now a 301 convergence redirect — tested in testAuthRedirects
     ["/builders", "Builders page", false],
     ["/access", "Access request page", false],
     ["/combine", "Sigmablox proxy", false],
@@ -486,12 +562,15 @@ async function main() {
   console.log();
 
   // Unit tests (always run — no network required)
+  const convergenceTestsPassed = testConvergenceRedirects();
+  const redirectSafetyPassed = testRedirectSafety();
   const routeTestsPassed = testRouteMatching();
   const sanitizeTestsPassed = testSanitizeReturnTo();
 
   if (unitOnly) {
     console.log("=".repeat(60));
-    const allPassed = routeTestsPassed && sanitizeTestsPassed;
+    const allPassed = convergenceTestsPassed && redirectSafetyPassed &&
+                      routeTestsPassed && sanitizeTestsPassed;
     console.log(allPassed ? "✓ All unit tests passed!" : "✗ Some unit tests failed!");
     process.exit(allPassed ? 0 : 1);
     return;
@@ -516,14 +595,12 @@ async function main() {
   console.log("-".repeat(60));
   const canonicalTestsPassed = await testCanonicalRedirects(baseUrl);
 
-  console.log("-".repeat(60));
-  const corsTestsPassed = await testCorsHeaders(baseUrl);
-
   // Summary
   console.log("=".repeat(60));
-  const allPassed = routeTestsPassed && sanitizeTestsPassed && smokeTestsPassed &&
-                    publicPathsPassed && authRedirectsPassed && authMePassed &&
-                    turnstileTestsPassed && canonicalTestsPassed && corsTestsPassed;
+  const allPassed = convergenceTestsPassed && redirectSafetyPassed &&
+                    routeTestsPassed && sanitizeTestsPassed &&
+                    smokeTestsPassed && publicPathsPassed && authRedirectsPassed &&
+                    authMePassed && turnstileTestsPassed && canonicalTestsPassed;
 
   if (allPassed) {
     console.log("✓ All tests passed!");

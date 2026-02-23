@@ -29,9 +29,16 @@ const HOP_BY_HOP_HEADERS = new Set([
   "upgrade",
 ]);
 
-const CONSOLE_PATHS = new Set(["/app", "/control"]);
-const DEFAULT_CONSOLE_PATH = "/app";
+const CONSOLE_PATHS = new Set(["/control"]);
 const DEFAULT_ADMIN_GROUPS = ["via-admins", "sigmablox-admins"];
+
+// Platform convergence: canonical redirect targets
+// guild.mergecombinator.com = authenticated platform
+// wingman.mergecombinator.com = messaging intelligence product
+// api.mergecombinator.com = single API entrypoint
+const GUILD_HOST = "guild.mergecombinator.com";
+const WINGMAN_HOST = "wingman.mergecombinator.com";
+const API_HOST = "api.mergecombinator.com";
 
 const CANONICAL_HOST = "mergecombinator.com";
 const ALIAS_HOSTS = new Set(["www.mergecombinator.com", "build.mergecombinator.com"]);
@@ -166,9 +173,6 @@ const SHIM_HTML = `
 const REQUIRED_ORIGIN_VARS = [
   "MC_PAGES_ORIGIN",
   "SIGMABLOX_ORIGIN",
-  "SIGMABLOX_API_ORIGIN",
-  "APP_ORIGIN",
-  "WINGMAN_ORIGIN",
   "CONTROL_ORIGIN",
 ];
 
@@ -180,34 +184,17 @@ function getOrigins(env) {
   return {
     mcPages: env.MC_PAGES_ORIGIN,
     sigmablox: env.SIGMABLOX_ORIGIN,
-    sigmabloxApi: env.SIGMABLOX_API_ORIGIN,
-    app: env.APP_ORIGIN,
-    wingman: env.WINGMAN_ORIGIN,
     control: env.CONTROL_ORIGIN,
-    sbir: env.SBIR_ORIGIN || "https://sbir.mergecombinator.com",
     opportunities: env.OPPORTUNITIES_PAGES_URL || "https://mc-opportunities.pages.dev",
   };
 }
 
-function parseCorsOrigins(env) {
-  const raw = env.API_CORS_ORIGINS || "";
-  if (!raw) {
-    console.warn("[mc-router] API_CORS_ORIGINS not configured - CORS disabled for /api/* routes");
-    return new Set();
-  }
-  const origins = new Set(raw.split(",").map((s) => s.trim()).filter(Boolean));
-  if (origins.size === 0) {
-    console.warn("[mc-router] API_CORS_ORIGINS is empty - CORS disabled for /api/* routes");
-  }
-  return origins;
-}
 
 function getRoutes(origins) {
+  // /app/*, /app/wingman/*, /wingman, and /api/* are now 301 redirects
+  // handled in step 1.5 before route matching. Only proxy routes remain here.
   return [
-    { prefix: "/app/wingman", origin: origins.wingman, stripPrefix: true, preserveRoot: true },
-    { prefix: "/app", origin: origins.app, stripPrefix: true },
     { prefix: "/control", origin: origins.control, stripPrefix: true },
-    { prefix: "/api", origin: origins.sigmabloxApi, stripPrefix: false, isApi: true },
     { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
     { prefix: "/opportunities", origin: origins.opportunities, stripPrefix: true, preserveRoot: true },
   ];
@@ -236,9 +223,6 @@ function isConsolePath(pathname) {
 }
 
 function consoleValueFromPath(pathname) {
-  if (pathname === "/wingman" || pathname.startsWith("/wingman/")) {
-    return "wingman";
-  }
   if (pathname === "/control" || pathname.startsWith("/control/")) {
     return "control";
   }
@@ -307,64 +291,6 @@ function buildUpstreamHeaders(request, { stripCookies = false } = {}) {
   headers.delete("host");
 
   return headers;
-}
-
-// ────────────────────────────────────────────────────────────────────────────
-// CORS Handling
-// ────────────────────────────────────────────────────────────────────────────
-
-function getCorsHeaders(request, env) {
-  const origin = request.headers.get("Origin");
-  const allowedOrigins = parseCorsOrigins(env);
-  if (origin && allowedOrigins.has(origin)) {
-    return {
-      "Access-Control-Allow-Origin": origin,
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Allow-Credentials": "true",
-    };
-  }
-  return null;
-}
-
-async function handleApiRoute(request, targetUrl, env) {
-  if (request.method === "OPTIONS") {
-    const corsHeaders = getCorsHeaders(request, env);
-    if (corsHeaders) {
-      return new Response(null, { status: 204, headers: corsHeaders });
-    }
-    return new Response(null, { status: 204 });
-  }
-
-  const upstreamHeaders = buildUpstreamHeaders(request, { stripCookies: true });
-  const session = await getSession(request, env);
-  if (session && session.accessToken) {
-    upstreamHeaders.set("Authorization", `Bearer ${session.accessToken}`);
-  }
-
-  const clonedRequest = request.clone();
-  const proxyRequest = new Request(targetUrl, {
-    method: request.method,
-    headers: upstreamHeaders,
-    body: clonedRequest.body,
-  });
-
-  const response = await fetch(proxyRequest);
-  const corsHeaders = getCorsHeaders(request, env);
-
-  if (corsHeaders) {
-    const newHeaders = new Headers(response.headers);
-    for (const [key, value] of Object.entries(corsHeaders)) {
-      newHeaders.set(key, value);
-    }
-    return new Response(response.body, {
-      status: response.status,
-      statusText: response.statusText,
-      headers: newHeaders,
-    });
-  }
-
-  return response;
 }
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -464,6 +390,29 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
 
+    // 1.5) Platform convergence redirects (301)
+    // These canonicalize legacy subpath-proxied routes to their proper hosts.
+    // Order matters: /app/wingman/* must be checked before /app/*
+    if (url.pathname.startsWith("/app/wingman")) {
+      const suffix = url.pathname.slice("/app/wingman".length) || "/";
+      const target = `https://${WINGMAN_HOST}${suffix}${url.search}`;
+      return Response.redirect(target, 301);
+    }
+    if (url.pathname === "/app" || url.pathname.startsWith("/app/")) {
+      const suffix = url.pathname.slice("/app".length) || "/";
+      const target = `https://${GUILD_HOST}${suffix}${url.search}`;
+      return Response.redirect(target, 301);
+    }
+    if (url.pathname === "/wingman" || url.pathname.startsWith("/wingman/")) {
+      const suffix = url.pathname.slice("/wingman".length) || "/";
+      const target = `https://${WINGMAN_HOST}${suffix}${url.search}`;
+      return Response.redirect(target, 301);
+    }
+    if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
+      const target = `https://${API_HOST}${url.pathname}${url.search}`;
+      return Response.redirect(target, 301);
+    }
+
     const origins = getOrigins(env);
     const routes = getRoutes(origins);
 
@@ -473,16 +422,17 @@ export default {
       if (authResponse) return authResponse;
     }
 
-    // 3) Console gating
-    const isWingmanMarketing = url.pathname === "/wingman" || url.pathname.startsWith("/wingman/");
-
-    if (!isWingmanMarketing && isConsolePath(url.pathname)) {
+    // 3) Console gating (/control only — /app/* and /wingman are now redirects)
+    if (isConsolePath(url.pathname)) {
       const session = await getSession(request, env);
       if (!session) return createLoginRedirect(request);
 
       const isControl = url.pathname === "/control" || url.pathname.startsWith("/control/");
       if (isControl && !isAdminSession(session, env)) {
-        const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
+        // Preserve deep-link context (path suffix + query) when redirecting non-admins to Guild
+        const suffix = url.pathname.slice("/control".length) || "/";
+        const target = `https://${GUILD_HOST}${suffix}${url.search}`;
+        const redirect = Response.redirect(target, 302);
         return withLastConsoleCookie(redirect, "app", env, request);
       }
     }
@@ -531,12 +481,11 @@ export default {
         response = withLastConsoleCookie(response, consoleValueFromPath(url.pathname), env, request);
       }
 
-      // Dashboard redirect for authenticated users
+      // Dashboard redirect for authenticated users → Guild
       if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
         const session = await getSession(request, env);
         if (session) {
-          const redirect = Response.redirect(new URL(DEFAULT_CONSOLE_PATH, url.origin).toString(), 302);
-          return withLastConsoleCookie(redirect, "app", env, request);
+          return Response.redirect(`https://${GUILD_HOST}/`, 302);
         }
       }
 
@@ -544,11 +493,8 @@ export default {
       return transformMcPagesHtml(response, env, url);
     }
 
-    // 6) API route handling
+    // 6) Resolve target for proxy routes
     const targetUrl = resolveTarget(url, route);
-    if (route.isApi) {
-      return handleApiRoute(request, targetUrl, env);
-    }
 
     // 6.5) Redirect-only routes (external services that can't be proxied)
     if (route.redirectOnly) {
