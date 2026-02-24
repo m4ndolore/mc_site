@@ -31,23 +31,20 @@ OIDC_ISSUER_URL = "https://via.mergecombinator.com"
 OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/mergecombinator/end-session/"
 COOKIE_DOMAIN = ".mergecombinator.com"  # Enables cross-subdomain sessions (www, docs)
 # CONTROL_ADMIN_GROUPS = "via-admins,sigmablox-admins"  # Optional override for /control access
+
+# Proxy origins (only routes still proxied through merge-router)
 MC_PAGES_ORIGIN = "https://mc-site-dr4.pages.dev"
 SIGMABLOX_ORIGIN = "https://www.sigmablox.com"
-SIGMABLOX_API_ORIGIN = "https://api.sigmablox.com"
-# Console origins - DNS configured 2026-02-13, placeholder pages deployed
-# See REQ-INFRA-003 for subdomain readiness tracking
-APP_ORIGIN = "https://app.mergecombinator.com"         # CNAME → mc-app-placeholder.pages.dev
-WINGMAN_ORIGIN = "https://wingman.mergecombinator.com" # CNAME → mc-wingman-placeholder.pages.dev
-CONTROL_ORIGIN = "https://control.mergecombinator.com" # CNAME → mc-control-placeholder.pages.dev
-SBIR_ORIGIN = "https://sbir.mergecombinator.com"       # Railway deployment
+CONTROL_ORIGIN = "https://control.mergecombinator.com"
 OPPORTUNITIES_PAGES_URL = "https://mc-opportunities.pages.dev"
-WINGMAN_CONSOLE_ENABLED = "false"
 
 # Cloudflare Turnstile (public site key - NOT a secret)
 TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
 
-# CORS allowed origins (comma-separated)
-API_CORS_ORIGINS = "https://mergecombinator.com,https://www.mergecombinator.com,https://console.mergecombinator.com"
+# Removed in Phase 0 (phase0-routing-complete):
+# APP_ORIGIN, WINGMAN_ORIGIN → 301 redirects to guild.*/wingman.* (not proxied)
+# SIGMABLOX_API_ORIGIN, API_CORS_ORIGINS → 301 redirect to api.* (not proxied)
+# SBIR_ORIGIN, WINGMAN_CONSOLE_ENABLED → no longer referenced
 
 # -----------------------------------------------------------------------------
 # Staging environment - for testing changes before production
@@ -65,15 +62,9 @@ OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/mergecombinato
 COOKIE_DOMAIN = ".mergecombinator.com"
 MC_PAGES_ORIGIN = "https://mc-site-dr4.pages.dev"
 SIGMABLOX_ORIGIN = "https://www.sigmablox.com"
-SIGMABLOX_API_ORIGIN = "https://api.sigmablox.com"
-APP_ORIGIN = "https://app.mergecombinator.com"
-WINGMAN_ORIGIN = "https://wingman.mergecombinator.com"
 CONTROL_ORIGIN = "https://control.mergecombinator.com"
-SBIR_ORIGIN = "https://sbir.mergecombinator.com"       # Railway deployment
 OPPORTUNITIES_PAGES_URL = "https://mc-opportunities.pages.dev"
-WINGMAN_CONSOLE_ENABLED = "false"
 TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
-API_CORS_ORIGINS = "https://mergecombinator.com,https://www.mergecombinator.com,https://console.mergecombinator.com"
 
 # -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
@@ -87,11 +78,6 @@ OIDC_ISSUER_URL = "http://localhost:9000"  # Must match config/dev.local.yaml li
 OAUTH_LOGOUT_URL = "http://localhost:9000/application/o/mergecombinator/end-session/"
 MC_PAGES_ORIGIN = "http://localhost:3000"
 SIGMABLOX_ORIGIN = "http://localhost:2368"
-SIGMABLOX_API_ORIGIN = "http://localhost:2368"
-APP_ORIGIN = "http://localhost:3003"
-WINGMAN_ORIGIN = "http://localhost:5173"
 CONTROL_ORIGIN = "http://localhost:3300"
-WINGMAN_CONSOLE_ENABLED = "false"
 # Use Turnstile test key for local dev (always passes)
 TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
-API_CORS_ORIGINS = "http://localhost:3000,http://localhost:3002,http://localhost:5173"
