@@ -120,6 +120,55 @@ function testConvergenceRedirects() {
   return failed === 0;
 }
 
+// Test legacy subdomain redirects (step 1.1 in merge-router)
+function testSubdomainRedirects() {
+  console.log("Testing legacy subdomain redirects (step 1.1)...");
+
+  // Simulate the SUBDOMAIN_REDIRECTS map from merge-router
+  const SUBDOMAIN_REDIRECTS = new Map([
+    ["app.mergecombinator.com", GUILD_HOST],
+  ]);
+
+  const testCases = [
+    // [host, pathname, search, expected redirect host or null]
+    ["app.mergecombinator.com", "/", "", GUILD_HOST],
+    ["app.mergecombinator.com", "/dashboard", "?tab=1", GUILD_HOST],
+    ["app.mergecombinator.com", "/wingman/chat", "", GUILD_HOST],
+    // These should NOT redirect via subdomain map
+    ["guild.mergecombinator.com", "/", "", null],
+    ["wingman.mergecombinator.com", "/", "", null],
+    ["mergecombinator.com", "/app", "", null],  // path redirect, not subdomain
+  ];
+
+  let passed = 0;
+  let failed = 0;
+
+  for (const [host, pathname, search, expectedHost] of testCases) {
+    const redirectHost = SUBDOMAIN_REDIRECTS.get(host);
+    if (expectedHost === null) {
+      if (!redirectHost) {
+        console.log(`  ✓ ${host}${pathname}${search} → (no subdomain redirect)`);
+        passed++;
+      } else {
+        console.log(`  ✗ ${host}${pathname}${search} → ${redirectHost} (expected: no redirect)`);
+        failed++;
+      }
+    } else {
+      if (redirectHost === expectedHost) {
+        const target = `https://${redirectHost}${pathname}${search}`;
+        console.log(`  ✓ ${host}${pathname}${search} → 301 ${target}`);
+        passed++;
+      } else {
+        console.log(`  ✗ ${host}${pathname}${search} → ${redirectHost || "null"} (expected: ${expectedHost})`);
+        failed++;
+      }
+    }
+  }
+
+  console.log(`\nSubdomain redirects: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
 // Test no-redirect-loop safety and status code consistency
 function testRedirectSafety() {
   console.log("Testing redirect safety (no loops, consistent 301s)...");
@@ -563,14 +612,15 @@ async function main() {
 
   // Unit tests (always run — no network required)
   const convergenceTestsPassed = testConvergenceRedirects();
+  const subdomainTestsPassed = testSubdomainRedirects();
   const redirectSafetyPassed = testRedirectSafety();
   const routeTestsPassed = testRouteMatching();
   const sanitizeTestsPassed = testSanitizeReturnTo();
 
   if (unitOnly) {
     console.log("=".repeat(60));
-    const allPassed = convergenceTestsPassed && redirectSafetyPassed &&
-                      routeTestsPassed && sanitizeTestsPassed;
+    const allPassed = convergenceTestsPassed && subdomainTestsPassed &&
+                      redirectSafetyPassed && routeTestsPassed && sanitizeTestsPassed;
     console.log(allPassed ? "✓ All unit tests passed!" : "✗ Some unit tests failed!");
     process.exit(allPassed ? 0 : 1);
     return;
@@ -597,8 +647,8 @@ async function main() {
 
   // Summary
   console.log("=".repeat(60));
-  const allPassed = convergenceTestsPassed && redirectSafetyPassed &&
-                    routeTestsPassed && sanitizeTestsPassed &&
+  const allPassed = convergenceTestsPassed && subdomainTestsPassed &&
+                    redirectSafetyPassed && routeTestsPassed && sanitizeTestsPassed &&
                     smokeTestsPassed && publicPathsPassed && authRedirectsPassed &&
                     authMePassed && turnstileTestsPassed && canonicalTestsPassed;
 

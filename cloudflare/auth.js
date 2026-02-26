@@ -221,8 +221,8 @@ function getLastConsoleDestination(request) {
   const value = cookies[LAST_CONSOLE_COOKIE_NAME];
   if (value === "wingman") return "/wingman";
   if (value === "control") return "/control";
-  if (value === "app") return "/app";
-  return "/app";
+  if (value === "app") return `https://guild.mergecombinator.com/`;
+  return `https://guild.mergecombinator.com/`;
 }
 
 export function createLastConsoleCookie(value, env, isSecure) {
