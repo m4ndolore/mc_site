@@ -42,6 +42,10 @@ const API_HOST = "api.mergecombinator.com";
 
 const CANONICAL_HOST = "mergecombinator.com";
 const ALIAS_HOSTS = new Set(["www.mergecombinator.com", "build.mergecombinator.com"]);
+// Legacy subdomain → canonical host redirects
+const SUBDOMAIN_REDIRECTS = new Map([
+  ["app.mergecombinator.com", GUILD_HOST],
+]);
 
 // ────────────────────────────────────────────────────────────────────────────
 // HTML Injection Templates
@@ -387,6 +391,13 @@ export default {
     // 1) Canonical host redirect
     if (ALIAS_HOSTS.has(host)) {
       url.hostname = CANONICAL_HOST;
+      return Response.redirect(url.toString(), 301);
+    }
+
+    // 1.1) Legacy subdomain redirects (e.g. app.* → guild.*)
+    const redirectHost = SUBDOMAIN_REDIRECTS.get(host);
+    if (redirectHost) {
+      url.hostname = redirectHost;
       return Response.redirect(url.toString(), 301);
     }
 

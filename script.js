@@ -12,9 +12,9 @@
   const CONFIG = {
     // URL Configuration - Update these before launch
     urls: {
-      appUrl: 'https://app.mergecombinator.com',
-      applyUrl: 'https://app.mergecombinator.com/apply',
-      loginUrl: 'https://app.mergecombinator.com/login',
+      appUrl: 'https://guild.mergecombinator.com',
+      applyUrl: 'https://guild.mergecombinator.com/apply',
+      loginUrl: '/access',
       combineUrl: 'https://sigmablox.com'
     },
 
