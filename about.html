@@ -23,13 +23,61 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/light-theme.css">
+  <style>
+    .about-hero {
+      min-height: clamp(520px, 72vh, 760px);
+      padding-top: calc(var(--nav-height) + 36px);
+      padding-bottom: 36px;
+    }
+    .about-hero .hero__content {
+      display: block;
+    }
+    .about-hero .hero__bg {
+      opacity: 0.72;
+    }
+    .about-hero .hero__canvas {
+      opacity: 0.22;
+    }
+    .about-profile {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .about-headshot {
+      width: 120px;
+      height: 148px;
+      object-fit: cover;
+      object-position: center 18%;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.02);
+    }
+    .about-headshot--paul {
+      object-position: center 14%;
+    }
+    @media (max-width: 768px) {
+      .about-hero {
+        min-height: auto;
+        padding-top: calc(var(--nav-height) + 30px);
+        padding-bottom: 22px;
+      }
+      .about-profile {
+        grid-template-columns: 1fr;
+      }
+      .about-headshot {
+        width: 112px;
+        height: 138px;
+      }
+    }
+  </style>
 </head>
 <body>
   <a href="#about-main" class="skip-link">Skip to main content</a>
   <div id="mc-navbar"></div>
 
   <main id="about-main">
-    <section class="hero" id="hero">
+    <section class="hero about-hero" id="hero">
       <div class="hero__bg">
         <div class="hero__gradient"></div>
         <div class="hero__grid"></div>
@@ -122,11 +170,16 @@
           <h2 style="font-size: var(--text-h2); color: var(--white);">Founder &amp; Managing Partner</h2>
         </header>
         <article class="fade-up" style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-xl); padding: 28px; max-width: 980px; margin: 0 auto;">
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;">Paul “Gu$” Garcia</div>
-          <h3 style="font-size: 24px; color: var(--white); margin-bottom: 14px;">Founder &amp; Managing Partner</h3>
-          <p style="color: rgba(255,255,255,.76); line-height: 1.7; margin-bottom: 14px;">Paul “Gu$” Garcia is the Founder and Managing Partner of Merge Combinator. A Weapons School graduate and former instructor fighter pilot, he flew combat missions in the F/A-18 across Iraq, Afghanistan, and Syria, and later flew the F-22 with the Hawaii Air National Guard. He served as Officer in Charge of Homeland Defense for the Hawaii and Guam Air Defense Region in support of Operation Noble Eagle.</p>
-          <p style="color: rgba(255,255,255,.76); line-height: 1.7; margin-bottom: 14px;">Since leaving the cockpit, Paul has focused on accelerating technology transition across the Indo-Pacific theater, architecting and delivering capabilities for advanced weapons systems. In prior roles, he supported capability transitions across major modernization efforts within the Department of Defense, including AI-enabled C2 and operational systems initiatives.</p>
-          <p style="color: rgba(255,255,255,.76); line-height: 1.7; margin: 0;">He previously founded SigmaBlox, the National Defense Tech Combine, convening warfighters, builders, and decision-makers to accelerate operationally relevant technology transition.</p>
+          <div class="about-profile">
+            <img src="/assets/images/paul-optimized.jpg" alt="Paul Garcia" class="about-headshot about-headshot--paul" loading="lazy" width="120" height="148">
+            <div>
+              <div style="font-family: var(--font-mono); font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;">Paul “Gu$” Garcia</div>
+              <h3 style="font-size: 24px; color: var(--white); margin-bottom: 14px;">Founder &amp; Managing Partner</h3>
+              <p style="color: rgba(255,255,255,.76); line-height: 1.7; margin-bottom: 14px;">Paul “Gu$” Garcia is the Founder and Managing Partner of Merge Combinator. A Weapons School graduate and former instructor fighter pilot, he flew combat missions in the F/A-18 across Iraq, Afghanistan, and Syria, and later flew the F-22 with the Hawaii Air National Guard. He served as Officer in Charge of Homeland Defense for the Hawaii and Guam Air Defense Region in support of Operation Noble Eagle.</p>
+              <p style="color: rgba(255,255,255,.76); line-height: 1.7; margin-bottom: 14px;">Since leaving the cockpit, Paul has focused on accelerating technology transition across the Indo-Pacific theater, architecting and delivering capabilities for advanced weapons systems. In prior roles, he supported capability transitions across major modernization efforts within the Department of Defense, including AI-enabled C2 and operational systems initiatives.</p>
+              <p style="color: rgba(255,255,255,.76); line-height: 1.7; margin: 0;">He previously founded SigmaBlox, the National Defense Tech Combine, convening warfighters, builders, and decision-makers to accelerate operationally relevant technology transition.</p>
+            </div>
+          </div>
         </article>
       </div>
     </section>
@@ -139,17 +192,27 @@
         </header>
         <div class="stagger-children" style="display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px;">
           <article style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-xl); padding: 24px;">
-            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;">Elise Walker</div>
-            <h3 style="font-size: 20px; color: var(--white); margin-bottom: 12px;">Principal, Venture Formation</h3>
-            <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin-bottom: 12px;">Elise Walker is Principal, Venture Formation at Merge Combinator. A TOPGUN graduate and former Naval Aviator, she flew the F-35 and F/A-18 during 12 years of service, including combat deployments over Iraq, Syria, and Yemen. Her operational experience includes strike fighter tactics instruction, large force exercise planning, and joint weapons systems integration.</p>
-            <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin: 0;">She works at the intersection of aviation, advanced weapons systems, and AI integration, translating tactical problems into venture formation pathways. Elise also serves as a Senior Tactical Systems Analyst at Tactical Air Support.</p>
+            <div class="about-profile">
+              <img src="/assets/images/elise-optimized.jpg" alt="Elise Walker" class="about-headshot" loading="lazy" width="120" height="148">
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;">Elise Walker</div>
+                <h3 style="font-size: 20px; color: var(--white); margin-bottom: 12px;">Principal, Venture Formation</h3>
+                <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin-bottom: 12px;">Elise Walker is Principal, Venture Formation at Merge Combinator. A TOPGUN graduate and former Naval Aviator, she flew the F-35 and F/A-18 during 12 years of service, including combat deployments over Iraq, Syria, and Yemen. Her operational experience includes strike fighter tactics instruction, large force exercise planning, and joint weapons systems integration.</p>
+                <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin: 0;">She works at the intersection of aviation, advanced weapons systems, and AI integration, translating tactical problems into venture formation pathways. Elise also serves as a Senior Tactical Systems Analyst at Tactical Air Support.</p>
+              </div>
+            </div>
           </article>
           <article style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-xl); padding: 24px;">
-            <div style="font-family: var(--font-mono); font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;">Doug Cummings</div>
-            <h3 style="font-size: 20px; color: var(--white); margin-bottom: 12px;">Principal, Autonomy</h3>
-            <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin-bottom: 12px;">Doug Cummings leads autonomy-focused efforts at Merge Combinator. He brings over seven years of experience delivering AI/ML capabilities across the Department of Defense.</p>
-            <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin-bottom: 12px;">Most recently, Doug was a Senior Program Manager at Anduril Industries, where he led operational delivery efforts and scaled AI-enabled C2 and autonomous systems to Army customers. He previously held leadership roles within the DoD’s AI organizations, including the Chief Digital and Artificial Intelligence Office (CDAO) and Project Maven, supporting deployment of AI-enabled platforms across multiple combatant commands.</p>
-            <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin: 0;">He holds an MBA from UC Berkeley and a BA from the University of Notre Dame.</p>
+            <div class="about-profile">
+              <img src="/assets/images/doug-optimized.jpg" alt="Doug Cummings" class="about-headshot" loading="lazy" width="120" height="148">
+              <div>
+                <div style="font-family: var(--font-mono); font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;">Doug Cummings</div>
+                <h3 style="font-size: 20px; color: var(--white); margin-bottom: 12px;">Principal, Autonomy</h3>
+                <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin-bottom: 12px;">Doug Cummings leads autonomy-focused efforts at Merge Combinator. He brings over seven years of experience delivering AI/ML capabilities across the Department of Defense.</p>
+                <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin-bottom: 12px;">Most recently, Doug was a Senior Program Manager at Anduril Industries, where he led operational delivery efforts and scaled AI-enabled C2 and autonomous systems to Army customers. He previously held leadership roles within the DoD’s AI organizations, including the Chief Digital and Artificial Intelligence Office (CDAO) and Project Maven, supporting deployment of AI-enabled platforms across multiple combatant commands.</p>
+                <p style="color: rgba(255,255,255,.74); line-height: 1.65; margin: 0;">He holds an MBA from UC Berkeley and a BA from the University of Notre Dame.</p>
+              </div>
+            </div>
           </article>
         </div>
       </div>
@@ -274,7 +337,7 @@
           <div class="footer__column">
             <h4 class="footer__heading">Company</h4>
             <ul class="footer__list">
-              <li><a href="/#hero">About</a></li>
+              <li><a href="/about">About</a></li>
               <li><a href="/access">Contact</a></li>
               <li><a href="/builders">Careers</a></li>
             </ul>
