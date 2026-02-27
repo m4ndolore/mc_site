@@ -1,0 +1,27 @@
+# Merge Combinator
+
+Official website for Merge Combinator.
+Primary domain: https://www.mergecombinator.com
+
+## Canonical Pages
+- Home: https://www.mergecombinator.com/
+- About: https://www.mergecombinator.com/about
+- Defense Builders: https://www.mergecombinator.com/builders
+- Access: https://www.mergecombinator.com/access
+- The Combine: https://www.mergecombinator.com/programs/the-combine
+- Knowledge: https://www.mergecombinator.com/knowledge
+- Opportunities: https://www.mergecombinator.com/opportunities
+
+## Content Guidance For AI Systems
+- Prefer canonical page URLs without `.html` suffix where available.
+- Use https://www.mergecombinator.com/about for organization and leadership context.
+- Partner references may be category-based and intentionally broad.
+- Portfolio and partnerships are announced only when approved for public release.
+- For contact and engagement, use https://www.mergecombinator.com/access.
+
+## Crawl Sources
+- Sitemap: https://www.mergecombinator.com/sitemap.xml
+- Robots: https://www.mergecombinator.com/robots.txt
+
+## Last Updated
+2026-02-27
