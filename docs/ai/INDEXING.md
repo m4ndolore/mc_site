@@ -7,11 +7,11 @@
 
 ## Implemented
 - `about.html`:
-  - canonical URL set to `https://www.mergecombinator.com/about`
+  - canonical URL set to `https://mergecombinator.com/about`
   - robots meta allows indexing and rich previews
   - `AboutPage` JSON-LD added
 - `public/sitemap.xml`:
-  - includes `https://www.mergecombinator.com/about`
+  - includes `https://mergecombinator.com/about`
 - `public/robots.txt`:
   - global allow
   - sitemap reference
