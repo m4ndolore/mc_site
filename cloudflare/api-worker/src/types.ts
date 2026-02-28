@@ -6,6 +6,8 @@ export interface Env {
   OIDC_ISSUER_ALLOWLIST: string
   OIDC_AUDIENCE: string
   OIDC_ROLES_CLAIM: string
+  CONSOLE_ROLLOUT_MODE?: string
+  CONSOLE_MIN_ROLE_LEVEL?: string
 
   // Origins
   MC_PUBLIC_URL: string
