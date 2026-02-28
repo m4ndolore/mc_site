@@ -28,7 +28,7 @@ compatibility_date = "2024-01-01"
 # -----------------------------------------------------------------------------
 [vars]
 OIDC_ISSUER_URL = "https://via.mergecombinator.com"
-OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/mergecombinator/end-session/"
+OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/defense-builders/end-session/"
 COOKIE_DOMAIN = ".mergecombinator.com"  # Enables cross-subdomain sessions (www, docs)
 # CONTROL_ADMIN_GROUPS = "via-admins,sigmablox-admins"  # Optional override for /control access
 
@@ -58,7 +58,7 @@ name = "mc-router-staging"
 [env.staging.vars]
 # Same as prod - we're testing the router logic, not the backends
 OIDC_ISSUER_URL = "https://via.mergecombinator.com"
-OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/mergecombinator/end-session/"
+OAUTH_LOGOUT_URL = "https://via.mergecombinator.com/application/o/defense-builders/end-session/"
 COOKIE_DOMAIN = ".mergecombinator.com"
 MC_PAGES_ORIGIN = "https://mc-site-dr4.pages.dev"
 SIGMABLOX_ORIGIN = "https://www.sigmablox.com"
@@ -75,7 +75,7 @@ name = "mc-router-dev"
 
 [env.dev.vars]
 OIDC_ISSUER_URL = "http://localhost:9000"  # Must match config/dev.local.yaml line 16
-OAUTH_LOGOUT_URL = "http://localhost:9000/application/o/mergecombinator/end-session/"
+OAUTH_LOGOUT_URL = "http://localhost:9000/application/o/defense-builders/end-session/"
 MC_PAGES_ORIGIN = "http://localhost:3000"
 SIGMABLOX_ORIGIN = "http://localhost:2368"
 CONTROL_ORIGIN = "http://localhost:3300"
