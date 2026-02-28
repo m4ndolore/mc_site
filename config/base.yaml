@@ -17,7 +17,7 @@ MONGODB_DB_NAME: sigmablox
 
 THEME_SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev  #theme?
 SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev  #(webhook/backend)
-
+SUPABASE_URL:  postgresql://postgres:[SUPABASE_PASSWORD]@db.eenlzgwfnnsgxfurngaf.supabase.co:5432/postgres
 
 # MongoDB - MUST BE CONFIGURED
 MONGODB_DB_NAME: defense_builders_mc
