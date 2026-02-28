@@ -3,10 +3,13 @@ import type { Env, AppVars } from '../types'
 import { ok } from '../lib/envelope'
 import { verifyOidc } from '../middleware/verify-oidc'
 import { ensureGuildUser } from '../middleware/ensure-guild-user'
+import { consoleSwitch, consoleRoleGate } from '../middleware/console-gate'
 
 const guild = new Hono<{ Bindings: Env; Variables: AppVars }>()
 
+guild.use('*', consoleSwitch)
 guild.use('*', verifyOidc)
+guild.use('*', consoleRoleGate)
 guild.use('/me', ensureGuildUser)
 
 guild.get('/me', (c) => {
