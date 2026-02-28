@@ -1,47 +1,45 @@
-# =============================================================================
-# Cloudflare Worker Configuration for mc-api
-# =============================================================================
-#
-# VIA flow callbacks for Merge Combinator.
-# Deployed to: api.mergecombinator.com
-#
-# CONFIGURATION PATTERN:
-#   - Non-secrets: Values here MUST align with config/*.yaml
-#   - Secrets: Stored via wrangler secret put
-#
-# LOCAL DEVELOPMENT:
-#   cd cloudflare/api-worker
-#   wrangler dev --env dev
-#
-# PRODUCTION DEPLOYMENT:
-#   cd cloudflare/api-worker
-#   wrangler deploy
-#
-# =============================================================================
-
 name = "mc-api"
-main = "index.js"
+main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
-# -----------------------------------------------------------------------------
-# Production configuration
-# -----------------------------------------------------------------------------
-[vars]
-MC_PUBLIC_URL = "https://www.mergecombinator.com"
-VIA_ISSUER_URL = "https://via.mergecombinator.com"
-
-# Production route
 [[routes]]
 pattern = "api.mergecombinator.com/*"
 zone_name = "mergecombinator.com"
 
-# -----------------------------------------------------------------------------
-# Local development
-# Run with: wrangler dev --env dev
-# -----------------------------------------------------------------------------
+[vars]
+MC_PUBLIC_URL = "https://www.mergecombinator.com"
+VIA_ISSUER_URL = "https://via.mergecombinator.com"
+OIDC_ISSUER_ALLOWLIST = "https://via.mergecombinator.com/application/o/defense-builders/"
+OIDC_AUDIENCE = "defense-builders"
+OIDC_ROLES_CLAIM = "groups"
+LEGACY_API_ORIGIN = "https://sigmablox.com"
+CORS_ALLOWED_ORIGINS = "https://guild.mergecombinator.com,https://wingman.mergecombinator.com"
+
+# Hyperdrive binding — configure after `wrangler hyperdrive create mc-api-db`
+# [[hyperdrive]]
+# binding = "HYPERDRIVE"
+# id = "<hyperdrive-config-id>"
+
+[env.staging]
+name = "mc-api-staging"
+
+[env.staging.vars]
+MC_PUBLIC_URL = "https://www.mergecombinator.com"
+VIA_ISSUER_URL = "https://via.mergecombinator.com"
+OIDC_ISSUER_ALLOWLIST = "https://via.mergecombinator.com/application/o/defense-builders/"
+OIDC_AUDIENCE = "defense-builders"
+OIDC_ROLES_CLAIM = "groups"
+LEGACY_API_ORIGIN = "https://sigmablox.com"
+CORS_ALLOWED_ORIGINS = "https://guild.mergecombinator.com,https://wingman.mergecombinator.com"
+
 [env.dev]
 name = "mc-api-dev"
 
 [env.dev.vars]
 MC_PUBLIC_URL = "http://localhost:5173"
 VIA_ISSUER_URL = "http://localhost:9000"
+OIDC_ISSUER_ALLOWLIST = "http://localhost:9000/application/o/defense-builders/"
+OIDC_AUDIENCE = "defense-builders"
+OIDC_ROLES_CLAIM = "groups"
+LEGACY_API_ORIGIN = "http://localhost:3001"
+CORS_ALLOWED_ORIGINS = "http://localhost:3000,http://localhost:3003,http://localhost:5173"

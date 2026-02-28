@@ -85,6 +85,48 @@
     .about-headshot--paul {
       object-position: center 14%;
     }
+    .about-faq {
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      gap: 12px;
+    }
+    .about-faq details {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .about-faq summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 18px 20px;
+      font-size: 18px;
+      color: var(--white);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .about-faq summary::-webkit-details-marker {
+      display: none;
+    }
+    .about-faq summary::after {
+      content: '+';
+      color: var(--blue);
+      font-family: var(--font-mono);
+      font-size: 20px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .about-faq details[open] summary::after {
+      content: '-';
+    }
+    .about-faq .faq-answer {
+      padding: 0 20px 20px;
+      color: rgba(255,255,255,.72);
+      line-height: 1.65;
+    }
     @media (max-width: 768px) {
       .about-hero {
         min-height: auto;
@@ -116,16 +158,18 @@
       <div class="container hero__content">
         <div class="hero__text reveal-stagger" style="max-width: 980px; margin: 0 auto; text-align: center;">
           <div class="hero__badges reveal" style="justify-content:center;">
-            <div class="hero__badge"><span class="hero__badge-dot"></span>About Merge Combinator</div>
-            <div class="hero__badge"><span class="hero__badge-dot"></span>Now live</div>
+            <div class="hero__badge"><span class="hero__badge-dot"></span>Insights</div>
+            <div class="hero__badge"><span class="hero__badge-dot"></span>Access</div>
+            <div class="hero__badge"><span class="hero__badge-dot"></span>Agency</div>
           </div>
           <h1 class="hero__title reveal">Venture Studio For<br>National Security Builders</h1>
-          <p class="hero__subtitle reveal" style="max-width: 860px; margin: 0 auto;">
+          <p class="hero__subtitle reveal" style="max-width: 860px; justify-content: right; margin-bottom: 0 auto;">
             Focused on the Indo-Pacific, we co-found and build new ventures around urgent operational problems. Our model runs end-to-end: from operator-informed problem discovery through build, transition, and sustainment.
           </p>
-          <div class="hero__ctas reveal" style="justify-content:center;">
+          <div class="hero__ctas reveal" style="justify-content:center">
             <a href="/access" class="btn btn--primary btn--glow">Request Access</a>
             <a href="/programs/the-combine" class="btn btn--ghost">The Combine</a>
+            <a href="#faq" class="hero__tertiary-link">Read FAQ</a>
           </div>
         </div>
       </div>
@@ -252,16 +296,26 @@
         <div class="fade-up" style="display:grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items:start;">
           <div>
             <span class="section-label section-label--light">The Combine</span>
-            <h2 style="font-size: var(--text-h2); color: var(--white); margin-bottom: 14px;">Convening platform for operator-builder alignment</h2>
-            <p style="color: rgba(255,255,255,.76); line-height: 1.7; margin-bottom: 14px;">The Combine is a curated convening platform that brings together warfighters, builders, and decision-makers to accelerate operational technology transition. It directly supports Merge’s venture formation model by surfacing validated problems, aligning stakeholders, and identifying prospective co-founders.</p>
-            <p style="color: rgba(255,255,255,.64); line-height: 1.65; margin: 0;">The inaugural event convened a broad cross-section of the defense innovation ecosystem.</p>
+            <h2 style="font-size: var(--text-h2); color: var(--white); margin-bottom: 14px;">Invitational to Prove it on the Field</h2>
+            <p style="color: rgba(255,255,255,.76); line-height: 1.7; margin-bottom: 14px;">
+              The Combine is a platform for transition. It brings together problem owners, builders, and decision-makers around real operational focus areas. Modeled on the discipline and selectivity of the NFL Combine, it is designed to evaluate capability, surface mission-relevant gaps, and identify founders building impactful solutions today.
+            </p>
+            <p style="color: rgba(255,255,255,.64); line-height: 1.65; margin: 14px;">
+              Operators and problem owners present real world mission needs.
+              Builders demonstrate capability and earn trust.
+              Decision-makers gain insights and first hand inputs alongside mission owners.
+              Learn from each other. In person due diligence. Build teams and solutions.
+            </p>
+            <p style="color: rgba(255,255,255,.64); line-height: 1.65; margin-bottom: 14px;">
+              Merge Combinator finds and resources promising teams, identifying high-signal problem owners, matching serious builders, and accelerating venture creation.
+            </p>
           </div>
           <div style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-xl); padding: 22px;">
             <div style="font-family: var(--font-mono); font-size: 12px; color: rgba(255,255,255,.62); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px;">Partner Categories</div>
             <div style="display:grid; gap: 10px;">
-              <div style="padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.84);">Government stakeholders and mission teams</div>
-              <div style="padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.84);">Builders, founders, and technical companies</div>
-              <div style="padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.84);">Decision-makers, advisors, and ecosystem operators</div>
+              <div style="padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.84);">Government stakeholders & mission teams</div>
+              <div style="padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.84);">Builders, founders, & technical companies</div>
+              <div style="padding: 12px 14px; border-radius: 10px; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.08); color: rgba(255,255,255,.84);">Decision-makers & Investors</div>
             </div>
             <div style="margin-top: 16px;">
               <a href="/programs/the-combine" class="btn btn--ghost" style="width: 100%; justify-content: center;">Learn About The Combine</a>
@@ -271,37 +325,37 @@
       </div>
     </section>
 
-    <section class="section" style="background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));">
+    <section class="section" id="faq" style="background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)); scroll-margin-top: calc(var(--nav-height) + 24px);">
       <div class="container" style="max-width: 1120px;">
         <header class="fade-up" style="text-align:center; margin-bottom: 28px;">
           <span class="section-label section-label--light">FAQ</span>
           <h2 style="font-size: var(--text-h2); color: var(--white);">Frequently Asked Questions</h2>
         </header>
-        <div class="stagger-children" style="display:grid; gap: 16px; max-width: 980px; margin: 0 auto;">
-          <article style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); padding: 20px;">
-            <h3 style="font-size: 18px; color: var(--white); margin-bottom: 8px;">Is Merge a venture capital fund?</h3>
-            <p style="margin: 0; color: rgba(255,255,255,.72); line-height: 1.65;">No. Merge is a venture studio. We co-found and build companies and take an active role in formation, development, and transition. Capital may be part of the model, but we are not a passive investor.</p>
-          </article>
-          <article style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); padding: 20px;">
-            <h3 style="font-size: 18px; color: var(--white); margin-bottom: 8px;">Do you provide advisory services or incubation?</h3>
-            <p style="margin: 0; color: rgba(255,255,255,.72); line-height: 1.65;">Our primary focus is co-founding and building venture-backed national security companies. We selectively engage in advisory and partnership work where it directly strengthens venture formation, operator access, or transition pathways. These efforts support the core studio model and are not standalone consulting services.</p>
-          </article>
-          <article style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); padding: 20px;">
-            <h3 style="font-size: 18px; color: var(--white); margin-bottom: 8px;">Who should reach out?</h3>
-            <p style="margin: 0; color: rgba(255,255,255,.72); line-height: 1.65;">Technical builders ready to co-found, builders with room on their cap table seeking aligned venture partnership, and mission owners with validated operational gaps. All engagement begins through structured access.</p>
-          </article>
-          <article style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); padding: 20px;">
-            <h3 style="font-size: 18px; color: var(--white); margin-bottom: 8px;">Do you work outside the Indo-Pacific?</h3>
-            <p style="margin: 0; color: rgba(255,255,255,.72); line-height: 1.65;">Our primary focus is Indo-Pacific deterrence. Opportunities outside that scope must directly support national security objectives.</p>
-          </article>
-          <article style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); padding: 20px;">
-            <h3 style="font-size: 18px; color: var(--white); margin-bottom: 8px;">How is Merge different from traditional defense primes?</h3>
-            <p style="margin: 0; color: rgba(255,255,255,.72); line-height: 1.65;">We build and scale new ventures alongside problem owners. We are not a systems integrator or a services contractor.</p>
-          </article>
-          <article style="background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); padding: 20px;">
-            <h3 style="font-size: 18px; color: var(--white); margin-bottom: 8px;">Do you publish portfolio companies?</h3>
-            <p style="margin: 0; color: rgba(255,255,255,.72); line-height: 1.65;">Portfolio companies and partnerships are announced only when approved for public release.</p>
-          </article>
+        <div class="about-faq">
+          <details>
+            <summary>Is Merge a venture capital fund?</summary>
+            <div class="faq-answer">No. Merge is a venture studio. We co-found and build companies and take an active role in formation, development, and transition. Capital may be part of the model, but we are not a passive investor.</div>
+          </details>
+          <details>
+            <summary>Do you provide advisory services or incubation?</summary>
+            <div class="faq-answer">Our primary focus is co-founding and building venture-backed national security companies. We selectively engage in advisory and partnership work where it directly strengthens venture formation, operator access, or transition pathways. These efforts support the core studio model and are not standalone consulting services.</div>
+          </details>
+          <details>
+            <summary>Who should reach out?</summary>
+            <div class="faq-answer">Technical builders ready to co-found, builders with room on their cap table seeking aligned venture partnership, and mission owners with validated operational gaps. All engagement begins through structured access.</div>
+          </details>
+          <details>
+            <summary>Do you work outside the Indo-Pacific?</summary>
+            <div class="faq-answer">Our primary focus is Indo-Pacific deterrence. Opportunities outside that scope must directly support national security objectives.</div>
+          </details>
+          <details>
+            <summary>How is Merge different from traditional defense primes?</summary>
+            <div class="faq-answer">We build and scale new ventures alongside problem owners. We are not a systems integrator or a services contractor.</div>
+          </details>
+          <details>
+            <summary>Do you publish portfolio companies?</summary>
+            <div class="faq-answer">Portfolio companies and partnerships are announced only when approved for public release.</div>
+          </details>
         </div>
       </div>
     </section>
@@ -316,7 +370,7 @@
           </p>
           <div class="hero__ctas" style="justify-content:center;">
             <a href="/access" class="btn btn--primary btn--glow">Request Access</a>
-            <a href="mailto:hello@mergecombinator.com" class="btn btn--ghost">hello@mergecombinator.com</a>
+            <a href="mailto:build@mergecombinator.com" class="btn btn--ghost">build@mergecombinator.com</a>
           </div>
         </div>
       </div>
@@ -367,6 +421,7 @@
             <h4 class="footer__heading">Company</h4>
             <ul class="footer__list">
               <li><a href="/about">About</a></li>
+              <li><a href="/about#faq">FAQ</a></li>
               <li><a href="/access">Contact</a></li>
               <li><a href="/builders">Careers</a></li>
             </ul>
