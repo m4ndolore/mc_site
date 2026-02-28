@@ -48,8 +48,8 @@ AIRTABLE_COACHES_TABLE_NAME: Warfighter CRM
 OAUTH_AUTHORIZE_URL: https://via.mergecombinator.com/application/o/authorize/
 OAUTH_TOKEN_URL: https://via.mergecombinator.com/application/o/token/
 OAUTH_USERINFO_URL: https://via.mergecombinator.com/application/o/userinfo/
-OAUTH_JWKS_URL: https://via.mergecombinator.com/application/o/mergecombinator/jwks/
-OAUTH_LOGOUT_URL: https://via.mergecombinator.com/application/o/mergecombinator/end-session/
+OAUTH_JWKS_URL: https://via.mergecombinator.com/application/o/defense-builders/jwks/
+OAUTH_LOGOUT_URL: https://via.mergecombinator.com/application/o/defense-builders/end-session/
 OAUTH_SCOPES: openid email profile groups
 
 # BigQuery
