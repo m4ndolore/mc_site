@@ -1,15 +1,15 @@
 # Ralph Status
 
 ## Current Session
-- **Started**: 2026-02-15
-- **Task**: REQ-BUG-013 - Fix 404 logos, migrate to CF Images + REQ-INFRA-004 - Deploy mc-api worker
+- **Started**: 2026-02-26
+- **Task**: REQ-UX-011 - Complete /access page redesign + REQ-CONTENT-004/005 - Claims governance
 
 ## Queue (Next 5)
-1. REQ-C2UX-008 - Global light/dark mode system (PARTIAL - verification remaining)
-2. REQ-DOCS-003 - Contributor access workflow (PARTIAL - blocked on Outline)
-3. REQ-AUTH-005 - VIA local dev integration (PARTIAL - shadow DOM blocker)
-4. REQ-INFRA-002 - mc-docs-contributors group infrastructure (PARTIAL - VIA done, Outline pending)
-5. REQ-AUTH-004 - Passkey setup prompt (BLOCKED - VIA flow issue under investigation)
+1. REQ-UX-011 - Redesign /access page (PARTIAL - SigmaBlox refs, context routing remaining)
+2. REQ-CONTENT-004 - Complete TRUTH-003 source mapping for P1 claims
+3. REQ-CONTENT-005 - Replace placeholder testimonial attributions
+4. REQ-CONTENT-006 - De-risk factual speed/validation language
+5. REQ-CONTENT-007 - About Us page (PARTIAL - approved bios/partners + claims mapping remaining)
 
 ## Recently Completed
 - REQ-BUG-013 - Partner logos + arrows-2.png migrated to CF Images (2026-02-15)
@@ -26,4 +26,4 @@
 - REQ-BUG-001: VIA passkey flow blueprints deployed — needs testing
 
 ---
-_Last updated: 2026-02-15_
+_Last updated: 2026-02-26_

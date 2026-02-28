@@ -1,0 +1,23 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+model GuildUser {
+  id         String   @id @default(uuid()) @db.Uuid
+  issuer     String
+  subject    String
+  email      String?
+  name       String?
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+  lastSeenAt DateTime @default(now()) @map("last_seen_at") @db.Timestamptz
+
+  @@unique([issuer, subject])
+  @@index([email])
+  @@map("guild_users")
+}

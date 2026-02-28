@@ -15,7 +15,6 @@ THEME_API_BASE_URL: http://localhost:2000
 THEME_SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev
 SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev
 
-
 # OIDC - Local development (local VIA instance at port 9000)
 # Also used by Cloudflare Worker - keep wrangler.toml [env.dev.vars] in sync
 OIDC_ISSUER_URL: http://localhost:9000
