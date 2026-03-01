@@ -3,7 +3,6 @@ const ROLE_HIERARCHY: Record<string, number> = {
   trusted: 3,
   industry: 2.5,
   member: 2,
-  guest: 1.5,
   restricted: 0.5,
 }
 
