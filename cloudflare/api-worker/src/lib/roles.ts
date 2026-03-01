@@ -6,10 +6,19 @@ const ROLE_HIERARCHY: Record<string, number> = {
   restricted: 0.5,
 }
 
+// VIA emits groups as "mc-admins", "mc-trusted" etc.
+// Strip the "mc-" prefix and trailing "s" to get canonical role names.
+function normalizeRole(raw: string): string {
+  let r = raw.toLowerCase()
+  if (r.startsWith('mc-')) r = r.slice(3)
+  if (r.endsWith('s') && r !== 'industry') r = r.slice(0, -1)
+  return r
+}
+
 export function computeRoleLevel(roles: string[]): number {
   let max = 0
   for (const role of roles) {
-    const level = ROLE_HIERARCHY[role.toLowerCase()]
+    const level = ROLE_HIERARCHY[normalizeRole(role)]
     if (level !== undefined && level > max) max = level
   }
   return max
