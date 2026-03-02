@@ -81,17 +81,55 @@ This is the master tracking requirement for the platform convergence described i
 
 ## Phased Execution
 
-### Phase 0: Ship Quick Wins (1 week) — IN PROGRESS
+### Phase 0: Ship Quick Wins (1 week) — COMPLETE
 - [x] REQ-UX-011: Redesign /access page as canonical entry point (split-panel, interest chips, consolidated sign-in)
+- [x] All /app/* /wingman /api/* paths 301-redirect to guild.*/wingman.*/api.* canonical hosts
+- [x] CORS/API proxy removed from merge-router. 52 unit tests.
 - [ ] Replace SigmaBlox `/join` page — redirect to MC `/access`
 - [ ] Verify auth flow works end-to-end: `/access` → sign in → VIA → redirect back to MC
 
-### Phase 1: Auth Ownership (2 weeks)
-- [ ] Strip all auth code from SigmaBlox (4,100 LOC → 0)
-- [ ] Consolidate auth endpoints on api.mergecombinator.com
-- [ ] Port access request/approval workflow to MC
-- [ ] Context-aware join form (`?context=combine`, `?context=builders`, `?context=guild`)
-- [ ] VIA group mapping: `sigmablox-*` groups → `mc-*` groups (or unified names)
+### Phase 1: API Spine on Workers (2 weeks) — COMPLETE
+- [x] api.mergecombinator.com live on CF Workers (Hono framework)
+- [x] Hyperdrive → Supabase Postgres connection
+- [x] OIDC token verification middleware (JWKS-based, per-issuer cache)
+- [x] /guild/me auto-provisioning identity surface (guild_users UPSERT)
+- [x] /builders/companies + /builders/coaches read-only endpoints (raw SQL against SigmaBlox tables)
+- [x] Strangler config map + legacy proxy with envelope normalization
+- [x] Consistent `{ data, meta }` response envelope across all endpoints
+- [x] 30 unit tests passing, TypeScript clean
+- [x] guild_users table migrated to Supabase (Prisma)
+- [x] Production + staging deployed and smoke tested
+- [ ] Strip all auth code from SigmaBlox (4,100 LOC → 0) — deferred to Phase 2
+- [ ] Port access request/approval workflow to MC — deferred to Phase 2
+- [ ] Context-aware join form (`?context=combine`, `?context=builders`, `?context=guild`) — deferred
+- [ ] VIA group mapping: `sigmablox-*` groups → `mc-*` groups (or unified names) — deferred
+
+**Known issues (tracked):**
+- REQ-BUG-013: PARTIAL — cfImageId adapter in Guild SPA (awaiting deploy + E2E)
+- REQ-BUG-014: PARTIAL — Guild SPA OIDC integration code complete (awaiting VIA config + deploy + E2E)
+- REQ-BUG-015: PENDING — Docs page redirect
+- REQ-BUG-016: COMPLETE — Fixed OIDC provider slug in logout URL (commit 91e7473)
+
+### Phase 1 Last Mile: Guild SPA Integration — CODE COMPLETE
+
+- [x] oidc-client-ts PKCE client configured for VIA (pinned authority + client_id)
+- [x] apiFetch() wrapper: Bearer token, envelope unwrap, 401 retry + redirect
+- [x] Response shape adapters: CompanyDto/CoachDto → legacy UI shapes
+- [x] Auth hook rewritten: cookie → OIDC PKCE (G3 role assertion, G4 logout)
+- [x] Admin detection: org groups → canonical VIA roles
+- [x] Login callback page + route (outside PanelLayout)
+- [x] Builders, BuilderDetail, Champions, ChampionDetail wired to api.mergecombinator.com
+- [x] Vite dev proxy removed
+- [x] API worker ungated (CONSOLE_ROLLOUT_MODE = "on")
+- [x] CORS tightened to guild.*/wingman.* only (G5)
+- [x] TypeScript + Vite build passes clean
+- [ ] VIA: Register redirect URIs (guild.*/login/callback, mergecombinator.com/access)
+- [ ] VIA: Configure canonical roles in groups claim
+- [ ] Deploy updated Guild SPA to CF Pages
+- [ ] E2E smoke test (12-point checklist in docs/plans/2026-02-27-phase1-last-mile-implementation.md)
+
+Design doc: `docs/plans/2026-02-27-phase1-last-mile-design.md`
+Implementation plan: `docs/plans/2026-02-27-phase1-last-mile-implementation.md`
 
 ### Phase 2: User & Company Profiles (3 weeks)
 - [ ] Port user profile management to MC (account settings, profile editing)
