@@ -2,21 +2,21 @@
 
 ## Current Session
 - **Started**: 2026-03-01
-- **Task**: REQ-CONTENT-004/005/006 — Claims governance pass complete
+- **Task**: REQ-CONTENT-007 — About Us page completion (C2UX audit, claims mapping, visual QA)
 
 ## Queue (Next 5)
-1. REQ-CONTENT-007 - About Us page (PARTIAL - approved bios/partners remaining)
-2. REQ-DOCS-006 - Visual artifact storage policy
-3. REQ-DOCS-007 - RTMX database hygiene
-4. REQ-UX-010 - SEO improvements (BACKLOG)
-5. REQ-CONTENT-003 - Blog content pipeline (BACKLOG)
+1. REQ-DOCS-006 - Visual artifact storage policy
+2. REQ-DOCS-007 - RTMX database hygiene
+3. REQ-UX-010 - SEO improvements (BACKLOG)
+4. REQ-CONTENT-003 - Blog content pipeline (BACKLOG)
+5. REQ-UX-011 - Access page redesign (PARTIAL)
 
 ## Recently Completed
+- REQ-CONTENT-007 - About Us page complete with claims mapping (2026-03-01)
 - REQ-CONTENT-004 - P1 claims source mapping complete (2026-03-01)
 - REQ-CONTENT-005 - Homepage testimonials rewritten as non-quoted summaries (2026-03-01)
 - REQ-CONTENT-006 - Factual speed/validation claims de-risked (2026-03-01)
 - REQ-BUG-016 - VIA logout slug fix (2026-02-27)
-- REQ-PLATFORM-001 Phase 1 Last Mile - Code complete (2026-02-27)
 
 ## Blocked / Needs Human
 - REQ-BUG-015: Docs redirect — mc-router catches docs.* and proxies to MC Pages. Fix: exclude docs subdomain from worker routes in CF dashboard.
