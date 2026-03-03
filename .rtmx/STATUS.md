@@ -2,14 +2,14 @@
 
 ## Current Session
 - **Started**: 2026-03-01
-- **Task**: REQ-CONTENT-007 — About Us page completion (C2UX audit, claims mapping, visual QA)
+- **Task**: REQ-DOCS-006 + REQ-DOCS-007 — Visual artifact storage policy & RTMX hygiene
 
 ## Queue (Next 5)
-1. REQ-DOCS-006 - Visual artifact storage policy
-2. REQ-DOCS-007 - RTMX database hygiene
-3. REQ-UX-010 - SEO improvements (BACKLOG)
-4. REQ-CONTENT-003 - Blog content pipeline (BACKLOG)
-5. REQ-UX-011 - Access page redesign (PARTIAL)
+1. REQ-UX-010 - SEO improvements (BACKLOG)
+2. REQ-CONTENT-003 - Blog content pipeline (BACKLOG)
+3. REQ-UX-011 - Access page redesign (PARTIAL)
+4. REQ-UX-009 - Video backgrounds (BACKLOG, needs external files)
+5. REQ-BUG-001 - VIA passkey flow (PARTIAL)
 
 ## Recently Completed
 - REQ-CONTENT-007 - About Us page complete with claims mapping (2026-03-01)
