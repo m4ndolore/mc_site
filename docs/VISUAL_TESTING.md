@@ -93,3 +93,7 @@ When tests fail in CI, two artifacts are uploaded (retained 14 days):
 
 - **`playwright-report/`** — HTML report with side-by-side diffs
 - **`screenshot-diffs/`** — actual vs expected image comparisons
+
+## Storage Policy
+
+See [VISUAL_ARTIFACT_POLICY.md](VISUAL_ARTIFACT_POLICY.md) for the full policy on what gets committed vs. stays ephemeral. Key rule: only `tests/visual/screenshots/` baselines belong in git. Ad-hoc Playwright MCP captures and root-level PNGs are gitignored.

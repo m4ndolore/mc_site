@@ -44,10 +44,18 @@ plugin.zip
 .playwright-mcp/
 .worktrees/
 **/*.tsbuildinfo
-verification-*.png
-homepage-header.png
-opportunities-live.png
 
-# Playwright
+# Visual artifacts — see docs/VISUAL_ARTIFACT_POLICY.md
+# Block all root-level PNGs (ad-hoc screenshots)
+/*.png
+# Allow committed assets and baselines
+!assets/**/*.png
+!tests/visual/screenshots/**/*.png
+!docs/**/*.png
+!content/**/*.png
+!styles/**/*.png
+!opportunities/**/*.png
+
+# Playwright CI outputs
 tests/visual/test-results/
 tests/visual/playwright-report/
