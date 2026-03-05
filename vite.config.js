@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import preact from '@preact/preset-vite'
 import { resolve } from 'path'
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [preact()],
   server: {
     host: '0.0.0.0',
     port: 3000,
@@ -35,6 +35,7 @@ export default defineConfig({
         security: resolve(__dirname, 'security.html'),
         archive: resolve(__dirname, 'archive.html'),
         access: resolve(__dirname, 'access.html'),
+        'access-quick': resolve(__dirname, 'access-quick.html'),
         contribute: resolve(__dirname, 'contribute.html'),
         // combine.html removed - redirects to /programs/the-combine
         wingman: resolve(__dirname, 'wingman.html'),

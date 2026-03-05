@@ -1,5 +1,4 @@
-import { createRoot } from "react-dom/client";
+import { render } from "preact";
 import MCOnboarding from "./MCOnboarding.jsx";
 
-const root = createRoot(document.getElementById("onboarding-root"));
-root.render(<MCOnboarding />);
+render(<MCOnboarding />, document.getElementById("onboarding-root"));
