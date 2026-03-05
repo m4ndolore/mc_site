@@ -510,9 +510,12 @@ function Step4({ state, dispatch, onBack, onSubmit }) {
     if (!TURNSTILE_SITE_KEY || !window.turnstile || !turnstileRef.current) return;
     if (turnstileWidgetId.current != null) return;
 
+    // Managed mode: invisible 99% of the time, checkbox fallback for
+    // ambiguous signals. Free unlimited requests (invisible caps at 1M/mo).
     turnstileWidgetId.current = window.turnstile.render(turnstileRef.current, {
       sitekey: TURNSTILE_SITE_KEY,
-      size: "invisible",
+      size: "compact",
+      theme: "dark",
       callback: (token) => dispatch({ type: "SET_TURNSTILE", token }),
       "error-callback": () => dispatch({ type: "SET_TURNSTILE", token: null }),
       "expired-callback": () => dispatch({ type: "SET_TURNSTILE", token: null }),
@@ -534,21 +537,11 @@ function Step4({ state, dispatch, onBack, onSubmit }) {
       return;
     }
     if (TURNSTILE_SITE_KEY && !turnstileToken) {
-      // Trigger invisible challenge
-      if (turnstileWidgetId.current != null && window.turnstile) {
-        window.turnstile.execute(turnstileWidgetId.current);
-      }
+      dispatch({ type: "SET_ERRORS", errors: { ...errs, _turnstile: "Please complete the verification" } });
       return;
     }
     onSubmit();
   };
-
-  // Auto-submit after turnstile resolves
-  useEffect(() => {
-    if (turnstileToken && submitting) {
-      onSubmit();
-    }
-  }, [turnstileToken]);
 
   const fields = [
     { key: "name", label: "NAME", placeholder: "Your full name", type: "text", required: true },
