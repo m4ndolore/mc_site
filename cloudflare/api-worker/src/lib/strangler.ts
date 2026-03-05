@@ -87,9 +87,10 @@ export async function proxyToLegacy(
       return c.json(body, upstream.status as any)
     }
 
-    // Not enveloped → wrap
+    // Not enveloped → normalize to API DTO shape where needed, then wrap
+    const normalizedData = normalizeLegacyBodyForPath(incomingUrl.pathname, body)
     return c.json(
-      { data: body, meta: requestMeta },
+      { data: normalizedData, meta: requestMeta },
       upstream.status as any
     )
   } catch (e) {
@@ -112,4 +113,15 @@ function mapLegacyPath(pathname: string): string {
     return pathname.replace('/builders/coaches/', '/api/public/coaches/')
   }
   return pathname
+}
+
+function normalizeLegacyBodyForPath(pathname: string, body: Record<string, unknown>): Record<string, unknown> {
+  // Keep expected singular DTO shape for Guild detail pages.
+  if (pathname.startsWith('/builders/companies/') && !('company' in body)) {
+    return { company: body }
+  }
+  if (pathname.startsWith('/builders/coaches/') && !('coach' in body)) {
+    return { coach: body }
+  }
+  return body
 }
