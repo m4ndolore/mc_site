@@ -18,7 +18,7 @@ const HERO = {
     tag: "VENTURE STUDIO \u00B7 NATIONAL SECURITY",
     lines: ["Build what", "the mission", "demands."],
     accent: 2,
-    body: "We co-found and build new ventures to solve urgent operational problems \u2014 with a relentless focus on Indo-Pacific deterrence.",
+    body: "We co-found and build new ventures to solve urgent operational problems with a relentless focus on Indo-Pacific deterrence.",
     pulse: null,
   },
   "Problem Solving": {
@@ -28,12 +28,19 @@ const HERO = {
     body: "We embed with operators before requirements are written \u2014 surfacing the problems worth solving before anyone else sees them.",
     pulse: "Signal: active",
   },
-  "Transition": {
+  "Program Transition": {
     tag: "TECHNOLOGY TRANSITION",
     lines: ["The valley", "of death", "is real."],
     accent: 2,
     body: "Most defense tech dies between prototype and program of record. Our transition engineering model was built for exactly that gap.",
     pulse: "TRL 4 \u2192 7",
+  },
+  "Commercialization": {
+    tag: "COMMERCIALIZATION",
+    lines: ["From lab", "to market", "to mission."],
+    accent: 2,
+    body: "Turning defense innovation into sustainable businesses that serve the warfighter and scale beyond the prototype.",
+    pulse: "Dual-use ready",
   },
   "Building": {
     tag: "CO-FOUNDING MODEL",
@@ -46,7 +53,7 @@ const HERO = {
     tag: "SPEED TO FIELDING",
     lines: ["Prototype", "to fielded", "capability."],
     accent: 2,
-    body: "We know every shortcut through the acquisition process \u2014 and when to use them. Speed is a strategic advantage.",
+    body: "We know every shortcut through the acquisition process and when to use them. Speed is a strategic advantage.",
     pulse: "ATO accelerated",
   },
   "Mission Outcomes": {
@@ -72,17 +79,24 @@ const HERO = {
   },
   multi_areas: {
     tag: "YOUR FOCUS AREAS",
-    lines: ["Full lifecycle.", "Every hard", "transition."],
-    accent: 0,
+    lines: ["Full lifecycle.", "Transition is", "systems engineering."],
+    accent: 2,
     body: "From problem discovery to fielded capability \u2014 we operate across the entire arc of the mission.",
     pulse: null,
   },
   values_selected: {
     tag: "HOW MERGE COMBINATOR DELIVERS",
-    lines: ["Privileged", "access.", "Tangible upside."],
+    lines: ["It takes more", "than just boots", "on the ground."],
     accent: 0,
-    body: "We don't just connect dots. We hold equity, shape requirements, and co-sign the outcome alongside you.",
-    pulse: "Tier 1 venture",
+    body: "Incentives drive innovation. Find the right people and put them in the right rooms. What is holding you back?",
+    pulse: "Theater insights",
+  },
+  journey_step: {
+    tag: "HOW WE WORK",
+    lines: ["Privileged", "access.", "Mission Outcomes."],
+    accent: 2,
+    body: "Trust is our most valuable signal. We are partners that build with you, shape the process, and co-sign the outcome alongside you.",
+    pulse: null,
   },
   "I have a problem to solve": {
     tag: "PROBLEM DISCOVERY",
@@ -121,10 +135,10 @@ const HERO = {
   },
   contact_step: {
     tag: "ALMOST INSIDE",
-    lines: ["One step", "from the", "network."],
+    lines: ["What's", "stopping", "you?"],
     accent: 2,
-    body: "You've identified what matters. We personally review every request \u2014 we're looking for builders who are serious about the mission.",
-    pulse: "Review: pending",
+    body: "You know what you're building matters. Prove it to the people that matter for the mission.",
+    pulse: null,
   },
   post_submit: {
     tag: "REQUEST RECEIVED",
@@ -172,27 +186,20 @@ const HERO = {
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
 const AREAS = [
-  "Problem Solving", "Transition", "Building",
-  "Deploying Capability", "Mission Outcomes",
+  "Problem Solving", "Program Transition", "Building",
+  "Deploying Capability", "Commercialization", "Mission Outcomes",
   "National Security", "Allies & Partners",
 ];
 
-const VALUE_ITEMS = [
-  "Insights from the Theater", "Problem Mapping",
-  "Product Validation", "Red Teaming",
-  "Tech Adoption", "Acquisition & Funding",
-  "Manufacturing", "Building for Scale",
-  "Compliance (ATO, CMMC, FedRAMP)", "Cybersecurity",
+const OUTCOME_ITEMS = [
+  "We have a role to fill",
+  "Insights that validate assumptions",
+  "Field Development",
+  "Authority to Operate",
+  "Increase mission impact",
+  "Transition to a Program Office",
+  "Accelerate acquisition or investment",
 ];
-
-// Conditional value ordering based on journey stage
-const JOURNEY_VALUE_PRIORITY = {
-  "I have a problem to solve": ["Problem Mapping", "Insights from the Theater", "Red Teaming", "Product Validation"],
-  "I have a concept to validate": ["Product Validation", "Red Teaming", "Insights from the Theater", "Problem Mapping"],
-  "I'm building a prototype": ["Manufacturing", "Building for Scale", "Tech Adoption", "Cybersecurity"],
-  "I need to scale or transition": ["Acquisition & Funding", "Compliance (ATO, CMMC, FedRAMP)", "Building for Scale", "Tech Adoption"],
-  "I'm deployed, optimizing": ["Cybersecurity", "Compliance (ATO, CMMC, FedRAMP)", "Acquisition & Funding", "Building for Scale"],
-};
 
 const JOURNEY_STAGES = [
   { id: "I have a problem to solve", icon: "\u25CE", label: "I have a problem to solve", sub: "Looking for the right frame, the right people, or the right proof points" },
@@ -321,7 +328,7 @@ function getHeroKey(state) {
     if (areas.length === 1) return areas[0];
     return "multi_areas";
   }
-  if (step === 3) return "values_selected";
+  if (step === 3) return "journey_step";
   if (step === 4) return journey || "contact_step";
   if (step === 5) return "post_submit";
   if (step === 6) {
@@ -381,8 +388,8 @@ function HeroPanel({ heroKey }) {
 
       <div class="onboarding__hero-stats">
         {[
-          { n: "47+", l: "ventures co-founded" },
-          { n: "Indo-Pac", l: "primary focus" },
+          { n: "Operator-led", l: "problem discovery" },
+          { n: "Indo-Pacific", l: "primary focus" },
           { n: "End-to-end", l: "build model" },
         ].map(s => (
           <div key={s.l}>
@@ -411,9 +418,9 @@ function Step1({ areas, dispatch, onNext }) {
   const canContinue = areas.length > 0;
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">CONFIGURE YOUR ACCESS \u00B7 1 OF 4</div>
-      <h2 class="onboarding__step-title">Which of these areas interest you?</h2>
-      <p class="onboarding__step-subtitle">Select all that apply \u2014 we'll tailor what we show you.</p>
+      <div class="onboarding__step-label">CONFIGURE YOUR ACCESS &middot; 1 OF 4</div>
+      <h2 class="onboarding__step-title">Where are you focused?</h2>
+      <p class="onboarding__step-subtitle">Select all that apply so we can save time by validating mutual fit.</p>
       <div class="onboarding__chip-grid" role="group" aria-label="Areas of interest">
         {AREAS.map(a => (
           <button key={a} class="onboarding__chip" type="button"
@@ -424,25 +431,23 @@ function Step1({ areas, dispatch, onNext }) {
         ))}
       </div>
       <button class="onboarding__btn onboarding__btn--primary-full" disabled={!canContinue} onClick={onNext}>
-        Continue \u2192
+        Continue &rarr;
       </button>
     </div>
   );
 }
 
-// ─── STEP 2 — Values (conditionally ordered by journey if going back) ─────────
-function Step2({ values, journey, dispatch, onNext, onBack }) {
+// ─── STEP 2 — Outcomes ───────────────────────────────────────────────────────
+function Step2({ values, dispatch, onNext, onBack }) {
   const canContinue = values.length > 0;
-  // If journey was already selected (user went back), prioritize relevant values
-  const orderedValues = getOrderedValues(journey);
 
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">CONFIGURE YOUR ACCESS \u00B7 2 OF 4</div>
-      <h2 class="onboarding__step-title">What would you find most valuable?</h2>
-      <p class="onboarding__step-subtitle">Merge Combinator empowers change agents to solve hard problems at scale.</p>
-      <div class="onboarding__chip-grid" role="group" aria-label="Value preferences">
-        {orderedValues.map(v => (
+      <div class="onboarding__step-label">CONFIGURE YOUR ACCESS &middot; 2 OF 4</div>
+      <h2 class="onboarding__step-title">What outcome are you looking for?</h2>
+      <p class="onboarding__step-subtitle">Select all that apply.</p>
+      <div class="onboarding__chip-grid" role="group" aria-label="Desired outcomes">
+        {OUTCOME_ITEMS.map(v => (
           <button key={v} class="onboarding__chip" type="button"
             aria-pressed={values.includes(v)}
             onClick={() => { dispatch({ type: "TOGGLE_VALUE", value: v }); track("chip_toggle", { step: 2, chip: v }); }}>
@@ -451,18 +456,11 @@ function Step2({ values, journey, dispatch, onNext, onBack }) {
         ))}
       </div>
       <div class="onboarding__nav">
-        <button class="onboarding__btn onboarding__btn--ghost" onClick={onBack}>{"\u2190"} Back</button>
-        <button class="onboarding__btn onboarding__btn--primary" disabled={!canContinue} onClick={onNext}>Continue \u2192</button>
+        <button class="onboarding__btn onboarding__btn--ghost" onClick={onBack}>&larr; Back</button>
+        <button class="onboarding__btn onboarding__btn--primary" disabled={!canContinue} onClick={onNext}>Continue &rarr;</button>
       </div>
     </div>
   );
-}
-
-function getOrderedValues(journey) {
-  if (!journey || !JOURNEY_VALUE_PRIORITY[journey]) return VALUE_ITEMS;
-  const priority = JOURNEY_VALUE_PRIORITY[journey];
-  const rest = VALUE_ITEMS.filter(v => !priority.includes(v));
-  return [...priority, ...rest];
 }
 
 // ─── STEP 3 — Journey Stage ───────────────────────────────────────────────────
@@ -470,7 +468,7 @@ function Step3({ journey, dispatch, onNext, onBack }) {
   const canContinue = !!journey;
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">CONFIGURE YOUR ACCESS \u00B7 3 OF 4</div>
+      <div class="onboarding__step-label">CONFIGURE YOUR ACCESS &middot; 3 OF 4</div>
       <h2 class="onboarding__step-title">Where are you in the journey?</h2>
       <p class="onboarding__step-subtitle">Pick the one that best fits where you are right now.</p>
       <div role="radiogroup" aria-label="Journey stage" style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 32 }}>
@@ -491,8 +489,8 @@ function Step3({ journey, dispatch, onNext, onBack }) {
         })}
       </div>
       <div class="onboarding__nav">
-        <button class="onboarding__btn onboarding__btn--ghost" onClick={onBack}>{"\u2190"} Back</button>
-        <button class="onboarding__btn onboarding__btn--primary" disabled={!canContinue} onClick={onNext}>Continue \u2192</button>
+        <button class="onboarding__btn onboarding__btn--ghost" onClick={onBack}>&larr; Back</button>
+        <button class="onboarding__btn onboarding__btn--primary" disabled={!canContinue} onClick={onNext}>Continue &rarr;</button>
       </div>
     </div>
   );
@@ -551,7 +549,7 @@ function Step4({ state, dispatch, onBack, onSubmit }) {
 
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">ALMOST INSIDE \u00B7 4 OF 4</div>
+      <div class="onboarding__step-label">ALMOST INSIDE &middot; 4 OF 4</div>
       <h2 class="onboarding__step-title">Tell us where to reach you.</h2>
       <p class="onboarding__step-subtitle">We personally review every request. Expect to hear back within 48 hours.</p>
 
@@ -591,12 +589,12 @@ function Step4({ state, dispatch, onBack, onSubmit }) {
       <button class="onboarding__btn onboarding__btn--primary-full" disabled={!canSubmit} onClick={handleSubmit}>
         {submitting ? "Submitting\u2026" : "Request Access \u2192"}
       </button>
-      <button class="onboarding__btn onboarding__btn--text" onClick={onBack}>{"\u2190"} Back</button>
+      <button class="onboarding__btn onboarding__btn--text" onClick={onBack}>&larr; Back</button>
 
       <div class="onboarding__signin">
         <p class="onboarding__signin-label">Already a member?</p>
         <div class="onboarding__signin-row">
-          <a href="/auth/login" class="onboarding__signin-btn">Sign in with Email \u2192</a>
+          <a href="/auth/login" class="onboarding__signin-btn">Sign in with Email &rarr;</a>
           <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://mergecombinator.com/"
             class="onboarding__signin-btn onboarding__signin-btn--google">Google</a>
           <div style={{ position: "relative" }}>
@@ -674,7 +672,7 @@ function DoneScreen({ products, reqId }) {
         We'll review your application and reach out within 48 hours.
         {products.length > 0 && " We've noted your starting points."}
       </p>
-      {reqId && <div class="onboarding__done-id">Request \u00B7 {reqId}</div>}
+      {reqId && <div class="onboarding__done-id">Request &middot; {reqId}</div>}
     </div>
   );
 }
@@ -770,7 +768,7 @@ export default function MCOnboarding() {
           ) : step === 1 ? (
             <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} />
           ) : step === 2 ? (
-            <Step2 values={state.values} journey={state.journey} dispatch={dispatch} onNext={() => goTo(3)} onBack={() => goTo(1)} />
+            <Step2 values={state.values} dispatch={dispatch} onNext={() => goTo(3)} onBack={() => goTo(1)} />
           ) : step === 3 ? (
             <Step3 journey={state.journey} dispatch={dispatch} onNext={() => goTo(4)} onBack={() => goTo(2)} />
           ) : step === 4 ? (
