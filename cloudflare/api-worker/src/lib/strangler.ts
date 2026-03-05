@@ -24,10 +24,12 @@ export async function proxyToLegacy(
 ): Promise<Response> {
   const legacyOrigin = c.env.LEGACY_API_ORIGIN
   const requestId = c.get('requestId')
+  const incomingUrl = new URL(c.req.url)
+  const legacyPath = mapLegacyPath(incomingUrl.pathname)
 
   // Build target URL — use URL constructor for safe origin composition
   const target = new URL(
-    new URL(c.req.url).pathname + new URL(c.req.url).search,
+    legacyPath + incomingUrl.search,
     legacyOrigin
   )
 
@@ -98,4 +100,16 @@ export async function proxyToLegacy(
       502
     )
   }
+}
+
+function mapLegacyPath(pathname: string): string {
+  if (pathname === '/builders/companies') return '/api/public/companies'
+  if (pathname.startsWith('/builders/companies/')) {
+    return pathname.replace('/builders/companies/', '/api/public/companies/')
+  }
+  if (pathname === '/builders/coaches') return '/api/public/coaches'
+  if (pathname.startsWith('/builders/coaches/')) {
+    return pathname.replace('/builders/coaches/', '/api/public/coaches/')
+  }
+  return pathname
 }
