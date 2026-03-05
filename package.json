@@ -37,5 +37,9 @@
     "url": "git+https://github.com/m4ndolore/mc_site.git"
   },
   "author": "Merge Combinator",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@preact/preset-vite": "^2.10.3",
+    "preact": "^10.28.4"
+  }
 }
