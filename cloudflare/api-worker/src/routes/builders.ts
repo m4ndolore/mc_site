@@ -71,7 +71,8 @@ builders.get('/companies/:id', async (c) => {
     const row = await getCompany(pool, id)
 
     if (!row) {
-      return c.json(err('NOT_FOUND', `Company ${id} not found`, { request_id: requestId }), 404)
+      // Native table can be incomplete during migration; fall back to legacy source.
+      return proxyToLegacy(c)
     }
 
     return c.json(ok(
@@ -132,7 +133,8 @@ builders.get('/coaches/:id', async (c) => {
     const row = await getCoach(pool, id)
 
     if (!row) {
-      return c.json(err('NOT_FOUND', `Coach ${id} not found`, { request_id: requestId }), 404)
+      // Native table can be incomplete during migration; fall back to legacy source.
+      return proxyToLegacy(c)
     }
 
     return c.json(ok(
