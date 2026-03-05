@@ -8,12 +8,23 @@ import { listCompanies, getCompany } from '../repos/sigmablox/companies'
 import { listCoaches, getCoach } from '../repos/sigmablox/coaches'
 import { companyToDto, coachToDto } from '../lib/mappers'
 import { consoleSwitch, consoleRoleGate } from '../middleware/console-gate'
+import { proxyToLegacy } from '../lib/strangler'
 
 const builders = new Hono<{ Bindings: Env; Variables: AppVars }>()
 
 builders.use('*', consoleSwitch)
 builders.use('*', verifyOidc)
 builders.use('*', consoleRoleGate)
+
+function shouldFallbackToLegacy(e: unknown): boolean {
+  if (!(e instanceof Error)) return false
+  const message = e.message.toLowerCase()
+  return (
+    message.includes('relation "company" does not exist') ||
+    message.includes('relation "coach" does not exist') ||
+    message.includes('relation "cohort" does not exist')
+  )
+}
 
 builders.get('/companies', async (c) => {
   const requestId = c.get('requestId')
@@ -41,6 +52,9 @@ builders.get('/companies', async (c) => {
       { request_id: requestId, total, limit: pagination.limit, offset: pagination.offset }
     ), 200)
   } catch (e) {
+    if (shouldFallbackToLegacy(e)) {
+      return proxyToLegacy(c)
+    }
     const message = e instanceof Error ? e.message : 'Unknown error'
     return c.json(err('DB_ERROR', `Failed to query companies: ${message}`, {
       request_id: requestId,
@@ -65,6 +79,9 @@ builders.get('/companies/:id', async (c) => {
       { request_id: requestId }
     ), 200)
   } catch (e) {
+    if (shouldFallbackToLegacy(e)) {
+      return proxyToLegacy(c)
+    }
     const message = e instanceof Error ? e.message : 'Unknown error'
     return c.json(err('DB_ERROR', `Failed to query company: ${message}`, {
       request_id: requestId,
@@ -96,6 +113,9 @@ builders.get('/coaches', async (c) => {
       { request_id: requestId, total, limit: pagination.limit, offset: pagination.offset }
     ), 200)
   } catch (e) {
+    if (shouldFallbackToLegacy(e)) {
+      return proxyToLegacy(c)
+    }
     const message = e instanceof Error ? e.message : 'Unknown error'
     return c.json(err('DB_ERROR', `Failed to query coaches: ${message}`, {
       request_id: requestId,
@@ -120,6 +140,9 @@ builders.get('/coaches/:id', async (c) => {
       { request_id: requestId }
     ), 200)
   } catch (e) {
+    if (shouldFallbackToLegacy(e)) {
+      return proxyToLegacy(c)
+    }
     const message = e instanceof Error ? e.message : 'Unknown error'
     return c.json(err('DB_ERROR', `Failed to query coach: ${message}`, {
       request_id: requestId,
