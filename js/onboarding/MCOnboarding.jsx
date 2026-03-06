@@ -1,7 +1,7 @@
 import { useState, useEffect, useReducer, useRef, useCallback } from "preact/hooks";
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const API_ENDPOINT = "https://api.sigmablox.com/api/access-request";
+const API_ENDPOINT = "https://api.mergecombinator.com/access/provision";
 const STORAGE_KEY = "mc-onboarding-state";
 const TURNSTILE_SITE_KEY = document.body?.dataset?.turnstileSiteKey || "";
 
@@ -141,11 +141,11 @@ const HERO = {
     pulse: null,
   },
   post_submit: {
-    tag: "REQUEST RECEIVED",
-    lines: ["You're in", "the queue.", "Welcome."],
+    tag: "ACCOUNT CREATED",
+    lines: ["You're in.", "Check your", "email."],
     accent: 0,
-    body: "While we review your access, tell us where you want to start. We'll have the right doors open when you arrive.",
-    pulse: "Status: reviewing",
+    body: "Your account is live. Set your password and start exploring. We've tailored your sandbox based on what you told us.",
+    pulse: "Status: provisioned",
   },
   "The Combine": {
     tag: "PRODUCT \u00B7 THE COMBINE",
@@ -176,11 +176,11 @@ const HERO = {
     pulse: null,
   },
   done: {
-    tag: "ACCESS REQUESTED",
-    lines: ["Expect us", "within", "48 hours."],
+    tag: "ACCOUNT LIVE",
+    lines: ["Your sandbox", "is ready.", "Sign in."],
     accent: 1,
-    body: "We personally review every application. If you're serious about the mission, we'll find each other.",
-    pulse: "Status: reviewing",
+    body: "Your account is configured based on your selections. Sign in to Guild to start exploring.",
+    pulse: "Status: active",
   },
 };
 
@@ -248,6 +248,9 @@ const initialState = {
   submitError: null,
   turnstileToken: null,
   reqId: null,
+  provisioned: false,
+  role: null,
+  loginUrl: null,
 };
 
 function reducer(state, action) {
@@ -282,7 +285,10 @@ function reducer(state, action) {
     case "SUBMIT_START":
       return { ...state, submitting: true, submitError: null };
     case "SUBMIT_SUCCESS":
-      return { ...state, submitting: false, step: 5, reqId: action.reqId };
+      return {
+        ...state, submitting: false, step: 5, reqId: action.reqId,
+        provisioned: true, role: action.role, loginUrl: action.loginUrl,
+      };
     case "SUBMIT_ERROR":
       return { ...state, submitting: false, submitError: action.error };
     case "SET_TURNSTILE":
@@ -607,10 +613,12 @@ function Step4({ state, dispatch, onBack, onSubmit }) {
   );
 }
 
-// ─── STEP 5 — Where to Start (post-submit, conditional on journey) ────────────
-function Step5({ products, journey, dispatch, onDone }) {
+// ─── STEP 5 — Account Created (post-submit, instant provisioning) ────────────
+function Step5({ products, journey, role, loginUrl, dispatch, onDone }) {
   const [revealed, setRevealed] = useState(false);
   useEffect(() => { const t = setTimeout(() => setRevealed(true), 100); return () => clearTimeout(t); }, []);
+
+  const autoPromoted = role && role !== "restricted";
 
   // Order products based on journey stage
   const orderedProducts = getOrderedProducts(journey);
@@ -620,13 +628,27 @@ function Step5({ products, journey, dispatch, onDone }) {
       <div class="onboarding__confirmed">
         <span class="onboarding__confirmed-icon">{"\u2713"}</span>
         <div>
-          <div class="onboarding__confirmed-title">Request Submitted</div>
-          <div class="onboarding__confirmed-text">We'll review and reach out within 48 hours.</div>
+          <div class="onboarding__confirmed-title">Account Created</div>
+          <div class="onboarding__confirmed-text">
+            {autoPromoted
+              ? "Your credentials were verified. Full access is ready."
+              : "Check your email to set your password and start exploring."}
+          </div>
         </div>
       </div>
 
+      {autoPromoted && (
+        <div class="onboarding__promoted-badge">
+          Verified &middot; Full access granted
+        </div>
+      )}
+
       <h2 class="onboarding__step-title">Where do you want to start?</h2>
-      <p class="onboarding__step-subtitle">When your access is approved, we'll have the right doors open. Select any that interest you.</p>
+      <p class="onboarding__step-subtitle">
+        {autoPromoted
+          ? "Your sandbox is ready. Select your starting points and we'll have the right doors open."
+          : "While you set your password, tell us where you want to start. We'll tailor your sandbox."}
+      </p>
 
       <div role="group" aria-label="Product selection" style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
         {orderedProducts.map(p => {
@@ -650,7 +672,7 @@ function Step5({ products, journey, dispatch, onDone }) {
       <button
         class={`onboarding__btn ${products.length > 0 ? "onboarding__btn--green" : "onboarding__btn--muted"}`}
         onClick={() => { track("products_done", { products }); onDone(); }}>
-        {products.length > 0 ? "Save my preferences \u2192" : "Skip for now \u2192"}
+        {products.length > 0 ? "Save & continue \u2192" : "Skip for now \u2192"}
       </button>
     </div>
   );
@@ -663,16 +685,25 @@ function getOrderedProducts(journey) {
 }
 
 // ─── DONE SCREEN ──────────────────────────────────────────────────────────────
-function DoneScreen({ products, reqId }) {
+function DoneScreen({ products, loginUrl, role }) {
+  const autoPromoted = role && role !== "restricted";
   return (
     <div class="onboarding__done">
       <div class="onboarding__done-check">{"\u2713"}</div>
-      <h2 class="onboarding__done-title">You're in the queue.</h2>
+      <h2 class="onboarding__done-title">
+        {autoPromoted ? "You're in." : "Almost there."}
+      </h2>
       <p class="onboarding__done-body">
-        We'll review your application and reach out within 48 hours.
+        {autoPromoted
+          ? "Your account is live with full access. Sign in to start exploring your sandbox."
+          : "Check your email to set your password. Your sandbox is being configured based on your selections."}
         {products.length > 0 && " We've noted your starting points."}
       </p>
-      {reqId && <div class="onboarding__done-id">Request &middot; {reqId}</div>}
+      {loginUrl && (
+        <a href={loginUrl} class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
+          Sign in to Guild &rarr;
+        </a>
+      )}
     </div>
   );
 }
@@ -718,12 +749,11 @@ export default function MCOnboarding() {
       name: state.formData.name.trim(),
       email: state.formData.email.trim(),
       organization: state.formData.org.trim() || undefined,
-      interests: state.areas,
-      values: state.values,
+      areas: state.areas,
+      outcomes: state.values,
       journeyStage: state.journey,
       "cf-turnstile-response": state.turnstileToken || "",
       source: window.location.href,
-      requestedAt: new Date().toISOString(),
     };
 
     try {
@@ -733,15 +763,22 @@ export default function MCOnboarding() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const body = await res.json();
 
-      const reqId = Math.random().toString(36).slice(2, 10).toUpperCase();
+      if (!res.ok) {
+        const msg = body?.error?.code === "EMAIL_EXISTS"
+          ? "An account with this email already exists. Try signing in instead."
+          : body?.error?.message || `HTTP ${res.status}`;
+        throw new Error(msg);
+      }
+
+      const { profileId, role, loginUrl } = body.data;
       clearState();
-      dispatch({ type: "SUBMIT_SUCCESS", reqId });
-      track("submit_success", { reqId });
-    } catch (err) {
-      dispatch({ type: "SUBMIT_ERROR", error: "Something went wrong. Please try again or email access@mergecombinator.com" });
-      track("submit_error", { error: err.message });
+      dispatch({ type: "SUBMIT_SUCCESS", reqId: profileId, role, loginUrl });
+      track("submit_success", { profileId, role });
+    } catch (e) {
+      dispatch({ type: "SUBMIT_ERROR", error: e.message || "Something went wrong. Please try again or email access@mergecombinator.com" });
+      track("submit_error", { error: e.message });
     }
   }, [state]);
 
@@ -758,13 +795,13 @@ export default function MCOnboarding() {
           {step === 5 && (
             <div class="onboarding__divider">
               <div class="onboarding__divider-line" />
-              <span class="onboarding__divider-text">Your access is being reviewed</span>
+              <span class="onboarding__divider-text">Account created</span>
               <div class="onboarding__divider-line" />
             </div>
           )}
 
           {step === 6 ? (
-            <DoneScreen products={state.products} reqId={state.reqId} />
+            <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} />
           ) : step === 1 ? (
             <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} />
           ) : step === 2 ? (
@@ -774,7 +811,7 @@ export default function MCOnboarding() {
           ) : step === 4 ? (
             <Step4 state={state} dispatch={dispatch} onBack={() => goTo(3)} onSubmit={handleSubmit} />
           ) : (
-            <Step5 products={state.products} journey={state.journey} dispatch={dispatch} onDone={() => dispatch({ type: "FINISH" })} />
+            <Step5 products={state.products} journey={state.journey} role={state.role} loginUrl={state.loginUrl} dispatch={dispatch} onDone={() => dispatch({ type: "FINISH" })} />
           )}
         </div>
       </div>
