@@ -48,7 +48,6 @@ const SUBDOMAIN_REDIRECTS = new Map([
 ]);
 const SUBDOMAIN_PLACEHOLDER_REDIRECTS = new Map([
   ["wingman.mergecombinator.com", "/wingman"],
-  ["control.mergecombinator.com", "/admin-console"],
 ]);
 
 // ────────────────────────────────────────────────────────────────────────────
@@ -409,9 +408,7 @@ export default {
     const placeholderPath = SUBDOMAIN_PLACEHOLDER_REDIRECTS.get(host);
     if (placeholderPath) {
       const isWingmanHost = host === WINGMAN_HOST;
-      const isControlHost = host === "control.mergecombinator.com";
-      const shouldRedirectToPlaceholder =
-        (isWingmanHost && !wingmanEnabled) || isControlHost;
+      const shouldRedirectToPlaceholder = isWingmanHost && !wingmanEnabled;
       if (shouldRedirectToPlaceholder) {
         const target = `https://${CANONICAL_HOST}${placeholderPath}`;
         return Response.redirect(target, 302);
@@ -421,6 +418,9 @@ export default {
     // 1.5) Platform convergence redirects (301)
     // These canonicalize legacy subpath-proxied routes to their proper hosts.
     // Order matters: /app/wingman/* must be checked before /app/*
+    if (url.pathname === "/admin-console" || url.pathname.startsWith("/admin-console/")) {
+      return Response.redirect(`https://${CANONICAL_HOST}/control`, 302);
+    }
     if (url.pathname.startsWith("/app/wingman")) {
       if (!wingmanEnabled) {
         return Response.redirect(`https://${CANONICAL_HOST}/wingman`, 302);
@@ -433,9 +433,6 @@ export default {
       const suffix = url.pathname.slice("/app".length) || "/";
       const target = `https://${GUILD_HOST}${suffix}${url.search}`;
       return Response.redirect(target, 301);
-    }
-    if (url.pathname === "/control" || url.pathname.startsWith("/control/")) {
-      return Response.redirect(`https://${CANONICAL_HOST}/admin-console`, 302);
     }
     // /wingman marketing page is served by Pages (wingman.html).
     // /app/wingman/* redirects to the subdomain (handled above).
