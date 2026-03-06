@@ -208,29 +208,6 @@
       "cohortId": "25-1"
     },
     {
-      "id": "cmknqigyy000us601ztf6ef9p",
-      "legacyAirtableId": "recHbZH2bZHctZ8Ai",
-      "name": "Anuma Aerospace Corporation",
-      "productName": "Autonomous, Low-Energy, Long-Endurance, Long-Loiter Platforms for ISR",
-      "website": "https://anumaaerospace.com",
-      "logoUrl": "https://v5.airtableusercontent.com/v3/u/44/44/1756900800000/ouR4kucRLpTjFqpc4f6MNw/S7yUyPmfF9BRfX7Tp8LKs0npaaFGyjMY2e7J-1-kxp9XmNhh-o1wO6CUqoheTky6RoHDi4HGFXJK0XafaRvBR4biGWgGleorjWejrbg5oVJ7d5FsoLmlhoVRa7orkvfDoSyMiKJ3as9HcJ1nVa30CEgowcYVRW7JvzULDN27wP_bAdKuU1wUJRlMakPWFldR/XW706HfFndBUPey5DXOhPcatKhB-bwY7mgKhu2Kptn0",
-      "cfImageId": "cmkt52ewo000u14o4t1kaywbt",
-      "location": null,
-      "missionArea": "Intel and Battlespace Awareness",
-      "warfareDomain": "Air",
-      "description": "Current ISR platforms have limited endurance and limited loiter capability curtailing intelligence gathering capabilities and providing adversaries with evasion opportunities.\n\nAnuma's patented Partial-Vacuum Lift (PVL) enabled platforms have unprecedented endurance and loiter capability - potential for months-long deployment rather than hours or days. \n\nPre-field\n\nTRL of 4: Lab Testing/Validation of Alpha Prototype Component/Process\n\nPatent issued 2023. What we're doing is incredibly difficult and will be very hard to duplicate without violating our patent. \n\nOur beachhead market is commercial weather data and we're developing our first platform with Phase I and Phase II SBIR grants from the National Oceanic and Atmospheric Association.\n\nWeather data acquisition, border and coastal surveillance, logistics, wildfire surveillance\n\nJamie Little, Cofounder and CEO, aerospace engineer, project management professional (PMP), 35+ years of experience, serial entrepreneur\nDiana Little, Cofounder and President, computer scientist, data analyst, 35+ years of experience, serial entrepreneur\nDave Craft, Chief of Staff, former CEO of a successful startup, 35+ years of experience in R&D, technology transfer, and corporate acquisitions\n\nHeavier-than-air (HTA) aircraft require the continuous expenditure of energy to stay aloft. Our platforms are lighter-than-air (LTA), meaning they are buoyant and low-energy. All other LTA platforms use consumable helium. Our platforms use partial-vacuum, which is infinitely renewable, and provide them with unprecedented endurance and loiter capabilities, as well as enhanced maneuverability, altitude control, safer ground handling, and lower operational cost. \n\nReconnaissance squadrons\n\nKeeping ISR assets in the air where they can do the most good for C2 and the warfighter.",
-      "trlLevel": 4,
-      "technicalMaturity": "Development",
-      "fundingStage": "Grant Funded",
-      "teamSize": "6-9",
-      "tulsaAttended": null,
-      "combineStandout": 0,
-      "badgeJudges": null,
-      "upvoteCount": 0,
-      "cohort": "Cohort 25-1",
-      "cohortId": "25-1"
-    },
-    {
       "id": "cmknqifvx0007s601dl8v3l0u",
       "legacyAirtableId": "rec5XJJWPHTZx858p",
       "name": "Anuma Aerospace Corporation",
@@ -248,6 +225,29 @@
       "teamSize": "6-9",
       "tulsaAttended": "Attended",
       "combineStandout": null,
+      "badgeJudges": null,
+      "upvoteCount": 0,
+      "cohort": "Cohort 25-1",
+      "cohortId": "25-1"
+    },
+    {
+      "id": "cmknqigyy000us601ztf6ef9p",
+      "legacyAirtableId": "recHbZH2bZHctZ8Ai",
+      "name": "Anuma Aerospace Corporation",
+      "productName": "Autonomous, Low-Energy, Long-Endurance, Long-Loiter Platforms for ISR",
+      "website": "https://anumaaerospace.com",
+      "logoUrl": "https://v5.airtableusercontent.com/v3/u/44/44/1756900800000/ouR4kucRLpTjFqpc4f6MNw/S7yUyPmfF9BRfX7Tp8LKs0npaaFGyjMY2e7J-1-kxp9XmNhh-o1wO6CUqoheTky6RoHDi4HGFXJK0XafaRvBR4biGWgGleorjWejrbg5oVJ7d5FsoLmlhoVRa7orkvfDoSyMiKJ3as9HcJ1nVa30CEgowcYVRW7JvzULDN27wP_bAdKuU1wUJRlMakPWFldR/XW706HfFndBUPey5DXOhPcatKhB-bwY7mgKhu2Kptn0",
+      "cfImageId": "cmkt52ewo000u14o4t1kaywbt",
+      "location": null,
+      "missionArea": "Intel and Battlespace Awareness",
+      "warfareDomain": "Air",
+      "description": "Current ISR platforms have limited endurance and limited loiter capability curtailing intelligence gathering capabilities and providing adversaries with evasion opportunities.\n\nAnuma's patented Partial-Vacuum Lift (PVL) enabled platforms have unprecedented endurance and loiter capability - potential for months-long deployment rather than hours or days. \n\nPre-field\n\nTRL of 4: Lab Testing/Validation of Alpha Prototype Component/Process\n\nPatent issued 2023. What we're doing is incredibly difficult and will be very hard to duplicate without violating our patent. \n\nOur beachhead market is commercial weather data and we're developing our first platform with Phase I and Phase II SBIR grants from the National Oceanic and Atmospheric Association.\n\nWeather data acquisition, border and coastal surveillance, logistics, wildfire surveillance\n\nJamie Little, Cofounder and CEO, aerospace engineer, project management professional (PMP), 35+ years of experience, serial entrepreneur\nDiana Little, Cofounder and President, computer scientist, data analyst, 35+ years of experience, serial entrepreneur\nDave Craft, Chief of Staff, former CEO of a successful startup, 35+ years of experience in R&D, technology transfer, and corporate acquisitions\n\nHeavier-than-air (HTA) aircraft require the continuous expenditure of energy to stay aloft. Our platforms are lighter-than-air (LTA), meaning they are buoyant and low-energy. All other LTA platforms use consumable helium. Our platforms use partial-vacuum, which is infinitely renewable, and provide them with unprecedented endurance and loiter capabilities, as well as enhanced maneuverability, altitude control, safer ground handling, and lower operational cost. \n\nReconnaissance squadrons\n\nKeeping ISR assets in the air where they can do the most good for C2 and the warfighter.",
+      "trlLevel": 4,
+      "technicalMaturity": "Development",
+      "fundingStage": "Grant Funded",
+      "teamSize": "6-9",
+      "tulsaAttended": null,
+      "combineStandout": 0,
       "badgeJudges": null,
       "upvoteCount": 0,
       "cohort": "Cohort 25-1",
@@ -1634,6 +1634,29 @@
       "cohortId": null
     },
     {
+      "id": "cmma51b94000ya5ueym1zyw6s",
+      "legacyAirtableId": null,
+      "name": "Merge Combinator, LLC",
+      "productName": "DOMINUS",
+      "website": "https://mergecombinator.com",
+      "logoUrl": null,
+      "cfImageId": null,
+      "location": null,
+      "missionArea": "fires",
+      "warfareDomain": "multi_domain",
+      "description": null,
+      "trlLevel": 5,
+      "technicalMaturity": null,
+      "fundingStage": "pre_seed",
+      "teamSize": "1-5",
+      "tulsaAttended": null,
+      "combineStandout": null,
+      "badgeJudges": null,
+      "upvoteCount": 0,
+      "cohort": null,
+      "cohortId": null
+    },
+    {
       "id": "cmknqigx7000ts601ajlm61og",
       "legacyAirtableId": "recGg9KlZzxxMlHfI",
       "name": "Modular Misfits",
@@ -2923,7 +2946,7 @@
     }
   ],
   "pagination": {
-    "total": 127,
+    "total": 128,
     "limit": 100,
     "offset": 0,
     "hasMore": false
@@ -2941,6 +2964,7 @@
       "Logistics",
       "Maintenance",
       "Planning",
+      "fires",
       "isr"
     ],
     "warfareDomains": [
@@ -3001,8 +3025,8 @@
     ]
   },
   "metadata": {
-    "fetchedAt": "2026-03-02T00:17:23.588Z",
-    "buildAt": "2026-03-02T00:17:23.589Z",
+    "fetchedAt": "2026-03-06T00:43:59.420Z",
+    "buildAt": "2026-03-06T00:43:59.420Z",
     "source": "api",
     "apiBase": "https://api.sigmablox.com"
   }
