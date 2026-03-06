@@ -23,6 +23,10 @@ name = "mc-router"
 main = "cloudflare/merge-router.js"
 compatibility_date = "2024-01-01"
 
+[[routes]]
+pattern = "control.mergecombinator.com/*"
+zone_name = "mergecombinator.com"
+
 # -----------------------------------------------------------------------------
 # Production non-secrets (source of truth: config/base.yaml)
 # -----------------------------------------------------------------------------
