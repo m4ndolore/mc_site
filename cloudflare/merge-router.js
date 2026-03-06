@@ -409,8 +409,15 @@ export default {
     }
     const placeholderPath = SUBDOMAIN_PLACEHOLDER_REDIRECTS.get(host);
     if (placeholderPath) {
-      const target = `https://${CANONICAL_HOST}${placeholderPath}`;
-      return Response.redirect(target, 302);
+      const isWingmanHost = host === WINGMAN_HOST;
+      const isControlHost = host === "control.mergecombinator.com";
+      const shouldRedirectToPlaceholder =
+        (isWingmanHost && !wingmanEnabled) ||
+        (isControlHost && !controlEnabled);
+      if (shouldRedirectToPlaceholder) {
+        const target = `https://${CANONICAL_HOST}${placeholderPath}`;
+        return Response.redirect(target, 302);
+      }
     }
 
     // 1.5) Platform convergence redirects (301)
