@@ -60,6 +60,8 @@ CONTROL_CONSOLE_ENABLED = "false"
 # -----------------------------------------------------------------------------
 [env.staging]
 name = "mc-router-staging"
+workers_dev = true
+routes = []
 
 [env.staging.vars]
 # Same as prod - we're testing the router logic, not the backends
