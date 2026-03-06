@@ -46,7 +46,6 @@ TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
 # SIGMABLOX_API_ORIGIN, API_CORS_ORIGINS → 301 redirect to api.* (not proxied)
 # SBIR_ORIGIN, WINGMAN_CONSOLE_ENABLED → no longer referenced
 WINGMAN_CONSOLE_ENABLED = "false"
-CONTROL_CONSOLE_ENABLED = "false"
 
 # -----------------------------------------------------------------------------
 # Staging environment - for testing changes before production
@@ -70,7 +69,6 @@ CONTROL_ORIGIN = "https://control.mergecombinator.com"
 OPPORTUNITIES_PAGES_URL = "https://mc-opportunities.pages.dev"
 TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
 WINGMAN_CONSOLE_ENABLED = "false"
-CONTROL_CONSOLE_ENABLED = "false"
 
 # -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
@@ -88,4 +86,3 @@ CONTROL_ORIGIN = "http://localhost:3300"
 # Use Turnstile test key for local dev (always passes)
 TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
 WINGMAN_CONSOLE_ENABLED = "false"
-CONTROL_CONSOLE_ENABLED = "false"
