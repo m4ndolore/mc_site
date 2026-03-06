@@ -17,7 +17,31 @@ model GuildUser {
   createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
   lastSeenAt DateTime @default(now()) @map("last_seen_at") @db.Timestamptz
 
+  onboardingProfile OnboardingProfile? @relation("GuildUserOnboarding")
+
   @@unique([issuer, subject])
   @@index([email])
   @@map("guild_users")
+}
+
+model OnboardingProfile {
+  id            String   @id @default(uuid()) @db.Uuid
+  email         String
+  name          String
+  organization  String?
+  areas         String[] @default([])
+  outcomes      String[] @default([])
+  journeyStage  String?  @map("journey_stage")
+  products      String[] @default([])
+  source        String?
+  roleAssigned  String   @default("restricted") @map("role_assigned")
+  viaUserId     String?  @map("via_user_id")
+  guildUserId   String?  @unique @map("guild_user_id") @db.Uuid
+  guildUser     GuildUser? @relation("GuildUserOnboarding", fields: [guildUserId], references: [id])
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz
+  provisionedAt DateTime? @map("provisioned_at") @db.Timestamptz
+
+  @@index([email])
+  @@index([viaUserId])
+  @@map("onboarding_profiles")
 }
