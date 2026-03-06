@@ -393,7 +393,6 @@ export default {
     const url = new URL(request.url);
     const host = request.headers.get("host") || url.hostname;
     const wingmanEnabled = String(env.WINGMAN_CONSOLE_ENABLED || "").toLowerCase() === "true";
-    const controlEnabled = String(env.CONTROL_CONSOLE_ENABLED || "").toLowerCase() === "true";
 
     // 1) Canonical host redirect
     if (ALIAS_HOSTS.has(host)) {
@@ -412,8 +411,7 @@ export default {
       const isWingmanHost = host === WINGMAN_HOST;
       const isControlHost = host === "control.mergecombinator.com";
       const shouldRedirectToPlaceholder =
-        (isWingmanHost && !wingmanEnabled) ||
-        (isControlHost && !controlEnabled);
+        (isWingmanHost && !wingmanEnabled) || isControlHost;
       if (shouldRedirectToPlaceholder) {
         const target = `https://${CANONICAL_HOST}${placeholderPath}`;
         return Response.redirect(target, 302);
@@ -437,9 +435,7 @@ export default {
       return Response.redirect(target, 301);
     }
     if (url.pathname === "/control" || url.pathname.startsWith("/control/")) {
-      if (!controlEnabled) {
-        return Response.redirect(`https://${CANONICAL_HOST}/admin-console`, 302);
-      }
+      return Response.redirect(`https://${CANONICAL_HOST}/admin-console`, 302);
     }
     // /wingman marketing page is served by Pages (wingman.html).
     // /app/wingman/* redirects to the subdomain (handled above).
