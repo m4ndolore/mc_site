@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    // FOUC prevention: apply theme before first paint
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn from curated defense tech resources. Read foundational books, guides, and reference material on the Merge Combinator platform.">
+  <meta name="keywords" content="defense tech, learning, books, resources, national security, education">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="apple-touch-icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://mergecombinator.com/learn">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Learn — Merge Combinator">
+  <meta property="og:description" content="Read foundational defense tech resources directly on the platform.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mergecombinator.com/learn">
+  <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Learn — Merge Combinator">
+  <meta name="twitter:description" content="Read foundational defense tech resources directly on the platform.">
+  <meta name="twitter:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+
+  <title>Learn — Merge Combinator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/learn.css">
+  <link rel="stylesheet" href="styles/light-theme.css">
+</head>
+<body>
+  <div id="mc-navbar"></div>
+
+  <!-- Hero Section -->
+  <section class="learn-hero">
+    <div class="learn-hero__bg"></div>
+    <div class="container learn-hero__content">
+      <span class="learn-hero__eyebrow">Library</span>
+      <h1 class="learn-hero__title">Learn</h1>
+      <p class="learn-hero__subtitle">
+        Foundational reading for defense builders. Browse the collection and read directly in your browser.
+      </p>
+    </div>
+  </section>
+
+  <!-- Bookshelf -->
+  <section class="bookshelf">
+    <div class="container">
+      <div class="bookshelf__grid">
+
+        <!-- Book: Web Development with Clojure -->
+        <div class="book-card">
+          <div class="book-card__cover-wrap">
+            <canvas id="book-cover-1" class="book-card__cover" width="400" height="566"></canvas>
+          </div>
+          <div class="book-card__info">
+            <span class="book-card__badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              </svg>
+              Featured Read
+            </span>
+            <h2 class="book-card__title">Valley of Death Survival Guide</h2>
+            <p class="book-card__author">John Ferry</p>
+            <p class="book-card__description">
+              A power book guide to crossing the valley. Navigate the defense acquisition process, survive the "Valley of Death" between prototype and production, and bring critical technology to the warfighter.
+            </p>
+            <div class="book-card__meta">
+              <span class="book-card__meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7v10M12 7v10M16 7v10"/></svg>
+                351 pages
+              </span>
+              <span class="book-card__meta-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                PDF
+              </span>
+            </div>
+            <div class="book-card__actions">
+              <a href="/learn/read?src=/content/web_small.pdf" class="book-card__read-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+                Read Online
+              </a>
+              <a href="/content/web_small.pdf" download class="book-card__download-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="7 10 12 15 17 10"/>
+                  <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                Download
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <span class="footer__logo-text">
+              <span class="footer__logo-merge">Merge</span>
+              <span class="footer__logo-combinator">Combinator</span>
+            </span>
+            <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="Merge arrows" class="footer__logo-icon">
+          </a>
+          <p class="footer__tagline">The builder-led venture studio for national security.</p>
+        </div>
+
+        <div class="footer__links">
+          <div class="footer__column">
+            <h4 class="footer__heading">Platform</h4>
+            <ul class="footer__list">
+              <li><a href="/programs/the-combine">The Combine</a></li>
+              <li><a href="/builders">Defense Builders</a></li>
+              <li><a href="/opportunities">Opportunities</a></li>
+              <li><a href="/merch">Merch</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Company</h4>
+            <ul class="footer__list">
+              <li><a href="/about">About</a></li>
+              <li><a href="/about#faq">FAQ</a></li>
+              <li><a href="/access">Contact</a></li>
+              <li><a href="/builders">Careers</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Resources</h4>
+            <ul class="footer__list">
+              <li><a href="/blog">Blog</a></li>
+              <li><a href="/portfolio">Case Studies</a></li>
+              <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="/learn">Learn</a></li>
+              <li><a href="https://docs.mergecombinator.com">Docs</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
+        <p class="footer__location">Honolulu &bull; Seattle &bull; Las Vegas</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/navbar.js"></script>
+  <script type="module">
+    import { renderCover } from './js/learn/cover.js'
+    renderCover('book-cover-1', '/content/web_small.pdf')
+  </script>
+</body>
+</html>
