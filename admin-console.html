@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Merge Combinator Admin Console is in pilot rollout. Join the waitlist and request early access.">
+  <link rel="canonical" href="https://mergecombinator.com/admin-console">
+  <title>Admin Console — Merge Combinator</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles/light-theme.css">
+  <style>
+    .admin-placeholder { min-height: 100vh; display: grid; place-items: center; background: radial-gradient(1200px 700px at 70% 0%, rgba(255,184,112,.2), transparent 55%), #0b0f14; }
+    .admin-placeholder__card { width: min(760px, 92vw); border: 1px solid rgba(255,184,112,.35); border-radius: 20px; background: rgba(16,22,29,.94); padding: 2.5rem; box-shadow: 0 20px 70px rgba(0,0,0,.35); }
+    .admin-placeholder__badge { display: inline-block; padding: .4rem .8rem; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; border-radius: 999px; color: #ffc88e; border: 1px solid rgba(255,184,112,.4); background: rgba(255,184,112,.12); }
+    .admin-placeholder h1 { margin: .8rem 0 .6rem; font-size: clamp(1.8rem, 4vw, 2.4rem); color: #eff6ff; }
+    .admin-placeholder p { color: #b5c3d3; max-width: 62ch; }
+    .admin-placeholder__actions { display: flex; gap: .8rem; flex-wrap: wrap; margin-top: 1.2rem; }
+    .admin-placeholder .btn { min-width: 220px; text-align: center; }
+  </style>
+</head>
+<body>
+  <div id="mc-navbar"></div>
+  <main class="admin-placeholder">
+    <section class="admin-placeholder__card">
+      <span class="admin-placeholder__badge">Admin Console Pilot</span>
+      <h1>Admin Console Is Rolling Out</h1>
+      <p>
+        We are enabling operator-facing administration in phases. Request early access to join the pilot and help shape the final control surface.
+      </p>
+      <div class="admin-placeholder__actions">
+        <a class="btn btn--primary" href="https://guild.mergecombinator.com/apply?surface=admin-console&utm_source=admin_console_placeholder&utm_medium=waitlist&utm_campaign=pilot_rollout">Join Admin Waitlist</a>
+        <a class="btn btn--ghost" href="/access?surface=admin-console">Request Team Access</a>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/script.js"></script>
+  <script type="module" src="/js/navbar.js"></script>
+</body>
+</html>
