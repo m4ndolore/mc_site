@@ -6,6 +6,7 @@ import { corsMiddleware } from './middleware/cors'
 import { healthRouter } from './routes/health'
 import { guildRouter } from './routes/guild'
 import { buildersRouter } from './routes/builders'
+import { accessRouter } from './routes/access'
 import { resolveRoute, proxyToLegacy } from './lib/strangler'
 
 const app = new Hono<{ Bindings: Env; Variables: AppVars }>()
@@ -16,6 +17,7 @@ app.use('*', corsMiddleware)
 app.route('/health', healthRouter)
 app.route('/guild', guildRouter)
 app.route('/builders', buildersRouter)
+app.route('/access', accessRouter)
 
 // Catch-all: strangler proxy or 404
 app.all('*', async (c) => {
