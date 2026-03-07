@@ -40,7 +40,7 @@
   "license": "ISC",
   "dependencies": {
     "@preact/preset-vite": "^2.10.3",
-    "pdfjs-dist": "^4.9.155",
+    "pdfjs-dist": "^4.10.38",
     "preact": "^10.28.4"
   }
 }

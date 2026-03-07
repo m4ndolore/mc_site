@@ -385,7 +385,7 @@ function HeroPanel({ heroKey }) {
 
       <div class="onboarding__hero-top">
         <a href="/" class="onboarding__wordmark">
-          <img src="/content/logo.jpg" alt="Merge Combinator" class="onboarding__wordmark-logo" />
+          <img src="/content/arrows.png" alt="Merge Combinator" class="onboarding__wordmark-logo" />
           <span class="onboarding__wordmark-text">MERGE COMBINATOR</span>
         </a>
 
@@ -882,7 +882,11 @@ export default function MCOnboarding() {
       dispatch({ type: "SUBMIT_SUCCESS", reqId: profileId, role, loginUrl });
       track("submit_success", { profileId, role });
     } catch (e) {
-      dispatch({ type: "SUBMIT_ERROR", error: e.message || "Something went wrong. Please try again or email access@mergecombinator.com" });
+      const isNetwork = e instanceof TypeError || /load failed|failed to fetch|networkerror/i.test(e.message);
+      const msg = isNetwork
+        ? "Network error — please check your connection and try again."
+        : e.message || "Something went wrong. Please try again or email access@mergecombinator.com";
+      dispatch({ type: "SUBMIT_ERROR", error: msg });
       track("submit_error", { error: e.message });
     }
   }, [state]);
