@@ -421,6 +421,12 @@ function Layout(): React.JSX.Element {
                     Knowledge
                   </a>
                   <a
+                    href="/learn"
+                    className="nav__dropdown-item"
+                  >
+                    Learn
+                  </a>
+                  <a
                     href="https://docs.mergecombinator.com"
                     className="nav__dropdown-item"
                   >
@@ -521,6 +527,7 @@ function Layout(): React.JSX.Element {
                   <li><a href="/blog">Blog</a></li>
                   <li><a href="/portfolio">Case Studies</a></li>
                   <li><a href="/knowledge">Knowledge</a></li>
+                  <li><a href="/learn">Learn</a></li>
                   <li><a href="https://docs.mergecombinator.com">Docs</a></li>
                 </ul>
               </div>
