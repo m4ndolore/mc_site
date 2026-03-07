@@ -666,7 +666,29 @@
   min-height: 16px;
 }
 
+/* ─── Step 1 Sign-In Hint ────────────────── */
+.onboarding__step-signin-hint {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ob-text-muted);
+}
+
+.onboarding__step-signin-hint a {
+  color: var(--ob-blue);
+  text-decoration: none;
+}
+
+.onboarding__step-signin-hint a:hover {
+  text-decoration: underline;
+}
+
 /* ─── Sign-In Section ─────────────────────── */
+.onboarding__signin--welcome {
+  border-top: none;
+  padding-top: 0;
+}
+
 .onboarding__signin {
   border-top: 1px solid var(--ob-border);
   padding-top: 20px;
