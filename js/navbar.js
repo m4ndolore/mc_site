@@ -15,6 +15,7 @@ const PLATFORM_LINKS = [
   { href: '/status', label: 'Status' },
   { href: '/briefs', label: 'Briefs' },
   { href: '/knowledge', label: 'Knowledge' },
+  { href: '/learn', label: 'Learn' },
   { href: 'https://docs.mergecombinator.com', label: 'Docs' },
 ];
 
