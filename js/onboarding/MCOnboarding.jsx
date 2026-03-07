@@ -3,6 +3,7 @@ import { useState, useEffect, useReducer, useRef, useCallback } from "preact/hoo
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const API_ENDPOINT = "https://api.mergecombinator.com/access/provision";
 const STORAGE_KEY = "mc-onboarding-state";
+const COMPLETED_KEY = "mc-onboarding-completed";
 const TURNSTILE_SITE_KEY = document.body?.dataset?.turnstileSiteKey || "";
 
 // ─── ANALYTICS ────────────────────────────────────────────────────────────────
@@ -182,6 +183,20 @@ const HERO = {
     body: "Your account is configured based on your selections. Sign in to Guild to start exploring.",
     pulse: "Status: active",
   },
+  returning_user: {
+    tag: "WELCOME BACK",
+    lines: ["Good to", "see you", "again."],
+    accent: 2,
+    body: "Sign in to pick up where you left off. Your sandbox and selections are waiting.",
+    pulse: "Status: active",
+  },
+  authenticated: {
+    tag: "SESSION ACTIVE",
+    lines: ["You're", "already", "signed in."],
+    accent: 0,
+    body: "Your account is live. Head to Guild to access your sandbox, tools, and network.",
+    pulse: "Status: active",
+  },
 };
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
@@ -328,6 +343,8 @@ function clearState() {
 // ─── HERO KEY LOGIC ───────────────────────────────────────────────────────────
 function getHeroKey(state) {
   const { step, areas, journey, products } = state;
+  if (step === "authenticated") return "authenticated";
+  if (step === 0) return "returning_user";
   if (step === 1) return "default";
   if (step === 2) {
     if (areas.length === 0) return "default";
@@ -439,6 +456,9 @@ function Step1({ areas, dispatch, onNext }) {
       <button class="onboarding__btn onboarding__btn--primary-full" disabled={!canContinue} onClick={onNext}>
         Continue &rarr;
       </button>
+      <div class="onboarding__step-signin-hint">
+        Already have an account? <a href="/auth/login">Sign in &rarr;</a>
+      </div>
     </div>
   );
 }
@@ -708,26 +728,110 @@ function DoneScreen({ products, loginUrl, role }) {
   );
 }
 
+// ─── AUTHENTICATED SCREEN ────────────────────────────────────────────────────
+function AuthenticatedScreen({ user }) {
+  const displayName = user?.name || user?.email?.split("@")[0] || "Operator";
+  return (
+    <div class="onboarding__done">
+      <div class="onboarding__done-check">{"\u2713"}</div>
+      <h2 class="onboarding__done-title">Welcome back, {displayName}.</h2>
+      <p class="onboarding__done-body">
+        You're already signed in. Head to your dashboard to continue.
+      </p>
+      <a href="https://guild.mergecombinator.com" class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
+        Go to Guild &rarr;
+      </a>
+      <a href="/" class="onboarding__btn onboarding__btn--text" style={{ marginTop: 12, textAlign: "center" }}>
+        &larr; Back to home
+      </a>
+    </div>
+  );
+}
+
+// ─── WELCOME BACK (Step 0 — returning users) ─────────────────────────────────
+function WelcomeBack({ onNewUser }) {
+  return (
+    <div class="onboarding__step">
+      <div class="onboarding__step-label">WELCOME BACK</div>
+      <h2 class="onboarding__step-title">Sign in to continue.</h2>
+      <p class="onboarding__step-subtitle">
+        Looks like you've been here before. Sign in to access your sandbox, or start fresh if you're new.
+      </p>
+
+      <div class="onboarding__signin onboarding__signin--welcome">
+        <div class="onboarding__signin-row" style={{ marginBottom: 12 }}>
+          <a href="/auth/login" class="onboarding__btn onboarding__btn--primary-full" style={{ textAlign: "center", textDecoration: "none" }}>
+            Sign in with Email &rarr;
+          </a>
+        </div>
+        <div class="onboarding__signin-row">
+          <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://mergecombinator.com/"
+            class="onboarding__signin-btn onboarding__signin-btn--google" style={{ flex: 1 }}>Google</a>
+          <div style={{ position: "relative" }}>
+            <span class="onboarding__signin-cac">CAC/PIV</span>
+            <span class="onboarding__signin-cac-badge">soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="onboarding__divider" style={{ margin: "28px 0" }}>
+        <div class="onboarding__divider-line" />
+        <span class="onboarding__divider-text">or</span>
+        <div class="onboarding__divider-line" />
+      </div>
+
+      <button class="onboarding__btn onboarding__btn--ghost" style={{ width: "100%" }} onClick={onNewUser}>
+        I'm new here &mdash; request access &rarr;
+      </button>
+    </div>
+  );
+}
+
 // ─── APP ──────────────────────────────────────────────────────────────────────
 export default function MCOnboarding() {
   const [state, dispatch] = useReducer(reducer, initialState, (init) => {
     const saved = loadState();
-    return saved ? { ...init, ...saved } : init;
+    const base = saved ? { ...init, ...saved } : init;
+    // If user previously completed onboarding, start at welcome-back gate
+    try {
+      if (localStorage.getItem(COMPLETED_KEY) && base.step <= 1) {
+        return { ...base, step: 0 };
+      }
+    } catch { /* localStorage blocked */ }
+    return base;
   });
 
+  const [authUser, setAuthUser] = useState(null);
   const liveRef = useRef(null);
   const { step } = state;
   const heroKey = getHeroKey(state);
 
+  // Check if user is already authenticated — skip onboarding entirely
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch("/auth/me", { credentials: "same-origin" });
+        if (!res.ok) return;
+        const ct = res.headers.get("content-type") || "";
+        if (!ct.includes("application/json")) return;
+        const data = await res.json();
+        if (data.authenticated && data.user) {
+          setAuthUser(data.user);
+          dispatch({ type: "SET_STEP", step: "authenticated" });
+        }
+      } catch { /* auth check failed, continue normally */ }
+    })();
+  }, []);
+
   // Persist state on every change (pre-submission only)
   useEffect(() => {
-    if (step <= 4) saveState(state);
+    if (typeof step === "number" && step >= 1 && step <= 4) saveState(state);
   }, [state]);
 
   // Announce step changes to screen readers
   useEffect(() => {
     if (liveRef.current) {
-      const labels = { 1: "Step 1: Areas of interest", 2: "Step 2: Value preferences", 3: "Step 3: Journey stage", 4: "Step 4: Contact information", 5: "Request submitted. Optional: select starting products", 6: "Done. Your request is in the queue." };
+      const labels = { "authenticated": "You are already signed in.", 0: "Welcome back. Sign in or request new access.", 1: "Step 1: Areas of interest", 2: "Step 2: Value preferences", 3: "Step 3: Journey stage", 4: "Step 4: Contact information", 5: "Request submitted. Optional: select starting products", 6: "Done. Your request is in the queue." };
       liveRef.current.textContent = labels[step] || "";
     }
     track("step_view", { step });
@@ -774,6 +878,7 @@ export default function MCOnboarding() {
 
       const { profileId, role, loginUrl } = body.data;
       clearState();
+      try { localStorage.setItem(COMPLETED_KEY, "1"); } catch { /* ignore */ }
       dispatch({ type: "SUBMIT_SUCCESS", reqId: profileId, role, loginUrl });
       track("submit_success", { profileId, role });
     } catch (e) {
@@ -791,7 +896,7 @@ export default function MCOnboarding() {
 
       <div class="onboarding__form">
         <div class="onboarding__form-inner">
-          {step <= 4 && <ProgressBar step={step} />}
+          {typeof step === "number" && step >= 1 && step <= 4 && <ProgressBar step={step} />}
           {step === 5 && (
             <div class="onboarding__divider">
               <div class="onboarding__divider-line" />
@@ -800,7 +905,11 @@ export default function MCOnboarding() {
             </div>
           )}
 
-          {step === 6 ? (
+          {step === "authenticated" ? (
+            <AuthenticatedScreen user={authUser} />
+          ) : step === 0 ? (
+            <WelcomeBack onNewUser={() => goTo(1)} />
+          ) : step === 6 ? (
             <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} />
           ) : step === 1 ? (
             <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} />
