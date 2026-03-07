@@ -1,8 +1,12 @@
-import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { Routes, Route, Link, useParams } from "react-router-dom";
 import Layout from "./components/Layout";
 import OpportunityList from "./components/OpportunityList";
-import type { Opportunity } from "./types/opportunity";
+import TabBar from "./components/TabBar";
+import EventsPanel from "./components/EventsPanel";
+import RadarPanel from "./components/RadarPanel";
+import type { Opportunity, OutlookEvent } from "./types/opportunity";
+import { fetchOutlookEvents, fetchOpportunity } from "./lib/api";
 
 function formatDate(dateString: string | undefined): string {
   if (!dateString) return "N/A";
@@ -15,6 +19,26 @@ function formatDate(dateString: string | undefined): string {
   } catch {
     return dateString;
   }
+}
+
+function sanitizeText(text: string | undefined): string {
+  if (!text) return "";
+  return text
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeTopicCode(topicCode: string | undefined): string {
+  if (!topicCode) return "";
+  const code = topicCode.trim();
+  const hasLetters = /[A-Za-z]/.test(code);
+  if (!hasLetters || code.length > 36) return "";
+  return code;
 }
 
 function OpportunityModal({
@@ -50,7 +74,7 @@ function OpportunityModal({
           overflow-y: auto;
           background-color: var(--mc-bg-secondary);
           border: 1px solid var(--mc-border);
-          border-radius: 0.75rem;
+          border-radius: 2px;
           animation: modal-slide-up 0.2s ease;
         }
         @keyframes modal-slide-up {
@@ -87,7 +111,7 @@ function OpportunityModal({
           justify-content: center;
           background: none;
           border: 1px solid var(--mc-border);
-          border-radius: 0.375rem;
+          border-radius: 2px;
           color: var(--mc-text-muted);
           cursor: pointer;
           font-size: 1.125rem;
@@ -157,20 +181,27 @@ function OpportunityModal({
           color: var(--mc-text-muted);
           background-color: var(--mc-bg-tertiary);
           padding: 0.125rem 0.5rem;
-          border-radius: 9999px;
+          border-radius: 2px;
           border: 1px solid var(--mc-border);
         }
         .modal-footer {
           padding: 1rem 1.5rem 1.5rem;
           border-top: 1px solid var(--mc-border);
           display: flex;
-          justify-content: flex-end;
+          justify-content: space-between;
+          align-items: center;
         }
         .modal-footer-source {
           font-size: 0.75rem;
           color: var(--mc-text-muted);
           text-transform: uppercase;
           letter-spacing: 0.05em;
+        }
+        .modal-footer-link {
+          font-size: 0.75rem;
+          color: var(--mc-accent);
+          text-decoration: underline;
+          text-underline-offset: 2px;
         }
       `}</style>
       <div
@@ -185,7 +216,10 @@ function OpportunityModal({
         <div className="modal-content">
           <div className="modal-header">
             <div>
-              <div className="modal-topic-code">{opportunity.topicCode}</div>
+              <div className="modal-topic-code">
+                {normalizeTopicCode(opportunity.topicCode) ||
+                  `${opportunity.source.toUpperCase()} • ${opportunity.component}`}
+              </div>
               <h2 className="modal-title">{opportunity.topicTitle}</h2>
             </div>
             <button
@@ -241,13 +275,17 @@ function OpportunityModal({
             {opportunity.objective && (
               <div>
                 <div className="modal-section-label">Objective</div>
-                <p className="modal-description">{opportunity.objective}</p>
+                <p className="modal-description">
+                  {sanitizeText(opportunity.objective)}
+                </p>
               </div>
             )}
 
             <div>
               <div className="modal-section-label">Description</div>
-              <p className="modal-description">{opportunity.description}</p>
+              <p className="modal-description">
+                {sanitizeText(opportunity.description)}
+              </p>
             </div>
 
             {opportunity.technologyAreas &&
@@ -292,6 +330,20 @@ function OpportunityModal({
           </div>
 
           <div className="modal-footer">
+            {opportunity.url ? (
+              <a
+                className="modal-footer-link"
+                href={opportunity.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View source
+              </a>
+            ) : (
+              <span className="modal-footer-link" style={{ opacity: 0.65 }}>
+                No source link
+              </span>
+            )}
             <span className="modal-footer-source">
               Source: {opportunity.source}
             </span>
@@ -302,30 +354,169 @@ function OpportunityModal({
   );
 }
 
-function HomePage(): React.JSX.Element {
+type OpportunityRouteMode = "all" | "sbir" | "sttr";
+
+function upsertMeta(name: string, content: string, isProperty = false): void {
+  const selector = isProperty
+    ? `meta[property="${name}"]`
+    : `meta[name="${name}"]`;
+  let node = document.head.querySelector(selector) as HTMLMetaElement | null;
+  if (!node) {
+    node = document.createElement("meta");
+    if (isProperty) node.setAttribute("property", name);
+    else node.setAttribute("name", name);
+    document.head.appendChild(node);
+  }
+  node.setAttribute("content", content);
+}
+
+function upsertCanonical(href: string): void {
+  let node = document.head.querySelector(
+    'link[rel="canonical"]',
+  ) as HTMLLinkElement | null;
+  if (!node) {
+    node = document.createElement("link");
+    node.setAttribute("rel", "canonical");
+    document.head.appendChild(node);
+  }
+  node.setAttribute("href", href);
+}
+
+function upsertJsonLd(id: string, data: Record<string, unknown>): void {
+  const selector = `script[data-jsonld-id="${id}"]`;
+  let node = document.head.querySelector(selector) as HTMLScriptElement | null;
+  if (!node) {
+    node = document.createElement("script");
+    node.type = "application/ld+json";
+    node.setAttribute("data-jsonld-id", id);
+    document.head.appendChild(node);
+  }
+  node.textContent = JSON.stringify(data);
+}
+
+function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.Element {
+  const [activeTab, setActiveTab] = useState("solicitations");
   const [selectedOpportunity, setSelectedOpportunity] =
     useState<Opportunity | null>(null);
+  const [events, setEvents] = useState<OutlookEvent[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
+
+  const loadEvents = useCallback(async () => {
+    setEventsLoading(true);
+    try {
+      const data = await fetchOutlookEvents();
+      setEvents(data.events);
+    } catch {
+      // Events are supplementary — fail silently
+    } finally {
+      setEventsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadEvents();
+  }, [loadEvents]);
+
+  useEffect(() => {
+    if (!selectedOpportunity) return;
+    const onKeyDown = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") {
+        setSelectedOpportunity(null);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [selectedOpportunity]);
+
+  const tabs = [
+    { id: "solicitations", label: "Solicitations" },
+    { id: "events", label: "Events", count: events.length || undefined },
+    { id: "radar", label: "Radar" },
+  ];
+
+  const seo = useMemo(() => {
+    if (mode === "sbir") {
+      return {
+        title: "SBIR Opportunities | Merge Combinator",
+        description:
+          "Live SBIR opportunities for defense startups, including active solicitations, timelines, and mission-relevant focus areas.",
+        canonical: "https://mergecombinator.com/opportunities/sbir",
+        keyword: "sbir",
+        heading: "SBIR Opportunities",
+        subtitle:
+          "Curated SBIR solicitations, events, and intelligence for defense tech builders.",
+      };
+    }
+    if (mode === "sttr") {
+      return {
+        title: "STTR Opportunities | Merge Combinator",
+        description:
+          "Live STTR opportunities for defense startups and research teams, with deadlines, components, and transition context.",
+        canonical: "https://mergecombinator.com/opportunities/sttr",
+        keyword: "sttr",
+        heading: "STTR Opportunities",
+        subtitle:
+          "Curated STTR solicitations, events, and intelligence for teams pursuing research-to-transition pathways.",
+      };
+    }
+    return {
+      title: "Opportunities | Merge Combinator",
+      description:
+        "Solicitations, SBIR/STTR opportunities, events, and defense market intelligence for national security builders.",
+      canonical: "https://mergecombinator.com/opportunities",
+      keyword: "",
+      heading: "Opportunities",
+      subtitle: "Solicitations, events, and intel for defense tech builders.",
+    };
+  }, [mode]);
+
+  useEffect(() => {
+    document.title = seo.title;
+    upsertMeta("description", seo.description);
+    upsertMeta("og:title", seo.title, true);
+    upsertMeta("og:description", seo.description, true);
+    upsertMeta("og:url", seo.canonical, true);
+    upsertMeta("twitter:title", seo.title);
+    upsertMeta("twitter:description", seo.description);
+    upsertCanonical(seo.canonical);
+  }, [seo]);
 
   return (
     <div>
-      <div style={{ marginBottom: "2rem" }}>
+      <div style={{ marginBottom: "1.5rem" }}>
         <h1
           style={{
             fontSize: "2rem",
             fontWeight: 700,
             letterSpacing: "-0.02em",
-            marginBottom: "0.5rem",
+            marginBottom: "0.375rem",
           }}
         >
-          Opportunities
+          {seo.heading}
         </h1>
-        <p style={{ color: "var(--mc-text-muted)", maxWidth: "36rem" }}>
-          Discover and pursue high-impact opportunities curated by the Merge
-          Combinator network.
+        <p style={{ color: "var(--mc-text-muted)", maxWidth: "36rem", fontSize: "0.875rem" }}>
+          {seo.subtitle}
         </p>
       </div>
 
-      <OpportunityList onSelect={setSelectedOpportunity} />
+      <TabBar tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {activeTab === "solicitations" && (
+        <OpportunityList onSelect={setSelectedOpportunity} initialKeyword={seo.keyword} />
+      )}
+
+      {activeTab === "events" && (
+        <EventsPanel events={events} loading={eventsLoading} />
+      )}
+
+      {activeTab === "radar" && (
+        <RadarPanel
+          events={events}
+          onSelectOpportunity={setSelectedOpportunity}
+        />
+      )}
 
       {selectedOpportunity && (
         <OpportunityModal
@@ -333,7 +524,196 @@ function HomePage(): React.JSX.Element {
           onClose={() => setSelectedOpportunity(null)}
         />
       )}
+
+      <section
+        style={{
+          marginTop: "2rem",
+          padding: "1rem",
+          border: "1px solid var(--mc-border)",
+          borderRadius: "2px",
+          background: "var(--charcoal)",
+        }}
+      >
+        <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>How to use this data</h2>
+        <p style={{ fontSize: "0.875rem", color: "var(--mc-text-muted)", marginBottom: "0.5rem" }}>
+          Opportunities are aggregated from public sources and normalized for faster triage. Always verify source details before submission.
+        </p>
+        <p style={{ fontSize: "0.875rem", color: "var(--mc-text-muted)" }}>
+          Related guidance: <a href="https://mergecombinator.com/knowledge/sbir">SBIR/STTR Playbook</a> •{" "}
+          <a href="https://mergecombinator.com/ai/overview">AI Overview</a>
+        </p>
+      </section>
     </div>
+  );
+}
+
+function OpportunityDetailPage(): React.JSX.Element {
+  const { opportunityId = "" } = useParams();
+  const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const run = async (): Promise<void> => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetchOpportunity(opportunityId);
+        if (!isMounted) return;
+        setOpportunity(response.data);
+      } catch (err) {
+        if (!isMounted) return;
+        const message =
+          err instanceof Error ? err.message : "Failed to load opportunity";
+        setError(message);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    void run();
+    return () => {
+      isMounted = false;
+    };
+  }, [opportunityId]);
+
+  useEffect(() => {
+    const canonical = `https://mergecombinator.com/opportunities/${opportunityId}`;
+    if (loading) {
+      document.title = "Opportunity Detail | Merge Combinator";
+      upsertMeta("description", "Opportunity details for defense builders.");
+      upsertCanonical(canonical);
+      return;
+    }
+    if (!opportunity) {
+      document.title = "Opportunity Not Found | Merge Combinator";
+      upsertMeta(
+        "description",
+        "This opportunity was not found or is no longer available.",
+      );
+      upsertCanonical(canonical);
+      return;
+    }
+
+    const title = `${opportunity.topicTitle} | Opportunity | Merge Combinator`;
+    const description = (
+      opportunity.description || "Opportunity details for defense builders."
+    ).slice(0, 300);
+    document.title = title;
+    upsertMeta("description", description);
+    upsertMeta("og:title", title, true);
+    upsertMeta("og:description", description, true);
+    upsertMeta("og:url", canonical, true);
+    upsertMeta("twitter:title", title);
+    upsertMeta("twitter:description", description);
+    upsertCanonical(canonical);
+
+    const dueDate = opportunity.responseDeadline ?? opportunity.closeDate;
+    upsertJsonLd("opportunity-detail", {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      name: opportunity.topicTitle,
+      url: canonical,
+      identifier: opportunity.topicCode || opportunity.id || opportunity.topicId,
+      description: opportunity.description,
+      datePublished: opportunity.postedDate,
+      expires: dueDate,
+      publisher: {
+        "@type": "Organization",
+        name: "Merge Combinator",
+        url: "https://mergecombinator.com",
+      },
+      about: [
+        "defense solicitations",
+        "SBIR",
+        "STTR",
+        opportunity.component,
+        opportunity.program,
+      ].filter(Boolean),
+      isBasedOn: opportunity.url || undefined,
+    });
+  }, [loading, opportunity, opportunityId]);
+
+  if (loading) {
+    return <p style={{ color: "var(--mc-text-muted)" }}>Loading opportunity...</p>;
+  }
+  if (error || !opportunity) {
+    return (
+      <div>
+        <h1 style={{ marginBottom: "0.5rem" }}>Opportunity Not Found</h1>
+        <p style={{ color: "var(--mc-text-muted)", marginBottom: "1rem" }}>
+          {error || "This opportunity could not be loaded."}
+        </p>
+        <Link to="/" style={{ color: "var(--mc-accent)" }}>
+          Back to opportunities
+        </Link>
+      </div>
+    );
+  }
+
+  const dueDate = opportunity.responseDeadline ?? opportunity.closeDate;
+  const sourceUrl = opportunity.url;
+
+  return (
+    <article style={{ maxWidth: "860px", margin: "0 auto" }}>
+      <p style={{ marginBottom: "0.75rem" }}>
+        <Link to="/" style={{ color: "var(--mc-accent)" }}>
+          ← Back to opportunities
+        </Link>
+      </p>
+      <h1 style={{ fontSize: "1.9rem", lineHeight: 1.3, marginBottom: "0.5rem" }}>
+        {opportunity.topicTitle}
+      </h1>
+      <p style={{ color: "var(--mc-text-muted)", marginBottom: "1.25rem" }}>
+        {opportunity.topicCode} • {opportunity.component} • {opportunity.program}
+      </p>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          gap: "0.75rem",
+          marginBottom: "1.25rem",
+        }}
+      >
+        <div>
+          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Status</div>
+          <div>{opportunity.topicStatus}</div>
+        </div>
+        <div>
+          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Posted</div>
+          <div>{formatDate(opportunity.postedDate)}</div>
+        </div>
+        <div>
+          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Deadline</div>
+          <div>{formatDate(dueDate)}</div>
+        </div>
+      </div>
+
+      {sourceUrl && (
+        <p style={{ marginBottom: "1.25rem" }}>
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--mc-accent)" }}>
+            View primary source
+          </a>
+        </p>
+      )}
+
+      <section style={{ marginBottom: "1rem" }}>
+        <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>Description</h2>
+        <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.7 }}>
+          {opportunity.description || "No description provided."}
+        </p>
+      </section>
+
+      {opportunity.objective && (
+        <section style={{ marginBottom: "1rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>Objective</h2>
+          <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.7 }}>
+            {opportunity.objective}
+          </p>
+        </section>
+      )}
+    </article>
   );
 }
 
@@ -341,7 +721,10 @@ function App(): React.JSX.Element {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage mode="all" />} />
+        <Route path="/sbir" element={<HomePage mode="sbir" />} />
+        <Route path="/sttr" element={<HomePage mode="sttr" />} />
+        <Route path="/:opportunityId" element={<OpportunityDetailPage />} />
       </Route>
     </Routes>
   );

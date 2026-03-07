@@ -1,0 +1,30 @@
+{
+  "month": "March 2026",
+  "events": [
+    {
+      "id": "brave1-usa-roadshow-2026",
+      "title": "Brave1 Invest Demo Day — USA Roadshow",
+      "organizer": "Brave1 (Ukraine Defense Innovation)",
+      "description": "Ukraine's Brave1 defense innovation cluster brings its investment roadshow to six U.S. cities, connecting Ukrainian defense tech startups with American investors, primes, and government stakeholders. Demo days cover drone autonomy, electronic warfare, ISR, and dual-use AI.",
+      "dates": {
+        "start": "2026-03-04",
+        "end": "2026-03-17"
+      },
+      "locations": [
+        { "city": "Boston", "date": "2026-03-04", "register": "https://luma.com/6f1qeg5g" },
+        { "city": "New York", "date": "2026-03-05", "register": "https://luma.com/cpi9exbh" },
+        { "city": "Washington, D.C.", "date": "2026-03-10", "register": "https://luma.com/k3rkfcen" },
+        { "city": "Dallas", "date": "2026-03-11", "register": "https://luma.com/bvb09u5l" },
+        { "city": "Austin", "date": "2026-03-13", "register": "https://luma.com/uvei2k2q" },
+        { "city": "San Francisco", "date": "2026-03-17", "register": "https://luma.com/ka87l9bi" }
+      ],
+      "tags": ["investment", "drones", "EW", "international", "demo day"],
+      "links": [
+        { "label": "All Events & Registration", "url": "https://linktr.ee/investbrv" },
+        { "label": "Brave1 Official", "url": "https://brave1.gov.ua/en/" }
+      ],
+      "priority": "high",
+      "type": "demo day"
+    }
+  ]
+}

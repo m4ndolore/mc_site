@@ -2,7 +2,7 @@
 // Renders into <div id="mc-navbar"></div> on any page
 import { toggleTheme } from './theme.js';
 
-const NAV_LINKS = [
+const DEFAULT_NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/builders', label: 'Defense Builders' },
   { href: '/wingman', label: 'Wingman' },
@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { href: '/programs/the-combine', label: 'The Combine' },
 ];
 
-const PLATFORM_LINKS = [
+const DEFAULT_PLATFORM_LINKS = [
   { href: '/opportunities', label: 'Opportunities' },
   { href: '/status', label: 'Status' },
   { href: '/briefs', label: 'Briefs' },
@@ -30,20 +30,20 @@ function isActive(href, activePath) {
   return activePath === normalized || activePath.startsWith(normalized + '/');
 }
 
-function isPlatformActive(activePath) {
-  return PLATFORM_LINKS.some(link => isActive(link.href, activePath));
+function isPlatformActive(activePath, platformLinks) {
+  return platformLinks.some(link => isActive(link.href, activePath));
 }
 
-function renderNavHTML(activePath) {
-  const navLinksHTML = NAV_LINKS.map(link =>
+function renderNavHTML(activePath, navLinks, platformLinks) {
+  const navLinksHTML = navLinks.map(link =>
     `<a href="${link.href}" class="nav__link${isActive(link.href, activePath) ? ' nav__link--active' : ''}">${link.label}</a>`
   ).join('\n          ');
 
-  const platformLinksHTML = PLATFORM_LINKS.map(link =>
+  const platformLinksHTML = platformLinks.map(link =>
     `<a href="${link.href}" class="nav__dropdown-item${isActive(link.href, activePath) ? ' nav__link--active' : ''}">${link.label}</a>`
   ).join('\n              ');
 
-  const platformActive = isPlatformActive(activePath);
+  const platformActive = isPlatformActive(activePath, platformLinks);
 
   return `<header class="nav" id="nav">
     <div class="nav__container">
@@ -91,6 +91,20 @@ function renderNavHTML(activePath) {
       </button>
     </div>
   </header>`;
+}
+
+async function loadNavConfig() {
+  try {
+    const response = await fetch('/data/navigation.json', { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    const navLinks = Array.isArray(data?.navLinks) ? data.navLinks : DEFAULT_NAV_LINKS;
+    const platformLinks = Array.isArray(data?.platformLinks) ? data.platformLinks : DEFAULT_PLATFORM_LINKS;
+    return { navLinks, platformLinks };
+  } catch (error) {
+    console.warn('[Navbar] Failed to load shared nav config, using defaults:', error);
+    return { navLinks: DEFAULT_NAV_LINKS, platformLinks: DEFAULT_PLATFORM_LINKS };
+  }
 }
 
 // ── Scroll behavior ──
@@ -221,13 +235,19 @@ export default function initNavbar() {
   mount.dataset.initialized = 'true';
 
   const activePath = getActivePath();
-  mount.innerHTML = renderNavHTML(activePath);
+  mount.innerHTML = renderNavHTML(activePath, DEFAULT_NAV_LINKS, DEFAULT_PLATFORM_LINKS);
 
-  initScrollBehavior();
-  initMobileMenu();
-  initDropdown();
-  initThemeToggle();
-  initAuth();
+  const boot = () => {
+    initScrollBehavior();
+    initMobileMenu();
+    initDropdown();
+    initThemeToggle();
+    initAuth();
+  };
+  loadNavConfig().then(({ navLinks, platformLinks }) => {
+    mount.innerHTML = renderNavHTML(activePath, navLinks, platformLinks);
+    boot();
+  });
 }
 
 // ── Theme toggle ──

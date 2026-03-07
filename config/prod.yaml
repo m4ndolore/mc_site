@@ -54,10 +54,10 @@ mail__transport: SMTP
 mail__options__host: smtp.gmail.com
 mail__options__port: 587
 mail__options__secure: "false"
-mail__from: gus@mergecombinator.com
+mail__from: accounts@mergecombinator.com
 
 # Ensure Ghost does NOT try SMTP AUTH locally
-mail__options__auth__user: gus@mergecombinator.com
+mail__options__auth__user: accounts@mergecombinator.com
 
 # CORS - Production origins
 ALLOWED_ORIGINS: https://www.sigmablox.com,https://sigmablox.com,https://api.sigmablox.com

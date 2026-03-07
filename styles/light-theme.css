@@ -968,6 +968,81 @@ html.light-theme.no-transitions *::after {
   background: rgba(42, 127, 219, 0.08);
 }
 
+.light-theme .outlook-section {
+  background: var(--black);
+}
+
+.light-theme .outlook-card {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+  border-left-color: var(--ghost-gray);
+}
+
+.light-theme .outlook-card--high {
+  border-left-color: #3b82f6;
+}
+
+.light-theme .outlook-card:hover {
+  background: #ffffff;
+  border-color: rgba(59, 130, 246, 0.3);
+  border-left-color: #3b82f6;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.light-theme .outlook-card__type {
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.light-theme .outlook-location {
+  background: var(--charcoal);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .outlook-location__city {
+  color: var(--offwhite);
+}
+
+.light-theme .outlook-tag {
+  background: var(--charcoal);
+}
+
+/* ── Intel section (knowledge page) ────────── */
+.light-theme .intel-section {
+  border-top-color: var(--ghost-gray);
+}
+
+.light-theme .intel-filter {
+  background: var(--charcoal);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .intel-filter:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.light-theme .intel-filter--active {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.25);
+}
+
+.light-theme .intel-card {
+  background: #ffffff;
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .intel-card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.light-theme .intel-source {
+  background: color-mix(in srgb, var(--source-color, #6b7280) 8%, transparent);
+}
+
+.light-theme .intel-tag {
+  background: var(--charcoal);
+}
+
 
 /* ── Status / Console page ───────────────────── */
 .light-theme .console {

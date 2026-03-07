@@ -7,11 +7,12 @@
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Defense tech opportunities - contracts, grants, and partnership opportunities for builders in the national security space.">
+  <meta name="description" content="SBIR, STTR, and defense contract opportunities for national security builders. Track grants, solicitations, and transition-ready pathways.">
 
+  <link rel="canonical" href="https://mergecombinator.com/opportunities">
   <!-- Open Graph -->
   <meta property="og:title" content="Opportunities — Merge Combinator">
-  <meta property="og:description" content="Defense tech opportunities - contracts, grants, and partnership opportunities for builders in the national security space.">
+  <meta property="og:description" content="SBIR, STTR, and defense contract opportunities for national security builders.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
   <meta property="og:url" content="https://mergecombinator.com/opportunities">
@@ -19,10 +20,10 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Opportunities — Merge Combinator">
-  <meta name="twitter:description" content="Defense tech opportunities - contracts, grants, and partnership opportunities for builders in the national security space.">
+  <meta name="twitter:description" content="SBIR, STTR, and defense contract opportunities for national security builders.">
   <meta name="twitter:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
-  <title>Opportunities — Merge Combinator</title>
+  <title>SBIR, STTR, and Defense Opportunities — Merge Combinator</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
@@ -38,6 +39,21 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/opportunities.css">
   <link rel="stylesheet" href="styles/light-theme.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Opportunities",
+    "url": "https://mergecombinator.com/opportunities",
+    "description": "SBIR, STTR, and defense contract opportunities for national security builders.",
+    "about": [
+      "SBIR",
+      "STTR",
+      "defense contracts",
+      "national security innovation"
+    ]
+  }
+  </script>
 </head>
 <body class="coming-soon">
   <!-- Navigation -->
@@ -84,6 +100,38 @@
     </div>
   </section>
 
+  <section class="opportunities-sbir">
+    <div class="container">
+      <div class="opportunities-sbir__card">
+        <span class="opportunities-sbir__eyebrow">SBIR / STTR Signal</span>
+        <h2 class="opportunities-sbir__title">Use SBIR and STTR as transition tools, not just grant programs.</h2>
+        <p class="opportunities-sbir__text">
+          The old SBIR subdomain is deprecated. We now maintain SBIR/STTR resources and active opportunity tracking in one place so builders can move from topic discovery to mission-aligned execution faster.
+        </p>
+        <div class="opportunities-sbir__actions">
+          <a href="/knowledge/sbir" class="btn btn--primary">Open SBIR / STTR Guidance</a>
+          <a href="/access" class="btn btn--ghost">Get Matched To Opportunities</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Monthly Outlook -->
+  <section class="outlook-section">
+    <div class="container">
+      <div class="outlook-header">
+        <div class="outlook-header__label">
+          <span class="outlook-header__eyebrow">Monthly Outlook</span>
+          <h2 class="outlook-header__title">Upcoming Events</h2>
+        </div>
+        <span class="outlook-header__month" id="outlook-month"></span>
+      </div>
+      <div class="outlook-grid" id="outlook-grid">
+        <!-- Populated by outlook.js -->
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
@@ -126,6 +174,7 @@
               <li><a href="/blog">Blog</a></li>
               <li><a href="/portfolio">Case Studies</a></li>
               <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="/ai/overview">AI Overview</a></li>
               <li><a href="https://docs.mergecombinator.com">Docs</a></li>
             </ul>
           </div>
@@ -141,5 +190,6 @@
 
   <script type="module" src="script.js"></script>
   <script type="module" src="js/navbar.js"></script>
+  <script type="module" src="js/opportunities/outlook.js"></script>
 </body>
 </html>

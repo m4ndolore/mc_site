@@ -94,3 +94,300 @@
   font-size: 13px;
   color: rgba(255, 255, 255, 0.5);
 }
+
+/* ============================================
+   MONTHLY OUTLOOK
+   ============================================ */
+
+.outlook-section {
+  padding: 80px 0 100px;
+  background: var(--black);
+}
+
+.outlook-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.outlook-header__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #3b82f6;
+  margin-bottom: 8px;
+}
+
+.outlook-header__eyebrow::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #3b82f6;
+  border-radius: 2px;
+}
+
+.outlook-header__title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--offwhite);
+  line-height: 1.2;
+}
+
+.outlook-header__month {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: var(--gray-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.outlook-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.opportunities-sbir {
+  padding: 0 0 56px;
+  background: var(--black);
+}
+
+.opportunities-sbir__card {
+  max-width: 920px;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 28px;
+}
+
+.opportunities-sbir__eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #3b82f6;
+  margin-bottom: 10px;
+}
+
+.opportunities-sbir__title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  color: var(--offwhite);
+  line-height: 1.2;
+  margin-bottom: 12px;
+}
+
+.opportunities-sbir__text {
+  color: var(--gray-light);
+  line-height: 1.7;
+  margin: 0 0 18px;
+}
+
+.opportunities-sbir__actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.outlook-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 28px;
+  transition: all 0.25s ease;
+}
+
+.outlook-card--high {
+  border-left-color: #3b82f6;
+}
+
+.outlook-card:hover {
+  background: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.1);
+  border-left-color: #3b82f6;
+}
+
+.outlook-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.outlook-card__type {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+
+.outlook-card__date {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--gray-medium);
+}
+
+.outlook-card__title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--offwhite);
+  margin-bottom: 4px;
+}
+
+.outlook-card__org {
+  font-size: 0.875rem;
+  color: var(--gray-medium);
+  margin-bottom: 12px;
+}
+
+.outlook-card__desc {
+  font-size: 0.9rem;
+  color: var(--gray-light);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.outlook-card__locations {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.outlook-location {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  color: var(--offwhite);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 8px 14px;
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.outlook-location__city {
+  font-weight: 700;
+  min-width: 140px;
+}
+
+.outlook-location__date {
+  color: var(--gray-medium);
+  min-width: 60px;
+}
+
+.outlook-location__register {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: #60a5fa;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.outlook-location__register:hover {
+  color: #93bbfc;
+}
+
+.outlook-location__register svg {
+  transition: transform 0.2s;
+}
+
+.outlook-location__register:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.outlook-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.outlook-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.outlook-tag {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--gray-medium);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 3px 10px;
+  border-radius: 2px;
+  text-transform: lowercase;
+}
+
+.outlook-card__links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.outlook-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #60a5fa;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.outlook-link:hover {
+  color: #93bbfc;
+}
+
+.outlook-link svg {
+  transition: transform 0.2s;
+}
+
+.outlook-link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.outlook-empty {
+  font-size: 0.9rem;
+  color: var(--gray-medium);
+  text-align: center;
+  padding: 40px 0;
+}
+
+@media (max-width: 640px) {
+  .outlook-card {
+    padding: 20px;
+  }
+
+  .outlook-card__header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .outlook-card__footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
