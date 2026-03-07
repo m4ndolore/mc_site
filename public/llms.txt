@@ -11,6 +11,8 @@ Primary domain: https://mergecombinator.com
 - The Combine: https://mergecombinator.com/programs/the-combine
 - Knowledge: https://mergecombinator.com/knowledge
 - Opportunities: https://mergecombinator.com/opportunities
+- SBIR Opportunities: https://mergecombinator.com/opportunities/sbir
+- STTR Opportunities: https://mergecombinator.com/opportunities/sttr
 - SBIR / STTR Guidance: https://mergecombinator.com/knowledge/sbir
 - AI Overview: https://mergecombinator.com/ai/overview
 
