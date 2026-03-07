@@ -2,6 +2,7 @@ import { useState, useEffect, useReducer, useRef, useCallback } from "preact/hoo
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const API_ENDPOINT = "https://api.mergecombinator.com/access/provision";
+const LEGACY_ENDPOINT = "https://api.sigmablox.com/api/access-request";
 const STORAGE_KEY = "mc-onboarding-state";
 const COMPLETED_KEY = "mc-onboarding-completed";
 const TURNSTILE_SITE_KEY = document.body?.dataset?.turnstileSiteKey || "";
@@ -386,7 +387,7 @@ function HeroPanel({ heroKey }) {
       <div class="onboarding__hero-top">
         <a href="/" class="onboarding__wordmark">
           <img src="/content/arrows.png" alt="Merge Combinator" class="onboarding__wordmark-logo" />
-          <span class="onboarding__wordmark-text">MERGE COMBINATOR</span>
+          <span class="onboarding__wordmark-text"><span class="onboarding__wordmark-merge">Merge</span> <span class="onboarding__wordmark-combinator">Combinator</span></span>
         </a>
 
         <div class={`onboarding__hero-content${visible ? "" : " onboarding__hero-content--hidden"}`}>
@@ -849,25 +850,48 @@ export default function MCOnboarding() {
     dispatch({ type: "SUBMIT_START" });
     track("submit_start", {});
 
+    const name = state.formData.name.trim();
+    const email = state.formData.email.trim();
+    const turnstileToken = state.turnstileToken || "";
+
     const payload = {
-      name: state.formData.name.trim(),
-      email: state.formData.email.trim(),
+      name, email,
       organization: state.formData.org.trim() || undefined,
       areas: state.areas,
       outcomes: state.values,
       journeyStage: state.journey,
-      "cf-turnstile-response": state.turnstileToken || "",
+      "cf-turnstile-response": turnstileToken,
       source: window.location.href,
     };
 
-    try {
-      const res = await fetch(API_ENDPOINT, {
+    // Try new API, fall back to legacy endpoint if unreachable
+    const tryFetch = async (url, body) => {
+      const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(body),
       });
+      return res;
+    };
 
-      const body = await res.json();
+    try {
+      let res;
+      let body;
+      try {
+        res = await tryFetch(API_ENDPOINT, payload);
+        body = await res.json();
+      } catch {
+        // New API unreachable — fall back to legacy
+        const legacyPayload = {
+          name, email,
+          interests: state.areas.slice(0, 3),
+          "cf-turnstile-response": turnstileToken,
+          source: window.location.href,
+          requestedAt: new Date().toISOString(),
+        };
+        res = await tryFetch(LEGACY_ENDPOINT, legacyPayload);
+        body = res.ok ? { data: { profileId: "pending", role: "restricted" } } : await res.json();
+      }
 
       if (!res.ok) {
         const msg = body?.error?.code === "EMAIL_EXISTS"
