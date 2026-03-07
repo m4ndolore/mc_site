@@ -40,6 +40,15 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/knowledge.css">
   <link rel="stylesheet" href="styles/light-theme.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Knowledge",
+    "url": "https://mergecombinator.com/knowledge",
+    "description": "Resources for building and selling to defense, including acquisition, compliance, and SBIR/STTR guidance."
+  }
+  </script>
 </head>
 <body>
   <div id="mc-navbar"></div>
@@ -68,6 +77,23 @@
     <div class="container">
       <div class="knowledge-categories__grid" id="categories-grid">
         <!-- Populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Industry Intel -->
+  <section class="intel-section">
+    <div class="container">
+      <div class="intel-header">
+        <div class="intel-header__label">
+          <span class="intel-header__eyebrow">Industry Intel</span>
+          <h2 class="intel-header__title">OSINT for National Security Builders</h2>
+        </div>
+        <p class="intel-header__subtitle">Live feed from ExecutiveGov, MC-curated analysis, and open-source intelligence for the defense tech ecosystem.</p>
+      </div>
+      <div class="intel-filters" id="intel-filters"></div>
+      <div class="intel-grid" id="intel-grid">
+        <!-- Populated by intel.js -->
       </div>
     </div>
   </section>
@@ -135,6 +161,7 @@
               <li><a href="/blog">Blog</a></li>
               <li><a href="/portfolio">Case Studies</a></li>
               <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="/ai/overview">AI Overview</a></li>
               <li><a href="https://docs.mergecombinator.com">Docs</a></li>
             </ul>
           </div>
@@ -150,6 +177,7 @@
 
   <script type="module" src="script.js"></script>
   <script type="module" src="js/navbar.js"></script>
+  <script type="module" src="js/knowledge/intel.js"></script>
   <script>
     // Icons for each category
     const icons = {
