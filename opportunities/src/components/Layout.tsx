@@ -1,8 +1,116 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Outlet, useLocation } from "react-router-dom";
+
+type NavLinkItem = { href: string; label: string };
+type FooterColumn = { heading: string; links: NavLinkItem[] };
+type SharedNavConfig = {
+  navLinks: NavLinkItem[];
+  platformLinks: NavLinkItem[];
+  footerColumns: FooterColumn[];
+};
+
+const DEFAULT_NAV_CONFIG: SharedNavConfig = {
+  navLinks: [
+    { href: "/about", label: "About" },
+    { href: "/builders", label: "Defense Builders" },
+    { href: "/wingman", label: "Wingman" },
+    { href: "/guild", label: "Guild" },
+    { href: "/programs/the-combine", label: "The Combine" },
+  ],
+  platformLinks: [
+    { href: "/opportunities", label: "Opportunities" },
+    { href: "/status", label: "Status" },
+    { href: "/briefs", label: "Briefs" },
+    { href: "/knowledge", label: "Knowledge" },
+    { href: "/learn", label: "Learn" },
+    { href: "https://docs.mergecombinator.com", label: "Docs" },
+  ],
+  footerColumns: [
+    {
+      heading: "Platform",
+      links: [
+        { href: "/builders", label: "Defense Builders" },
+        { href: "/wingman", label: "Wingman" },
+        { href: "/guild", label: "Guild" },
+        { href: "/programs/the-combine", label: "The Combine" },
+        { href: "/opportunities", label: "Opportunities" },
+        { href: "/briefs", label: "Briefs" },
+      ],
+    },
+    {
+      heading: "Company",
+      links: [
+        { href: "/#hero", label: "About" },
+        { href: "/access", label: "Contact" },
+        { href: "/builders", label: "Careers" },
+      ],
+    },
+    {
+      heading: "Resources",
+      links: [
+        { href: "/blog", label: "Blog" },
+        { href: "/portfolio", label: "Case Studies" },
+        { href: "/knowledge", label: "Knowledge" },
+        { href: "/learn", label: "Learn" },
+        { href: "https://docs.mergecombinator.com", label: "Docs" },
+      ],
+    },
+    {
+      heading: "Legal",
+      links: [
+        { href: "/privacy", label: "Privacy Policy" },
+        { href: "/terms", label: "Terms of Service" },
+        { href: "/security", label: "Security" },
+      ],
+    },
+  ],
+};
+
+function normalizePath(path: string): string {
+  return path.replace(/\/+$/, "") || "/";
+}
+
+function isActive(href: string, pathname: string): boolean {
+  if (!href.startsWith("/")) return false;
+  const normalizedHref = normalizePath(href);
+  const normalizedPath = normalizePath(pathname);
+  if (normalizedHref === "/") return normalizedPath === "/";
+  return (
+    normalizedPath === normalizedHref || normalizedPath.startsWith(`${normalizedHref}/`)
+  );
+}
 
 function Layout(): React.JSX.Element {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [navConfig, setNavConfig] = useState<SharedNavConfig>(DEFAULT_NAV_CONFIG);
+  const location = useLocation();
+
+  useEffect(() => {
+    let isMounted = true;
+    const load = async (): Promise<void> => {
+      try {
+        const response = await fetch("/data/navigation.json", { cache: "no-store" });
+        if (!response.ok) return;
+        const data = (await response.json()) as Partial<SharedNavConfig>;
+        if (!isMounted) return;
+        setNavConfig({
+          navLinks: Array.isArray(data.navLinks) ? data.navLinks : DEFAULT_NAV_CONFIG.navLinks,
+          platformLinks: Array.isArray(data.platformLinks)
+            ? data.platformLinks
+            : DEFAULT_NAV_CONFIG.platformLinks,
+          footerColumns: Array.isArray(data.footerColumns)
+            ? data.footerColumns
+            : DEFAULT_NAV_CONFIG.footerColumns,
+        });
+      } catch {
+        // Keep fallback nav config when fetch fails.
+      }
+    };
+    void load();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <>
@@ -352,28 +460,28 @@ function Layout(): React.JSX.Element {
 
           <nav className="nav__menu" aria-label="Primary navigation">
             <div className="nav__menu-links">
-              <a href="/builders" className="nav__link">
-                Defense Builders
-              </a>
-              <a href="/wingman" className="nav__link">
-                Wingman
-              </a>
-              <a href="/guild" className="nav__link">
-                Guild
-              </a>
-              <a
-                href="/programs/the-combine"
-                className="nav__link"
-              >
-                The Combine
-              </a>
+              {navConfig.navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`nav__link${isActive(link.href, location.pathname) ? " nav__link--active" : ""}`}
+                >
+                  {link.label}
+                </a>
+              ))}
               <div
                 className={`nav__dropdown${dropdownOpen ? " nav__dropdown--open" : ""}`}
                 onMouseEnter={() => setDropdownOpen(true)}
                 onMouseLeave={() => setDropdownOpen(false)}
               >
                 <button
-                  className="nav__link nav__dropdown-trigger"
+                  className={`nav__link nav__dropdown-trigger${
+                    navConfig.platformLinks.some((link) =>
+                      isActive(link.href, location.pathname),
+                    )
+                      ? " nav__link--active"
+                      : ""
+                  }`}
                   aria-expanded={dropdownOpen}
                   aria-haspopup="true"
                   type="button"
@@ -396,42 +504,15 @@ function Layout(): React.JSX.Element {
                   </svg>
                 </button>
                 <div className="nav__dropdown-menu">
-                  <a
-                    href="/opportunities"
-                    className="nav__dropdown-item nav__link--active"
-                  >
-                    Opportunities
-                  </a>
-                  <a
-                    href="/status"
-                    className="nav__dropdown-item"
-                  >
-                    Status
-                  </a>
-                  <a
-                    href="/briefs"
-                    className="nav__dropdown-item"
-                  >
-                    Briefs
-                  </a>
-                  <a
-                    href="/knowledge"
-                    className="nav__dropdown-item"
-                  >
-                    Knowledge
-                  </a>
-                  <a
-                    href="/learn"
-                    className="nav__dropdown-item"
-                  >
-                    Learn
-                  </a>
-                  <a
-                    href="https://docs.mergecombinator.com"
-                    className="nav__dropdown-item"
-                  >
-                    Docs
-                  </a>
+                  {navConfig.platformLinks.map((link) => (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      className={`nav__dropdown-item${isActive(link.href, location.pathname) ? " nav__link--active" : ""}`}
+                    >
+                      {link.label}
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
@@ -502,43 +583,18 @@ function Layout(): React.JSX.Element {
             </div>
 
             <div className="footer__links">
-              <div>
-                <h4 className="footer__heading">Platform</h4>
-                <ul className="footer__list">
-                  <li><a href="/builders">Defense Builders</a></li>
-                  <li><a href="/wingman">Wingman</a></li>
-                  <li><a href="/guild">Guild</a></li>
-                  <li><a href="/programs/the-combine">The Combine</a></li>
-                  <li><a href="/opportunities">Opportunities</a></li>
-                  <li><a href="/briefs">Briefs</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="footer__heading">Company</h4>
-                <ul className="footer__list">
-                  <li><a href="/#hero">About</a></li>
-                  <li><a href="/access">Contact</a></li>
-                  <li><a href="/builders">Careers</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="footer__heading">Resources</h4>
-                <ul className="footer__list">
-                  <li><a href="/blog">Blog</a></li>
-                  <li><a href="/portfolio">Case Studies</a></li>
-                  <li><a href="/knowledge">Knowledge</a></li>
-                  <li><a href="/learn">Learn</a></li>
-                  <li><a href="https://docs.mergecombinator.com">Docs</a></li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="footer__heading">Legal</h4>
-                <ul className="footer__list">
-                  <li><a href="/privacy">Privacy Policy</a></li>
-                  <li><a href="/terms">Terms of Service</a></li>
-                  <li><a href="/security">Security</a></li>
-                </ul>
-              </div>
+              {navConfig.footerColumns.map((column) => (
+                <div key={column.heading}>
+                  <h4 className="footer__heading">{column.heading}</h4>
+                  <ul className="footer__list">
+                    {column.links.map((link) => (
+                      <li key={link.href}>
+                        <a href={link.href}>{link.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </div>
           </div>
 
