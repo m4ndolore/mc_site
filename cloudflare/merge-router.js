@@ -49,6 +49,10 @@ const SUBDOMAIN_REDIRECTS = new Map([
 const SUBDOMAIN_PLACEHOLDER_REDIRECTS = new Map([
   ["wingman.mergecombinator.com", "/wingman"],
 ]);
+const LEGACY_PATH_REDIRECTS = new Map([
+  ["/sbir", "/knowledge/sbir"],
+  ["/contact", "/access"],
+]);
 
 // ────────────────────────────────────────────────────────────────────────────
 // HTML Injection Templates
@@ -400,6 +404,9 @@ export default {
     }
 
     // 1.1) Legacy subdomain redirects (e.g. app.* → guild.*)
+    if (host === "ask.mergecombinator.com" || host === "sbir.mergecombinator.com") {
+      return Response.redirect(`https://${CANONICAL_HOST}/`, 301);
+    }
     const redirectHost = SUBDOMAIN_REDIRECTS.get(host);
     if (redirectHost) {
       url.hostname = redirectHost;
@@ -418,6 +425,22 @@ export default {
     // 1.5) Platform convergence redirects (301)
     // These canonicalize legacy subpath-proxied routes to their proper hosts.
     // Order matters: /app/wingman/* must be checked before /app/*
+    if (url.pathname.endsWith(".html")) {
+      const isYandexVerification = /^\/yandex_[\w-]+\.html$/i.test(url.pathname);
+      const is404Page = url.pathname === "/404.html";
+      if (!isYandexVerification && !is404Page) {
+        let cleanPath = url.pathname.slice(0, -5) || "/";
+        if (cleanPath === "/index") cleanPath = "/";
+        return Response.redirect(`https://${CANONICAL_HOST}${cleanPath}${url.search}`, 301);
+      }
+    }
+    const legacyTarget = LEGACY_PATH_REDIRECTS.get(url.pathname);
+    if (legacyTarget) {
+      return Response.redirect(`https://${CANONICAL_HOST}${legacyTarget}${url.search}`, 301);
+    }
+    if (url.pathname.startsWith("/updates/")) {
+      return Response.redirect(`https://${CANONICAL_HOST}/blog`, 301);
+    }
     if (url.pathname === "/admin-console" || url.pathname.startsWith("/admin-console/")) {
       return Response.redirect(`https://${CANONICAL_HOST}/control`, 302);
     }
