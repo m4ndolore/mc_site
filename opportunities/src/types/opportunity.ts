@@ -14,6 +14,7 @@ export interface Opportunity {
   focusAreas?: string[];
   keywords?: string[];
   source: "sbir" | "sam" | "grants" | "diu" | "afwerx";
+  url?: string;
   postedDate: string;
   responseDeadline?: string;
   estimatedValue?: {

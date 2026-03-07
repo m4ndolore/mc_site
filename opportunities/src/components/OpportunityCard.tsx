@@ -112,6 +112,14 @@ function OpportunityCard({
           color: var(--mc-warning);
           font-weight: 500;
         }
+        .opp-card__detail-link {
+          color: var(--mc-accent);
+          font-size: 0.75rem;
+          font-weight: 500;
+          text-decoration: underline;
+          text-underline-offset: 2px;
+          margin-left: 0.5rem;
+        }
       `}</style>
       <article
         className="opp-card"
@@ -139,14 +147,25 @@ function OpportunityCard({
         </p>
 
         <div className="opp-card__footer">
-          <span className="opp-card__status">{opportunity.topicStatus}</span>
-          {deadline && (
-            <span
-              className={`opp-card__deadline${isDeadlineSoon() ? " opp-card__deadline--soon" : ""}`}
+          <div>
+            <span className="opp-card__status">{opportunity.topicStatus}</span>
+            <a
+              href={`/opportunities/${opportunity.id || opportunity.topicId}`}
+              className="opp-card__detail-link"
+              onClick={(e) => e.stopPropagation()}
             >
-              Due: {formatDate(deadline)}
-            </span>
-          )}
+              Details
+            </a>
+          </div>
+          <div>
+            {deadline && (
+              <span
+                className={`opp-card__deadline${isDeadlineSoon() ? " opp-card__deadline--soon" : ""}`}
+              >
+                Due: {formatDate(deadline)}
+              </span>
+            )}
+          </div>
         </div>
       </article>
     </>
