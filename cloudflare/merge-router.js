@@ -46,6 +46,13 @@ const ALIAS_HOSTS = new Set(["www.mergecombinator.com", "build.mergecombinator.c
 const SUBDOMAIN_REDIRECTS = new Map([
   ["app.mergecombinator.com", GUILD_HOST],
 ]);
+const SUBDOMAIN_PLACEHOLDER_REDIRECTS = new Map([
+  ["wingman.mergecombinator.com", "/wingman"],
+]);
+const LEGACY_PATH_REDIRECTS = new Map([
+  ["/sbir", "/knowledge/sbir"],
+  ["/contact", "/access"],
+]);
 
 // ────────────────────────────────────────────────────────────────────────────
 // HTML Injection Templates
@@ -195,8 +202,9 @@ function getOrigins(env) {
 
 
 function getRoutes(origins) {
-  // /app/*, /app/wingman/*, /wingman, and /api/* are now 301 redirects
+  // /app/*, /app/wingman/*, and /api/* are now 301 redirects
   // handled in step 1.5 before route matching. Only proxy routes remain here.
+  // /wingman is served by Pages (wingman.html) — not redirected.
   return [
     { prefix: "/control", origin: origins.control, stripPrefix: true },
     { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
@@ -387,6 +395,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const host = request.headers.get("host") || url.hostname;
+    const wingmanEnabled = String(env.WINGMAN_CONSOLE_ENABLED || "").toLowerCase() === "true";
 
     // 1) Canonical host redirect
     if (ALIAS_HOSTS.has(host)) {
@@ -395,16 +404,50 @@ export default {
     }
 
     // 1.1) Legacy subdomain redirects (e.g. app.* → guild.*)
+    if (host === "ask.mergecombinator.com" || host === "sbir.mergecombinator.com") {
+      return Response.redirect(`https://${CANONICAL_HOST}/`, 301);
+    }
     const redirectHost = SUBDOMAIN_REDIRECTS.get(host);
     if (redirectHost) {
       url.hostname = redirectHost;
       return Response.redirect(url.toString(), 301);
     }
+    const placeholderPath = SUBDOMAIN_PLACEHOLDER_REDIRECTS.get(host);
+    if (placeholderPath) {
+      const isWingmanHost = host === WINGMAN_HOST;
+      const shouldRedirectToPlaceholder = isWingmanHost && !wingmanEnabled;
+      if (shouldRedirectToPlaceholder) {
+        const target = `https://${CANONICAL_HOST}${placeholderPath}`;
+        return Response.redirect(target, 302);
+      }
+    }
 
     // 1.5) Platform convergence redirects (301)
     // These canonicalize legacy subpath-proxied routes to their proper hosts.
     // Order matters: /app/wingman/* must be checked before /app/*
+    if (url.pathname.endsWith(".html")) {
+      const isYandexVerification = /^\/yandex_[\w-]+\.html$/i.test(url.pathname);
+      const is404Page = url.pathname === "/404.html";
+      if (!isYandexVerification && !is404Page) {
+        let cleanPath = url.pathname.slice(0, -5) || "/";
+        if (cleanPath === "/index") cleanPath = "/";
+        return Response.redirect(`https://${CANONICAL_HOST}${cleanPath}${url.search}`, 301);
+      }
+    }
+    const legacyTarget = LEGACY_PATH_REDIRECTS.get(url.pathname);
+    if (legacyTarget) {
+      return Response.redirect(`https://${CANONICAL_HOST}${legacyTarget}${url.search}`, 301);
+    }
+    if (url.pathname.startsWith("/updates/")) {
+      return Response.redirect(`https://${CANONICAL_HOST}/blog`, 301);
+    }
+    if (url.pathname === "/admin-console" || url.pathname.startsWith("/admin-console/")) {
+      return Response.redirect(`https://${CANONICAL_HOST}/control`, 302);
+    }
     if (url.pathname.startsWith("/app/wingman")) {
+      if (!wingmanEnabled) {
+        return Response.redirect(`https://${CANONICAL_HOST}/wingman`, 302);
+      }
       const suffix = url.pathname.slice("/app/wingman".length) || "/";
       const target = `https://${WINGMAN_HOST}${suffix}${url.search}`;
       return Response.redirect(target, 301);
@@ -414,11 +457,8 @@ export default {
       const target = `https://${GUILD_HOST}${suffix}${url.search}`;
       return Response.redirect(target, 301);
     }
-    if (url.pathname === "/wingman" || url.pathname.startsWith("/wingman/")) {
-      const suffix = url.pathname.slice("/wingman".length) || "/";
-      const target = `https://${WINGMAN_HOST}${suffix}${url.search}`;
-      return Response.redirect(target, 301);
-    }
+    // /wingman marketing page is served by Pages (wingman.html).
+    // /app/wingman/* redirects to the subdomain (handled above).
     if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
       const target = `https://${API_HOST}${url.pathname}${url.search}`;
       return Response.redirect(target, 301);
