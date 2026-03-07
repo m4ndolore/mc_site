@@ -105,17 +105,11 @@
   text-decoration: none;
 }
 
-.onboarding__wordmark-icon {
+.onboarding__wordmark-logo {
   width: 30px;
   height: 30px;
-  background: var(--ob-blue);
   border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  color: var(--ob-white);
-  font-weight: 700;
+  object-fit: cover;
 }
 
 .onboarding__wordmark-text {
