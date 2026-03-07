@@ -1,0 +1,56 @@
+{
+  "navLinks": [
+    { "href": "/about", "label": "About" },
+    { "href": "/builders", "label": "Defense Builders" },
+    { "href": "/wingman", "label": "Wingman" },
+    { "href": "/guild", "label": "Guild" },
+    { "href": "/programs/the-combine", "label": "The Combine" }
+  ],
+  "platformLinks": [
+    { "href": "/opportunities", "label": "Opportunities" },
+    { "href": "/status", "label": "Status" },
+    { "href": "/briefs", "label": "Briefs" },
+    { "href": "/knowledge", "label": "Knowledge" },
+    { "href": "/learn", "label": "Learn" },
+    { "href": "https://docs.mergecombinator.com", "label": "Docs" }
+  ],
+  "footerColumns": [
+    {
+      "heading": "Platform",
+      "links": [
+        { "href": "/builders", "label": "Defense Builders" },
+        { "href": "/wingman", "label": "Wingman" },
+        { "href": "/guild", "label": "Guild" },
+        { "href": "/programs/the-combine", "label": "The Combine" },
+        { "href": "/opportunities", "label": "Opportunities" },
+        { "href": "/briefs", "label": "Briefs" }
+      ]
+    },
+    {
+      "heading": "Company",
+      "links": [
+        { "href": "/#hero", "label": "About" },
+        { "href": "/access", "label": "Contact" },
+        { "href": "/builders", "label": "Careers" }
+      ]
+    },
+    {
+      "heading": "Resources",
+      "links": [
+        { "href": "/blog", "label": "Blog" },
+        { "href": "/portfolio", "label": "Case Studies" },
+        { "href": "/knowledge", "label": "Knowledge" },
+        { "href": "/learn", "label": "Learn" },
+        { "href": "https://docs.mergecombinator.com", "label": "Docs" }
+      ]
+    },
+    {
+      "heading": "Legal",
+      "links": [
+        { "href": "/privacy", "label": "Privacy Policy" },
+        { "href": "/terms", "label": "Terms of Service" },
+        { "href": "/security", "label": "Security" }
+      ]
+    }
+  ]
+}
