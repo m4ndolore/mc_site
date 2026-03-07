@@ -102,8 +102,8 @@ From analysis of production database:
 ### Admin User
 ```javascript
 {
-  email: "gus@mergecombinator.com",
-  name: "Paul \"Gu$\" Garcia",
+  email: "example@example.com",
+  name: "Example User",
   status: "free",
   labels: ["Coach", "Alumni", "Staff", "Admin", "Trusted", "restricted"],
   note: null
@@ -113,8 +113,8 @@ From analysis of production database:
 ### Typical Member
 ```javascript
 {
-  email: "drclbair@gmail.com",
-  name: "Dr. Catherine Bair",
+  email: "example@example.com",
+  name: "Example User",
   status: "free",
   labels: ["Coach", "Alumni", "Trusted"],
   note: null
@@ -124,8 +124,8 @@ From analysis of production database:
 ### Founder
 ```javascript
 {
-  email: "james@sheridantech.io",
-  name: "James Sheridan",
+  email: "example@example.com",
+  name: "Example User",
   status: "free",
   labels: ["founder", "Industry"],
   note: null
@@ -135,8 +135,8 @@ From analysis of production database:
 ### Recent Sign-up
 ```javascript
 {
-  email: "nomar116@gmail.com",
-  name: "PAUL A Garcia",
+  email: "example@example.com",
+  name: "Example User",
   status: "free",
   labels: ["guest"],
   note: "Auto-approved: 2025-12-12T03:59:53.684Z"

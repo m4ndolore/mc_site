@@ -60,8 +60,8 @@ BQ_TABLE: companies
 OIDC_ISSUER_URL: https://via.mergecombinator.com
 
 # Admin Configuration
-ADMIN_EMAIL: gus@mergecombinator.com
-ADMIN_EMAILS: staff@mergecombinator.com
+ADMIN_EMAIL: accounts@mergecombinator.com
+ADMIN_EMAILS: accounts@mergecombinator.com,staff@mergecombinator.com
 ADMIN_TIERS: admin,owner
 ADMIN_LABELS: admin,owner
 
