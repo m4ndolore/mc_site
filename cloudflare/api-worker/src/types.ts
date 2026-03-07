@@ -18,6 +18,10 @@ export interface Env {
   // Turnstile
   TURNSTILE_SECRET_KEY: string
 
+  // Email (OTP)
+  OTP_FROM_EMAIL?: string
+  RESEND_API_KEY?: string
+
   // Origins
   MC_PUBLIC_URL: string
   VIA_ISSUER_URL: string
