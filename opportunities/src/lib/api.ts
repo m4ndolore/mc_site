@@ -1,6 +1,7 @@
 import type {
   OpportunityListResponse,
   OpportunityDetailResponse,
+  OutlookResponse,
 } from "../types/opportunity";
 
 // In dev, Vite proxies /api to the production worker (avoids CORS).
@@ -41,5 +42,11 @@ export async function fetchOpportunity(
 ): Promise<OpportunityDetailResponse> {
   const response = await fetch(`${API_BASE}/api/opportunities/${id}`);
   if (!response.ok) throw new Error("Opportunity not found");
+  return response.json();
+}
+
+export async function fetchOutlookEvents(): Promise<OutlookResponse> {
+  const response = await fetch(`${API_BASE}/api/outlook`);
+  if (!response.ok) throw new Error("Failed to fetch events");
   return response.json();
 }

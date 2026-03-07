@@ -46,7 +46,7 @@ function OpportunityCard({
         .opp-card {
           background-color: var(--mc-bg-secondary);
           border: 1px solid var(--mc-border);
-          border-radius: 0.5rem;
+          border-radius: 2px;
           padding: 1.25rem;
           cursor: pointer;
           transition: border-color 0.2s ease, transform 0.15s ease;
@@ -76,7 +76,7 @@ function OpportunityCard({
           color: var(--mc-text-muted);
           background-color: var(--mc-bg-tertiary);
           padding: 0.125rem 0.5rem;
-          border-radius: 9999px;
+          border-radius: 2px;
         }
         .opp-card__title {
           font-size: 1rem;
