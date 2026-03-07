@@ -849,6 +849,44 @@ function WelcomeBack({ onNewUser }) {
   );
 }
 
+// ─── MOBILE ACTION BAR ───────────────────────────────────────────────────────
+function MobileActionBar({ step, state, onAction, onBack }) {
+  // Only show for steps 1-4 (active form steps)
+  if (typeof step !== "number" || step < 1 || step > 4) return null;
+
+  let label, disabled, backLabel;
+
+  if (step === 4 && state.otpSent) {
+    label = state.otpVerifying ? "Verifying\u2026" : "Verify & Create Account";
+    disabled = state.otpCode.length !== 6 || state.otpVerifying;
+    backLabel = "Change email";
+  } else if (step === 4) {
+    label = state.otpSending ? "Sending code\u2026" : "Send verification code";
+    disabled = !state.formData.name.trim() || !state.formData.email.trim() || state.otpSending;
+    backLabel = "Back";
+  } else {
+    label = "Continue";
+    disabled = step === 1 ? state.areas.length === 0
+      : step === 2 ? state.values.length === 0
+      : step === 3 ? !state.journey
+      : false;
+    backLabel = step > 1 ? "Back" : null;
+  }
+
+  return (
+    <div class="onboarding__mobile-bar">
+      {backLabel && (
+        <button class="onboarding__mobile-bar-back" onClick={onBack}>
+          &larr; {backLabel}
+        </button>
+      )}
+      <button class="onboarding__mobile-bar-action" disabled={disabled} onClick={onAction}>
+        {label} &rarr;
+      </button>
+    </div>
+  );
+}
+
 // ─── APP ──────────────────────────────────────────────────────────────────────
 export default function MCOnboarding() {
   const [state, dispatch] = useReducer(reducer, initialState, (init) => {
@@ -1005,6 +1043,22 @@ export default function MCOnboarding() {
     }
   }, [state]);
 
+  // Mobile action bar handler — dispatches the right action for the current step
+  const handleMobileAction = useCallback(() => {
+    if (step === 1 && state.areas.length > 0) goTo(2);
+    else if (step === 2 && state.values.length > 0) goTo(3);
+    else if (step === 3 && state.journey) goTo(4);
+    else if (step === 4 && state.otpSent) handleVerifyOtp();
+    else if (step === 4) handleSendOtp();
+  }, [step, state, goTo, handleSendOtp, handleVerifyOtp]);
+
+  const handleMobileBack = useCallback(() => {
+    if (step === 4 && state.otpSent) dispatch({ type: "OTP_RESET" });
+    else if (step === 2) goTo(1);
+    else if (step === 3) goTo(2);
+    else if (step === 4) goTo(3);
+  }, [step, state, goTo, dispatch]);
+
   return (
     <div class="onboarding">
       {/* Screen reader live region */}
@@ -1042,6 +1096,8 @@ export default function MCOnboarding() {
           )}
         </div>
       </div>
+
+      <MobileActionBar step={step} state={state} onAction={handleMobileAction} onBack={handleMobileBack} />
     </div>
   );
 }
