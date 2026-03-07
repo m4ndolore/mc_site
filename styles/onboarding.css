@@ -114,11 +114,18 @@
 
 .onboarding__wordmark-text {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--ob-text-sub);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 14px;
+  color: var(--ob-off-white);
+  letter-spacing: 0.02em;
+}
+
+.onboarding__wordmark-merge {
+  font-style: italic;
+  font-weight: 300;
+}
+
+.onboarding__wordmark-combinator {
+  font-weight: 700;
 }
 
 /* Hero animated content */
