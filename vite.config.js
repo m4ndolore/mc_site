@@ -44,6 +44,7 @@ export default defineConfig({
         guild: resolve(__dirname, 'guild.html'),
         briefs: resolve(__dirname, 'briefs.html'),
         about: resolve(__dirname, 'about.html'),
+        'ai-overview': resolve(__dirname, 'ai/overview.html'),
         '404': resolve(__dirname, '404.html'),
         // Programs
         'programs-index': resolve(__dirname, 'programs/index.html'),

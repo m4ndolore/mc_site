@@ -14,6 +14,7 @@ export interface Opportunity {
   focusAreas?: string[];
   keywords?: string[];
   source: "sbir" | "sam" | "grants" | "diu" | "afwerx";
+  url?: string;
   postedDate: string;
   responseDeadline?: string;
   estimatedValue?: {
@@ -36,4 +37,28 @@ export interface OpportunityListResponse {
 export interface OpportunityDetailResponse {
   success: boolean;
   data: Opportunity;
+}
+
+export interface EventLocation {
+  city: string;
+  date: string;
+  register: string;
+}
+
+export interface OutlookEvent {
+  id: string;
+  title: string;
+  organizer: string;
+  description: string;
+  dates: { start: string; end: string };
+  locations: EventLocation[];
+  tags: string[];
+  links: { label: string; url: string }[];
+  priority: "high" | "normal";
+  type: string;
+}
+
+export interface OutlookResponse {
+  month: string;
+  events: OutlookEvent[];
 }

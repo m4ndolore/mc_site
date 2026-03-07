@@ -17,6 +17,7 @@ app.use(
                                     "https://www.mergecombinator.com",
                                     "https://mc-opportunities.pages.dev",
                                     "http://localhost:5174",
+                                    "http://localhost:3000",
                                   ],
                       allowMethods: ["GET", "OPTIONS"],
                       allowHeaders: ["Content-Type"],
@@ -89,6 +90,7 @@ const TTL = {
           diu: 60 * 60,
           colosseum: 30 * 60,
           sam: 60 * 60,
+          intel: 30 * 60,
 };
 
 async function cachedFetch(
@@ -396,20 +398,27 @@ app.get("/api/opportunities", async (c) => {
                                                   ]);
                                     if (pageResp.ok) {
                                                     const data = (await pageResp.json()) as Record<string, unknown>;
-                                                    const content = Array.isArray(data.content) ? data.content : [];
+                                                    // SBIR API migrated from { content, totalElements } to { data, total }
+                                                    const content = Array.isArray(data.content) ? data.content
+                                                      : Array.isArray(data.data) ? data.data as unknown[]
+                                                      : [];
                                                     content.forEach((item: unknown) => {
                                                                       (item as Record<string, unknown>).source = "sbir";
                                                     });
                                                     allResults.push(...content);
-                                    }
-                                    if (countResp.ok) {
-                                                    const countData = (await countResp.json()) as Record<string, unknown>;
-                                                    sbirTotal =
-                                                                      typeof countData.totalElements === "number"
-                                                        ? countData.totalElements
-                                                                        : typeof countData.total === "number"
-                                                        ? countData.total
-                                                                        : 0;
+                                                    // Only trust the count if the data fetch also succeeded,
+                                                    // otherwise we report phantom totals with no actual items.
+                                                    if (countResp.ok) {
+                                                                      const countData = (await countResp.json()) as Record<string, unknown>;
+                                                                      sbirTotal =
+                                                                                        typeof countData.totalElements === "number"
+                                                                          ? countData.totalElements
+                                                                                          : typeof countData.total === "number"
+                                                                          ? countData.total
+                                                                                          : 0;
+                                                    } else {
+                                                                      sbirTotal = content.length;
+                                                    }
                                     }
                       } catch {
                                     /* skip */
@@ -423,12 +432,9 @@ app.get("/api/opportunities", async (c) => {
                                     TTL.darpa
                                   );
                       if (xml) {
-                                    const filtered = parseDarpaRss(xml).filter((item) => {
-                                                    const i = item as Record<string, unknown>;
-                                                    return matchesKeywords(`${i.topicTitle} ${i.description}`);
-                                    });
-                                    darpaTotal = filtered.length;
-                                    allResults.push(...filtered);
+                                    const darpaItems = parseDarpaRss(xml);
+                                    darpaTotal = darpaItems.length;
+                                    allResults.push(...darpaItems);
                       }
           }
 
@@ -439,12 +445,9 @@ app.get("/api/opportunities", async (c) => {
                                     TTL.diu
                                   );
                       if (html) {
-                                    const filtered = parseDiuHtml(html).filter((item) => {
-                                                    const i = item as Record<string, unknown>;
-                                                    return matchesKeywords(`${i.topicTitle} ${i.description}`);
-                                    });
-                                    diuTotal = filtered.length;
-                                    allResults.push(...filtered);
+                                    const diuItems = parseDiuHtml(html);
+                                    diuTotal = diuItems.length;
+                                    allResults.push(...diuItems);
                       }
           }
 
@@ -455,11 +458,9 @@ app.get("/api/opportunities", async (c) => {
                                     TTL.colosseum
                                   );
                       if (html) {
-                                    const filtered = parseColosseumHtml(html).filter((ch) =>
-                                                    matchesKeywords(`${ch.title} ${ch.tags} ${ch.desc}`)
-                                                                                           );
-                                    colosseumTotal = filtered.length;
-                                    filtered.forEach((ch) => {
+                                    const colosseumItems = parseColosseumHtml(html);
+                                    colosseumTotal = colosseumItems.length;
+                                    colosseumItems.forEach((ch) => {
                                                     allResults.push({
                                                                       source: "colosseum",
                                                                       topicCode: ch.id,
@@ -570,6 +571,78 @@ app.get("/api/opportunities/:id", async (c) => {
                                     500
                                   );
           }
+});
+
+// ─── ExecutiveGov RSS parser ─────────────────────────────────────────────────
+function parseExecutiveGovRss(xml: string): unknown[] {
+          const articles: unknown[] = [];
+          const itemRegex = /<item>([\s\S]*?)<\/item>/g;
+          let match;
+          while ((match = itemRegex.exec(xml)) !== null) {
+                      const block = match[1];
+                      // Handle CDATA blocks: <title><![CDATA[...]]></title>
+                      const titleMatch = block.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/);
+                      const title = titleMatch?.[1]?.trim() ?? "";
+                      const descMatch = block.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/);
+                      const rawDesc = descMatch?.[1] ?? "";
+                      const excerpt = rawDesc
+                        .replace(/<[^>]+>/g, "")
+                        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+                        .replace(/&nbsp;/g, " ").replace(/&#\d+;/g, "")
+                        .trim()
+                        .slice(0, 300);
+                      const link = block.match(/<link>([^<]*)<\/link>/)?.[1]?.trim() ?? "";
+                      const pubDate = block.match(/<pubDate>([^<]*)<\/pubDate>/)?.[1]?.trim() ?? "";
+                      const categories: string[] = [];
+                      const catRegex = /<category>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/category>/g;
+                      let catMatch;
+                      while ((catMatch = catRegex.exec(block)) !== null) {
+                                    const cat = catMatch[1].trim();
+                                    if (cat && categories.length < 4) categories.push(cat);
+                      }
+                      if (title) {
+                                    articles.push({
+                                                    id: `eg-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}`,
+                                                    source: "executivegov",
+                                                    title,
+                                                    excerpt,
+                                                    url: link,
+                                                    date: pubDate ? new Date(pubDate).toISOString().split("T")[0] : "",
+                                                    tags: categories,
+                                    });
+                      }
+          }
+          return articles;
+}
+
+// ─── Outlook events endpoint ────────────────────────────────────────────────
+app.get("/api/outlook", async (c) => {
+  const json = await cachedFetch(
+    "https://mergecombinator.com/data/outlook.json",
+    TTL.darpa // 1 hour cache
+  );
+  if (!json) {
+    return c.json({ month: "", events: [] });
+  }
+  try {
+    const data = JSON.parse(json);
+    return c.json(data);
+  } catch {
+    return c.json({ month: "", events: [] });
+  }
+});
+
+// ─── Intel feed endpoint ─────────────────────────────────────────────────────
+app.get("/api/intel/feed", async (c) => {
+          const xml = await cachedFetch(
+                      "https://executivegov.com/feed/",
+                      TTL.intel
+                    );
+          if (!xml) {
+                      return c.json({ articles: [] });
+          }
+          const articles = parseExecutiveGovRss(xml);
+          return c.json({ articles });
 });
 
 export default app;

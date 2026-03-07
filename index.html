@@ -62,7 +62,12 @@
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Merge Combinator",
-    "url": "https://mergecombinator.com"
+    "url": "https://mergecombinator.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://mergecombinator.com/knowledge?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
   }
   </script>
 </head>
@@ -147,6 +152,11 @@
             <span class="hero__stat-label">Problem Sets</span>
           </div>
         </div>
+        <p class="reveal" style="margin-top: 16px; color: rgba(255,255,255,.72); font-size: 14px;">
+          Start with <a href="/opportunities" style="color: var(--blue-light);">defense opportunities</a>,
+          explore <a href="/knowledge/sbir" style="color: var(--blue-light);">SBIR/STTR guidance</a>,
+          or review <a href="/ai/overview" style="color: var(--blue-light);">canonical AI facts</a>.
+        </p>
       </div>
 
       <div class="hero__visual">
@@ -1090,6 +1100,7 @@
               <li><a href="/blog">Blog</a></li>
               <li><a href="/portfolio">Case Studies</a></li>
               <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="/ai/overview">AI Overview</a></li>
               <li><a href="https://docs.mergecombinator.com">Docs</a></li>
             </ul>
           </div>

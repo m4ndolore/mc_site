@@ -1,0 +1,174 @@
+{
+  "sources": [
+    {
+      "id": "executivegov",
+      "name": "ExecutiveGov",
+      "color": "#3b82f6",
+      "type": "rss",
+      "url": "https://executivegov.com"
+    },
+    {
+      "id": "breakingdefense",
+      "name": "Breaking Defense",
+      "color": "#ef4444",
+      "type": "rss",
+      "url": "https://breakingdefense.com"
+    },
+    {
+      "id": "defenseone",
+      "name": "Defense One",
+      "color": "#f59e0b",
+      "type": "rss",
+      "url": "https://www.defenseone.com"
+    },
+    {
+      "id": "curated",
+      "name": "MC Curated",
+      "color": "#8b5cf6",
+      "type": "curated",
+      "url": "https://mergecombinator.com/knowledge"
+    }
+  ],
+  "articles": [
+    {
+      "id": "pentagon-30000-one-way-drones",
+      "source": "breakingdefense",
+      "title": "Pentagon to Order 30,000 One-Way Drones in 'Next Few Days'",
+      "excerpt": "The DoD announced selection of winners from its Gauntlet unmanned exercise competition, with plans to rapidly procure 30,000 one-way attack drones for deployment in contested environments.",
+      "url": "https://breakingdefense.com/2026/03/drone-dominance-pentagon-to-order-30000-one-way-drones-in-next-few-days/",
+      "date": "2026-03-06",
+      "tags": ["drones", "procurement", "autonomy"],
+      "priority": "high"
+    },
+    {
+      "id": "army-project-aria-ai",
+      "source": "executivegov",
+      "title": "Army Launches Project ARIA to Accelerate AI Adoption",
+      "excerpt": "The U.S. Army has partnered with technology firms to develop AI capabilities for military operations under the new Project ARIA initiative, targeting faster integration of artificial intelligence across service branches.",
+      "url": "https://www.executivegov.com/articles/army-project-aria-ai-adoption",
+      "date": "2026-03-06",
+      "tags": ["AI", "Army", "innovation"],
+      "priority": "high"
+    },
+    {
+      "id": "sbir-reauthorization-ernst-markey",
+      "source": "curated",
+      "title": "SBIR/STTR Programs Reauthorized After Five-Month Funding Freeze",
+      "excerpt": "Senators Ernst and Markey reached a bipartisan deal to reauthorize SBIR and STTR programs for five years, ending a freeze that halted new solicitations across 11 federal agencies. The compromise establishes a new Strategic Breakthrough Initiative to help small companies transition from development to production.",
+      "url": "https://grantedai.com/blog/sbir-sttr-reauthorization-deal-ernst-markey-2026",
+      "date": "2026-02-26",
+      "tags": ["SBIR", "STTR", "small business", "legislation"],
+      "priority": "high"
+    },
+    {
+      "id": "pentagon-chief-data-officer-ai",
+      "source": "breakingdefense",
+      "title": "Pentagon's New Chief Data Officer to Push 'AI Capabilities to Warfighters'",
+      "excerpt": "The Pentagon has filled key data and cybersecurity leadership positions to accelerate AI integration for military operations, with the new CDO focused on delivering actionable AI tools to frontline forces.",
+      "url": "https://breakingdefense.com/2026/03/pentagons-new-chief-data-officer-to-push-ai-capabilities-to-warfighters/",
+      "date": "2026-03-06",
+      "tags": ["AI", "DoD", "leadership"],
+      "priority": "normal"
+    },
+    {
+      "id": "diu-100m-drone-swarm-orchestrator",
+      "source": "breakingdefense",
+      "title": "DIU Offers $100M in Prizes for Voice-Controlled AI Drone Swarm Orchestrator",
+      "excerpt": "The Defense Innovation Unit is offering up to $100 million for companies developing software that allows a single servicemember to command entire formations of unmanned vehicles through plain English voice or text commands.",
+      "url": "https://breakingdefense.com/2026/01/diu-offers-100m-in-prizes-for-voice-controlled-ai-enabled-drone-swarm-orchestrator/",
+      "date": "2026-01-15",
+      "tags": ["DIU", "autonomy", "AI", "drones", "competition"],
+      "priority": "high"
+    },
+    {
+      "id": "diu-navy-long-range-maritime-drones",
+      "source": "breakingdefense",
+      "title": "DIU, Navy Seek Long-Range Drones for Maritime Strikes",
+      "excerpt": "The Defense Innovation Unit issued a solicitation for unmanned systems capable of carrying 1,000-pound munitions with a 600-nautical-mile combat radius, designed to operate from ships with minimal infrastructure including destroyers.",
+      "url": "https://breakingdefense.com/2026/02/diu-navy-seek-long-range-drones-for-maritime-strikes/",
+      "date": "2026-02-11",
+      "tags": ["DIU", "Navy", "drones", "maritime"],
+      "priority": "normal"
+    },
+    {
+      "id": "defense-quadruple-weapons-production",
+      "source": "defenseone",
+      "title": "Missile Makers Agree to 'Quadruple' Production, Trump Says",
+      "excerpt": "Defense manufacturers pledged to dramatically increase weapons output following sustained White House pressure to accelerate production timelines for advanced munitions systems.",
+      "url": "https://www.defenseone.com/business/2026/03/missile-makers-agree-quadruple-production-trump-says/411966/",
+      "date": "2026-03-06",
+      "tags": ["procurement", "manufacturing", "missiles"],
+      "priority": "normal"
+    },
+    {
+      "id": "istari-dow-ota-mission-engineering",
+      "source": "executivegov",
+      "title": "Istari Wins DoW OTA for Mission Engineering Automation Testbed",
+      "excerpt": "The Department of War awarded Istari a prototype Other Transaction Authority agreement for the Mission Engineering Automation Testbed (MEAT) platform, advancing digital engineering capabilities for defense acquisition.",
+      "url": "https://www.executivegov.com/articles/istari-dow-ota-meat-mission-engineering-testbed",
+      "date": "2026-03-04",
+      "tags": ["OTA", "digital engineering", "acquisition"],
+      "priority": "normal"
+    },
+    {
+      "id": "doe-quantum-computing-qc3",
+      "source": "executivegov",
+      "title": "DOE Funds 10 Quantum Computing Projects Under QC3 Program",
+      "excerpt": "ARPA-E awarded $37 million to quantum computing initiatives including Boeing and PsiQuantum, advancing quantum capabilities with potential defense and national security applications.",
+      "url": "https://www.executivegov.com/articles/doe-arpa-e-37m-qc3-funding",
+      "date": "2026-03-06",
+      "tags": ["quantum", "ARPA-E", "innovation"],
+      "priority": "normal"
+    },
+    {
+      "id": "pentagon-era-affordable-mass",
+      "source": "defenseone",
+      "title": "The Pentagon Moves Into the Era of Affordable Mass",
+      "excerpt": "Military leaders are exploring cost-effective mass production strategies to counter enemy drone swarms that are rapidly depleting expensive air defense interceptors, signaling a strategic shift toward attritable systems.",
+      "url": "https://www.defenseone.com/ideas/2026/03/pentagon-moves-era-affordable-mass/411927/",
+      "date": "2026-03-05",
+      "tags": ["strategy", "drones", "C-UAS", "acquisition"],
+      "priority": "normal"
+    },
+    {
+      "id": "trump-cyber-strategy-offensive",
+      "source": "defenseone",
+      "title": "Trump's New Cyber Strategy Calls for Tougher Responses to Threats",
+      "excerpt": "The administration released a condensed cybersecurity strategy emphasizing more aggressive counteroffensive measures against adversary cyber operations, marking a significant shift from prior defensive postures.",
+      "url": "https://www.defenseone.com/policy/2026/03/trumps-new-cyber-strategy-details-more-offensive-response-cyber-threats/411965/",
+      "date": "2026-03-06",
+      "tags": ["cyber", "strategy", "policy"],
+      "priority": "normal"
+    },
+    {
+      "id": "germany-european-military-dominance",
+      "source": "breakingdefense",
+      "title": "Germany Reaches for European Conventional Military Dominance",
+      "excerpt": "Germany is accelerating defense spending to 150 billion euros annually by 2029, reversing decades of underinvestment and reshaping the European defense industrial base with implications for transatlantic partnerships.",
+      "url": "https://breakingdefense.com/2026/03/new-status-quo-germany-reaches-for-european-conventional-military-dominance/",
+      "date": "2026-03-06",
+      "tags": ["international", "Europe", "defense spending"],
+      "priority": "normal"
+    },
+    {
+      "id": "navy-slam2er-consortium",
+      "source": "executivegov",
+      "title": "Navy Seeking Industry Partner to Manage SLAM2ER Technology Consortium",
+      "excerpt": "Naval Surface Warfare Center Panama City Division issued an RFI for a consortium management firm to oversee the SLAM2ER advanced weapons technology consortium, expanding industry collaboration on naval strike capabilities.",
+      "url": "https://www.executivegov.com/articles/navy-nswc-pcd-rfi-slam2er-consortium-manager",
+      "date": "2026-03-05",
+      "tags": ["Navy", "consortium", "weapons"],
+      "priority": "normal"
+    },
+    {
+      "id": "ai-changing-adversary-behavior",
+      "source": "breakingdefense",
+      "title": "AI 'Fundamentally Changing' Adversary Behavior, Leading to Force Generation Reforms",
+      "excerpt": "Pentagon officials acknowledged that artificial intelligence is reshaping how adversaries operate on the battlefield, requiring revised force structure planning and accelerated adoption of AI-enabled defense capabilities.",
+      "url": "https://breakingdefense.com/2026/02/ai-fundamentally-changing-adversary-behavior-leading-to-force-generation-reforms-official/",
+      "date": "2026-02-28",
+      "tags": ["AI", "strategy", "force structure"],
+      "priority": "normal"
+    }
+  ]
+}

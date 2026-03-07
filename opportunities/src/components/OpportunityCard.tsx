@@ -5,10 +5,32 @@ interface OpportunityCardProps {
   onClick: (opportunity: Opportunity) => void;
 }
 
-function truncate(text: string | undefined, maxLength: number): string {
+function stripHtml(text: string | undefined): string {
   if (!text) return "";
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).trimEnd() + "...";
+  return text
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeTopicCode(topicCode: string | undefined): string {
+  if (!topicCode) return "";
+  const code = topicCode.trim();
+  const hasLetters = /[A-Za-z]/.test(code);
+  const isReasonableLength = code.length <= 36;
+  if (!hasLetters || !isReasonableLength) return "";
+  return code;
+}
+
+function truncate(text: string | undefined, maxLength: number): string {
+  const normalized = stripHtml(text);
+  if (!normalized) return "";
+  if (normalized.length <= maxLength) return normalized;
+  return normalized.slice(0, maxLength).trimEnd() + "...";
 }
 
 function formatDate(dateString: string | undefined): string {
@@ -28,6 +50,8 @@ function OpportunityCard({
   opportunity,
   onClick,
 }: OpportunityCardProps): React.JSX.Element {
+  const sourceLabel = opportunity.source.toUpperCase();
+  const codeLabel = normalizeTopicCode(opportunity.topicCode);
   const isDeadlineSoon = (): boolean => {
     if (!opportunity.closeDate && !opportunity.responseDeadline) return false;
     const deadline = opportunity.responseDeadline ?? opportunity.closeDate;
@@ -46,7 +70,7 @@ function OpportunityCard({
         .opp-card {
           background-color: var(--mc-bg-secondary);
           border: 1px solid var(--mc-border);
-          border-radius: 0.5rem;
+          border-radius: 2px;
           padding: 1.25rem;
           cursor: pointer;
           transition: border-color 0.2s ease, transform 0.15s ease;
@@ -71,12 +95,18 @@ function OpportunityCard({
           color: var(--mc-accent);
           letter-spacing: 0.02em;
         }
+        .opp-card__source {
+          font-size: 0.75rem;
+          color: var(--mc-text-muted);
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
         .opp-card__component {
           font-size: 0.75rem;
           color: var(--mc-text-muted);
           background-color: var(--mc-bg-tertiary);
           padding: 0.125rem 0.5rem;
-          border-radius: 9999px;
+          border-radius: 2px;
         }
         .opp-card__title {
           font-size: 1rem;
@@ -112,6 +142,14 @@ function OpportunityCard({
           color: var(--mc-warning);
           font-weight: 500;
         }
+        .opp-card__detail-link {
+          color: var(--mc-accent);
+          font-size: 0.75rem;
+          font-weight: 500;
+          text-decoration: underline;
+          text-underline-offset: 2px;
+          margin-left: 0.5rem;
+        }
       `}</style>
       <article
         className="opp-card"
@@ -126,9 +164,8 @@ function OpportunityCard({
         }}
       >
         <div className="opp-card__meta">
-          <span className="opp-card__topic-code">
-            {opportunity.topicCode}
-          </span>
+          <span className="opp-card__source">{sourceLabel}</span>
+          {codeLabel && <span className="opp-card__topic-code">{codeLabel}</span>}
           <span className="opp-card__component">{opportunity.component}</span>
         </div>
 
@@ -139,14 +176,29 @@ function OpportunityCard({
         </p>
 
         <div className="opp-card__footer">
-          <span className="opp-card__status">{opportunity.topicStatus}</span>
-          {deadline && (
-            <span
-              className={`opp-card__deadline${isDeadlineSoon() ? " opp-card__deadline--soon" : ""}`}
-            >
-              Due: {formatDate(deadline)}
-            </span>
-          )}
+          <div>
+            <span className="opp-card__status">{opportunity.topicStatus}</span>
+            {opportunity.url && (
+              <a
+                href={opportunity.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opp-card__detail-link"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Source
+              </a>
+            )}
+          </div>
+          <div>
+            {deadline && (
+              <span
+                className={`opp-card__deadline${isDeadlineSoon() ? " opp-card__deadline--soon" : ""}`}
+              >
+                Due: {formatDate(deadline)}
+              </span>
+            )}
+          </div>
         </div>
       </article>
     </>
