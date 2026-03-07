@@ -992,8 +992,87 @@
 .onboarding ::-webkit-scrollbar { width: 4px; }
 .onboarding ::-webkit-scrollbar-thumb { background: var(--ob-slate); border-radius: 4px; }
 
+/* ─── Mobile Action Bar ──────────────────── */
+.onboarding__mobile-bar {
+  display: none;
+}
+
 /* ─── Mobile Responsive ───────────────────── */
 @media (max-width: 968px) {
+  /* Show mobile action bar */
+  .onboarding__mobile-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 12px 20px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    background: var(--ob-near-black);
+    border-top: 1px solid var(--ob-border);
+    gap: 10px;
+    align-items: center;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .onboarding__mobile-bar-action {
+    flex: 1;
+    padding: 18px 20px;
+    background: var(--ob-blue);
+    color: var(--ob-white);
+    border: none;
+    border-radius: 5px;
+    font-family: var(--ob-font);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 56px;
+    transition: filter 0.15s;
+  }
+
+  .onboarding__mobile-bar-action:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+
+  .onboarding__mobile-bar-action:disabled {
+    background: var(--ob-slate);
+    color: var(--ob-text-muted);
+    cursor: not-allowed;
+  }
+
+  .onboarding__mobile-bar-back {
+    padding: 18px 14px;
+    background: none;
+    border: 1px solid var(--ob-border);
+    border-radius: 5px;
+    color: var(--ob-text-sub);
+    font-family: var(--ob-font);
+    font-size: 14px;
+    cursor: pointer;
+    min-height: 56px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .onboarding__mobile-bar-back:hover {
+    border-color: var(--ob-border-hover);
+  }
+
+  /* Hide inline nav buttons on mobile — the bottom bar replaces them */
+  .onboarding__nav,
+  .onboarding__step > .onboarding__btn--primary-full,
+  .onboarding__step > .onboarding__btn--text,
+  .onboarding__step-signin-hint,
+  .onboarding__otp-actions {
+    display: none;
+  }
+
+  /* Add bottom padding to form so content isn't hidden behind bar */
+  .onboarding__form {
+    padding-bottom: 88px;
+  }
   .onboarding {
     flex-direction: column;
   }
