@@ -1,12 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link, useParams } from "react-router-dom";
 import Layout from "./components/Layout";
 import OpportunityList from "./components/OpportunityList";
 import TabBar from "./components/TabBar";
 import EventsPanel from "./components/EventsPanel";
 import RadarPanel from "./components/RadarPanel";
 import type { Opportunity, OutlookEvent } from "./types/opportunity";
-import { fetchOutlookEvents } from "./lib/api";
+import { fetchOutlookEvents, fetchOpportunity } from "./lib/api";
 
 function formatDate(dateString: string | undefined): string {
   if (!dateString) return "N/A";
@@ -168,13 +168,20 @@ function OpportunityModal({
           padding: 1rem 1.5rem 1.5rem;
           border-top: 1px solid var(--mc-border);
           display: flex;
-          justify-content: flex-end;
+          justify-content: space-between;
+          align-items: center;
         }
         .modal-footer-source {
           font-size: 0.75rem;
           color: var(--mc-text-muted);
           text-transform: uppercase;
           letter-spacing: 0.05em;
+        }
+        .modal-footer-link {
+          font-size: 0.75rem;
+          color: var(--mc-accent);
+          text-decoration: underline;
+          text-underline-offset: 2px;
         }
       `}</style>
       <div
@@ -296,6 +303,12 @@ function OpportunityModal({
           </div>
 
           <div className="modal-footer">
+            <a
+              className="modal-footer-link"
+              href={`/opportunities/${opportunity.id || opportunity.topicId}`}
+            >
+              Permalink
+            </a>
             <span className="modal-footer-source">
               Source: {opportunity.source}
             </span>
@@ -332,6 +345,18 @@ function upsertCanonical(href: string): void {
     document.head.appendChild(node);
   }
   node.setAttribute("href", href);
+}
+
+function upsertJsonLd(id: string, data: Record<string, unknown>): void {
+  const selector = `script[data-jsonld-id="${id}"]`;
+  let node = document.head.querySelector(selector) as HTMLScriptElement | null;
+  if (!node) {
+    node = document.createElement("script");
+    node.type = "application/ld+json";
+    node.setAttribute("data-jsonld-id", id);
+    document.head.appendChild(node);
+  }
+  node.textContent = JSON.stringify(data);
 }
 
 function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.Element {
@@ -474,6 +499,176 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
   );
 }
 
+function OpportunityDetailPage(): React.JSX.Element {
+  const { opportunityId = "" } = useParams();
+  const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    const run = async (): Promise<void> => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetchOpportunity(opportunityId);
+        if (!isMounted) return;
+        setOpportunity(response.data);
+      } catch (err) {
+        if (!isMounted) return;
+        const message =
+          err instanceof Error ? err.message : "Failed to load opportunity";
+        setError(message);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    void run();
+    return () => {
+      isMounted = false;
+    };
+  }, [opportunityId]);
+
+  useEffect(() => {
+    const canonical = `https://mergecombinator.com/opportunities/${opportunityId}`;
+    if (loading) {
+      document.title = "Opportunity Detail | Merge Combinator";
+      upsertMeta("description", "Opportunity details for defense builders.");
+      upsertCanonical(canonical);
+      return;
+    }
+    if (!opportunity) {
+      document.title = "Opportunity Not Found | Merge Combinator";
+      upsertMeta(
+        "description",
+        "This opportunity was not found or is no longer available.",
+      );
+      upsertCanonical(canonical);
+      return;
+    }
+
+    const title = `${opportunity.topicTitle} | Opportunity | Merge Combinator`;
+    const description = (
+      opportunity.description || "Opportunity details for defense builders."
+    ).slice(0, 300);
+    document.title = title;
+    upsertMeta("description", description);
+    upsertMeta("og:title", title, true);
+    upsertMeta("og:description", description, true);
+    upsertMeta("og:url", canonical, true);
+    upsertMeta("twitter:title", title);
+    upsertMeta("twitter:description", description);
+    upsertCanonical(canonical);
+
+    const dueDate = opportunity.responseDeadline ?? opportunity.closeDate;
+    upsertJsonLd("opportunity-detail", {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      name: opportunity.topicTitle,
+      url: canonical,
+      identifier: opportunity.topicCode || opportunity.id || opportunity.topicId,
+      description: opportunity.description,
+      datePublished: opportunity.postedDate,
+      expires: dueDate,
+      publisher: {
+        "@type": "Organization",
+        name: "Merge Combinator",
+        url: "https://mergecombinator.com",
+      },
+      about: [
+        "defense solicitations",
+        "SBIR",
+        "STTR",
+        opportunity.component,
+        opportunity.program,
+      ].filter(Boolean),
+      isBasedOn: opportunity.url || undefined,
+    });
+  }, [loading, opportunity, opportunityId]);
+
+  if (loading) {
+    return <p style={{ color: "var(--mc-text-muted)" }}>Loading opportunity...</p>;
+  }
+  if (error || !opportunity) {
+    return (
+      <div>
+        <h1 style={{ marginBottom: "0.5rem" }}>Opportunity Not Found</h1>
+        <p style={{ color: "var(--mc-text-muted)", marginBottom: "1rem" }}>
+          {error || "This opportunity could not be loaded."}
+        </p>
+        <Link to="/" style={{ color: "var(--mc-accent)" }}>
+          Back to opportunities
+        </Link>
+      </div>
+    );
+  }
+
+  const dueDate = opportunity.responseDeadline ?? opportunity.closeDate;
+  const sourceUrl = opportunity.url;
+
+  return (
+    <article style={{ maxWidth: "860px", margin: "0 auto" }}>
+      <p style={{ marginBottom: "0.75rem" }}>
+        <Link to="/" style={{ color: "var(--mc-accent)" }}>
+          ← Back to opportunities
+        </Link>
+      </p>
+      <h1 style={{ fontSize: "1.9rem", lineHeight: 1.3, marginBottom: "0.5rem" }}>
+        {opportunity.topicTitle}
+      </h1>
+      <p style={{ color: "var(--mc-text-muted)", marginBottom: "1.25rem" }}>
+        {opportunity.topicCode} • {opportunity.component} • {opportunity.program}
+      </p>
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          gap: "0.75rem",
+          marginBottom: "1.25rem",
+        }}
+      >
+        <div>
+          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Status</div>
+          <div>{opportunity.topicStatus}</div>
+        </div>
+        <div>
+          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Posted</div>
+          <div>{formatDate(opportunity.postedDate)}</div>
+        </div>
+        <div>
+          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Deadline</div>
+          <div>{formatDate(dueDate)}</div>
+        </div>
+      </div>
+
+      {sourceUrl && (
+        <p style={{ marginBottom: "1.25rem" }}>
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--mc-accent)" }}>
+            View primary source
+          </a>
+        </p>
+      )}
+
+      <section style={{ marginBottom: "1rem" }}>
+        <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>Description</h2>
+        <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.7 }}>
+          {opportunity.description || "No description provided."}
+        </p>
+      </section>
+
+      {opportunity.objective && (
+        <section style={{ marginBottom: "1rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>Objective</h2>
+          <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.7 }}>
+            {opportunity.objective}
+          </p>
+        </section>
+      )}
+    </article>
+  );
+}
+
 function App(): React.JSX.Element {
   return (
     <Routes>
@@ -481,6 +676,7 @@ function App(): React.JSX.Element {
         <Route path="/" element={<HomePage mode="all" />} />
         <Route path="/sbir" element={<HomePage mode="sbir" />} />
         <Route path="/sttr" element={<HomePage mode="sttr" />} />
+        <Route path="/:opportunityId" element={<OpportunityDetailPage />} />
       </Route>
     </Routes>
   );
