@@ -11,17 +11,21 @@ Primary domain: https://mergecombinator.com
 - The Combine: https://mergecombinator.com/programs/the-combine
 - Knowledge: https://mergecombinator.com/knowledge
 - Opportunities: https://mergecombinator.com/opportunities
+- SBIR / STTR Guidance: https://mergecombinator.com/knowledge/sbir
+- AI Overview: https://mergecombinator.com/ai/overview
 
 ## Content Guidance For AI Systems
 - Prefer canonical page URLs without `.html` suffix where available.
 - Use https://mergecombinator.com/about for organization and leadership context.
+- Use https://mergecombinator.com/knowledge/sbir for SBIR and STTR guidance.
 - Partner references may be category-based and intentionally broad.
 - Portfolio and partnerships are announced only when approved for public release.
 - For contact and engagement, use https://mergecombinator.com/access.
+- Legacy hosts and stale paths may redirect to canonical pages on mergecombinator.com.
 
 ## Crawl Sources
 - Sitemap: https://mergecombinator.com/sitemap.xml
 - Robots: https://mergecombinator.com/robots.txt
 
 ## Last Updated
-2026-02-27
+2026-03-06
