@@ -1,0 +1,56 @@
+{
+  "sources": [
+    {
+      "id": "executivegov",
+      "name": "ExecutiveGov",
+      "color": "#3b82f6",
+      "type": "rss",
+      "url": "https://executivegov.com"
+    },
+    {
+      "id": "curated",
+      "name": "MC Curated",
+      "color": "#8b5cf6",
+      "type": "curated",
+      "url": "https://mergecombinator.com/knowledge"
+    }
+  ],
+  "articles": [
+    {
+      "id": "dod-cjadc2-strategy-2026",
+      "source": "curated",
+      "title": "Pentagon Advances CJADC2 Network Integration Across Services",
+      "excerpt": "The Department of Defense is accelerating efforts to connect command and control systems across all military branches under the Combined Joint All-Domain Command and Control initiative, with new interoperability standards expected by mid-2026.",
+      "url": "https://www.defense.gov/News/Releases/Release/Article/3649053/",
+      "date": "2026-03-04",
+      "tags": ["C2", "interoperability", "DoD"]
+    },
+    {
+      "id": "diu-replicator-expansion",
+      "source": "curated",
+      "title": "DIU Replicator Initiative Expands Autonomous Systems Portfolio",
+      "excerpt": "The Defense Innovation Unit has added new autonomous platform programs under the Replicator initiative, focusing on low-cost attritable drones and undersea vehicles for distributed operations in contested environments.",
+      "url": "https://www.diu.mil/latest/replicator",
+      "date": "2026-03-02",
+      "tags": ["DIU", "autonomy", "drones"]
+    },
+    {
+      "id": "sbir-ai-cyber-awards",
+      "source": "curated",
+      "title": "SBIR Phase II Awards Target AI-Driven Cyber Defense",
+      "excerpt": "The Air Force Research Laboratory has awarded SBIR Phase II contracts to small businesses developing AI-powered cybersecurity tools, including automated threat hunting and network anomaly detection for tactical networks.",
+      "url": "https://www.dodsbirsttr.mil/",
+      "date": "2026-02-28",
+      "tags": ["SBIR", "AI", "cyber"]
+    },
+    {
+      "id": "ukraine-lessons-procurement-fy27",
+      "source": "curated",
+      "title": "Ukraine Conflict Reshapes DoD Procurement Priorities for FY27",
+      "excerpt": "Lessons from the Ukraine conflict are driving major shifts in FY27 defense procurement, with increased emphasis on counter-UAS capabilities, electronic warfare systems, and rapid acquisition pathways for commercial technology.",
+      "url": "https://www.defense.gov/News/",
+      "date": "2026-02-25",
+      "tags": ["procurement", "C-UAS", "EW"]
+    }
+  ]
+}
