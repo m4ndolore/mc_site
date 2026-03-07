@@ -651,10 +651,11 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp }) {
             <label class="onboarding__field-label" for={`ob-${f.key}`}>{f.label}{f.required && " *"}</label>
             <input
               id={`ob-${f.key}`}
-              type={f.type}
+              type="text"
+              inputMode={f.type === "email" ? "email" : "text"}
               placeholder={f.placeholder}
               value={formData[f.key]}
-              required={f.required}
+              aria-required={f.required}
               aria-invalid={!!errors[f.key]}
               aria-describedby={errors[f.key] ? `ob-${f.key}-error` : undefined}
               class={`onboarding__field-input${errors[f.key] ? " onboarding__field-input--error" : ""}`}
