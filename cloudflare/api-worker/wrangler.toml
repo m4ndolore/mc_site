@@ -16,7 +16,8 @@ OIDC_ROLES_CLAIM = "groups"
 CONSOLE_ROLLOUT_MODE = "on"
 CONSOLE_MIN_ROLE_LEVEL = "3"
 LEGACY_API_ORIGIN = "https://api.sigmablox.com"
-CORS_ALLOWED_ORIGINS = "https://guild.mergecombinator.com,https://wingman.mergecombinator.com"
+CORS_ALLOWED_ORIGINS = "https://mergecombinator.com,https://guild.mergecombinator.com,https://wingman.mergecombinator.com"
+VIA_RECOVERY_FLOW_SLUG = "default-recovery-email"
 
 [[hyperdrive]]
 binding = "HYPERDRIVE"
@@ -40,7 +41,8 @@ OIDC_ROLES_CLAIM = "groups"
 CONSOLE_ROLLOUT_MODE = "on"
 CONSOLE_MIN_ROLE_LEVEL = "3"
 LEGACY_API_ORIGIN = "https://api.sigmablox.com"
-CORS_ALLOWED_ORIGINS = "https://guild.mergecombinator.com,https://wingman.mergecombinator.com"
+CORS_ALLOWED_ORIGINS = "https://mergecombinator.com,https://guild.mergecombinator.com,https://wingman.mergecombinator.com"
+VIA_RECOVERY_FLOW_SLUG = "default-recovery-email"
 
 [env.dev]
 name = "mc-api-dev"

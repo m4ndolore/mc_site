@@ -11,6 +11,7 @@ const NATIVE_ROUTES: Array<{ method: string; pattern: RegExp }> = [
   { method: 'GET', pattern: /^\/builders\/companies\/[^/]+$/ },
   { method: 'GET', pattern: /^\/builders\/coaches$/ },
   { method: 'GET', pattern: /^\/builders\/coaches\/[^/]+$/ },
+  { method: 'POST', pattern: /^\/access\/provision$/ },
 ]
 
 export function resolveRoute(method: string, path: string): RouteTarget {

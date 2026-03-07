@@ -27,7 +27,15 @@ describe('resolveRoute', () => {
     expect(resolveRoute('GET', '/builders/coaches/abc123')).toBe('native')
   })
 
+  it('POST /access/provision → native', () => {
+    expect(resolveRoute('POST', '/access/provision')).toBe('native')
+  })
+
   // Proxy legacy routes
+  it('GET /access/provision → proxy_legacy (wrong method)', () => {
+    expect(resolveRoute('GET', '/access/provision')).toBe('proxy_legacy')
+  })
+
   it('POST /guild/me → proxy_legacy (wrong method)', () => {
     expect(resolveRoute('POST', '/guild/me')).toBe('proxy_legacy')
   })

@@ -9,6 +9,15 @@ export interface Env {
   CONSOLE_ROLLOUT_MODE?: string
   CONSOLE_MIN_ROLE_LEVEL?: string
 
+  // Authentik admin API (provisioning)
+  VIA_API_TOKEN: string
+  VIA_RESTRICTED_GROUP_ID: string
+  VIA_TRUSTED_GROUP_ID: string
+  VIA_RECOVERY_FLOW_SLUG: string
+
+  // Turnstile
+  TURNSTILE_SECRET_KEY: string
+
   // Origins
   MC_PUBLIC_URL: string
   VIA_ISSUER_URL: string
