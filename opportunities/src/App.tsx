@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import OpportunityList from "./components/OpportunityList";
-import type { Opportunity } from "./types/opportunity";
+import TabBar from "./components/TabBar";
+import EventsPanel from "./components/EventsPanel";
+import RadarPanel from "./components/RadarPanel";
+import type { Opportunity, OutlookEvent } from "./types/opportunity";
+import { fetchOutlookEvents } from "./lib/api";
 
 function formatDate(dateString: string | undefined): string {
   if (!dateString) return "N/A";
@@ -50,7 +54,7 @@ function OpportunityModal({
           overflow-y: auto;
           background-color: var(--mc-bg-secondary);
           border: 1px solid var(--mc-border);
-          border-radius: 0.75rem;
+          border-radius: 2px;
           animation: modal-slide-up 0.2s ease;
         }
         @keyframes modal-slide-up {
@@ -87,7 +91,7 @@ function OpportunityModal({
           justify-content: center;
           background: none;
           border: 1px solid var(--mc-border);
-          border-radius: 0.375rem;
+          border-radius: 2px;
           color: var(--mc-text-muted);
           cursor: pointer;
           font-size: 1.125rem;
@@ -157,7 +161,7 @@ function OpportunityModal({
           color: var(--mc-text-muted);
           background-color: var(--mc-bg-tertiary);
           padding: 0.125rem 0.5rem;
-          border-radius: 9999px;
+          border-radius: 2px;
           border: 1px solid var(--mc-border);
         }
         .modal-footer {
@@ -302,30 +306,144 @@ function OpportunityModal({
   );
 }
 
-function HomePage(): React.JSX.Element {
+type OpportunityRouteMode = "all" | "sbir" | "sttr";
+
+function upsertMeta(name: string, content: string, isProperty = false): void {
+  const selector = isProperty
+    ? `meta[property="${name}"]`
+    : `meta[name="${name}"]`;
+  let node = document.head.querySelector(selector) as HTMLMetaElement | null;
+  if (!node) {
+    node = document.createElement("meta");
+    if (isProperty) node.setAttribute("property", name);
+    else node.setAttribute("name", name);
+    document.head.appendChild(node);
+  }
+  node.setAttribute("content", content);
+}
+
+function upsertCanonical(href: string): void {
+  let node = document.head.querySelector(
+    'link[rel="canonical"]',
+  ) as HTMLLinkElement | null;
+  if (!node) {
+    node = document.createElement("link");
+    node.setAttribute("rel", "canonical");
+    document.head.appendChild(node);
+  }
+  node.setAttribute("href", href);
+}
+
+function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.Element {
+  const [activeTab, setActiveTab] = useState("solicitations");
   const [selectedOpportunity, setSelectedOpportunity] =
     useState<Opportunity | null>(null);
+  const [events, setEvents] = useState<OutlookEvent[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
+
+  const loadEvents = useCallback(async () => {
+    setEventsLoading(true);
+    try {
+      const data = await fetchOutlookEvents();
+      setEvents(data.events);
+    } catch {
+      // Events are supplementary — fail silently
+    } finally {
+      setEventsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadEvents();
+  }, [loadEvents]);
+
+  const tabs = [
+    { id: "solicitations", label: "Solicitations" },
+    { id: "events", label: "Events", count: events.length || undefined },
+    { id: "radar", label: "Radar" },
+  ];
+
+  const seo = useMemo(() => {
+    if (mode === "sbir") {
+      return {
+        title: "SBIR Opportunities | Merge Combinator",
+        description:
+          "Live SBIR opportunities for defense startups, including active solicitations, timelines, and mission-relevant focus areas.",
+        canonical: "https://mergecombinator.com/opportunities/sbir",
+        keyword: "sbir",
+        heading: "SBIR Opportunities",
+        subtitle:
+          "Curated SBIR solicitations, events, and intelligence for defense tech builders.",
+      };
+    }
+    if (mode === "sttr") {
+      return {
+        title: "STTR Opportunities | Merge Combinator",
+        description:
+          "Live STTR opportunities for defense startups and research teams, with deadlines, components, and transition context.",
+        canonical: "https://mergecombinator.com/opportunities/sttr",
+        keyword: "sttr",
+        heading: "STTR Opportunities",
+        subtitle:
+          "Curated STTR solicitations, events, and intelligence for teams pursuing research-to-transition pathways.",
+      };
+    }
+    return {
+      title: "Opportunities | Merge Combinator",
+      description:
+        "Solicitations, SBIR/STTR opportunities, events, and defense market intelligence for national security builders.",
+      canonical: "https://mergecombinator.com/opportunities",
+      keyword: "",
+      heading: "Opportunities",
+      subtitle: "Solicitations, events, and intel for defense tech builders.",
+    };
+  }, [mode]);
+
+  useEffect(() => {
+    document.title = seo.title;
+    upsertMeta("description", seo.description);
+    upsertMeta("og:title", seo.title, true);
+    upsertMeta("og:description", seo.description, true);
+    upsertMeta("og:url", seo.canonical, true);
+    upsertMeta("twitter:title", seo.title);
+    upsertMeta("twitter:description", seo.description);
+    upsertCanonical(seo.canonical);
+  }, [seo]);
 
   return (
     <div>
-      <div style={{ marginBottom: "2rem" }}>
+      <div style={{ marginBottom: "1.5rem" }}>
         <h1
           style={{
             fontSize: "2rem",
             fontWeight: 700,
             letterSpacing: "-0.02em",
-            marginBottom: "0.5rem",
+            marginBottom: "0.375rem",
           }}
         >
-          Opportunities
+          {seo.heading}
         </h1>
-        <p style={{ color: "var(--mc-text-muted)", maxWidth: "36rem" }}>
-          Discover and pursue high-impact opportunities curated by the Merge
-          Combinator network.
+        <p style={{ color: "var(--mc-text-muted)", maxWidth: "36rem", fontSize: "0.875rem" }}>
+          {seo.subtitle}
         </p>
       </div>
 
-      <OpportunityList onSelect={setSelectedOpportunity} />
+      <TabBar tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {activeTab === "solicitations" && (
+        <OpportunityList onSelect={setSelectedOpportunity} initialKeyword={seo.keyword} />
+      )}
+
+      {activeTab === "events" && (
+        <EventsPanel events={events} loading={eventsLoading} />
+      )}
+
+      {activeTab === "radar" && (
+        <RadarPanel
+          events={events}
+          onSelectOpportunity={setSelectedOpportunity}
+        />
+      )}
 
       {selectedOpportunity && (
         <OpportunityModal
@@ -333,6 +451,25 @@ function HomePage(): React.JSX.Element {
           onClose={() => setSelectedOpportunity(null)}
         />
       )}
+
+      <section
+        style={{
+          marginTop: "2rem",
+          padding: "1rem",
+          border: "1px solid var(--mc-border)",
+          borderRadius: "2px",
+          background: "var(--charcoal)",
+        }}
+      >
+        <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>How to use this data</h2>
+        <p style={{ fontSize: "0.875rem", color: "var(--mc-text-muted)", marginBottom: "0.5rem" }}>
+          Opportunities are aggregated from public sources and normalized for faster triage. Always verify source details before submission.
+        </p>
+        <p style={{ fontSize: "0.875rem", color: "var(--mc-text-muted)" }}>
+          Related guidance: <a href="https://mergecombinator.com/knowledge/sbir">SBIR/STTR Playbook</a> •{" "}
+          <a href="https://mergecombinator.com/ai/overview">AI Overview</a>
+        </p>
+      </section>
     </div>
   );
 }
@@ -341,7 +478,9 @@ function App(): React.JSX.Element {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HomePage mode="all" />} />
+        <Route path="/sbir" element={<HomePage mode="sbir" />} />
+        <Route path="/sttr" element={<HomePage mode="sttr" />} />
       </Route>
     </Routes>
   );

@@ -5,6 +5,7 @@ import OpportunityCard from "./OpportunityCard";
 
 interface OpportunityListProps {
   onSelect: (opportunity: Opportunity) => void;
+  initialKeyword?: string;
 }
 
 const STATUS_OPTIONS = [
@@ -35,6 +36,7 @@ const SORT_OPTIONS = [
 
 function OpportunityList({
   onSelect,
+  initialKeyword = "",
 }: OpportunityListProps): React.JSX.Element {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [page, setPage] = useState(0);
@@ -45,8 +47,8 @@ function OpportunityList({
   // Filters
   const [statusFilter, setStatusFilter] = useState("active");
   const [componentFilter, setComponentFilter] = useState("");
-  const [keyword, setKeyword] = useState("");
-  const [pendingKeyword, setPendingKeyword] = useState("");
+  const [keyword, setKeyword] = useState(initialKeyword);
+  const [pendingKeyword, setPendingKeyword] = useState(initialKeyword);
   const [sortBy, setSortBy] = useState("newest");
 
   const pageSize = 25;
@@ -86,6 +88,12 @@ function OpportunityList({
     setPage(0);
   }, [statusFilter, componentFilter, keyword, sortBy]);
 
+  useEffect(() => {
+    setKeyword(initialKeyword);
+    setPendingKeyword(initialKeyword);
+    setPage(0);
+  }, [initialKeyword]);
+
   const totalPages = Math.ceil(total / pageSize);
   const hasPrev = page > 0;
   const hasNext = page < totalPages - 1;
@@ -106,7 +114,7 @@ function OpportunityList({
           padding: 1.25rem;
           background: var(--charcoal);
           border: 1px solid var(--mc-border);
-          border-radius: 0.5rem;
+          border-radius: 2px;
         }
         .filters__row {
           display: flex;
@@ -128,7 +136,7 @@ function OpportunityList({
           color: var(--offwhite);
           background: var(--black);
           border: 1px solid var(--mc-border);
-          border-radius: 0.375rem;
+          border-radius: 2px;
           outline: none;
           transition: border-color 150ms ease;
         }
@@ -142,7 +150,7 @@ function OpportunityList({
           color: var(--white);
           background: var(--blue);
           border: 1px solid var(--blue);
-          border-radius: 0.375rem;
+          border-radius: 2px;
           cursor: pointer;
           transition: background 150ms ease;
         }
@@ -159,7 +167,7 @@ function OpportunityList({
           color: var(--gray-light);
           background: var(--black);
           border: 1px solid var(--mc-border);
-          border-radius: 9999px;
+          border-radius: 2px;
           cursor: pointer;
           transition: all 150ms ease;
         }
@@ -183,7 +191,7 @@ function OpportunityList({
           color: var(--offwhite);
           background: var(--black);
           border: 1px solid var(--mc-border);
-          border-radius: 0.375rem;
+          border-radius: 2px;
           cursor: pointer;
           outline: none;
         }
@@ -233,7 +241,7 @@ function OpportunityList({
           color: var(--offwhite);
           background: var(--charcoal);
           border: 1px solid var(--mc-border);
-          border-radius: 0.375rem;
+          border-radius: 2px;
           cursor: pointer;
           transition: border-color 150ms ease;
         }
@@ -276,7 +284,7 @@ function OpportunityList({
           color: var(--offwhite);
           background: var(--charcoal);
           border: 1px solid var(--mc-border);
-          border-radius: 0.375rem;
+          border-radius: 2px;
           cursor: pointer;
         }
         .opp-list__retry-btn:hover { border-color: var(--blue); }
