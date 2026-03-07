@@ -100,32 +100,37 @@
 .onboarding__wordmark {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 48px;
   text-decoration: none;
 }
 
 .onboarding__wordmark-logo {
-  width: 30px;
-  height: 30px;
-  border-radius: 5px;
-  object-fit: cover;
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .onboarding__wordmark-text {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
   color: var(--ob-off-white);
-  letter-spacing: 0.02em;
 }
 
 .onboarding__wordmark-merge {
   font-style: italic;
   font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 0.02em;
 }
 
 .onboarding__wordmark-combinator {
   font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.01em;
 }
 
 /* Hero animated content */
@@ -666,6 +671,50 @@
   color: var(--ob-red);
   margin-top: 4px;
   min-height: 16px;
+}
+
+/* ─── OTP Input ──────────────────────────── */
+.onboarding__otp-input-wrap {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.onboarding__otp-input {
+  width: 100%;
+  max-width: 260px;
+  padding: 16px 20px;
+  background: var(--ob-charcoal);
+  border: 1px solid var(--ob-border);
+  border-radius: 5px;
+  color: var(--ob-off-white);
+  font-family: var(--ob-mono);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 10px;
+  text-align: center;
+  outline: none;
+  caret-color: var(--ob-blue);
+  transition: border-color 0.15s;
+}
+
+.onboarding__otp-input:focus {
+  border-color: rgba(42,127,219,0.5);
+}
+
+.onboarding__otp-input::placeholder {
+  color: rgba(242,245,247,0.15);
+  letter-spacing: 10px;
+}
+
+.onboarding__otp-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.onboarding__otp-actions .onboarding__btn--text {
+  margin-bottom: 0;
 }
 
 /* ─── Step 1 Sign-In Hint ────────────────── */
