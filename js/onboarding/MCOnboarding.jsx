@@ -17,7 +17,7 @@ function track(event, data = {}) {
 const HERO = {
   default: {
     tag: "VENTURE STUDIO \u00B7 NATIONAL SECURITY",
-    lines: ["Build what", "the mission", "demands."],
+    lines: ["Build what", "warfighters", "need."],
     accent: 2,
     body: "We co-found and build new ventures to solve urgent operational problems with a relentless focus on Indo-Pacific deterrence.",
     pulse: null,
@@ -411,9 +411,9 @@ function HeroPanel({ heroKey }) {
 
       <div class="onboarding__hero-stats">
         {[
-          { n: "Operator-led", l: "problem discovery" },
+          { n: "Forward Deployed", l: "problem discovery" },
           { n: "Indo-Pacific", l: "primary focus" },
-          { n: "End-to-end", l: "build model" },
+          { n: "1 to n", l: "build // scale" },
         ].map(s => (
           <div key={s.l}>
             <div class="onboarding__stat-value">{s.n}</div>
