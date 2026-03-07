@@ -307,7 +307,7 @@ function reducer(state, action) {
     case "SUBMIT_ERROR":
       return { ...state, submitting: false, submitError: action.error };
     case "SET_TURNSTILE":
-      return { ...state, turnstileToken: action.token };
+      return { ...state, turnstileToken: action.token, turnstileErrored: action.errored || false };
     case "FINISH":
       return { ...state, step: 6 };
     case "RESTORE":
@@ -385,7 +385,7 @@ function HeroPanel({ heroKey }) {
 
       <div class="onboarding__hero-top">
         <a href="/" class="onboarding__wordmark">
-          <div class="onboarding__wordmark-icon">M</div>
+          <img src="/content/logo.jpg" alt="Merge Combinator" class="onboarding__wordmark-logo" />
           <span class="onboarding__wordmark-text">MERGE COMBINATOR</span>
         </a>
 
@@ -441,7 +441,7 @@ function Step1({ areas, dispatch, onNext }) {
   const canContinue = areas.length > 0;
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">CONFIGURE YOUR ACCESS &middot; 1 OF 4</div>
+      <div class="onboarding__step-label">CONFIGURE YOUR PLATFORM &middot; 1 OF 4</div>
       <h2 class="onboarding__step-title">Where are you focused?</h2>
       <p class="onboarding__step-subtitle">Select all that apply so we can save time by validating mutual fit.</p>
       <div class="onboarding__chip-grid" role="group" aria-label="Areas of interest">
@@ -469,7 +469,7 @@ function Step2({ values, dispatch, onNext, onBack }) {
 
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">CONFIGURE YOUR ACCESS &middot; 2 OF 4</div>
+      <div class="onboarding__step-label">CONFIGURE YOUR PLATFORM &middot; 2 OF 4</div>
       <h2 class="onboarding__step-title">What outcome are you looking for?</h2>
       <p class="onboarding__step-subtitle">Select all that apply.</p>
       <div class="onboarding__chip-grid" role="group" aria-label="Desired outcomes">
@@ -494,7 +494,7 @@ function Step3({ journey, dispatch, onNext, onBack }) {
   const canContinue = !!journey;
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">CONFIGURE YOUR ACCESS &middot; 3 OF 4</div>
+      <div class="onboarding__step-label">CONFIGURE YOUR PLATFORM &middot; 3 OF 4</div>
       <h2 class="onboarding__step-title">Where are you in the journey?</h2>
       <p class="onboarding__step-subtitle">Pick the one that best fits where you are right now.</p>
       <div role="radiogroup" aria-label="Journey stage" style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 32 }}>
@@ -541,7 +541,7 @@ function Step4({ state, dispatch, onBack, onSubmit }) {
       size: "compact",
       theme: "dark",
       callback: (token) => dispatch({ type: "SET_TURNSTILE", token }),
-      "error-callback": () => dispatch({ type: "SET_TURNSTILE", token: null }),
+      "error-callback": () => dispatch({ type: "SET_TURNSTILE", token: null, errored: true }),
       "expired-callback": () => dispatch({ type: "SET_TURNSTILE", token: null }),
     });
 
@@ -560,7 +560,7 @@ function Step4({ state, dispatch, onBack, onSubmit }) {
       track("validation_error", { fields: Object.keys(errs) });
       return;
     }
-    if (TURNSTILE_SITE_KEY && !turnstileToken) {
+    if (TURNSTILE_SITE_KEY && !turnstileToken && !state.turnstileErrored) {
       dispatch({ type: "SET_ERRORS", errors: { ...errs, _turnstile: "Please complete the verification" } });
       return;
     }
