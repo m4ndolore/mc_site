@@ -113,10 +113,11 @@
 }
 
 .onboarding__wordmark-text {
-  font-family: var(--ob-mono);
-  font-size: 11px;
-  color: var(--ob-text-muted);
-  letter-spacing: 0.04em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ob-text-sub);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
