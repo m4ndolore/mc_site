@@ -5,10 +5,32 @@ interface OpportunityCardProps {
   onClick: (opportunity: Opportunity) => void;
 }
 
-function truncate(text: string | undefined, maxLength: number): string {
+function stripHtml(text: string | undefined): string {
   if (!text) return "";
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).trimEnd() + "...";
+  return text
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeTopicCode(topicCode: string | undefined): string {
+  if (!topicCode) return "";
+  const code = topicCode.trim();
+  const hasLetters = /[A-Za-z]/.test(code);
+  const isReasonableLength = code.length <= 36;
+  if (!hasLetters || !isReasonableLength) return "";
+  return code;
+}
+
+function truncate(text: string | undefined, maxLength: number): string {
+  const normalized = stripHtml(text);
+  if (!normalized) return "";
+  if (normalized.length <= maxLength) return normalized;
+  return normalized.slice(0, maxLength).trimEnd() + "...";
 }
 
 function formatDate(dateString: string | undefined): string {
@@ -28,6 +50,8 @@ function OpportunityCard({
   opportunity,
   onClick,
 }: OpportunityCardProps): React.JSX.Element {
+  const sourceLabel = opportunity.source.toUpperCase();
+  const codeLabel = normalizeTopicCode(opportunity.topicCode);
   const isDeadlineSoon = (): boolean => {
     if (!opportunity.closeDate && !opportunity.responseDeadline) return false;
     const deadline = opportunity.responseDeadline ?? opportunity.closeDate;
@@ -70,6 +94,12 @@ function OpportunityCard({
           font-weight: 600;
           color: var(--mc-accent);
           letter-spacing: 0.02em;
+        }
+        .opp-card__source {
+          font-size: 0.75rem;
+          color: var(--mc-text-muted);
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
         }
         .opp-card__component {
           font-size: 0.75rem;
@@ -134,9 +164,8 @@ function OpportunityCard({
         }}
       >
         <div className="opp-card__meta">
-          <span className="opp-card__topic-code">
-            {opportunity.topicCode}
-          </span>
+          <span className="opp-card__source">{sourceLabel}</span>
+          {codeLabel && <span className="opp-card__topic-code">{codeLabel}</span>}
           <span className="opp-card__component">{opportunity.component}</span>
         </div>
 
@@ -149,13 +178,17 @@ function OpportunityCard({
         <div className="opp-card__footer">
           <div>
             <span className="opp-card__status">{opportunity.topicStatus}</span>
-            <a
-              href={`/opportunities/${opportunity.id || opportunity.topicId}`}
-              className="opp-card__detail-link"
-              onClick={(e) => e.stopPropagation()}
-            >
-              Details
-            </a>
+            {opportunity.url && (
+              <a
+                href={opportunity.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opp-card__detail-link"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Source
+              </a>
+            )}
           </div>
           <div>
             {deadline && (

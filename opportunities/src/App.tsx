@@ -21,6 +21,26 @@ function formatDate(dateString: string | undefined): string {
   }
 }
 
+function sanitizeText(text: string | undefined): string {
+  if (!text) return "";
+  return text
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function normalizeTopicCode(topicCode: string | undefined): string {
+  if (!topicCode) return "";
+  const code = topicCode.trim();
+  const hasLetters = /[A-Za-z]/.test(code);
+  if (!hasLetters || code.length > 36) return "";
+  return code;
+}
+
 function OpportunityModal({
   opportunity,
   onClose,
@@ -196,7 +216,10 @@ function OpportunityModal({
         <div className="modal-content">
           <div className="modal-header">
             <div>
-              <div className="modal-topic-code">{opportunity.topicCode}</div>
+              <div className="modal-topic-code">
+                {normalizeTopicCode(opportunity.topicCode) ||
+                  `${opportunity.source.toUpperCase()} • ${opportunity.component}`}
+              </div>
               <h2 className="modal-title">{opportunity.topicTitle}</h2>
             </div>
             <button
@@ -252,13 +275,17 @@ function OpportunityModal({
             {opportunity.objective && (
               <div>
                 <div className="modal-section-label">Objective</div>
-                <p className="modal-description">{opportunity.objective}</p>
+                <p className="modal-description">
+                  {sanitizeText(opportunity.objective)}
+                </p>
               </div>
             )}
 
             <div>
               <div className="modal-section-label">Description</div>
-              <p className="modal-description">{opportunity.description}</p>
+              <p className="modal-description">
+                {sanitizeText(opportunity.description)}
+              </p>
             </div>
 
             {opportunity.technologyAreas &&
@@ -303,12 +330,20 @@ function OpportunityModal({
           </div>
 
           <div className="modal-footer">
-            <a
-              className="modal-footer-link"
-              href={`/opportunities/${opportunity.id || opportunity.topicId}`}
-            >
-              Permalink
-            </a>
+            {opportunity.url ? (
+              <a
+                className="modal-footer-link"
+                href={opportunity.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View source
+              </a>
+            ) : (
+              <span className="modal-footer-link" style={{ opacity: 0.65 }}>
+                No source link
+              </span>
+            )}
             <span className="modal-footer-source">
               Source: {opportunity.source}
             </span>
@@ -381,6 +416,19 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
   useEffect(() => {
     void loadEvents();
   }, [loadEvents]);
+
+  useEffect(() => {
+    if (!selectedOpportunity) return;
+    const onKeyDown = (event: KeyboardEvent): void => {
+      if (event.key === "Escape") {
+        setSelectedOpportunity(null);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [selectedOpportunity]);
 
   const tabs = [
     { id: "solicitations", label: "Solicitations" },
