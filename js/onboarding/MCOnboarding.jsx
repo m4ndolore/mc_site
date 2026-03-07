@@ -267,6 +267,12 @@ const initialState = {
   provisioned: false,
   role: null,
   loginUrl: null,
+  // OTP flow
+  otpSent: false,
+  otpCode: "",
+  otpVerifying: false,
+  otpError: null,
+  otpSending: false,
 };
 
 function reducer(state, action) {
@@ -309,6 +315,20 @@ function reducer(state, action) {
       return { ...state, submitting: false, submitError: action.error };
     case "SET_TURNSTILE":
       return { ...state, turnstileToken: action.token, turnstileErrored: action.errored || false };
+    case "OTP_SEND_START":
+      return { ...state, otpSending: true, otpError: null, submitError: null };
+    case "OTP_SENT":
+      return { ...state, otpSending: false, otpSent: true, otpCode: "", otpError: null };
+    case "OTP_SEND_ERROR":
+      return { ...state, otpSending: false, otpError: action.error };
+    case "OTP_SET_CODE":
+      return { ...state, otpCode: action.code, otpError: null };
+    case "OTP_VERIFY_START":
+      return { ...state, otpVerifying: true, otpError: null };
+    case "OTP_VERIFY_ERROR":
+      return { ...state, otpVerifying: false, otpError: action.error };
+    case "OTP_RESET":
+      return { ...state, otpSent: false, otpCode: "", otpError: null, otpVerifying: false, otpSending: false };
     case "FINISH":
       return { ...state, step: 6 };
     case "RESTORE":
@@ -321,7 +341,7 @@ function reducer(state, action) {
 // ─── PERSISTENCE ──────────────────────────────────────────────────────────────
 function saveState(state) {
   try {
-    const { submitting, submitError, turnstileToken, ...saveable } = state;
+    const { submitting, submitError, turnstileToken, otpSent, otpCode, otpVerifying, otpError, otpSending, ...saveable } = state;
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(saveable));
   } catch { /* quota exceeded, ignore */ }
 }
@@ -386,8 +406,8 @@ function HeroPanel({ heroKey }) {
 
       <div class="onboarding__hero-top">
         <a href="/" class="onboarding__wordmark">
-          <img src="/content/arrows.png" alt="Merge Combinator" class="onboarding__wordmark-logo" />
-          <span class="onboarding__wordmark-text"><span class="onboarding__wordmark-merge">Merge</span> <span class="onboarding__wordmark-combinator">Combinator</span></span>
+          <img src="/content/arrows.png" alt="" class="onboarding__wordmark-logo" />
+          <span class="onboarding__wordmark-text"><span class="onboarding__wordmark-merge">Merge</span><span class="onboarding__wordmark-combinator">Combinator</span></span>
         </a>
 
         <div class={`onboarding__hero-content${visible ? "" : " onboarding__hero-content--hidden"}`}>
@@ -523,49 +543,43 @@ function Step3({ journey, dispatch, onNext, onBack }) {
   );
 }
 
-// ─── STEP 4 — Contact Form ────────────────────────────────────────────────────
-function Step4({ state, dispatch, onBack, onSubmit }) {
-  const { formData, errors, submitting, submitError, turnstileToken } = state;
-  const turnstileRef = useRef(null);
-  const turnstileWidgetId = useRef(null);
-  const canSubmit = formData.name.trim() && formData.email.trim() && !submitting;
+// ─── STEP 4 — Contact Form + OTP Verification ───────────────────────────────
+function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp }) {
+  const { formData, errors, otpSent, otpCode, otpSending, otpVerifying, otpError, submitError } = state;
+  const otpInputRef = useRef(null);
+  const canSendOtp = formData.name.trim() && formData.email.trim() && !otpSending;
+  const canVerify = otpCode.length === 6 && !otpVerifying;
 
-  // Initialize Turnstile
+  // Auto-focus OTP input when it appears
   useEffect(() => {
-    if (!TURNSTILE_SITE_KEY || !window.turnstile || !turnstileRef.current) return;
-    if (turnstileWidgetId.current != null) return;
+    if (otpSent && otpInputRef.current) otpInputRef.current.focus();
+  }, [otpSent]);
 
-    // Managed mode: invisible 99% of the time, checkbox fallback for
-    // ambiguous signals. Free unlimited requests (invisible caps at 1M/mo).
-    turnstileWidgetId.current = window.turnstile.render(turnstileRef.current, {
-      sitekey: TURNSTILE_SITE_KEY,
-      size: "compact",
-      theme: "dark",
-      callback: (token) => dispatch({ type: "SET_TURNSTILE", token }),
-      "error-callback": () => dispatch({ type: "SET_TURNSTILE", token: null, errored: true }),
-      "expired-callback": () => dispatch({ type: "SET_TURNSTILE", token: null }),
-    });
-
-    return () => {
-      if (turnstileWidgetId.current != null && window.turnstile) {
-        window.turnstile.remove(turnstileWidgetId.current);
-        turnstileWidgetId.current = null;
-      }
-    };
-  }, []);
-
-  const handleSubmit = () => {
+  const handleSendOtp = () => {
     const errs = validateForm(formData);
     if (Object.keys(errs).length > 0) {
       dispatch({ type: "SET_ERRORS", errors: errs });
       track("validation_error", { fields: Object.keys(errs) });
       return;
     }
-    if (TURNSTILE_SITE_KEY && !turnstileToken && !state.turnstileErrored) {
-      dispatch({ type: "SET_ERRORS", errors: { ...errs, _turnstile: "Please complete the verification" } });
+    onSendOtp();
+  };
+
+  const handleVerify = () => {
+    if (otpCode.trim().length !== 6) {
+      dispatch({ type: "OTP_VERIFY_ERROR", error: "Please enter the 6-digit code." });
       return;
     }
-    onSubmit();
+    onVerifyOtp();
+  };
+
+  const handleOtpInput = (e) => {
+    const val = e.target.value.replace(/\D/g, "").slice(0, 6);
+    dispatch({ type: "OTP_SET_CODE", code: val });
+    // Auto-submit when 6 digits entered
+    if (val.length === 6) {
+      setTimeout(() => onVerifyOtp(), 150);
+    }
   };
 
   const fields = [
@@ -574,13 +588,62 @@ function Step4({ state, dispatch, onBack, onSubmit }) {
     { key: "org", label: "ORGANIZATION", placeholder: "Optional", type: "text", required: false },
   ];
 
+  // ── OTP verification phase ──
+  if (otpSent) {
+    return (
+      <div class="onboarding__step">
+        <div class="onboarding__step-label">VERIFY &middot; 4 OF 4</div>
+        <h2 class="onboarding__step-title">Check your email.</h2>
+        <p class="onboarding__step-subtitle">
+          We sent a 6-digit code to <strong>{formData.email}</strong>. Enter it below to verify your account.
+        </p>
+
+        {otpError && <div class="onboarding__error-banner">{otpError}</div>}
+
+        <div class="onboarding__otp-input-wrap">
+          <input
+            ref={otpInputRef}
+            type="text"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            placeholder="000000"
+            maxLength={6}
+            value={otpCode}
+            class="onboarding__otp-input"
+            onInput={handleOtpInput}
+            onKeyDown={e => { if (e.key === "Enter" && canVerify) handleVerify(); }}
+          />
+        </div>
+
+        <button class="onboarding__btn onboarding__btn--primary-full" disabled={!canVerify} onClick={handleVerify}>
+          {otpVerifying ? "Verifying\u2026" : "Verify & Create Account \u2192"}
+        </button>
+
+        <div class="onboarding__otp-actions">
+          <button class="onboarding__btn onboarding__btn--text" onClick={() => {
+            dispatch({ type: "OTP_RESET" });
+          }}>
+            &larr; Change email
+          </button>
+          <button class="onboarding__btn onboarding__btn--text" disabled={otpSending} onClick={() => {
+            onSendOtp();
+            track("otp_resend");
+          }}>
+            Resend code
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // ── Contact form phase ──
   return (
     <div class="onboarding__step">
       <div class="onboarding__step-label">ALMOST INSIDE &middot; 4 OF 4</div>
       <h2 class="onboarding__step-title">Tell us where to reach you.</h2>
-      <p class="onboarding__step-subtitle">We personally review every request. Expect to hear back within 48 hours.</p>
+      <p class="onboarding__step-subtitle">We'll send a verification code to confirm your email &mdash; no password needed.</p>
 
-      {submitError && <div class="onboarding__error-banner">{submitError}</div>}
+      {(submitError || otpError) && <div class="onboarding__error-banner">{submitError || otpError}</div>}
 
       <div class="onboarding__fields">
         {fields.map(f => (
@@ -611,10 +674,8 @@ function Step4({ state, dispatch, onBack, onSubmit }) {
         ))}
       </div>
 
-      <div ref={turnstileRef} class="onboarding__turnstile" />
-
-      <button class="onboarding__btn onboarding__btn--primary-full" disabled={!canSubmit} onClick={handleSubmit}>
-        {submitting ? "Submitting\u2026" : "Request Access \u2192"}
+      <button class="onboarding__btn onboarding__btn--primary-full" disabled={!canSendOtp} onClick={handleSendOtp}>
+        {otpSending ? "Sending code\u2026" : "Send verification code \u2192"}
       </button>
       <button class="onboarding__btn onboarding__btn--text" onClick={onBack}>&larr; Back</button>
 
@@ -840,78 +901,107 @@ export default function MCOnboarding() {
 
   const goTo = useCallback((s) => dispatch({ type: "SET_STEP", step: s }), []);
 
-  const handleSubmit = useCallback(async () => {
-    const errs = validateForm(state.formData);
-    if (Object.keys(errs).length > 0) {
-      dispatch({ type: "SET_ERRORS", errors: errs });
-      return;
-    }
-
-    dispatch({ type: "SUBMIT_START" });
-    track("submit_start", {});
-
-    const name = state.formData.name.trim();
+  // ── Send OTP to user's email ──
+  const handleSendOtp = useCallback(async () => {
     const email = state.formData.email.trim();
-    const turnstileToken = state.turnstileToken || "";
-
-    const payload = {
-      name, email,
-      organization: state.formData.org.trim() || undefined,
-      areas: state.areas,
-      outcomes: state.values,
-      journeyStage: state.journey,
-      "cf-turnstile-response": turnstileToken,
-      source: window.location.href,
-    };
-
-    // Try new API, fall back to legacy endpoint if unreachable
-    const tryFetch = async (url, body) => {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      return res;
-    };
+    const name = state.formData.name.trim();
+    dispatch({ type: "OTP_SEND_START" });
+    track("otp_send_start", { email });
 
     try {
-      let res;
-      let body;
-      try {
-        res = await tryFetch(API_ENDPOINT, payload);
-        body = await res.json();
-      } catch {
-        // New API unreachable — fall back to legacy
-        const legacyPayload = {
-          name, email,
-          interests: state.areas.slice(0, 3),
-          "cf-turnstile-response": turnstileToken,
-          source: window.location.href,
-          requestedAt: new Date().toISOString(),
-        };
-        res = await tryFetch(LEGACY_ENDPOINT, legacyPayload);
-        body = res.ok ? { data: { profileId: "pending", role: "restricted" } } : await res.json();
+      const res = await fetch(`${API_ENDPOINT.replace("/provision", "")}/otp/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, name }),
+      });
+      const body = await res.json();
+      if (!res.ok) {
+        throw new Error(body?.error?.message || `HTTP ${res.status}`);
       }
+      dispatch({ type: "OTP_SENT" });
+      track("otp_sent", { email });
+    } catch (e) {
+      const isNetwork = e instanceof TypeError || /load failed|failed to fetch|networkerror/i.test(e.message);
+      // If OTP endpoint unreachable, fall back to direct provision (legacy flow)
+      if (isNetwork) {
+        await handleLegacySubmit();
+        return;
+      }
+      dispatch({ type: "OTP_SEND_ERROR", error: e.message || "Failed to send code. Please try again." });
+      track("otp_send_error", { error: e.message });
+    }
+  }, [state]);
 
+  // ── Verify OTP and provision account ──
+  const handleVerifyOtp = useCallback(async () => {
+    const email = state.formData.email.trim();
+    const name = state.formData.name.trim();
+    const code = state.otpCode.trim();
+    dispatch({ type: "OTP_VERIFY_START" });
+    track("otp_verify_start", {});
+
+    try {
+      const res = await fetch(`${API_ENDPOINT.replace("/provision", "")}/otp/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email, name, code,
+          organization: state.formData.org.trim() || undefined,
+          areas: state.areas,
+          outcomes: state.values,
+          journeyStage: state.journey,
+          source: window.location.href,
+        }),
+      });
+      const body = await res.json();
       if (!res.ok) {
         const msg = body?.error?.code === "EMAIL_EXISTS"
           ? "An account with this email already exists. Try signing in instead."
           : body?.error?.message || `HTTP ${res.status}`;
         throw new Error(msg);
       }
-
       const { profileId, role, loginUrl } = body.data;
       clearState();
       try { localStorage.setItem(COMPLETED_KEY, "1"); } catch { /* ignore */ }
       dispatch({ type: "SUBMIT_SUCCESS", reqId: profileId, role, loginUrl });
-      track("submit_success", { profileId, role });
+      track("submit_success", { profileId, role, verified: true });
     } catch (e) {
       const isNetwork = e instanceof TypeError || /load failed|failed to fetch|networkerror/i.test(e.message);
       const msg = isNetwork
         ? "Network error — please check your connection and try again."
-        : e.message || "Something went wrong. Please try again or email access@mergecombinator.com";
-      dispatch({ type: "SUBMIT_ERROR", error: msg });
-      track("submit_error", { error: e.message });
+        : e.message || "Verification failed. Please try again.";
+      dispatch({ type: "OTP_VERIFY_ERROR", error: msg });
+      track("otp_verify_error", { error: e.message });
+    }
+  }, [state]);
+
+  // ── Legacy fallback (direct provision without OTP) ──
+  const handleLegacySubmit = useCallback(async () => {
+    dispatch({ type: "SUBMIT_START" });
+    const name = state.formData.name.trim();
+    const email = state.formData.email.trim();
+    try {
+      const res = await fetch(LEGACY_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name, email,
+          interests: state.areas.slice(0, 3),
+          "cf-turnstile-response": "",
+          source: window.location.href,
+          requestedAt: new Date().toISOString(),
+        }),
+      });
+      if (res.ok) {
+        clearState();
+        try { localStorage.setItem(COMPLETED_KEY, "1"); } catch { /* ignore */ }
+        dispatch({ type: "SUBMIT_SUCCESS", reqId: "pending", role: "restricted" });
+        track("submit_success", { legacy: true });
+      } else {
+        throw new Error("Submission failed");
+      }
+    } catch (e) {
+      dispatch({ type: "SUBMIT_ERROR", error: "Network error — please check your connection and try again." });
     }
   }, [state]);
 
@@ -946,7 +1036,7 @@ export default function MCOnboarding() {
           ) : step === 3 ? (
             <Step3 journey={state.journey} dispatch={dispatch} onNext={() => goTo(4)} onBack={() => goTo(2)} />
           ) : step === 4 ? (
-            <Step4 state={state} dispatch={dispatch} onBack={() => goTo(3)} onSubmit={handleSubmit} />
+            <Step4 state={state} dispatch={dispatch} onBack={() => goTo(3)} onSendOtp={handleSendOtp} onVerifyOtp={handleVerifyOtp} />
           ) : (
             <Step5 products={state.products} journey={state.journey} role={state.role} loginUrl={state.loginUrl} dispatch={dispatch} onDone={() => dispatch({ type: "FINISH" })} />
           )}
