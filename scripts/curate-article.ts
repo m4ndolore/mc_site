@@ -145,7 +145,54 @@ function decodeEntities(s: string): string {
     .replace(/&nbsp;/g, " ");
 }
 
-async function curateArticle(
+// Domains that need browser rendering (JS SPAs, aggressive rate limiting)
+const JS_HEAVY_DOMAINS = ["govbase.com"];
+const STAGEHAND_URL =
+  process.env.STAGEHAND_URL ?? "https://mc-stagehand-tests.defensebuilders.workers.dev";
+
+async function curateViaBrowser(
+  url: string
+): Promise<Record<string, unknown>> {
+  console.error(`Using Stagehand browser scraper for ${url}...`);
+  const scrapeRes = await fetch(
+    `${STAGEHAND_URL}/scrape?url=${encodeURIComponent(url)}&extract=metadata`
+  );
+  if (!scrapeRes.ok) {
+    throw new Error(`Stagehand scrape failed: ${scrapeRes.status} ${scrapeRes.statusText}`);
+  }
+  const result = (await scrapeRes.json()) as {
+    ok: boolean;
+    data: {
+      title?: string;
+      description?: string;
+      date?: string;
+      tags?: string[];
+      policyTags?: string[];
+    };
+    error?: string;
+  };
+  if (!result.ok) {
+    throw new Error(`Stagehand scrape error: ${result.error ?? "unknown"}`);
+  }
+
+  const d = result.data;
+  const source = detectSource(url);
+  const title = decodeEntities(String(d.title ?? ""));
+  const excerpt = decodeEntities(String(d.description ?? "")).slice(0, 300);
+  const rawDate = d.date ? String(d.date) : "";
+  let date: string;
+  try {
+    date = rawDate ? new Date(rawDate).toISOString().split("T")[0] : new Date().toISOString().split("T")[0];
+  } catch {
+    date = new Date().toISOString().split("T")[0];
+  }
+  const tags = ((d.policyTags?.length ? d.policyTags : d.tags) ?? []).slice(0, 5);
+  const id = `${source}-${slugify(title)}`;
+
+  return { id, source, title, excerpt, url, date, tags, priority: "normal" };
+}
+
+async function curateViaFetch(
   url: string
 ): Promise<Record<string, unknown>> {
   const res = await fetch(url, {
@@ -168,6 +215,18 @@ async function curateArticle(
   const id = `${source}-${slugify(title)}`;
 
   return { id, source, title, excerpt, url, date, tags, priority: "normal" };
+}
+
+async function curateArticle(
+  url: string
+): Promise<Record<string, unknown>> {
+  const hostname = new URL(url).hostname.replace(/^www\./, "");
+  const needsBrowser = JS_HEAVY_DOMAINS.some((d) => hostname.endsWith(d));
+
+  if (needsBrowser) {
+    return curateViaBrowser(url);
+  }
+  return curateViaFetch(url);
 }
 
 async function main() {
