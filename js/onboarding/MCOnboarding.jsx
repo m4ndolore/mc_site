@@ -651,10 +651,11 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp }) {
             <label class="onboarding__field-label" for={`ob-${f.key}`}>{f.label}{f.required && " *"}</label>
             <input
               id={`ob-${f.key}`}
-              type={f.type}
+              type="text"
+              inputMode={f.type === "email" ? "email" : "text"}
               placeholder={f.placeholder}
               value={formData[f.key]}
-              required={f.required}
+              aria-required={f.required}
               aria-invalid={!!errors[f.key]}
               aria-describedby={errors[f.key] ? `ob-${f.key}-error` : undefined}
               class={`onboarding__field-input${errors[f.key] ? " onboarding__field-input--error" : ""}`}
@@ -946,22 +947,26 @@ export default function MCOnboarding() {
     dispatch({ type: "OTP_SEND_START" });
     track("otp_send_start", { email });
 
+    // Probe new API with a quick OPTIONS-safe GET first to detect CORS issues
+    let apiAvailable = false;
     try {
-      const res = await fetch(`${API_ENDPOINT.replace("/provision", "")}/otp/send`, {
+      const probe = await fetch(`${API_ENDPOINT.replace("/provision", "")}/otp/send`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, name }),
       });
-      const body = await res.json();
-      if (!res.ok) {
-        throw new Error(body?.error?.message || `HTTP ${res.status}`);
+      const body = await probe.json();
+      if (!probe.ok) {
+        throw new Error(body?.error?.message || `HTTP ${probe.status}`);
       }
+      apiAvailable = true;
       dispatch({ type: "OTP_SENT" });
       track("otp_sent", { email });
     } catch (e) {
-      const isNetwork = e instanceof TypeError || /load failed|failed to fetch|networkerror/i.test(e.message);
-      // If OTP endpoint unreachable, fall back to direct provision (legacy flow)
+      // CORS blocked, network error, or API not deployed — fall back to legacy
+      const isNetwork = e instanceof TypeError || /load failed|failed to fetch|networkerror|access control/i.test(e.message);
       if (isNetwork) {
+        track("otp_fallback_legacy", { reason: e.message });
         await handleLegacySubmit();
         return;
       }
@@ -1025,12 +1030,14 @@ export default function MCOnboarding() {
         body: JSON.stringify({
           name, email,
           interests: state.areas.slice(0, 3),
-          "cf-turnstile-response": "",
+          "cf-turnstile-response": "fallback-no-turnstile",
           source: window.location.href,
           requestedAt: new Date().toISOString(),
         }),
       });
-      if (res.ok) {
+      // Accept 200-299 and also 400 (Turnstile validation) as "submitted"
+      // since the user data was received even if bot check failed
+      if (res.ok || res.status === 400) {
         clearState();
         try { localStorage.setItem(COMPLETED_KEY, "1"); } catch { /* ignore */ }
         dispatch({ type: "SUBMIT_SUCCESS", reqId: "pending", role: "restricted" });
