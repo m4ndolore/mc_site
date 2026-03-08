@@ -119,7 +119,7 @@ access.post('/otp/verify', async (c) => {
         trustedGroupId: c.env.VIA_TRUSTED_GROUP_ID,
         recoveryFlowSlug: c.env.VIA_RECOVERY_FLOW_SLUG,
       },
-      { email, name }
+      { email, name, skipRecoveryEmail: true }
     )
   } catch (e) {
     if (e instanceof ProvisionError && e.code === 'EMAIL_EXISTS') {
