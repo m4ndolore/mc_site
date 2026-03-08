@@ -666,7 +666,7 @@ app.get("/api/intel/briefing", async (c) => {
           if (stagehandUrl) {
                       try {
                                     const scrapeRes = await fetch(
-                                                    `${stagehandUrl}/scrape?url=${encodeURIComponent("https://govbase.com")}&extract=briefing`,
+                                                    `${stagehandUrl}/scrape?url=${encodeURIComponent("https://govbase.com")}&extract=briefing&notte_only=true`,
                                                     { headers: { "User-Agent": "MergeCombinator-OpportunitiesAPI/0.1" } }
                                     );
                                     if (scrapeRes.ok) {

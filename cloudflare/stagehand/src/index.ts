@@ -8,6 +8,8 @@ type Env = {
   AI: Ai;
   STAGING_URL?: string;
   ALLOWED_SCRAPE_DOMAINS?: string;
+  NOTTE_API_URL?: string;
+  NOTTE_API_KEY?: string;
 };
 
 // ─── Shared browser helper ──────────────────────────────────────────────────
@@ -117,12 +119,108 @@ async function extractFullText(page: Page) {
   }));
 }
 
+// ─── Notte fallback scraper (residential proxies + antibot) ─────────────────
+async function scrapeViaNotte(
+  env: Env,
+  targetUrl: string,
+  extract: string
+): Promise<{ data: unknown; source: "notte" } | null> {
+  const apiUrl = env.NOTTE_API_URL ?? "https://api.notte.cc";
+  const apiKey = env.NOTTE_API_KEY;
+  if (!apiKey) return null;
+
+  const res = await fetch(`${apiUrl}/scrape`, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      url: targetUrl,
+      only_main_content: extract === "full",
+    }),
+  });
+
+  if (!res.ok) return null;
+
+  const result = await res.json() as {
+    title?: string;
+    description?: string;
+    markdown?: string;
+    html?: string;
+    metadata?: Record<string, string>;
+  };
+
+  // Transform Notte response into our extract format
+  if (extract === "metadata") {
+    return {
+      source: "notte",
+      data: {
+        title: result.title ?? result.metadata?.title ?? "",
+        description: (result.description ?? result.metadata?.description ?? "").slice(0, 300),
+        image: result.metadata?.image ?? result.metadata?.["og:image"] ?? "",
+        date: result.metadata?.["article:published_time"] ?? result.metadata?.date ?? "",
+        tags: [] as string[],
+        policyTags: [] as string[],
+      },
+    };
+  }
+
+  if (extract === "briefing") {
+    const text = result.markdown ?? "";
+    // Parse briefing content from the markdown
+    let summary = "";
+    const lines = text.split("\n").filter((l: string) => l.trim().length > 80);
+    if (lines.length > 0) summary = lines[0].trim().slice(0, 500);
+
+    const sourcesMatch = text.match(/(\d+)\s*sources/i);
+    const sources = sourcesMatch ? parseInt(sourcesMatch[1], 10) : null;
+
+    const categories: { name: string; count?: number }[] = [];
+    const tabRegex = /(Top Impacts|Congress|Key Updates|Top Stories|Executive Orders|Bills)\s*(\d+)?/gi;
+    let match;
+    while ((match = tabRegex.exec(text)) !== null && categories.length < 6) {
+      categories.push({
+        name: match[1],
+        count: match[2] ? parseInt(match[2], 10) : undefined,
+      });
+    }
+
+    return { source: "notte", data: { summary, sources, updatedAgo: "", categories } };
+  }
+
+  // full text
+  return {
+    source: "notte",
+    data: {
+      title: result.title ?? "",
+      text: (result.markdown ?? "").slice(0, 10000),
+    },
+  };
+}
+
+// Detect if page hit a security checkpoint instead of real content
+function isSecurityCheckpoint(data: unknown): boolean {
+  if (!data || typeof data !== "object") return false;
+  const d = data as Record<string, unknown>;
+  const title = String(d.title ?? "").toLowerCase();
+  const text = String(d.text ?? d.summary ?? "").toLowerCase();
+  return (
+    title.includes("security checkpoint") ||
+    title.includes("just a moment") ||
+    title.includes("verify") ||
+    text.includes("verifying your browser") ||
+    text.includes("security checkpoint")
+  );
+}
+
 // ─── /scrape handler ────────────────────────────────────────────────────────
 async function handleScrape(request: Request, env: Env): Promise<Response> {
   const reqUrl = new URL(request.url);
   const targetUrl = reqUrl.searchParams.get("url");
   const extract = reqUrl.searchParams.get("extract") ?? "metadata";
   const waitMs = Math.min(Number(reqUrl.searchParams.get("wait") ?? "3000"), 10000);
+  const notteOnly = reqUrl.searchParams.get("notte_only") === "true";
 
   if (!targetUrl) {
     return jsonResponse({ ok: false, error: "Missing ?url= parameter" }, 400);
@@ -148,21 +246,45 @@ async function handleScrape(request: Request, env: Env): Promise<Response> {
   if (cached) return cached;
 
   try {
-    const data = await withBrowser(env, async (page) => {
-      await page.goto(targetUrl, { waitUntil: "domcontentloaded" });
-      await page.waitForTimeout(waitMs);
+    let data: unknown;
+    let source = "stagehand";
 
-      switch (extract) {
-        case "briefing": return extractBriefing(page);
-        case "full": return extractFullText(page);
-        default: return extractMetadata(page);
+    // Skip browser if notte_only is requested (saves browser session on known-blocked domains)
+    if (!notteOnly) {
+      // Try CF Browser Rendering first
+      try {
+        data = await withBrowser(env, async (page) => {
+          await page.goto(targetUrl, { waitUntil: "domcontentloaded" });
+          await page.waitForTimeout(waitMs);
+
+          switch (extract) {
+            case "briefing": return extractBriefing(page);
+            case "full": return extractFullText(page);
+            default: return extractMetadata(page);
+          }
+        });
+      } catch {
+        data = null;
       }
-    });
+    }
+
+    // If blocked by security checkpoint, browser failed, or notte_only, try Notte fallback
+    if (!data || isSecurityCheckpoint(data)) {
+      const notte = await scrapeViaNotte(env, targetUrl, extract);
+      if (notte) {
+        data = notte.data;
+        source = "notte";
+      } else if (!data) {
+        return jsonResponse({ ok: false, error: "Browser scrape failed and no Notte fallback configured" }, 502);
+      }
+      // If data exists but is a checkpoint and no Notte, return it anyway with a warning
+    }
 
     const body = JSON.stringify({
       ok: true,
       url: targetUrl,
       extract,
+      source,
       data,
       cachedAt: new Date().toISOString(),
     });
