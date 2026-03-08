@@ -2,8 +2,19 @@ import { defineConfig } from 'vite'
 import preact from '@preact/preset-vite'
 import { resolve } from 'path'
 
+/** Inject Plausible Analytics script into all HTML pages at build time */
+function plausiblePlugin() {
+  return {
+    name: 'inject-plausible',
+    transformIndexHtml(html) {
+      const script = '<script defer data-domain="mergecombinator.com" src="https://plausible.io/js/script.js"></script>'
+      return html.replace('</head>', `  ${script}\n</head>`)
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [preact()],
+  plugins: [preact(), plausiblePlugin()],
   server: {
     host: '0.0.0.0',
     port: 3000,

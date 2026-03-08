@@ -23,20 +23,40 @@ interface AuthentikConfig {
 }
 
 // .mil, .gov, and common DoD subdomains → auto-promote to trusted
-const GOV_DOMAINS = [
+const GOV_SUFFIXES = [
   '.mil', '.gov', '.af.mil', '.army.mil', '.navy.mil',
   '.marines.mil', '.uscg.mil', '.socom.mil', '.disa.mil',
 ]
 
+// Major defense contractors and FFRDCs — users with these corporate
+// domains get auto-promoted to skip the password-set friction.
+const TRUSTED_DOMAINS = new Set([
+  // Primes
+  'lockheedmartin.com', 'rtx.com', 'raytheon.com', 'northropgrumman.com',
+  'gd.com', 'gdls.com', 'baesystems.com', 'l3harris.com',
+  'leidos.com', 'saic.com', 'boozallen.com', 'caci.com',
+  'mantech.com', 'parsons.com', 'peraton.com',
+  // Defense tech
+  'anduril.com', 'palantir.com', 'shieldai.com', 'epirus.com',
+  'hermeus.com', 'relativityspace.com', 'rocketlabusa.com',
+  'aerojet.com', 'bwxt.com', 'hii-co.com', 'textron.com',
+  // FFRDCs and UARCs
+  'mitre.org', 'rand.org', 'ida.org', 'sei.cmu.edu',
+  'jhuapl.edu', 'll.mit.edu', 'sandia.gov', 'lanl.gov',
+  // DIU, In-Q-Tel, service labs
+  'iqt.org', 'nsin.mil',
+])
+
 export function shouldAutoPromote(email: string): boolean {
   const domain = email.toLowerCase().split('@')[1]
   if (!domain) return false
-  return GOV_DOMAINS.some(suffix => domain === suffix.slice(1) || domain.endsWith(suffix))
+  if (GOV_SUFFIXES.some(suffix => domain === suffix.slice(1) || domain.endsWith(suffix))) return true
+  return TRUSTED_DOMAINS.has(domain)
 }
 
 export async function provisionUser(
   config: AuthentikConfig,
-  params: { email: string; name: string }
+  params: { email: string; name: string; skipRecoveryEmail?: boolean }
 ): Promise<ProvisionResult> {
   const { baseUrl, apiToken, restrictedGroupId, trustedGroupId, recoveryFlowSlug } = config
   const headers = {
@@ -76,22 +96,24 @@ export async function provisionUser(
 
   const user = await createRes.json() as { pk: number; username: string }
 
-  // 2. Send password-set email via recovery flow
+  // 2. Send password-set email via recovery flow (skip if email already verified via OTP)
   let passwordSetUrl: string | null = null
-  try {
-    const recoveryRes = await fetch(`${baseUrl}/api/v3/core/users/${user.pk}/recovery_email/`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        email_stage: recoveryFlowSlug,
-      }),
-    })
-    if (recoveryRes.ok) {
-      const recoveryData = await recoveryRes.json() as { link?: string }
-      passwordSetUrl = recoveryData.link ?? null
+  if (!params.skipRecoveryEmail) {
+    try {
+      const recoveryRes = await fetch(`${baseUrl}/api/v3/core/users/${user.pk}/recovery_email/`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          email_stage: recoveryFlowSlug,
+        }),
+      })
+      if (recoveryRes.ok) {
+        const recoveryData = await recoveryRes.json() as { link?: string }
+        passwordSetUrl = recoveryData.link ?? null
+      }
+    } catch {
+      // Non-fatal: user can use "forgot password" flow later
     }
-  } catch {
-    // Non-fatal: user can use "forgot password" flow later
   }
 
   return {

@@ -17,7 +17,7 @@ CONSOLE_ROLLOUT_MODE = "on"
 CONSOLE_MIN_ROLE_LEVEL = "3"
 LEGACY_API_ORIGIN = "https://api.sigmablox.com"
 CORS_ALLOWED_ORIGINS = "https://mergecombinator.com,https://guild.mergecombinator.com,https://wingman.mergecombinator.com"
-VIA_RECOVERY_FLOW_SLUG = "default-recovery-email"
+VIA_RECOVERY_FLOW_SLUG = "via-recovery"
 
 [[hyperdrive]]
 binding = "HYPERDRIVE"
@@ -42,7 +42,7 @@ CONSOLE_ROLLOUT_MODE = "on"
 CONSOLE_MIN_ROLE_LEVEL = "3"
 LEGACY_API_ORIGIN = "https://api.sigmablox.com"
 CORS_ALLOWED_ORIGINS = "https://mergecombinator.com,https://guild.mergecombinator.com,https://wingman.mergecombinator.com"
-VIA_RECOVERY_FLOW_SLUG = "default-recovery-email"
+VIA_RECOVERY_FLOW_SLUG = "via-recovery"
 
 [env.dev]
 name = "mc-api-dev"
