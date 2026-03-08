@@ -14,3 +14,4 @@ playwright = "@cloudflare/playwright"
 
 [vars]
 STAGING_URL = "https://mc-router-staging.defensebuilders.workers.dev"
+ALLOWED_SCRAPE_DOMAINS = "govbase.com,executivegov.com,breakingdefense.com,defenseone.com"

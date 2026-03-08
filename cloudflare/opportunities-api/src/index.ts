@@ -4,6 +4,7 @@ import { cors } from "hono/cors";
 type Bindings = {
           SBIR_API_URL: string;
           SAM_GOV_API_KEY: string;
+          STAGEHAND_URL?: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -654,54 +655,84 @@ app.get("/api/intel/feed", async (c) => {
 });
 
 // ─── GovBase "Today in Washington" briefing endpoint ────────────────────────
+// Tries browser-rendered scrape via Stagehand first (handles JS SPAs),
+// falls back to raw fetch + HTML parse if Stagehand is unavailable.
 app.get("/api/intel/briefing", async (c) => {
-          const html = await cachedFetch("https://govbase.com", 60 * 60);
-          if (!html) {
+          const stagehandUrl = c.env.STAGEHAND_URL;
+          type BriefingData = { summary?: string; sources?: number; updatedAgo?: string; categories?: { name: string; count?: number }[] };
+          let briefingData: BriefingData | null = null;
+
+          // Try Stagehand browser scraper first
+          if (stagehandUrl) {
+                      try {
+                                    const scrapeRes = await fetch(
+                                                    `${stagehandUrl}/scrape?url=${encodeURIComponent("https://govbase.com")}&extract=briefing`,
+                                                    { headers: { "User-Agent": "MergeCombinator-OpportunitiesAPI/0.1" } }
+                                    );
+                                    if (scrapeRes.ok) {
+                                                    const result = await scrapeRes.json() as { ok: boolean; data: BriefingData };
+                                                    if (result.ok && result.data) {
+                                                                      briefingData = result.data;
+                                                    }
+                                    }
+                      } catch {
+                                    // Fall through to raw fetch
+                      }
+          }
+
+          // Fallback: raw fetch + HTML parse (may get 429'd by GovBase)
+          if (!briefingData) {
+                      const html = await cachedFetch("https://govbase.com", 60 * 60);
+                      if (html) {
+                                    try {
+                                                    const summaryMatch = html.match(
+                                                                      /Today in Washington[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>/i
+                                                    );
+                                                    const summary = summaryMatch?.[1]
+                                                      ?.replace(/<[^>]+>/g, "")
+                                                      .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+                                                      .replace(/&nbsp;/g, " ")
+                                                      .trim()
+                                                      .slice(0, 500) ?? "";
+
+                                                    const sourcesMatch = html.match(/(\d+)\s*sources/i);
+                                                    const sourceCount = sourcesMatch ? parseInt(sourcesMatch[1], 10) : 316;
+
+                                                    const freshnessMatch = html.match(/updated?\s*([\d]+[mhd]\s*ago)/i);
+                                                    const updatedAgo = freshnessMatch?.[1] ?? "";
+
+                                                    const categories: { name: string; count?: number }[] = [];
+                                                    const tabRegex = /(Top Impacts|Congress|Key Updates|Top Stories|Executive Orders|Bills)[\s]*(\d+)?/gi;
+                                                    let tabMatch;
+                                                    while ((tabMatch = tabRegex.exec(html)) !== null && categories.length < 6) {
+                                                                      categories.push({
+                                                                                        name: tabMatch[1],
+                                                                                        count: tabMatch[2] ? parseInt(tabMatch[2], 10) : undefined,
+                                                                      });
+                                                    }
+
+                                                    if (summary || categories.length > 0) {
+                                                                      briefingData = { summary, sources: sourceCount, updatedAgo, categories };
+                                                    }
+                                    } catch {
+                                                    // Parsing failed
+                                    }
+                      }
+          }
+
+          if (!briefingData) {
                       return c.json({ briefing: null });
           }
-          try {
-                      const summaryMatch = html.match(
-                                    /Today in Washington[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>/i
-                      );
-                      const summary = summaryMatch?.[1]
-                        ?.replace(/<[^>]+>/g, "")
-                        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-                        .replace(/&nbsp;/g, " ")
-                        .trim()
-                        .slice(0, 500) ?? "";
 
-                      const sourcesMatch = html.match(/(\d+)\s*sources/i);
-                      const sourceCount = sourcesMatch ? parseInt(sourcesMatch[1], 10) : 316;
-
-                      const freshnessMatch = html.match(/updated?\s*([\d]+[mhd]\s*ago)/i);
-                      const updatedAgo = freshnessMatch?.[1] ?? "";
-
-                      const categories: { name: string; count?: number }[] = [];
-                      const tabRegex = /(Top Impacts|Congress|Key Updates|Top Stories|Executive Orders|Bills)[\s]*(\d+)?/gi;
-                      let tabMatch;
-                      while ((tabMatch = tabRegex.exec(html)) !== null && categories.length < 6) {
-                                    categories.push({
-                                                    name: tabMatch[1],
-                                                    count: tabMatch[2] ? parseInt(tabMatch[2], 10) : undefined,
-                                    });
-                      }
-
-                      if (!summary && categories.length === 0) {
-                                    return c.json({ briefing: null });
-                      }
-
-                      return c.json({
-                                    briefing: {
-                                                    summary: summary || "AI-synthesized daily briefing from 316+ policy, news, and government sources.",
-                                                    sources: sourceCount,
-                                                    updatedAgo,
-                                                    categories,
-                                                    url: "https://govbase.com",
-                                    },
-                      });
-          } catch {
-                      return c.json({ briefing: null });
-          }
+          return c.json({
+                      briefing: {
+                                    summary: briefingData.summary || "AI-synthesized daily briefing from 316+ policy, news, and government sources.",
+                                    sources: briefingData.sources ?? 316,
+                                    updatedAgo: briefingData.updatedAgo ?? "",
+                                    categories: briefingData.categories ?? [],
+                                    url: "https://govbase.com",
+                      },
+          });
 });
 
 export default app;
