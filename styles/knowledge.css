@@ -482,3 +482,111 @@
   padding: 40px 0;
   grid-column: 1 / -1;
 }
+
+/* ============================================
+   GOVBASE BRIEFING CARD
+   ============================================ */
+
+.intel-briefing {
+  display: block;
+  background: rgba(6, 182, 212, 0.04);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  border-left: 3px solid #06b6d4;
+  border-radius: 6px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.intel-briefing:hover {
+  background: rgba(6, 182, 212, 0.07);
+  border-color: rgba(6, 182, 212, 0.25);
+  transform: translateY(-1px);
+}
+
+.intel-briefing__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.intel-briefing__eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #06b6d4;
+}
+
+.intel-briefing__meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: var(--gray-medium);
+  letter-spacing: 0.04em;
+}
+
+.intel-briefing__summary {
+  font-size: 0.9rem;
+  color: var(--gray-light);
+  line-height: 1.6;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.intel-briefing__categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.intel-briefing__chip {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #06b6d4;
+  background: rgba(6, 182, 212, 0.1);
+  padding: 5px 12px;
+  border-radius: 2px;
+  font-weight: 700;
+}
+
+.intel-briefing__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #06b6d4;
+  transition: color 0.2s;
+}
+
+.intel-briefing:hover .intel-briefing__link {
+  color: #22d3ee;
+}
+
+.intel-briefing:hover .intel-briefing__link svg {
+  transform: translate(2px, -2px);
+  transition: transform 0.2s;
+}
+
+@media (max-width: 768px) {
+  .intel-briefing {
+    padding: 20px;
+  }
+
+  .intel-briefing__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}

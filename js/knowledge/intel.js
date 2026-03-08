@@ -1,9 +1,11 @@
 /**
- * Industry Intel — merges curated articles (intel.json) with live RSS feed,
- * renders article cards with source badges and tag filtering.
+ * Industry Intel — merges curated articles (intel.json) with live multi-source
+ * RSS feeds, renders article cards with source badges and tag filtering,
+ * and displays the GovBase "Today in Washington" briefing card.
  */
 
 const INTEL_API = 'https://opportunities.mergecombinator.com/api/intel/feed';
+const BRIEFING_API = 'https://opportunities.mergecombinator.com/api/intel/briefing';
 
 const ARROW_SVG = `<svg width="14" height="14" viewBox="0 0 16 16" fill="none">
   <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -84,18 +86,72 @@ async function fetchRssFeed() {
   }
 }
 
+async function fetchBriefing() {
+  try {
+    const res = await fetch(BRIEFING_API);
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.briefing || null;
+  } catch {
+    return null;
+  }
+}
+
+function renderBriefingCard(briefing, container) {
+  if (!briefing) return;
+
+  const card = document.createElement('a');
+  card.href = briefing.url;
+  card.target = '_blank';
+  card.rel = 'noopener';
+  card.className = 'intel-briefing';
+
+  const categoriesHtml = (briefing.categories || [])
+    .map(cat => {
+      const countLabel = cat.count != null ? ` ${cat.count}` : '';
+      return `<span class="intel-briefing__chip">${cat.name}${countLabel}</span>`;
+    })
+    .join('');
+
+  const metaParts = ['via GovBase'];
+  if (briefing.sources) metaParts.push(`${briefing.sources} sources`);
+  if (briefing.updatedAgo) metaParts.push(`updated ${briefing.updatedAgo}`);
+
+  card.innerHTML = `
+    <div class="intel-briefing__header">
+      <span class="intel-briefing__eyebrow">Today in Washington</span>
+      <span class="intel-briefing__meta">${metaParts.join(' · ')}</span>
+    </div>
+    <p class="intel-briefing__summary">${briefing.summary}</p>
+    ${categoriesHtml ? `<div class="intel-briefing__categories">${categoriesHtml}</div>` : ''}
+    <span class="intel-briefing__link">Read full briefing on GovBase ${ARROW_SVG}</span>
+  `;
+
+  container.insertBefore(card, container.firstChild);
+}
+
 export async function initIntel() {
   const grid = document.getElementById('intel-grid');
   const filtersContainer = document.getElementById('intel-filters');
   if (!grid) return;
 
   try {
-    const [jsonRes, rssArticles] = await Promise.all([
+    const [jsonRes, rssArticles, briefing] = await Promise.all([
       fetch('/data/intel.json'),
-      fetchRssFeed()
+      fetchRssFeed(),
+      fetchBriefing()
     ]);
     const data = await jsonRes.json();
     const sources = data.sources || [];
+
+    // Render briefing card at top of section (before filters)
+    const section = grid.closest('.intel-section');
+    if (section && briefing) {
+      const header = section.querySelector('.intel-header');
+      if (header) {
+        renderBriefingCard(briefing, header.parentElement);
+      }
+    }
 
     // Merge curated + RSS, dedupe by title, sort by date desc
     const seen = new Set();

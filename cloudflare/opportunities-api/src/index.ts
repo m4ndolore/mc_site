@@ -573,14 +573,14 @@ app.get("/api/opportunities/:id", async (c) => {
           }
 });
 
-// ─── ExecutiveGov RSS parser ─────────────────────────────────────────────────
-function parseExecutiveGovRss(xml: string): unknown[] {
+// ─── Generic RSS feed parser ────────────────────────────────────────────────
+// Works with any standard RSS <item> feed (ExecutiveGov, HN, IrregularChat, etc.)
+function parseRssFeed(xml: string, sourceId: string): unknown[] {
           const articles: unknown[] = [];
           const itemRegex = /<item>([\s\S]*?)<\/item>/g;
           let match;
           while ((match = itemRegex.exec(xml)) !== null) {
                       const block = match[1];
-                      // Handle CDATA blocks: <title><![CDATA[...]]></title>
                       const titleMatch = block.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/);
                       const title = titleMatch?.[1]?.trim() ?? "";
                       const descMatch = block.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/);
@@ -600,10 +600,11 @@ function parseExecutiveGovRss(xml: string): unknown[] {
                                     const cat = catMatch[1].trim();
                                     if (cat && categories.length < 4) categories.push(cat);
                       }
+                      const prefix = sourceId.slice(0, 3);
                       if (title) {
                                     articles.push({
-                                                    id: `eg-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}`,
-                                                    source: "executivegov",
+                                                    id: `${prefix}-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}`,
+                                                    source: sourceId,
                                                     title,
                                                     excerpt,
                                                     url: link,
@@ -632,17 +633,75 @@ app.get("/api/outlook", async (c) => {
   }
 });
 
-// ─── Intel feed endpoint ─────────────────────────────────────────────────────
+// ─── Intel feed endpoint (multi-source RSS aggregation) ─────────────────────
 app.get("/api/intel/feed", async (c) => {
-          const xml = await cachedFetch(
-                      "https://executivegov.com/feed/",
-                      TTL.intel
-                    );
-          if (!xml) {
-                      return c.json({ articles: [] });
-          }
-          const articles = parseExecutiveGovRss(xml);
+          const [egXml, hnXml, irXml] = await Promise.all([
+                      cachedFetch("https://executivegov.com/feed/", TTL.intel),
+                      cachedFetch("https://news.ycombinator.com/rss", TTL.intel),
+                      cachedFetch("https://rss.irregulars.io", TTL.intel),
+          ]);
+          const articles = [
+                      ...(egXml ? parseRssFeed(egXml, "executivegov") : []),
+                      ...(hnXml ? parseRssFeed(hnXml, "hackernews") : []),
+                      ...(irXml ? parseRssFeed(irXml, "irregulars") : []),
+          ];
+          articles.sort((a, b) => {
+                      const da = (a as Record<string, unknown>).date as string;
+                      const db = (b as Record<string, unknown>).date as string;
+                      return db.localeCompare(da);
+          });
           return c.json({ articles });
+});
+
+// ─── GovBase "Today in Washington" briefing endpoint ────────────────────────
+app.get("/api/intel/briefing", async (c) => {
+          const html = await cachedFetch("https://govbase.com", 60 * 60);
+          if (!html) {
+                      return c.json({ briefing: null });
+          }
+          try {
+                      const summaryMatch = html.match(
+                                    /Today in Washington[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>/i
+                      );
+                      const summary = summaryMatch?.[1]
+                        ?.replace(/<[^>]+>/g, "")
+                        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+                        .replace(/&nbsp;/g, " ")
+                        .trim()
+                        .slice(0, 500) ?? "";
+
+                      const sourcesMatch = html.match(/(\d+)\s*sources/i);
+                      const sourceCount = sourcesMatch ? parseInt(sourcesMatch[1], 10) : 316;
+
+                      const freshnessMatch = html.match(/updated?\s*([\d]+[mhd]\s*ago)/i);
+                      const updatedAgo = freshnessMatch?.[1] ?? "";
+
+                      const categories: { name: string; count?: number }[] = [];
+                      const tabRegex = /(Top Impacts|Congress|Key Updates|Top Stories|Executive Orders|Bills)[\s]*(\d+)?/gi;
+                      let tabMatch;
+                      while ((tabMatch = tabRegex.exec(html)) !== null && categories.length < 6) {
+                                    categories.push({
+                                                    name: tabMatch[1],
+                                                    count: tabMatch[2] ? parseInt(tabMatch[2], 10) : undefined,
+                                    });
+                      }
+
+                      if (!summary && categories.length === 0) {
+                                    return c.json({ briefing: null });
+                      }
+
+                      return c.json({
+                                    briefing: {
+                                                    summary: summary || "AI-synthesized daily briefing from 316+ policy, news, and government sources.",
+                                                    sources: sourceCount,
+                                                    updatedAgo,
+                                                    categories,
+                                                    url: "https://govbase.com",
+                                    },
+                      });
+          } catch {
+                      return c.json({ briefing: null });
+          }
 });
 
 export default app;

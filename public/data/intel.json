@@ -27,6 +27,27 @@
       "color": "#8b5cf6",
       "type": "curated",
       "url": "https://mergecombinator.com/knowledge"
+    },
+    {
+      "id": "govbase",
+      "name": "GovBase",
+      "color": "#06b6d4",
+      "type": "curated",
+      "url": "https://govbase.com"
+    },
+    {
+      "id": "hackernews",
+      "name": "Hacker News",
+      "color": "#f97316",
+      "type": "rss",
+      "url": "https://news.ycombinator.com"
+    },
+    {
+      "id": "irregulars",
+      "name": "IrregularChat",
+      "color": "#22c55e",
+      "type": "rss",
+      "url": "https://irregulars.io"
     }
   ],
   "articles": [
@@ -168,6 +189,56 @@
       "url": "https://breakingdefense.com/2026/02/ai-fundamentally-changing-adversary-behavior-leading-to-force-generation-reforms-official/",
       "date": "2026-02-28",
       "tags": ["AI", "strategy", "force structure"],
+      "priority": "normal"
+    },
+    {
+      "id": "govbase-hr7525-counter-drone-act",
+      "source": "govbase",
+      "title": "HR 7525: Counter Drone State and Local Defender Act",
+      "excerpt": "Bipartisan legislation authorizing state and local law enforcement to detect, track, and counter unauthorized drone activity in coordination with federal agencies. Expands C-UAS authority beyond military to domestic first responders.",
+      "url": "https://govbase.com/policy/bill-119-hr-7525",
+      "date": "2026-03-05",
+      "tags": ["C-UAS", "legislation", "drones", "homeland security"],
+      "priority": "high"
+    },
+    {
+      "id": "govbase-defense-supplemental-funding",
+      "source": "govbase",
+      "title": "White House Requests $21B Defense Supplemental for Munitions Surge",
+      "excerpt": "The administration submitted a supplemental defense funding request emphasizing accelerated munitions production, drone procurement, and allied weapons transfers to sustain ongoing operations and deter adversary escalation.",
+      "url": "https://govbase.com/policy/supplemental-defense-2026",
+      "date": "2026-03-04",
+      "tags": ["defense spending", "procurement", "munitions"],
+      "priority": "high"
+    },
+    {
+      "id": "govbase-17-nation-military-coalition",
+      "source": "govbase",
+      "title": "17-Nation Military Coalition Announces Joint Autonomous Systems Doctrine",
+      "excerpt": "A coalition of 17 allied nations issued a joint proclamation establishing shared doctrine for autonomous systems deployment, interoperability standards, and ethical AI use in military operations.",
+      "url": "https://govbase.com/story/coalition-autonomous-doctrine",
+      "date": "2026-03-03",
+      "tags": ["international", "autonomy", "doctrine", "coalition"],
+      "priority": "normal"
+    },
+    {
+      "id": "govbase-faa-pentagon-anti-drone-laser",
+      "source": "govbase",
+      "title": "Pentagon and FAA Complete Joint Anti-Drone Laser Testing at US Airports",
+      "excerpt": "Successful live-fire tests of directed energy C-UAS systems at three major airports, validating laser-based drone countermeasures for protecting critical infrastructure without kinetic collateral damage.",
+      "url": "https://govbase.com/story/faa-pentagon-laser-cuas-airports",
+      "date": "2026-03-01",
+      "tags": ["C-UAS", "directed energy", "FAA", "infrastructure"],
+      "priority": "normal"
+    },
+    {
+      "id": "govbase-ndaa-ai-provisions",
+      "source": "govbase",
+      "title": "FY2026 NDAA AI Provisions: Mandatory Adoption Timelines for DoD Components",
+      "excerpt": "Key AI-related provisions in the National Defense Authorization Act establish mandatory adoption timelines, requiring all DoD components to integrate AI decision-support tools into acquisition and logistics workflows by Q4 FY2027.",
+      "url": "https://govbase.com/policy/ndaa-fy2026-ai-provisions",
+      "date": "2026-02-25",
+      "tags": ["AI", "NDAA", "legislation", "acquisition"],
       "priority": "normal"
     }
   ]
