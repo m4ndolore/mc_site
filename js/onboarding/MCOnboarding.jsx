@@ -955,15 +955,18 @@ export default function MCOnboarding() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, name }),
       });
-      const body = await probe.json();
       if (!probe.ok) {
-        throw new Error(body?.error?.message || `HTTP ${probe.status}`);
+        let msg = `HTTP ${probe.status}`;
+        try { const body = await probe.json(); msg = body?.error?.message || msg; } catch { /* non-JSON response */ }
+        if (probe.status >= 500) throw new TypeError(msg); // treat server errors as retriable/fallback
+        throw new Error(msg);
       }
+      await probe.json(); // consume body
       apiAvailable = true;
       dispatch({ type: "OTP_SENT" });
       track("otp_sent", { email });
     } catch (e) {
-      // CORS blocked, network error, or API not deployed — fall back to legacy
+      // CORS blocked, network error, or server error — fall back to legacy
       const isNetwork = e instanceof TypeError || /load failed|failed to fetch|networkerror|access control/i.test(e.message);
       if (isNetwork) {
         track("otp_fallback_legacy", { reason: e.message });
