@@ -1,5 +1,6 @@
 // js/navbar.js — Single source of truth for MC navbar
 // Renders into <div id="mc-navbar"></div> on any page
+import './sentry.js';
 import { toggleTheme } from './theme.js';
 
 const DEFAULT_NAV_LINKS = [
