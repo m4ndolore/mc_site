@@ -576,10 +576,6 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp }) {
   const handleOtpInput = (e) => {
     const val = e.target.value.replace(/\D/g, "").slice(0, 6);
     dispatch({ type: "OTP_SET_CODE", code: val });
-    // Auto-submit when 6 digits entered
-    if (val.length === 6) {
-      setTimeout(() => onVerifyOtp(), 150);
-    }
   };
 
   const fields = [
