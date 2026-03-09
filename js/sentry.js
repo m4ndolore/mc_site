@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/browser'
 
-const DSN = '__YOUR_SENTRY_DSN__'
+const DSN = 'https://218a26aea396c379302362c7238bce6f@o4511013225758720.ingest.us.sentry.io/4511013235851264'
 
 if (DSN && !DSN.startsWith('__')) {
   Sentry.init({
