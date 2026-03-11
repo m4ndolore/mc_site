@@ -199,8 +199,8 @@
   // HERO CANVAS (Enhanced Node Network - OSINT Style)
   // ============================================
   function initHeroCanvas() {
-    // Delegate to topographic contour animation module
-    import('./js/hero-topo.js').then(m => m.initHeroTopo()).catch(() => {});
+    // Delegate to waveform signal animation module
+    import('./js/hero-waveform.js').then(m => m.initHeroWaveform()).catch(() => {});
   }
 
   // ============================================
