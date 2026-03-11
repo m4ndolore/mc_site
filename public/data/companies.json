@@ -3026,8 +3026,8 @@
   },
   "metadata": {
     "fetchedAt": "2026-03-09T19:35:23.353Z",
-    "buildAt": "2026-03-09T19:35:23.354Z",
-    "source": "api",
+    "buildAt": "2026-03-11T17:23:43.739Z",
+    "source": "cache",
     "apiBase": "https://api.sigmablox.com"
   }
 }
