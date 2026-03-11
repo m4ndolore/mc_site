@@ -136,30 +136,6 @@ html.light-theme.no-transitions *::after {
 
 
 /* ── Video Background (light-mode overrides) ─── */
-.light-theme .video-bg__overlay {
-  background: linear-gradient(
-    180deg,
-    rgba(248, 249, 250, 0.7) 0%,
-    rgba(248, 249, 250, 0.8) 50%,
-    rgba(248, 249, 250, 0.9) 100%
-  );
-}
-
-.light-theme .video-bg__placeholder {
-  background: linear-gradient(
-    135deg,
-    var(--black) 0%,
-    rgba(59, 130, 246, 0.08) 50%,
-    var(--black) 100%
-  );
-}
-
-.light-theme .video-bg__tint {
-  background: rgba(59, 130, 246, 0.04);
-  mix-blend-mode: normal;
-}
-
-
 /* ── Hero Section ────────────────────────────── */
 .light-theme .hero {
   background: var(--black);
@@ -169,12 +145,6 @@ html.light-theme.no-transitions *::after {
   background:
     radial-gradient(ellipse 80% 50% at 20% 40%, rgba(42, 127, 219, 0.06) 0%, transparent 50%),
     radial-gradient(ellipse 60% 40% at 80% 60%, rgba(93, 160, 111, 0.04) 0%, transparent 50%);
-}
-
-.light-theme .hero__grid {
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
 }
 
 .light-theme .hero__vignette {
