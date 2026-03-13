@@ -12,6 +12,7 @@ export interface ProvisionResult {
   username: string
   role: string
   passwordSetUrl: string | null
+  recoveryLink: string | null
 }
 
 interface AuthentikConfig {
@@ -76,19 +77,35 @@ export async function provisionUser(
 
   const user = await createRes.json() as { pk: number; username: string }
 
-  // 2. Send password-set email via recovery flow
+  // 2. Get a recovery link for instant sign-in (no password needed)
+  // This creates a one-time-use link that authenticates the user directly
+  let recoveryLink: string | null = null
   let passwordSetUrl: string | null = null
   try {
-    const recoveryRes = await fetch(`${baseUrl}/api/v3/core/users/${user.pk}/recovery_email/`, {
+    const recoveryRes = await fetch(`${baseUrl}/api/v3/core/users/${user.pk}/recovery/`, {
+      method: 'POST',
+      headers,
+    })
+    if (recoveryRes.ok) {
+      const recoveryData = await recoveryRes.json() as { link?: string }
+      recoveryLink = recoveryData.link ?? null
+    }
+  } catch {
+    // Non-fatal: user can sign in manually
+  }
+
+  // 3. Also send password-set email so user can set a password later
+  try {
+    const emailRes = await fetch(`${baseUrl}/api/v3/core/users/${user.pk}/recovery_email/`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
         email_stage: recoveryFlowSlug,
       }),
     })
-    if (recoveryRes.ok) {
-      const recoveryData = await recoveryRes.json() as { link?: string }
-      passwordSetUrl = recoveryData.link ?? null
+    if (emailRes.ok) {
+      const emailData = await emailRes.json() as { link?: string }
+      passwordSetUrl = emailData.link ?? null
     }
   } catch {
     // Non-fatal: user can use "forgot password" flow later
@@ -99,6 +116,7 @@ export async function provisionUser(
     username: user.username,
     role,
     passwordSetUrl,
+    recoveryLink,
   }
 }
 

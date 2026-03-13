@@ -310,6 +310,7 @@ function reducer(state, action) {
       return {
         ...state, submitting: false, step: 5, reqId: action.reqId,
         provisioned: true, role: action.role, loginUrl: action.loginUrl,
+        instantAuth: action.instantAuth || false,
       };
     case "SUBMIT_ERROR":
       return { ...state, submitting: false, submitError: action.error };
@@ -697,14 +698,11 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp }) {
 }
 
 // ─── STEP 5 — Account Created (post-submit, instant provisioning) ────────────
-function Step5({ products, journey, role, loginUrl, dispatch, onDone }) {
+function Step5({ role, loginUrl }) {
   const [revealed, setRevealed] = useState(false);
   useEffect(() => { const t = setTimeout(() => setRevealed(true), 100); return () => clearTimeout(t); }, []);
 
   const autoPromoted = role && role !== "restricted";
-
-  // Order products based on journey stage
-  const orderedProducts = getOrderedProducts(journey);
 
   return (
     <div class={`onboarding__reveal${revealed ? " onboarding__reveal--visible" : ""}`}>
@@ -726,70 +724,25 @@ function Step5({ products, journey, role, loginUrl, dispatch, onDone }) {
         </div>
       )}
 
-      <h2 class="onboarding__step-title">Where do you want to start?</h2>
+      <h2 class="onboarding__step-title">You're in.</h2>
       <p class="onboarding__step-subtitle">
         {autoPromoted
-          ? "Your sandbox is ready. Select your starting points and we'll have the right doors open."
-          : "While you set your password, tell us where you want to start. We'll tailor your sandbox."}
+          ? "Your account is live. Sign in to start exploring."
+          : "Check your email to set your password, then sign in to get started."}
       </p>
 
-      <div role="group" aria-label="Product selection" style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
-        {orderedProducts.map(p => {
-          const sel = products.includes(p.id);
-          return (
-            <button key={p.id} type="button" aria-pressed={sel}
-              class={`onboarding__product-card${sel ? " onboarding__product-card--selected" : ""}`}
-              onClick={() => { dispatch({ type: "TOGGLE_PRODUCT", value: p.id }); track("product_toggle", { product: p.id }); }}>
-              <div class="onboarding__product-header">
-                <span class="onboarding__product-icon">{p.icon}</span>
-                <span class="onboarding__product-tag">{p.tag}</span>
-                {sel && <span class="onboarding__product-check">{"\u2713"}</span>}
-              </div>
-              <div class="onboarding__product-name">{p.label}</div>
-              <div class="onboarding__product-desc">{p.desc}</div>
-            </button>
-          );
-        })}
-      </div>
-
-      <button
-        class={`onboarding__btn ${products.length > 0 ? "onboarding__btn--green" : "onboarding__btn--muted"}`}
-        onClick={() => { track("products_done", { products }); onDone(); }}>
-        {products.length > 0 ? "Save & continue \u2192" : "Skip for now \u2192"}
-      </button>
-    </div>
-  );
-}
-
-function getOrderedProducts(journey) {
-  if (!journey || !JOURNEY_PRODUCT_ORDER[journey]) return PRODUCTS;
-  const order = JOURNEY_PRODUCT_ORDER[journey];
-  return order.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
-}
-
-// ─── DONE SCREEN ──────────────────────────────────────────────────────────────
-function DoneScreen({ products, loginUrl, role }) {
-  const autoPromoted = role && role !== "restricted";
-  return (
-    <div class="onboarding__done">
-      <div class="onboarding__done-check">{"\u2713"}</div>
-      <h2 class="onboarding__done-title">
-        {autoPromoted ? "You're in." : "Almost there."}
-      </h2>
-      <p class="onboarding__done-body">
-        {autoPromoted
-          ? "Your account is live with full access. Sign in to start exploring your sandbox."
-          : "Check your email to set your password. Your sandbox is being configured based on your selections."}
-        {products.length > 0 && " We've noted your starting points."}
-      </p>
       {loginUrl && (
-        <a href={loginUrl} class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
+        <a href={loginUrl} class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24, textDecoration: "none" }}>
           Sign in to Guild &rarr;
         </a>
       )}
     </div>
   );
 }
+
+// ─── DONE SCREEN ──────────────────────────────────────────────────────────────
+// DoneScreen removed — instant auth redirects directly to Guild after OTP verify.
+// Step 5 serves as fallback when instant auth is unavailable.
 
 // ─── AUTHENTICATED SCREEN ────────────────────────────────────────────────────
 function AuthenticatedScreen({ user }) {
@@ -1003,11 +956,19 @@ export default function MCOnboarding() {
           : body?.error?.message || `HTTP ${res.status}`;
         throw new Error(msg);
       }
-      const { profileId, role, loginUrl } = body.data;
+      const { profileId, role, loginUrl, instantAuth } = body.data;
       clearState();
       try { localStorage.setItem(COMPLETED_KEY, "1"); } catch { /* ignore */ }
-      dispatch({ type: "SUBMIT_SUCCESS", reqId: profileId, role, loginUrl });
-      track("submit_success", { profileId, role, verified: true });
+      track("submit_success", { profileId, role, verified: true, instantAuth });
+
+      // If we got instant auth (recovery link), redirect immediately — no hub page
+      if (instantAuth && loginUrl) {
+        track("instant_auth_redirect", { loginUrl });
+        window.location.href = loginUrl;
+        return;
+      }
+
+      dispatch({ type: "SUBMIT_SUCCESS", reqId: profileId, role, loginUrl, instantAuth });
     } catch (e) {
       const isNetwork = e instanceof TypeError || /load failed|failed to fetch|networkerror/i.test(e.message);
       const msg = isNetwork
@@ -1088,8 +1049,6 @@ export default function MCOnboarding() {
             <AuthenticatedScreen user={authUser} />
           ) : step === 0 ? (
             <WelcomeBack onNewUser={() => goTo(1)} />
-          ) : step === 6 ? (
-            <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} />
           ) : step === 1 ? (
             <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} />
           ) : step === 2 ? (
@@ -1099,7 +1058,7 @@ export default function MCOnboarding() {
           ) : step === 4 ? (
             <Step4 state={state} dispatch={dispatch} onBack={() => goTo(3)} onSendOtp={handleSendOtp} onVerifyOtp={handleVerifyOtp} />
           ) : (
-            <Step5 products={state.products} journey={state.journey} role={state.role} loginUrl={state.loginUrl} dispatch={dispatch} onDone={() => dispatch({ type: "FINISH" })} />
+            <Step5 role={state.role} loginUrl={state.loginUrl} />
           )}
         </div>
       </div>

@@ -150,13 +150,20 @@ access.post('/otp/verify', async (c) => {
     profileId = 'pending'
   }
 
+  // Build the sign-in URL: prefer recovery link for instant auth, fall back to login page
+  const guildUrl = 'https://guild.mergecombinator.com/'
+  const loginUrl = provision.recoveryLink
+    ? `${provision.recoveryLink}?redirect=${encodeURIComponent(guildUrl)}`
+    : `${c.env.MC_PUBLIC_URL}/auth/login?returnTo=${encodeURIComponent(guildUrl)}`
+
   return c.json(ok({
     provisioned: true,
     verified: true,
     role: provision.role,
     profileId,
     autoPromoted: provision.role !== 'restricted',
-    loginUrl: `${c.env.MC_PUBLIC_URL}/auth/login?returnTo=${encodeURIComponent('https://guild.mergecombinator.com/')}`,
+    loginUrl,
+    instantAuth: !!provision.recoveryLink,
   }, {
     request_id: requestId,
   }), 201)
