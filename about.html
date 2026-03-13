@@ -134,14 +134,16 @@
     }
     .team-carousel__viewport {
       overflow: hidden;
-      margin: 0 -40px;
-      padding: 0 40px;
+      margin: 0 -120px;
+      padding: 0 120px;
     }
     .team-carousel__track {
       display: flex;
       gap: 20px;
-      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       will-change: transform;
+    }
+    .team-carousel__track.is-animating {
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     .team-carousel__slide {
       flex: 0 0 100%;
@@ -151,12 +153,14 @@
       border-radius: var(--radius-xl);
       padding: 28px;
       transition: opacity 0.4s ease, filter 0.4s ease;
-      opacity: 0.3;
-      filter: blur(1px);
+      opacity: 0.25;
+      filter: blur(2px);
+      pointer-events: none;
     }
     .team-carousel__slide.is-active {
       opacity: 1;
       filter: blur(0);
+      pointer-events: auto;
     }
     .team-carousel__nav {
       display: flex;
@@ -695,15 +699,31 @@
   <script>
     (function () {
       var track = document.querySelector('.team-carousel__track');
-      var slides = document.querySelectorAll('.team-carousel__slide');
+      var origSlides = Array.from(document.querySelectorAll('.team-carousel__slide'));
       var dotsEl = document.getElementById('carousel-dots');
       var counterEl = document.getElementById('carousel-counter');
       var prevBtn = document.getElementById('carousel-prev');
       var nextBtn = document.getElementById('carousel-next');
-      if (!slides.length || !track) return;
-      var current = 0;
-      var total = slides.length;
-      var gap = 20; // must match CSS gap
+      if (!origSlides.length || !track) return;
+
+      var total = origSlides.length;
+      var gap = 20;
+      var isMoving = false;
+
+      // Clone last slide before first, and first slide after last
+      // Layout: [clone-last] [0] [1] [2] [3] [clone-first]
+      var cloneLast = origSlides[total - 1].cloneNode(true);
+      var cloneFirst = origSlides[0].cloneNode(true);
+      cloneLast.classList.remove('is-active');
+      cloneFirst.classList.remove('is-active');
+      cloneLast.setAttribute('aria-hidden', 'true');
+      cloneFirst.setAttribute('aria-hidden', 'true');
+      track.insertBefore(cloneLast, track.firstChild);
+      track.appendChild(cloneFirst);
+
+      var allSlides = Array.from(track.querySelectorAll('.team-carousel__slide'));
+      // allSlides indexes: 0=clone-last, 1..total=real, total+1=clone-first
+      var current = 0; // real index (0-based)
 
       // Build dots
       for (var i = 0; i < total; i++) {
@@ -715,19 +735,73 @@
       }
       var dots = dotsEl.querySelectorAll('.team-carousel__dot');
 
-      function goTo(idx) {
-        slides[current].classList.remove('is-active');
-        dots[current].classList.remove('is-active');
-        current = (idx + total) % total;
-        slides[current].classList.add('is-active');
-        dots[current].classList.add('is-active');
-        counterEl.textContent = (current + 1) + ' / ' + total;
-        // Slide the track: each slide is 100% + gap
-        var offset = current * (100 + (gap / track.parentElement.offsetWidth) * 100);
-        track.style.transform = 'translateX(-' + offset + '%)';
+      function getOffset(trackIdx) {
+        var vpWidth = track.parentElement.offsetWidth;
+        return trackIdx * (vpWidth + gap);
       }
 
-      counterEl.textContent = '1 / ' + total;
+      function setPosition(trackIdx, animate) {
+        if (animate) {
+          track.classList.add('is-animating');
+        } else {
+          track.classList.remove('is-animating');
+        }
+        track.style.transform = 'translateX(-' + getOffset(trackIdx) + 'px)';
+      }
+
+      function updateActive(realIdx) {
+        allSlides.forEach(function (s) { s.classList.remove('is-active'); });
+        dots.forEach(function (d) { d.classList.remove('is-active'); });
+        // Highlight the real slide
+        allSlides[realIdx + 1].classList.add('is-active');
+        dots[realIdx].classList.add('is-active');
+        counterEl.textContent = (realIdx + 1) + ' / ' + total;
+      }
+
+      function goTo(realIdx) {
+        if (isMoving) return;
+        isMoving = true;
+        var trackIdx = realIdx + 1; // +1 because of prepended clone
+
+        // Handle wrapping: going left from 0 or right from last
+        if (realIdx < 0) {
+          // Animate to clone-last (index 0), then snap to real last
+          updateActive(total - 1);
+          setPosition(0, true);
+          track.addEventListener('transitionend', function handler() {
+            track.removeEventListener('transitionend', handler);
+            current = total - 1;
+            setPosition(total, false); // snap to real last
+            isMoving = false;
+          });
+          return;
+        }
+        if (realIdx >= total) {
+          // Animate to clone-first (index total+1), then snap to real first
+          updateActive(0);
+          setPosition(total + 1, true);
+          track.addEventListener('transitionend', function handler() {
+            track.removeEventListener('transitionend', handler);
+            current = 0;
+            setPosition(1, false); // snap to real first
+            isMoving = false;
+          });
+          return;
+        }
+
+        current = realIdx;
+        updateActive(current);
+        setPosition(trackIdx, true);
+        track.addEventListener('transitionend', function handler() {
+          track.removeEventListener('transitionend', handler);
+          isMoving = false;
+        });
+      }
+
+      // Initialize: position on first real slide (trackIdx = 1)
+      updateActive(0);
+      setPosition(1, false);
+
       prevBtn.addEventListener('click', function () { goTo(current - 1); });
       nextBtn.addEventListener('click', function () { goTo(current + 1); });
       dotsEl.addEventListener('click', function (e) {
@@ -739,6 +813,11 @@
       document.getElementById('team-carousel').addEventListener('keydown', function (e) {
         if (e.key === 'ArrowLeft') goTo(current - 1);
         if (e.key === 'ArrowRight') goTo(current + 1);
+      });
+
+      // Recalculate on resize
+      window.addEventListener('resize', function () {
+        setPosition(current + 1, false);
       });
     })();
   </script>
