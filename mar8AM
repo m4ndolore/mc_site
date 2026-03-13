@@ -1,0 +1,1 @@
+npx tsx scripts/curate-article.ts https://govbase.com/policy/bill-119-hr-7525
