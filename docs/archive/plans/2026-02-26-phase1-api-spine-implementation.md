@@ -8,7 +8,7 @@
 
 **Tech Stack:** Hono 4, Prisma (driverAdapters), pg (Pool), Cloudflare Workers, Hyperdrive, TypeScript
 
-**Design doc:** `docs/plans/2026-02-26-phase1-api-spine-design.md`
+**Design doc:** `docs/archive/plans/2026-02-26-phase1-api-spine-design.md`
 
 ---
 

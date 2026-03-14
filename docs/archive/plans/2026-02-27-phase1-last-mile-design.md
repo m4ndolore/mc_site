@@ -3,7 +3,7 @@
 **Date:** 2026-02-27
 **Status:** Approved
 **Tracks:** REQ-BUG-014, REQ-BUG-016, REQ-BUG-013
-**Parent:** `docs/plans/2026-02-26-phase1-api-spine-design.md`
+**Parent:** `docs/archive/plans/2026-02-26-phase1-api-spine-design.md`
 
 ---
 
