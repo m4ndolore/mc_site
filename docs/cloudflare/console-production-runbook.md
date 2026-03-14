@@ -8,7 +8,8 @@ This runbook covers deploy, verification, and rollback for console route rollout
    - `npm run typecheck`
    - `npm run test`
 2. Confirm rollout env values in `wrangler.toml`:
-   - Initial prod state: `CONSOLE_ROLLOUT_MODE="internal"`, `CONSOLE_MIN_ROLE_LEVEL="3"`
+   - Current prod baseline: `CONSOLE_ROLLOUT_MODE="on"`
+   - `CONSOLE_MIN_ROLE_LEVEL` applies only when mode is `internal`
 
 ## 2) Deploy
 1. Deploy staging first:
@@ -24,18 +25,20 @@ Run with real OIDC sessions where possible.
 
 1. Endpoint health (authenticated internal user):
    - `GET /guild/me` => `200`
-2. Authorization gate (authenticated non-internal user):
-   - `GET /guild/me` => `403`
-   - Response includes `required_role_level` and `role_level`
-3. Builders endpoints follow same policy:
-   - `GET /builders/companies` => `200` (internal) / `403` (non-internal)
-4. Hidden mode test (if temporarily set to off):
+2. In current mode (`on`), role gate is bypassed:
+   - `GET /guild/me` => `200` for authenticated users regardless of role level
+3. Builders endpoints follow same policy in `on`:
+   - `GET /builders/companies` => `200` for authenticated users
+4. Internal canary mode test (optional):
+   - set `CONSOLE_ROLLOUT_MODE="internal"` and deploy
+   - verify low role-level users return `403` with `required_role_level` and `role_level`
+5. Hidden mode test (if temporarily set to off):
    - `GET /guild/me` => `404`
 
 ## 4) Rollout Progression
-1. Canary (default): `internal`
-2. General availability:
-   - set `CONSOLE_ROLLOUT_MODE="on"`
+1. Current general availability baseline: `on`
+2. Optional canary/restriction window:
+   - set `CONSOLE_ROLLOUT_MODE="internal"`
    - deploy worker
 3. Emergency hide:
    - set `CONSOLE_ROLLOUT_MODE="off"`

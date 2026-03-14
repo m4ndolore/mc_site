@@ -126,10 +126,19 @@ This is the master tracking requirement for the platform convergence described i
 - [ ] VIA: Register redirect URIs (guild.*/login/callback, mergecombinator.com/access)
 - [ ] VIA: Configure canonical roles in groups claim
 - [ ] Deploy updated Guild SPA to CF Pages
-- [ ] E2E smoke test (12-point checklist in docs/plans/2026-02-27-phase1-last-mile-implementation.md)
+- [ ] E2E smoke test (12-point checklist in docs/archive/plans/2026-02-27-phase1-last-mile-implementation.md)
 
-Design doc: `docs/plans/2026-02-27-phase1-last-mile-design.md`
-Implementation plan: `docs/plans/2026-02-27-phase1-last-mile-implementation.md`
+Design doc (archived): `docs/archive/plans/2026-02-27-phase1-last-mile-design.md`
+Implementation plan (archived): `docs/archive/plans/2026-02-27-phase1-last-mile-implementation.md`
+Current role status + forward plan: `docs/platform/2026-03-13-roles-live-and-forward.md`
+
+### Role Model Decision (2026-03-13)
+- [x] Option B selected: keep canonical role hierarchy (`admin`, `trusted`, `industry`, `member`, `restricted`) and reduce sprawl by limiting where roles are actively assigned.
+- [x] Live provisioning remains simplified to `trusted` and `restricted` in access onboarding.
+- [ ] Remove split authorization source for `/control`:
+  - Current API path uses token roles + computed `roleLevel`.
+  - Current router `/control` path uses admin group allowlist (`via-admins`, `sigmablox-admins`).
+  - Decision pending on migration path: group-only, role-only, or dual-mode with explicit precedence.
 
 ### Phase 2: User & Company Profiles (3 weeks)
 - [ ] Port user profile management to MC (account settings, profile editing)

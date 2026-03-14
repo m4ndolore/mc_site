@@ -8,7 +8,7 @@
 
 **Tech Stack:** oidc-client-ts, React 18, TanStack Query 5, Hono (API worker), Cloudflare Workers/Pages
 
-**Design doc:** `docs/plans/2026-02-27-phase1-last-mile-design.md`
+**Design doc:** `docs/archive/plans/2026-02-27-phase1-last-mile-design.md`
 
 **Repos:**
 - mc_site: `/Users/paulgarcia/Dev/mc_site` (API worker changes)
