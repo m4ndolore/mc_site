@@ -55,6 +55,52 @@ function resolveAccessReturnTo() {
   }
 }
 
+function getReferralContextFromReturnTo(returnTo) {
+  if (!returnTo) return null;
+  const value = returnTo.toLowerCase();
+  if (value.includes("guild.mergecombinator.com")) return "guild";
+  if (value.startsWith("/combine")) return "combine";
+  if (value.startsWith("/builders")) return "builders";
+  if (value.startsWith("/wingman")) return "wingman";
+  return null;
+}
+
+function getWelcomeCopy(context) {
+  if (context === "combine") {
+    return {
+      title: "Continue to The Combine.",
+      subtitle: "You came from Sigmablox. Sign in to continue with Combine context on Merge Combinator.",
+      cta: "Sign in to The Combine \u2192",
+    };
+  }
+  if (context === "builders") {
+    return {
+      title: "Continue to Defense Builders.",
+      subtitle: "Sign in to resume your Defense Builders workspace and matches.",
+      cta: "Sign in to Defense Builders \u2192",
+    };
+  }
+  if (context === "wingman") {
+    return {
+      title: "Continue to Wingman.",
+      subtitle: "Sign in to access your Wingman workspace and saved context.",
+      cta: "Sign in to Wingman \u2192",
+    };
+  }
+  if (context === "guild") {
+    return {
+      title: "Continue to Guild.",
+      subtitle: "Sign in to resume your Guild workspace and network.",
+      cta: "Sign in to Guild \u2192",
+    };
+  }
+  return {
+    title: "Sign in to continue.",
+    subtitle: "Looks like you've been here before. Sign in to access your sandbox, or start fresh if you're new.",
+    cta: "Sign in with Email \u2192",
+  };
+}
+
 // ─── HERO STATE MAP ───────────────────────────────────────────────────────────
 const HERO = {
   default: {
@@ -849,19 +895,20 @@ function AuthenticatedScreen({ user }) {
 }
 
 // ─── WELCOME BACK (Step 0 — returning users) ─────────────────────────────────
-function WelcomeBack({ onNewUser, loginHref }) {
+function WelcomeBack({ onNewUser, loginHref, referralContext }) {
+  const copy = getWelcomeCopy(referralContext);
   return (
     <div class="onboarding__step">
       <div class="onboarding__step-label">WELCOME BACK</div>
-      <h2 class="onboarding__step-title">Sign in to continue.</h2>
+      <h2 class="onboarding__step-title">{copy.title}</h2>
       <p class="onboarding__step-subtitle">
-        Looks like you've been here before. Sign in to access your sandbox, or start fresh if you're new.
+        {copy.subtitle}
       </p>
 
       <div class="onboarding__signin onboarding__signin--welcome">
         <div class="onboarding__signin-row" style={{ marginBottom: 12 }}>
           <a href={loginHref} class="onboarding__btn onboarding__btn--primary-full" style={{ textAlign: "center", textDecoration: "none" }}>
-            Sign in with Email &rarr;
+            {copy.cta}
           </a>
         </div>
         <div class="onboarding__signin-row">
@@ -943,7 +990,9 @@ export default function MCOnboarding() {
   const liveRef = useRef(null);
   const { step } = state;
   const heroKey = getHeroKey(state);
-  const loginHref = buildLoginHref(resolveAccessReturnTo());
+  const loginReturnTo = resolveAccessReturnTo();
+  const loginHref = buildLoginHref(loginReturnTo);
+  const referralContext = getReferralContextFromReturnTo(loginReturnTo);
 
   // Check if user is already authenticated — skip onboarding entirely
   useEffect(() => {
@@ -1128,7 +1177,7 @@ export default function MCOnboarding() {
           {step === "authenticated" ? (
             <AuthenticatedScreen user={authUser} />
           ) : step === 0 ? (
-            <WelcomeBack onNewUser={() => goTo(1)} loginHref={loginHref} />
+            <WelcomeBack onNewUser={() => goTo(1)} loginHref={loginHref} referralContext={referralContext} />
           ) : step === 6 ? (
             <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} />
           ) : step === 1 ? (

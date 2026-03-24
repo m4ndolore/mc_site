@@ -216,6 +216,42 @@ function sanitizeReturnTo(returnTo) {
   }
 }
 
+function mapContextToReturnTo(context) {
+  const c = (context || "").toLowerCase();
+  if (c === "combine") return "/combine";
+  if (c === "builders") return "/builders";
+  if (c === "wingman") return "/wingman";
+  if (c === "guild" || c === "app") return "https://guild.mergecombinator.com/";
+  return null;
+}
+
+function inferReturnToFromReferrer(request) {
+  const ref = request.headers.get("referer");
+  if (!ref) return null;
+  try {
+    const refUrl = new URL(ref);
+    const contextHint = mapContextToReturnTo(refUrl.searchParams.get("context"));
+    if (contextHint) return contextHint;
+    if (refUrl.hostname === "sigmablox.com" || refUrl.hostname === "www.sigmablox.com") return "/combine";
+    if (refUrl.hostname === "guild.mergecombinator.com") return "https://guild.mergecombinator.com/";
+    if (refUrl.hostname === "wingman.mergecombinator.com") return "/wingman";
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+function resolveReturnTo(request) {
+  const url = new URL(request.url);
+  const explicit = url.searchParams.get("returnTo") || url.searchParams.get("return_to");
+  if (explicit) return explicit;
+  const contextMapped = mapContextToReturnTo(url.searchParams.get("context") || url.searchParams.get("ref"));
+  if (contextMapped) return contextMapped;
+  const inferred = inferReturnToFromReferrer(request);
+  if (inferred) return inferred;
+  return "/";
+}
+
 function getLastConsoleDestination(request) {
   const cookies = parseCookies(request);
   const value = cookies[LAST_CONSOLE_COOKIE_NAME];
@@ -247,8 +283,7 @@ async function handleLogin(request, env) {
   validateOAuthConfig(env);
 
   const url = new URL(request.url);
-  // Support both returnTo (canonical) and legacy return_to parameters.
-  const returnTo = url.searchParams.get("returnTo") || url.searchParams.get("return_to") || "/";
+  const returnTo = resolveReturnTo(request);
 
   const { verifier, challenge } = await generatePKCE();
   const nonce = generateRandomString(16);

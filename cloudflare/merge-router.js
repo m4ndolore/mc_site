@@ -501,6 +501,21 @@ export default {
         refererUrl &&
         (refererUrl.pathname.startsWith("/combine") || SIGMABLOX_HOSTNAMES.has(refererUrl.hostname));
 
+      // Normalize Sigmablox-originated access entries so downstream login can
+      // deterministically route users back to the Combine context.
+      if (
+        (url.pathname === "/access" || url.pathname === "/access/") &&
+        isFromCombine &&
+        !url.searchParams.has("context") &&
+        !url.searchParams.has("returnTo") &&
+        !url.searchParams.has("return_to")
+      ) {
+        const normalized = new URL(url.toString());
+        normalized.searchParams.set("context", "combine");
+        normalized.searchParams.set("source", "sigmablox");
+        return Response.redirect(normalized.toString(), 302);
+      }
+
       if (isFromCombine) {
         const sigmabloxUrl = new URL(url.pathname, origins.sigmablox);
         sigmabloxUrl.search = url.search;
