@@ -6,12 +6,53 @@ const LEGACY_ENDPOINT = "https://api.sigmablox.com/api/access-request";
 const STORAGE_KEY = "mc-onboarding-state";
 const COMPLETED_KEY = "mc-onboarding-completed";
 const TURNSTILE_SITE_KEY = document.body?.dataset?.turnstileSiteKey || "";
+const CONTEXT_RETURN_TO = {
+  guild: "https://guild.mergecombinator.com/",
+  app: "https://guild.mergecombinator.com/",
+  builders: "/builders",
+  combine: "/combine",
+  wingman: "/wingman",
+};
 
 // ─── ANALYTICS ────────────────────────────────────────────────────────────────
 function track(event, data = {}) {
   const detail = { event, timestamp: Date.now(), ...data };
   window.dispatchEvent(new CustomEvent("mc:onboarding", { detail }));
   if (import.meta.env.DEV) console.debug("[onboarding]", event, data);
+}
+
+function buildLoginHref(returnTo) {
+  return `/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
+}
+
+function getReturnToFromContext(searchParams) {
+  const explicit = searchParams.get("returnTo") || searchParams.get("return_to");
+  if (explicit) return explicit;
+  const context = (searchParams.get("context") || searchParams.get("ref") || "").toLowerCase();
+  return CONTEXT_RETURN_TO[context] || null;
+}
+
+function getReturnToFromReferrer() {
+  try {
+    if (!document.referrer) return null;
+    const ref = new URL(document.referrer);
+    if (ref.hostname === "sigmablox.com" || ref.hostname === "www.sigmablox.com") return "/combine";
+    if (ref.hostname === "guild.mergecombinator.com") return "https://guild.mergecombinator.com/";
+    if (ref.hostname === "wingman.mergecombinator.com") return "/wingman";
+    if (ref.hostname === "builders.mergecombinator.com") return "/builders";
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function resolveAccessReturnTo() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    return getReturnToFromContext(params) || getReturnToFromReferrer() || "https://guild.mergecombinator.com/";
+  } catch {
+    return "https://guild.mergecombinator.com/";
+  }
 }
 
 // ─── HERO STATE MAP ───────────────────────────────────────────────────────────
@@ -458,7 +499,7 @@ function ProgressBar({ step }) {
 }
 
 // ─── STEP 1 — Areas ───────────────────────────────────────────────────────────
-function Step1({ areas, dispatch, onNext }) {
+function Step1({ areas, dispatch, onNext, loginHref }) {
   const canContinue = areas.length > 0;
   return (
     <div class="onboarding__step">
@@ -478,7 +519,7 @@ function Step1({ areas, dispatch, onNext }) {
         Continue &rarr;
       </button>
       <div class="onboarding__step-signin-hint">
-        Already have an account? <a href="/auth/login">Sign in &rarr;</a>
+        Already have an account? <a href={loginHref}>Sign in &rarr;</a>
       </div>
     </div>
   );
@@ -544,7 +585,7 @@ function Step3({ journey, dispatch, onNext, onBack }) {
 }
 
 // ─── STEP 4 — Contact Form + OTP Verification ───────────────────────────────
-function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp }) {
+function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
   const { formData, errors, otpSent, otpCode, otpSending, otpVerifying, otpError, submitError } = state;
   const otpInputRef = useRef(null);
   const canSendOtp = formData.name.trim() && formData.email.trim() && !otpSending;
@@ -679,9 +720,9 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp }) {
       <div class="onboarding__signin">
         <p class="onboarding__signin-label">Already a member?</p>
         <div class="onboarding__signin-row">
-          <a href="/auth/login" class="onboarding__signin-btn">Sign in with Email &rarr;</a>
-          <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://mergecombinator.com/"
-            class="onboarding__signin-btn onboarding__signin-btn--google">Google</a>
+          <a href={loginHref} class="onboarding__signin-btn">Sign in with Email &rarr;</a>
+          <a href={loginHref}
+            class="onboarding__signin-btn onboarding__signin-btn--google">Continue via SSO</a>
           <div style={{ position: "relative" }}>
             <span class="onboarding__signin-cac">CAC/PIV</span>
             <span class="onboarding__signin-cac-badge">soon</span>
@@ -808,7 +849,7 @@ function AuthenticatedScreen({ user }) {
 }
 
 // ─── WELCOME BACK (Step 0 — returning users) ─────────────────────────────────
-function WelcomeBack({ onNewUser }) {
+function WelcomeBack({ onNewUser, loginHref }) {
   return (
     <div class="onboarding__step">
       <div class="onboarding__step-label">WELCOME BACK</div>
@@ -819,13 +860,13 @@ function WelcomeBack({ onNewUser }) {
 
       <div class="onboarding__signin onboarding__signin--welcome">
         <div class="onboarding__signin-row" style={{ marginBottom: 12 }}>
-          <a href="/auth/login" class="onboarding__btn onboarding__btn--primary-full" style={{ textAlign: "center", textDecoration: "none" }}>
+          <a href={loginHref} class="onboarding__btn onboarding__btn--primary-full" style={{ textAlign: "center", textDecoration: "none" }}>
             Sign in with Email &rarr;
           </a>
         </div>
         <div class="onboarding__signin-row">
-          <a href="https://api.sigmablox.com/auth/sso/start?provider=google&returnTo=https://mergecombinator.com/"
-            class="onboarding__signin-btn onboarding__signin-btn--google" style={{ flex: 1 }}>Google</a>
+          <a href={loginHref}
+            class="onboarding__signin-btn onboarding__signin-btn--google" style={{ flex: 1 }}>Continue via SSO</a>
           <div style={{ position: "relative" }}>
             <span class="onboarding__signin-cac">CAC/PIV</span>
             <span class="onboarding__signin-cac-badge">soon</span>
@@ -902,6 +943,7 @@ export default function MCOnboarding() {
   const liveRef = useRef(null);
   const { step } = state;
   const heroKey = getHeroKey(state);
+  const loginHref = buildLoginHref(resolveAccessReturnTo());
 
   // Check if user is already authenticated — skip onboarding entirely
   useEffect(() => {
@@ -1086,17 +1128,17 @@ export default function MCOnboarding() {
           {step === "authenticated" ? (
             <AuthenticatedScreen user={authUser} />
           ) : step === 0 ? (
-            <WelcomeBack onNewUser={() => goTo(1)} />
+            <WelcomeBack onNewUser={() => goTo(1)} loginHref={loginHref} />
           ) : step === 6 ? (
             <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} />
           ) : step === 1 ? (
-            <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} />
+            <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} loginHref={loginHref} />
           ) : step === 2 ? (
             <Step2 values={state.values} dispatch={dispatch} onNext={() => goTo(3)} onBack={() => goTo(1)} />
           ) : step === 3 ? (
             <Step3 journey={state.journey} dispatch={dispatch} onNext={() => goTo(4)} onBack={() => goTo(2)} />
           ) : step === 4 ? (
-            <Step4 state={state} dispatch={dispatch} onBack={() => goTo(3)} onSendOtp={handleSendOtp} onVerifyOtp={handleVerifyOtp} />
+            <Step4 state={state} dispatch={dispatch} onBack={() => goTo(3)} onSendOtp={handleSendOtp} onVerifyOtp={handleVerifyOtp} loginHref={loginHref} />
           ) : (
             <Step5 products={state.products} journey={state.journey} role={state.role} loginUrl={state.loginUrl} dispatch={dispatch} onDone={() => dispatch({ type: "FINISH" })} />
           )}
