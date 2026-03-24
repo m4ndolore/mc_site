@@ -202,7 +202,7 @@ export function renderBuilderModal(company, options = {}) {
                             External Site
                         </a>
                     ` : ''}
-                    <a href="/auth/logout?return_to=/builders" class="modal-cta-btn modal-cta-btn--tertiary">
+                    <a href="/auth/logout?returnTo=/builders" class="modal-cta-btn modal-cta-btn--tertiary">
                         Sign Out
                     </a>
                 </div>
@@ -217,7 +217,7 @@ export function renderBuilderModal(company, options = {}) {
                     Authentication required for pitch materials, team roster, and direct coordination.
                 </p>
                 <div class="modal-cta-box__actions">
-                    <a href="/auth/login?return_to=${encodeURIComponent(window.location.pathname)}" class="modal-cta-btn modal-cta-btn--primary">
+                    <a href="/auth/login?returnTo=${encodeURIComponent(window.location.pathname)}" class="modal-cta-btn modal-cta-btn--primary">
                         Authenticate
                     </a>
                     ${websiteUrl ? `

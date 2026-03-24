@@ -35,6 +35,11 @@ function isPlatformActive(activePath, platformLinks) {
   return platformLinks.some(link => isActive(link.href, activePath));
 }
 
+function buildSignInHref() {
+  const returnTo = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+  return `/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
+}
+
 function renderNavHTML(activePath, navLinks, platformLinks) {
   const navLinksHTML = navLinks.map(link =>
     `<a href="${link.href}" class="nav__link${isActive(link.href, activePath) ? ' nav__link--active' : ''}">${link.label}</a>`
@@ -45,6 +50,7 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
   ).join('\n              ');
 
   const platformActive = isPlatformActive(activePath, platformLinks);
+  const signInHref = buildSignInHref();
 
   return `<header class="nav" id="nav">
     <div class="nav__container">
@@ -80,7 +86,7 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
           </button>
-          <a href="/auth/login" class="nav__btn nav__btn--secondary">Sign in</a>
+          <a href="${signInHref}" class="nav__btn nav__btn--secondary">Sign in</a>
           <a href="/access" class="nav__btn nav__btn--access">Join</a>
         </div>
       </nav>

@@ -210,7 +210,7 @@ function sanitizeReturnTo(returnTo) {
     if (!isAllowedHost(url.hostname)) {
       return null;
     }
-    return `${url.pathname}${url.search}${url.hash}`;
+    return url.toString();
   } catch (err) {
     return null;
   }
@@ -247,7 +247,8 @@ async function handleLogin(request, env) {
   validateOAuthConfig(env);
 
   const url = new URL(request.url);
-  const returnTo = url.searchParams.get("returnTo") || "/";
+  // Support both returnTo (canonical) and legacy return_to parameters.
+  const returnTo = url.searchParams.get("returnTo") || url.searchParams.get("return_to") || "/";
 
   const { verifier, challenge } = await generatePKCE();
   const nonce = generateRandomString(16);
@@ -372,9 +373,16 @@ async function handleCallback(request, env) {
     const sessionCookie = await encryptSession(session, env.SESSION_SECRET);
     const safeReturnTo = sanitizeReturnTo(stateData.returnTo);
     const returnTo = safeReturnTo || getLastConsoleDestination(request);
-    const redirectTo = returnTo.startsWith("/")
-      ? new URL(returnTo, url.origin).toString()
-      : new URL(getLastConsoleDestination(request), url.origin).toString();
+    let redirectTo;
+    if (returnTo.startsWith("/")) {
+      redirectTo = new URL(returnTo, url.origin).toString();
+    } else {
+      try {
+        redirectTo = new URL(returnTo).toString();
+      } catch {
+        redirectTo = new URL(getLastConsoleDestination(request), url.origin).toString();
+      }
+    }
 
     const headers = new Headers();
     headers.set("Location", redirectTo);
@@ -404,7 +412,8 @@ async function handleCallback(request, env) {
  */
 async function handleLogout(request, env) {
   const url = new URL(request.url);
-  const returnTo = url.searchParams.get("returnTo") || url.origin;
+  // Support both returnTo (canonical) and legacy return_to parameters.
+  const returnTo = url.searchParams.get("returnTo") || url.searchParams.get("return_to") || url.origin;
 
   // Clear local session cookie (must include domain to delete cross-subdomain cookie)
   const headers = new Headers();

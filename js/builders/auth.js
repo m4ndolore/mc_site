@@ -100,7 +100,7 @@ export function clearAuthCache() {
  * @returns {string}
  */
 export function getLoginUrl(returnTo = window.location.pathname) {
-    return `/auth/login?return_to=${encodeURIComponent(returnTo)}`;
+    return `/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
 }
 
 /**
@@ -109,7 +109,7 @@ export function getLoginUrl(returnTo = window.location.pathname) {
  * @returns {string}
  */
 export function getLogoutUrl(returnTo = '/') {
-    return `/auth/logout?return_to=${encodeURIComponent(returnTo)}`;
+    return `/auth/logout?returnTo=${encodeURIComponent(returnTo)}`;
 }
 
 /**
