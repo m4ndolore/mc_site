@@ -516,7 +516,9 @@ export default {
         return Response.redirect(normalized.toString(), 302);
       }
 
-      if (isFromCombine) {
+      const isAccessPath = url.pathname === "/access" || url.pathname === "/access/";
+
+      if (isFromCombine && !isAccessPath) {
         const sigmabloxUrl = new URL(url.pathname, origins.sigmablox);
         sigmabloxUrl.search = url.search;
         const clonedRequest = request.clone();
