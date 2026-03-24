@@ -45,14 +45,22 @@ analytics.post('/access/events', async (c) => {
     return c.json(err('INVALID_INPUT', 'Unsupported event', { request_id: requestId }), 400)
   }
 
-  const { pool } = getDb(c.env.HYPERDRIVE)
-  await writeAccessEvent(
-    pool,
-    { event: eventName, data: body.data || {}, page: body.page },
-    { origin, userAgent: c.req.header('User-Agent') || null }
-  )
-
-  return c.json(ok({ accepted: true }, { request_id: requestId }), 202)
+  try {
+    const { pool } = getDb(c.env.HYPERDRIVE)
+    await writeAccessEvent(
+      pool,
+      { event: eventName, data: body.data || {}, page: body.page },
+      { origin, userAgent: c.req.header('User-Agent') || null }
+    )
+    return c.json(ok({ accepted: true, stored: true }, { request_id: requestId }), 202)
+  } catch (error) {
+    // Never break access UX because analytics storage is unavailable.
+    console.error('access analytics ingest failed', error)
+    return c.json(ok({ accepted: true, stored: false }, {
+      request_id: requestId,
+      warning: 'analytics_storage_unavailable',
+    }), 202)
+  }
 })
 
 analytics.use('/access/summary', verifyOidc)
@@ -68,7 +76,15 @@ analytics.get('/access/summary', async (c) => {
   const lookback = Number.isFinite(days) ? Math.floor(days) : 7
 
   const { pool } = getDb(c.env.HYPERDRIVE)
-  const summary = await fetchAccessSummary(pool, lookback)
+  let summary
+  try {
+    summary = await fetchAccessSummary(pool, lookback)
+  } catch (error) {
+    console.error('access analytics summary failed', error)
+    return c.json(err('ANALYTICS_UNAVAILABLE', 'Access analytics storage is not initialized', {
+      request_id: requestId,
+    }), 503)
+  }
 
   return c.json(ok(summary, {
     request_id: requestId,
