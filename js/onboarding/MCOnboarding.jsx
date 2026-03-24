@@ -15,9 +15,69 @@ const CONTEXT_RETURN_TO = {
 };
 
 // ─── ANALYTICS ────────────────────────────────────────────────────────────────
+function safePlausible(eventName, props) {
+  if (typeof window === "undefined") return;
+  const plausible = window.plausible;
+  if (typeof plausible !== "function") return;
+  plausible(eventName, { props });
+}
+
+function toReturnBucket(returnTo) {
+  if (!returnTo) return "unknown";
+  const value = returnTo.toLowerCase();
+  if (value.includes("guild.mergecombinator.com")) return "guild";
+  if (value.startsWith("/combine")) return "combine";
+  if (value.startsWith("/builders")) return "builders";
+  if (value.startsWith("/wingman")) return "wingman";
+  if (value.startsWith("/")) return "mc-page";
+  return "other";
+}
+
+function forwardToPlausible(event, data) {
+  if (event === "access_entry") {
+    safePlausible("access_entry", {
+      context: data.context || "none",
+      source: data.source || "none",
+      referrer_host: data.referrerHost || "none",
+      return_bucket: toReturnBucket(data.resolvedReturnTo),
+    });
+    return;
+  }
+
+  if (event === "step_view") {
+    safePlausible("access_step_view", {
+      step: String(data.step),
+    });
+    return;
+  }
+
+  if (event === "journey_select") {
+    safePlausible("access_journey_select", {
+      stage: data.stage || "unknown",
+    });
+    return;
+  }
+
+  if (event === "submit_success") {
+    safePlausible("access_submit_success", {
+      verified: data.verified ? "yes" : "no",
+      legacy: data.legacy ? "yes" : "no",
+      role: data.role || "unknown",
+    });
+    return;
+  }
+
+  if (event === "products_done") {
+    safePlausible("access_products_done", {
+      count: Array.isArray(data.products) ? String(data.products.length) : "0",
+    });
+  }
+}
+
 function track(event, data = {}) {
   const detail = { event, timestamp: Date.now(), ...data };
   window.dispatchEvent(new CustomEvent("mc:onboarding", { detail }));
+  forwardToPlausible(event, data);
   if (import.meta.env.DEV) console.debug("[onboarding]", event, data);
 }
 
