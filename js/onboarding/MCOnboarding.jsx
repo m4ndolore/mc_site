@@ -22,6 +22,26 @@ function safePlausible(eventName, props) {
   plausible(eventName, { props });
 }
 
+function sendAccessEventToApi(event, data) {
+  if (typeof window === "undefined") return;
+  const payload = {
+    event,
+    data,
+    page: window.location.pathname,
+  };
+
+  // Fire-and-forget; never block UX on telemetry delivery.
+  fetch("https://api.mergecombinator.com/analytics/access/events", {
+    method: "POST",
+    mode: "cors",
+    keepalive: true,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  }).catch(() => {});
+}
+
 function toReturnBucket(returnTo) {
   if (!returnTo) return "unknown";
   const value = returnTo.toLowerCase();
@@ -74,10 +94,23 @@ function forwardToPlausible(event, data) {
   }
 }
 
+function forwardToApi(event, data) {
+  if (
+    event === "access_entry" ||
+    event === "access_step_view" ||
+    event === "access_journey_select" ||
+    event === "access_submit_success" ||
+    event === "access_products_done"
+  ) {
+    sendAccessEventToApi(event, data);
+  }
+}
+
 function track(event, data = {}) {
   const detail = { event, timestamp: Date.now(), ...data };
   window.dispatchEvent(new CustomEvent("mc:onboarding", { detail }));
   forwardToPlausible(event, data);
+  forwardToApi(event, data);
   if (import.meta.env.DEV) console.debug("[onboarding]", event, data);
 }
 

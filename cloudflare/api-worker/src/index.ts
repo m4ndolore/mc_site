@@ -7,6 +7,7 @@ import { healthRouter } from './routes/health'
 import { guildRouter } from './routes/guild'
 import { buildersRouter } from './routes/builders'
 import { accessRouter } from './routes/access'
+import { analyticsRouter } from './routes/analytics'
 import { resolveRoute, proxyToLegacy } from './lib/strangler'
 
 const app = new Hono<{ Bindings: Env; Variables: AppVars }>()
@@ -18,6 +19,7 @@ app.route('/health', healthRouter)
 app.route('/guild', guildRouter)
 app.route('/builders', buildersRouter)
 app.route('/access', accessRouter)
+app.route('/analytics', analyticsRouter)
 
 // Catch-all: strangler proxy or 404
 app.all('*', async (c) => {

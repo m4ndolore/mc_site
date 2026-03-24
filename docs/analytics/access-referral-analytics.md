@@ -4,7 +4,8 @@
 Measure whether users entering via external referrals (especially Sigmablox) are routed to the correct post-login destination and convert through the access flow.
 
 ## Event Sink
-- Provider: Plausible (`window.plausible`)
+- Provider 1: Plausible (`window.plausible`)
+- Provider 2: MC API ingestion endpoint (`POST /analytics/access/events`)
 - Source file: `js/onboarding/MCOnboarding.jsx`
 - Trigger surface: `https://mergecombinator.com/access`
 
@@ -51,6 +52,34 @@ Measure whether users entering via external referrals (especially Sigmablox) are
 - Segment by `source=sigmablox` and inspect:
   - distribution of `return_bucket`
   - downstream conversion via `access_submit_success`
+
+## Admin Landing Zone (Guild / Mission Control)
+- API summary endpoint for admin-facing cards:
+  - `GET https://api.mergecombinator.com/analytics/access/summary?days=7`
+- Auth: Bearer token required (VIA OIDC), role level >= 3 (`trusted`/`admin`).
+- Response includes:
+  - totals (`access_entries`, `access_submit_success`, `conversion_rate_pct`)
+  - top `by_source`
+  - top `by_return_bucket`
+
+### Suggested Mission Control Card
+- Title: `Access Referral Funnel (7d)`
+- KPIs:
+  - entries
+  - submit_success
+  - conversion_rate_pct
+- Breakdowns:
+  - top referral sources
+  - destination bucket mix
+
+### Integration Example
+```ts
+const res = await fetch('https://api.mergecombinator.com/analytics/access/summary?days=7', {
+  headers: { Authorization: `Bearer ${token}` }
+})
+const body = await res.json()
+// body.data.totals / body.data.by_source / body.data.by_return_bucket
+```
 
 ## Operational Use
 - Weekly referral QA:
