@@ -55,6 +55,21 @@ function resolveAccessReturnTo() {
   }
 }
 
+function getAccessEntryMeta() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const context = (params.get("context") || params.get("ref") || "").toLowerCase() || null;
+    const source = (params.get("source") || "").toLowerCase() || null;
+    let referrerHost = null;
+    if (document.referrer) {
+      try { referrerHost = new URL(document.referrer).hostname; } catch { referrerHost = null; }
+    }
+    return { context, source, referrerHost };
+  } catch {
+    return { context: null, source: null, referrerHost: null };
+  }
+}
+
 function getReferralContextFromReturnTo(returnTo) {
   if (!returnTo) return null;
   const value = returnTo.toLowerCase();
@@ -993,6 +1008,7 @@ export default function MCOnboarding() {
   const loginReturnTo = resolveAccessReturnTo();
   const loginHref = buildLoginHref(loginReturnTo);
   const referralContext = getReferralContextFromReturnTo(loginReturnTo);
+  const entryMeta = getAccessEntryMeta();
 
   // Check if user is already authenticated — skip onboarding entirely
   useEffect(() => {
@@ -1009,6 +1025,18 @@ export default function MCOnboarding() {
         }
       } catch { /* auth check failed, continue normally */ }
     })();
+  }, []);
+
+  // Record initial access entry context for referral quality analytics.
+  useEffect(() => {
+    track("access_entry", {
+      context: entryMeta.context,
+      source: entryMeta.source,
+      referrerHost: entryMeta.referrerHost,
+      resolvedReturnTo: loginReturnTo,
+    });
+  // Intentionally fire once on initial render.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Persist state on every change (pre-submission only)
