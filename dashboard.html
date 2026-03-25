@@ -81,6 +81,40 @@
           </div>
         </section>
 
+        <section class="panel panel--access" aria-labelledby="panel-access-title">
+          <header class="panel__header">
+            <h2 class="panel__title" id="panel-access-title">Access Funnel (Admin)</h2>
+            <div class="panel__meta" id="panel-access-meta">Awaiting auth</div>
+          </header>
+          <div class="panel__content">
+            <div class="metrics metrics--access">
+              <article class="metric">
+                <div class="metric__label">Entries (7d)</div>
+                <div class="metric__value" id="metric-access-entries">--</div>
+                <div class="metric__delta">Total access starts</div>
+              </article>
+              <article class="metric">
+                <div class="metric__label">Submit Success</div>
+                <div class="metric__value" id="metric-access-conversions">--</div>
+                <div class="metric__delta">Completed submits</div>
+              </article>
+              <article class="metric">
+                <div class="metric__label">Conversion Rate</div>
+                <div class="metric__value" id="metric-access-conv-rate">--</div>
+                <div class="metric__delta">Entries to submits</div>
+              </article>
+              <article class="metric">
+                <div class="metric__label">Context Alignment</div>
+                <div class="metric__value" id="metric-access-align-rate">--</div>
+                <div class="metric__delta">Context to destination</div>
+              </article>
+            </div>
+            <div class="dashboard-list" id="access-source-list">
+              <div class="dashboard-list__item dashboard-list__item--empty">Admin summary unavailable.</div>
+            </div>
+          </div>
+        </section>
+
         <section class="panel panel--activity" aria-labelledby="panel-activity-title">
           <header class="panel__header">
             <h2 class="panel__title" id="panel-activity-title">Recent Builder Records</h2>
@@ -115,4 +149,3 @@
   <script type="module" src="js/dashboard.js"></script>
 </body>
 </html>
-

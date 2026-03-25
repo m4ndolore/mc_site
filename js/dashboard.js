@@ -15,6 +15,12 @@ const els = {
   metricMissions: document.getElementById('metric-missions'),
   metricDomains: document.getElementById('metric-domains'),
   metricRecent: document.getElementById('metric-recent'),
+  accessMeta: document.getElementById('panel-access-meta'),
+  accessEntries: document.getElementById('metric-access-entries'),
+  accessConversions: document.getElementById('metric-access-conversions'),
+  accessConvRate: document.getElementById('metric-access-conv-rate'),
+  accessAlignRate: document.getElementById('metric-access-align-rate'),
+  accessSourceList: document.getElementById('access-source-list'),
   activityList: document.getElementById('activity-list'),
   coverageList: document.getElementById('coverage-list')
 };
@@ -185,6 +191,67 @@ function updateLastRefresh(now = new Date()) {
   els.lastUpdated.textContent = formatTime(now);
 }
 
+function updateAccessState(message) {
+  if (els.accessMeta) els.accessMeta.textContent = message;
+}
+
+function updateAccessMetrics(summary) {
+  if (!els.accessEntries || !els.accessConversions || !els.accessConvRate || !els.accessAlignRate) return;
+
+  if (!summary) {
+    els.accessEntries.textContent = '--';
+    els.accessConversions.textContent = '--';
+    els.accessConvRate.textContent = '--';
+    els.accessAlignRate.textContent = '--';
+    if (els.accessSourceList) {
+      els.accessSourceList.innerHTML =
+        '<div class="dashboard-list__item dashboard-list__item--empty">Admin summary unavailable.</div>';
+    }
+    return;
+  }
+
+  const totals = summary.totals || {};
+  els.accessEntries.textContent = String(totals.access_entries ?? 0);
+  els.accessConversions.textContent = String(totals.access_submit_success ?? 0);
+  els.accessConvRate.textContent = `${Number(totals.conversion_rate_pct ?? 0).toFixed(2)}%`;
+  els.accessAlignRate.textContent = `${Number(totals.context_destination_alignment_pct ?? 0).toFixed(2)}%`;
+
+  const sourceRows = Array.isArray(summary.by_source) ? summary.by_source.slice(0, 5) : [];
+  if (!els.accessSourceList) return;
+  if (!sourceRows.length) {
+    els.accessSourceList.innerHTML =
+      '<div class="dashboard-list__item dashboard-list__item--empty">No referral entries captured in window.</div>';
+    return;
+  }
+
+  els.accessSourceList.innerHTML = sourceRows
+    .map((row) => `
+      <div class="dashboard-list__item">
+        <span>${escapeHtml(row.source || 'none')}</span>
+        <span>${escapeHtml(String(row.entries || 0))}</span>
+      </div>
+    `)
+    .join('');
+}
+
+async function fetchAccessSummary() {
+  const response = await fetch('/auth/me?include=access_summary&days=7', {
+    method: 'GET',
+    credentials: 'same-origin',
+    headers: { Accept: 'application/json' }
+  });
+
+  if (!response.ok) {
+    throw new Error(`Access summary failed (${response.status})`);
+  }
+
+  const body = await response.json();
+  if (!body?.authenticated) return { denied: true };
+  if (body?.access_summary_denied) return { denied: true };
+  if (body?.access_summary_error) throw new Error(`Access summary include failed (${body.access_summary_error})`);
+  return { denied: false, data: body?.access_summary || null };
+}
+
 function escapeHtml(value) {
   if (value == null) return '';
   const div = document.createElement('div');
@@ -194,10 +261,14 @@ function escapeHtml(value) {
 
 async function refreshDashboard() {
   try {
-    const [auth, companiesData, filters] = await Promise.all([
+    const [auth, companiesData, filters, accessSummaryResult] = await Promise.all([
       checkAuth(),
       fetchCompanies({ limit: 200 }),
-      fetchFilterOptions().catch(() => null)
+      fetchFilterOptions().catch(() => null),
+      fetchAccessSummary().catch((error) => {
+        console.warn('[Dashboard] Access summary unavailable:', error);
+        return null;
+      })
     ]);
 
     updateAuthState(auth);
@@ -226,12 +297,30 @@ async function refreshDashboard() {
     updateActivity(recentResult);
     updateCoverage(coverage);
     updateLastRefresh(new Date());
+
+    if (!accessSummaryResult) {
+      updateAccessState('Admin summary unavailable');
+      updateAccessMetrics(null);
+      return;
+    }
+
+    if (accessSummaryResult.denied) {
+      updateAccessState('Admin-only');
+      updateAccessMetrics(null);
+      return;
+    }
+
+    const ontologyVersion = accessSummaryResult.data?.ontology?.version || 'unknown';
+    updateAccessState(`Ontology: ${ontologyVersion} · 7d`);
+    updateAccessMetrics(accessSummaryResult.data);
   } catch (error) {
     console.error('[Dashboard] Failed to refresh:', error);
     if (els.activityList) {
       els.activityList.innerHTML =
         '<li class="activity-list__item activity-list__item--empty">Data unavailable. Retry on next refresh.</li>';
     }
+    updateAccessState('Unavailable');
+    updateAccessMetrics(null);
   }
 }
 
@@ -242,4 +331,3 @@ function init() {
 }
 
 init();
-
