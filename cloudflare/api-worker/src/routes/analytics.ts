@@ -45,11 +45,21 @@ analytics.post('/access/events', async (c) => {
     return c.json(err('INVALID_INPUT', 'Unsupported event', { request_id: requestId }), 400)
   }
 
+  const data = body.data || {}
+  const schemaVersion = typeof data.schema_version === 'string' ? data.schema_version.trim() : ''
+  const sessionId = typeof data.session_id === 'string' ? data.session_id.trim() : ''
+  const journeyId = typeof data.journey_id === 'string' ? data.journey_id.trim() : ''
+  if (!schemaVersion || !sessionId || !journeyId) {
+    return c.json(err('INVALID_INPUT', 'Missing required ontology fields: schema_version, session_id, journey_id', {
+      request_id: requestId,
+    }), 400)
+  }
+
   try {
     const { pool } = getDb(c.env.HYPERDRIVE)
     await writeAccessEvent(
       pool,
-      { event: eventName, data: body.data || {}, page: body.page },
+      { event: eventName, data, page: body.page },
       { origin, userAgent: c.req.header('User-Agent') || null }
     )
     return c.json(ok({ accepted: true, stored: true }, { request_id: requestId }), 202)
