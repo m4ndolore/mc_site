@@ -51,6 +51,7 @@ const SESSION_COOKIE_NAME = "mc_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 const LAST_CONSOLE_COOKIE_NAME = "mc_last_console";
 const LAST_CONSOLE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
+const DEFAULT_ADMIN_GROUPS = ["via-admins", "sigmablox-admins", "mc-admins", "admin"];
 
 /**
  * Generate a random string for PKCE and state
@@ -259,6 +260,23 @@ function getLastConsoleDestination(request) {
   if (value === "control") return "/control";
   if (value === "app") return `https://guild.mergecombinator.com/`;
   return `https://guild.mergecombinator.com/`;
+}
+
+function getAdminGroups(env) {
+  return (env.CONTROL_ADMIN_GROUPS || "")
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean)
+    .concat(DEFAULT_ADMIN_GROUPS)
+}
+
+function isAdminSession(session, env) {
+  const groups = Array.isArray(session?.user?.groups)
+    ? session.user.groups.map((value) => String(value || "").trim().toLowerCase()).filter(Boolean)
+    : []
+  if (!groups.length) return false
+  const adminGroups = new Set(getAdminGroups(env))
+  return groups.some((group) => adminGroups.has(group))
 }
 
 export function createLastConsoleCookie(value, env, isSecure) {
@@ -482,6 +500,7 @@ async function handleLogout(request, env) {
  * Handle /auth/me - Return current user info
  */
 async function handleMe(request, env) {
+  const url = new URL(request.url);
   const cookies = parseCookies(request);
   const sessionCookie = cookies[SESSION_COOKIE_NAME];
 
@@ -501,16 +520,94 @@ async function handleMe(request, env) {
     });
   }
 
-  return new Response(
-    JSON.stringify({
-      authenticated: true,
-      user: session.user,
-    }),
-    {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
+  const responseBody = {
+    authenticated: true,
+    user: session.user,
+  };
+
+  const include = (url.searchParams.get("include") || "").trim().toLowerCase();
+  if (include === "access_summary") {
+    if (isAdminSession(session, env) && session.accessToken) {
+      const rawDays = Number.parseInt(url.searchParams.get("days") || "7", 10);
+      const days = Number.isFinite(rawDays) ? Math.max(1, Math.min(30, rawDays)) : 7;
+      const apiOrigin = env.MC_API_ORIGIN || "https://api.mergecombinator.com";
+      const upstreamUrl = `${apiOrigin}/analytics/access/summary?days=${days}`;
+
+      try {
+        const upstream = await fetch(upstreamUrl, {
+          headers: {
+            Authorization: `Bearer ${session.accessToken}`,
+            Accept: "application/json",
+          },
+        });
+        if (upstream.ok) {
+          const payload = await upstream.json();
+          responseBody.access_summary = payload?.data || null;
+        } else {
+          responseBody.access_summary_error = `upstream_${upstream.status}`;
+        }
+      } catch (error) {
+        console.error("access_summary include failed", error);
+        responseBody.access_summary_error = "upstream_error";
+      }
+    } else {
+      responseBody.access_summary_denied = true;
     }
-  );
+  }
+
+  return new Response(JSON.stringify(responseBody), {
+    status: 200,
+    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+  });
+}
+
+/**
+ * Handle /auth/admin/access-summary - admin proxy to API analytics summary.
+ */
+async function handleAdminAccessSummary(request, env) {
+  const session = await getSession(request, env)
+  if (!session || !session.accessToken) {
+    return new Response(JSON.stringify({ error: { code: "UNAUTHORIZED", message: "Authentication required" } }), {
+      status: 401,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+
+  if (!isAdminSession(session, env)) {
+    return new Response(JSON.stringify({ error: { code: "FORBIDDEN", message: "Admin access required" } }), {
+      status: 403,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+
+  const requestUrl = new URL(request.url)
+  const rawDays = Number.parseInt(requestUrl.searchParams.get("days") || "7", 10)
+  const days = Number.isFinite(rawDays) ? Math.max(1, Math.min(30, rawDays)) : 7
+  const apiOrigin = env.MC_API_ORIGIN || "https://api.mergecombinator.com"
+  const upstreamUrl = `${apiOrigin}/analytics/access/summary?days=${days}`
+
+  try {
+    const upstream = await fetch(upstreamUrl, {
+      headers: {
+        Authorization: `Bearer ${session.accessToken}`,
+        Accept: "application/json",
+      },
+    })
+    const body = await upstream.text()
+    return new Response(body, {
+      status: upstream.status,
+      headers: {
+        "Content-Type": upstream.headers.get("content-type") || "application/json",
+        "Cache-Control": "no-store",
+      },
+    })
+  } catch (error) {
+    console.error("admin analytics proxy failed", error)
+    return new Response(JSON.stringify({ error: { code: "UPSTREAM_ERROR", message: "Analytics summary unavailable" } }), {
+      status: 502,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
 }
 
 /**
@@ -562,6 +659,10 @@ export async function handleAuthRoute(request, env) {
 
   if (path === "/auth/me") {
     return handleMe(request, env);
+  }
+
+  if (path === "/auth/admin/access-summary") {
+    return handleAdminAccessSummary(request, env);
   }
 
   return null;
