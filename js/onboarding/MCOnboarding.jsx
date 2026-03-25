@@ -6,6 +6,9 @@ const LEGACY_ENDPOINT = "https://api.sigmablox.com/api/access-request";
 const STORAGE_KEY = "mc-onboarding-state";
 const COMPLETED_KEY = "mc-onboarding-completed";
 const TURNSTILE_SITE_KEY = document.body?.dataset?.turnstileSiteKey || "";
+const ANALYTICS_SCHEMA_VERSION = "access_ontology_v1";
+const ACCESS_SESSION_KEY = "mc-access-session-id";
+const ACCESS_JOURNEY_KEY = "mc-access-journey-id";
 const CONTEXT_RETURN_TO = {
   guild: "https://guild.mergecombinator.com/",
   app: "https://guild.mergecombinator.com/",
@@ -13,6 +16,43 @@ const CONTEXT_RETURN_TO = {
   combine: "/combine",
   wingman: "/wingman",
 };
+
+let analyticsContext = {
+  schema_version: ANALYTICS_SCHEMA_VERSION,
+  session_id: "unknown",
+  journey_id: "unknown",
+  context: "none",
+  source: "none",
+  referrerHost: null,
+  return_bucket: "unknown",
+};
+
+function generateId(prefix) {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `${prefix}-${crypto.randomUUID()}`;
+  }
+  return `${prefix}-${Math.random().toString(36).slice(2)}-${Date.now()}`;
+}
+
+function getOrCreateSessionStorageId(key, prefix) {
+  try {
+    const existing = sessionStorage.getItem(key);
+    if (existing) return existing;
+    const next = generateId(prefix);
+    sessionStorage.setItem(key, next);
+    return next;
+  } catch {
+    return generateId(prefix);
+  }
+}
+
+function setAnalyticsContext(next) {
+  analyticsContext = {
+    ...analyticsContext,
+    ...next,
+    schema_version: ANALYTICS_SCHEMA_VERSION,
+  };
+}
 
 // ─── ANALYTICS ────────────────────────────────────────────────────────────────
 function safePlausible(eventName, props) {
@@ -24,9 +64,14 @@ function safePlausible(eventName, props) {
 
 function sendAccessEventToApi(event, data) {
   if (typeof window === "undefined") return;
+  const envelope = {
+    ...analyticsContext,
+    ...data,
+    event_ts: new Date().toISOString(),
+  };
   const payload = {
     event,
-    data,
+    data: envelope,
     page: window.location.pathname,
   };
 
@@ -109,8 +154,9 @@ function forwardToApi(event, data) {
 function track(event, data = {}) {
   const detail = { event, timestamp: Date.now(), ...data };
   window.dispatchEvent(new CustomEvent("mc:onboarding", { detail }));
-  forwardToPlausible(event, data);
-  forwardToApi(event, data);
+  const enriched = { ...analyticsContext, ...data };
+  forwardToPlausible(event, enriched);
+  forwardToApi(event, enriched);
   if (import.meta.env.DEV) console.debug("[onboarding]", event, data);
 }
 
@@ -1102,6 +1148,19 @@ export default function MCOnboarding() {
   const loginHref = buildLoginHref(loginReturnTo);
   const referralContext = getReferralContextFromReturnTo(loginReturnTo);
   const entryMeta = getAccessEntryMeta();
+  const sessionId = getOrCreateSessionStorageId(ACCESS_SESSION_KEY, "access-session");
+  const journeyId = getOrCreateSessionStorageId(ACCESS_JOURNEY_KEY, "access-journey");
+
+  useEffect(() => {
+    setAnalyticsContext({
+      session_id: sessionId,
+      journey_id: journeyId,
+      context: entryMeta.context || referralContext || "none",
+      source: entryMeta.source || "none",
+      referrerHost: entryMeta.referrerHost || null,
+      return_bucket: toReturnBucket(loginReturnTo),
+    });
+  }, [sessionId, journeyId, entryMeta.context, entryMeta.source, entryMeta.referrerHost, referralContext, loginReturnTo]);
 
   // Check if user is already authenticated — skip onboarding entirely
   useEffect(() => {
