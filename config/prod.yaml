@@ -18,22 +18,12 @@ SAM_VALIDATOR_URL: https://sam-validator.defensebuilders.workers.dev
 # GHOST_PUBLIC_URL: https://www.sigmablox.com
 # GHOST_INTERNAL_URL: https://www.sigmablox.com
 
-# OAuth Client
-OAUTH_CLIENT_ID: PLACEHOLDER_OAUTH_CLIENT_ID_PROD
-OAUTH_REDIRECT_URI: PLACEHOLDER_PROD_PUBLIC_URL/auth/callback
-
 # OIDC - Production
-MC_OAUTH_CLIENT_ID: mc-web-prod
-OIDC_CLIENT_ID: sigmablox-web-prod
-OIDC_REDIRECT_URI: https://www.sigmablox.com/auth/callback
-
-# OAuth Client
-OAUTH_CLIENT_ID: VsCbcc6DuDjFV5aKzXPpSc4UKACuonWOvk6O9iyc
-OAUTH_REDIRECT_URI: https://www.sigmablox.com/auth/callback
+# Single client ID for all MC auth flows (VIA provider: defense-builders)
+MC_OAUTH_CLIENT_ID: guild-oidc
 
 # MongoDB
 MONGODB_DB_NAME: defense_builders_mc
-# MONGODB_DB_NAME: sigmablox_users
 
 # Ghost - MUST use MySQL in production
 # GHOST_DB_CLIENT: mysql

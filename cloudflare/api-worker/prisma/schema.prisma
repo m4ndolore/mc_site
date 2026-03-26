@@ -58,3 +58,24 @@ model OnboardingProfile {
   @@index([viaUserId])
   @@map("onboarding_profiles")
 }
+
+model Problem {
+  id           String   @id @default(uuid()) @db.Uuid
+  title        String
+  description  String
+  domain       String
+  status       String   @default("open")
+  ownerId      String   @map("owner_id")
+  ownerName    String   @map("owner_name")
+  ownerEmail   String?  @map("owner_email")
+  requirements String?
+  tags         String[] @default([])
+  matchCount   Int      @default(0) @map("match_count")
+  createdAt    DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([status])
+  @@index([domain])
+  @@index([ownerId])
+  @@map("problems")
+}

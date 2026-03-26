@@ -12,6 +12,13 @@ const NATIVE_ROUTES: Array<{ method: string; pattern: RegExp }> = [
   { method: 'GET', pattern: /^\/builders\/coaches$/ },
   { method: 'GET', pattern: /^\/builders\/coaches\/[^/]+$/ },
   { method: 'POST', pattern: /^\/access\/provision$/ },
+  { method: 'GET', pattern: /^\/problems$/ },
+  { method: 'GET', pattern: /^\/problems\/[^/]+$/ },
+  { method: 'POST', pattern: /^\/problems$/ },
+  { method: 'PATCH', pattern: /^\/problems\/[^/]+$/ },
+  { method: 'DELETE', pattern: /^\/problems\/[^/]+$/ },
+  { method: 'GET', pattern: /^\/guild\/users$/ },
+  { method: 'PATCH', pattern: /^\/guild\/users\/[^/]+\/role$/ },
 ]
 
 export function resolveRoute(method: string, path: string): RouteTarget {

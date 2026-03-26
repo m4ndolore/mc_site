@@ -30,7 +30,7 @@ const HOP_BY_HOP_HEADERS = new Set([
 ]);
 
 const CONSOLE_PATHS = new Set(["/control"]);
-const DEFAULT_ADMIN_GROUPS = ["via-admins", "sigmablox-admins"];
+const DEFAULT_ADMIN_GROUPS = ["mc-admins"];
 
 // Platform convergence: canonical redirect targets
 // guild.mergecombinator.com = authenticated platform
@@ -184,7 +184,6 @@ const SHIM_HTML = `
 const REQUIRED_ORIGIN_VARS = [
   "MC_PAGES_ORIGIN",
   "SIGMABLOX_ORIGIN",
-  "CONTROL_ORIGIN",
 ];
 
 function getOrigins(env) {
@@ -195,7 +194,6 @@ function getOrigins(env) {
   return {
     mcPages: env.MC_PAGES_ORIGIN,
     sigmablox: env.SIGMABLOX_ORIGIN,
-    control: env.CONTROL_ORIGIN,
     opportunities: env.OPPORTUNITIES_PAGES_URL || "https://mc-opportunities.pages.dev",
   };
 }
@@ -205,8 +203,8 @@ function getRoutes(origins) {
   // /app/*, /app/wingman/*, and /api/* are now 301 redirects
   // handled in step 1.5 before route matching. Only proxy routes remain here.
   // /wingman is served by Pages (wingman.html) — not redirected.
+  // /control no longer proxied — redirected to Guild /admin in step 3
   return [
-    { prefix: "/control", origin: origins.control, stripPrefix: true },
     { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
     { prefix: "/opportunities", origin: origins.opportunities, stripPrefix: true, preserveRoot: true },
   ];
@@ -442,7 +440,7 @@ export default {
       return Response.redirect(`https://${CANONICAL_HOST}/blog`, 301);
     }
     if (url.pathname === "/admin-console" || url.pathname.startsWith("/admin-console/")) {
-      return Response.redirect(`https://${CANONICAL_HOST}/control`, 302);
+      return Response.redirect(`https://${GUILD_HOST}/admin`, 302);
     }
     if (url.pathname.startsWith("/app/wingman")) {
       if (!wingmanEnabled) {
@@ -473,19 +471,11 @@ export default {
       if (authResponse) return authResponse;
     }
 
-    // 3) Console gating (/control only — /app/* and /wingman are now redirects)
+    // 3) Console gating: /control now redirects to Guild /admin (no more Cloud Run proxy)
     if (isConsolePath(url.pathname)) {
-      const session = await getSession(request, env);
-      if (!session) return createLoginRedirect(request);
-
-      const isControl = url.pathname === "/control" || url.pathname.startsWith("/control/");
-      if (isControl && !isAdminSession(session, env)) {
-        // Preserve deep-link context (path suffix + query) when redirecting non-admins to Guild
-        const suffix = url.pathname.slice("/control".length) || "/";
-        const target = `https://${GUILD_HOST}${suffix}${url.search}`;
-        const redirect = Response.redirect(target, 302);
-        return withLastConsoleCookie(redirect, "app", env, request);
-      }
+      const suffix = url.pathname.slice("/control".length) || "";
+      const target = `https://${GUILD_HOST}/admin${suffix}${url.search}`;
+      return Response.redirect(target, 302);
     }
 
     // 4) Route matching

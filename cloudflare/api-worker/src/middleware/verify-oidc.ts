@@ -29,7 +29,8 @@ export const verifyOidc = createMiddleware<{ Bindings: Env; Variables: AppVars }
     }
 
     const issuerAllowlist = c.env.OIDC_ISSUER_ALLOWLIST.split(',').map(s => s.trim())
-    const claimError = validateClaims(payload, issuerAllowlist, c.env.OIDC_AUDIENCE)
+    const audienceAllowlist = c.env.OIDC_AUDIENCE.split(',').map(s => s.trim())
+    const claimError = validateClaims(payload, issuerAllowlist, audienceAllowlist)
 
     if (claimError === 'Token expired') {
       c.header('WWW-Authenticate', 'Bearer error="invalid_token"')

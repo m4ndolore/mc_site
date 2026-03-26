@@ -10,7 +10,8 @@
  *
  * Configuration:
  *   - OIDC_ISSUER_URL: from wrangler.toml (must align with config/*.yaml)
- *   - MC_OAUTH_CLIENT_ID, MC_OAUTH_CLIENT_SECRET, SESSION_SECRET: from .dev.vars (symlink to .env.local)
+ *   - MC_OAUTH_CLIENT_ID: public var in wrangler.toml [vars] (guild-oidc)
+ *   - MC_OAUTH_CLIENT_SECRET, SESSION_SECRET: secrets from .dev.vars (symlink to .env.local)
  *
  * See wrangler.toml header and docs/ai/RULES.md for configuration pattern.
  */
@@ -51,7 +52,7 @@ const SESSION_COOKIE_NAME = "mc_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 const LAST_CONSOLE_COOKIE_NAME = "mc_last_console";
 const LAST_CONSOLE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
-const DEFAULT_ADMIN_GROUPS = ["via-admins", "sigmablox-admins", "mc-admins", "admin"];
+const DEFAULT_ADMIN_GROUPS = ["mc-admins"];
 
 /**
  * Generate a random string for PKCE and state
