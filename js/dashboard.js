@@ -10,6 +10,7 @@ const RECENT_WINDOW_DAYS = 7;
 const els = {
   lastUpdated: document.getElementById('dashboard-last-updated'),
   authState: document.getElementById('panel-auth-state'),
+  accessPanel: document.querySelector('.panel--access'),
   metricBuilders: document.getElementById('metric-builders'),
   metricBuildersDelta: document.getElementById('metric-builders-delta'),
   metricMissions: document.getElementById('metric-missions'),
@@ -108,8 +109,15 @@ function uniqueCount(values) {
 function updateAuthState(auth) {
   if (!els.authState) return;
   const label = auth.authenticated ? 'authenticated' : 'anonymous';
-  const actor = auth.user?.email || auth.user?.name || 'operator';
+  const actor = auth.authenticated
+    ? (auth.user?.email || auth.user?.name || 'operator')
+    : 'sign in required for admin metrics';
   els.authState.textContent = `Auth: ${label} (${actor})`;
+}
+
+function setAccessPanelVisible(visible) {
+  if (!els.accessPanel) return;
+  els.accessPanel.style.display = visible ? '' : 'none';
 }
 
 function updateMetrics({ totalBuilders, missionsCount, domainsCount, recentCount, hasTimestamps }) {
@@ -262,7 +270,7 @@ function escapeHtml(value) {
 async function refreshDashboard() {
   try {
     const [auth, companiesData, filters, accessSummaryResult] = await Promise.all([
-      checkAuth(),
+      checkAuth(true),
       fetchCompanies({ limit: 200 }),
       fetchFilterOptions().catch(() => null),
       fetchAccessSummary().catch((error) => {
@@ -299,17 +307,20 @@ async function refreshDashboard() {
     updateLastRefresh(new Date());
 
     if (!accessSummaryResult) {
+      setAccessPanelVisible(false);
       updateAccessState('Admin summary unavailable');
       updateAccessMetrics(null);
       return;
     }
 
     if (accessSummaryResult.denied) {
+      setAccessPanelVisible(false);
       updateAccessState('Admin-only');
       updateAccessMetrics(null);
       return;
     }
 
+    setAccessPanelVisible(true);
     const ontologyVersion = accessSummaryResult.data?.ontology?.version || 'unknown';
     updateAccessState(`Ontology: ${ontologyVersion} · 7d`);
     updateAccessMetrics(accessSummaryResult.data);
@@ -319,6 +330,7 @@ async function refreshDashboard() {
       els.activityList.innerHTML =
         '<li class="activity-list__item activity-list__item--empty">Data unavailable. Retry on next refresh.</li>';
     }
+    setAccessPanelVisible(false);
     updateAccessState('Unavailable');
     updateAccessMetrics(null);
   }
