@@ -80,7 +80,7 @@ const CLOCK_SKEW_SECONDS = 30
 export function validateClaims(
   payload: JwtPayload,
   issuerAllowlist: string[],
-  audience: string
+  audienceAllowlist: string[]
 ): string | null {
   const now = Math.floor(Date.now() / 1000)
 
@@ -88,8 +88,8 @@ export function validateClaims(
     return 'Invalid issuer'
   }
 
-  const audList = Array.isArray(payload.aud) ? payload.aud : [payload.aud]
-  if (!audList.includes(audience)) {
+  const tokenAud = Array.isArray(payload.aud) ? payload.aud : [payload.aud]
+  if (!tokenAud.some(a => audienceAllowlist.includes(a!))) {
     return 'Invalid audience'
   }
 
