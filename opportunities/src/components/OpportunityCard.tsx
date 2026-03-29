@@ -3,6 +3,8 @@ import type { Opportunity } from "../types/opportunity";
 interface OpportunityCardProps {
   opportunity: Opportunity;
   onClick: (opportunity: Opportunity) => void;
+  onToggleSave?: (opportunity: Opportunity) => void;
+  isSaved?: boolean;
 }
 
 function stripHtml(text: string | undefined): string {
@@ -46,9 +48,25 @@ function formatDate(dateString: string | undefined): string {
   }
 }
 
+function isHumanReadableSourceUrl(url: string | undefined): boolean {
+  if (!url) return false;
+  return !/\/topics\/api\/public\/topics\/.+\/details$/i.test(url);
+}
+
+function getOpportunityHref(opportunity: Opportunity): string {
+  if (isHumanReadableSourceUrl(opportunity.url)) return opportunity.url as string;
+  return `/opportunities/${opportunity.id || opportunity.topicId}`;
+}
+
+function getOpportunityLinkLabel(opportunity: Opportunity): string {
+  return isHumanReadableSourceUrl(opportunity.url) ? "Source" : "Summary";
+}
+
 function OpportunityCard({
   opportunity,
   onClick,
+  onToggleSave,
+  isSaved = false,
 }: OpportunityCardProps): React.JSX.Element {
   const sourceLabel = opportunity.source.toUpperCase();
   const codeLabel = normalizeTopicCode(opportunity.topicCode);
@@ -63,6 +81,8 @@ function OpportunityCard({
   };
 
   const deadline = opportunity.responseDeadline ?? opportunity.closeDate;
+  const linkHref = getOpportunityHref(opportunity);
+  const isExternalLink = isHumanReadableSourceUrl(opportunity.url);
 
   return (
     <>
@@ -88,6 +108,34 @@ function OpportunityCard({
           justify-content: space-between;
           gap: 0.5rem;
           flex-wrap: wrap;
+        }
+        .opp-card__meta-main {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+          min-width: 0;
+        }
+        .opp-card__save-btn {
+          margin-left: auto;
+          padding: 0.3rem 0.65rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: var(--mc-text-muted);
+          background: var(--mc-bg-tertiary);
+          border: 1px solid var(--mc-border);
+          border-radius: 2px;
+          cursor: pointer;
+          transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+        }
+        .opp-card__save-btn:hover {
+          border-color: var(--mc-accent);
+          color: var(--mc-text);
+        }
+        .opp-card__save-btn--active {
+          border-color: var(--mc-accent);
+          color: var(--mc-accent);
+          background: rgba(59, 130, 246, 0.12);
         }
         .opp-card__topic-code {
           font-size: 0.75rem;
@@ -164,9 +212,24 @@ function OpportunityCard({
         }}
       >
         <div className="opp-card__meta">
-          <span className="opp-card__source">{sourceLabel}</span>
-          {codeLabel && <span className="opp-card__topic-code">{codeLabel}</span>}
-          <span className="opp-card__component">{opportunity.component}</span>
+          <div className="opp-card__meta-main">
+            <span className="opp-card__source">{sourceLabel}</span>
+            {codeLabel && <span className="opp-card__topic-code">{codeLabel}</span>}
+            <span className="opp-card__component">{opportunity.component}</span>
+          </div>
+          {onToggleSave && (
+            <button
+              className={`opp-card__save-btn${isSaved ? " opp-card__save-btn--active" : ""}`}
+              type="button"
+              aria-pressed={isSaved}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleSave(opportunity);
+              }}
+            >
+              {isSaved ? "Saved" : "Save"}
+            </button>
+          )}
         </div>
 
         <h3 className="opp-card__title">{opportunity.topicTitle}</h3>
@@ -178,17 +241,16 @@ function OpportunityCard({
         <div className="opp-card__footer">
           <div>
             <span className="opp-card__status">{opportunity.topicStatus}</span>
-            {opportunity.url && (
-              <a
-                href={opportunity.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="opp-card__detail-link"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Source
-              </a>
-            )}
+            <a
+              href={linkHref}
+              {...(isExternalLink
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+              className="opp-card__detail-link"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {getOpportunityLinkLabel(opportunity)}
+            </a>
           </div>
           <div>
             {deadline && (

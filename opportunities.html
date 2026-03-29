@@ -1,195 +1,66 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <script>
-    // FOUC prevention: apply theme before first paint
-    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
-  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SBIR, STTR, and defense contract opportunities for national security builders. Track grants, solicitations, and transition-ready pathways.">
-
+  <meta
+    name="description"
+    content="Solicitations, SBIR/STTR opportunities, events, and defense market intelligence for national security builders."
+  >
   <link rel="canonical" href="https://mergecombinator.com/opportunities">
-  <!-- Open Graph -->
-  <meta property="og:title" content="Opportunities — Merge Combinator">
-  <meta property="og:description" content="SBIR, STTR, and defense contract opportunities for national security builders.">
+  <meta property="og:title" content="Opportunities | Merge Combinator">
+  <meta
+    property="og:description"
+    content="Solicitations, SBIR/STTR opportunities, events, and defense market intelligence for national security builders."
+  >
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
   <meta property="og:url" content="https://mergecombinator.com/opportunities">
-
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Opportunities — Merge Combinator">
-  <meta name="twitter:description" content="SBIR, STTR, and defense contract opportunities for national security builders.">
+  <meta name="twitter:title" content="Opportunities | Merge Combinator">
+  <meta
+    name="twitter:description"
+    content="Solicitations, SBIR/STTR opportunities, events, and defense market intelligence for national security builders."
+  >
   <meta name="twitter:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <title>Opportunities | Merge Combinator</title>
 
-  <title>SBIR, STTR, and Defense Opportunities — Merge Combinator</title>
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
   <link rel="icon" type="image/png" sizes="16x16" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
   <link rel="apple-touch-icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital@1&display=swap"
+    rel="stylesheet"
+  >
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="styles/opportunities.css">
-  <link rel="stylesheet" href="styles/light-theme.css">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
     "name": "Opportunities",
     "url": "https://mergecombinator.com/opportunities",
-    "description": "SBIR, STTR, and defense contract opportunities for national security builders.",
-    "about": [
-      "SBIR",
-      "STTR",
-      "defense contracts",
-      "national security innovation"
-    ]
+    "description": "Solicitations, SBIR/STTR opportunities, events, and defense market intelligence for national security builders.",
+    "about": ["SBIR", "STTR", "defense solicitations", "national security innovation"]
   }
   </script>
 </head>
-<body class="coming-soon">
-  <!-- Navigation -->
-  <div id="mc-navbar"></div>
-
-  <!-- Hero Section -->
-  <section class="coming-soon__hero">
-    <div class="coming-soon__content">
-      <span class="coming-soon__badge">Coming Soon</span>
-      <h1 class="coming-soon__title">Opportunities</h1>
-      <p class="coming-soon__subtitle">
-        Discover defense contracts, grants, and partnership opportunities curated for builders in the national security space. We're building something special.
+<body>
+  <div id="root"></div>
+  <noscript>
+    <main style="max-width: 900px; margin: 40px auto; padding: 0 16px; font-family: Inter, Arial, sans-serif;">
+      <h1>Defense Opportunities</h1>
+      <p>Track solicitations, events, and market intelligence for national security builders.</p>
+      <p>
+        Direct paths:
+        <a href="/opportunities/sbir"> SBIR opportunities</a>,
+        <a href="/opportunities/sttr"> STTR opportunities</a>,
+        <a href="/knowledge/sbir"> SBIR/STTR guidance</a>.
       </p>
-      <a href="/builders" class="coming-soon__cta">
-        Join Defense Builders
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-
-      <div class="coming-soon__features">
-        <div class="coming-soon__feature">
-          <svg class="coming-soon__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-          </svg>
-          <div class="coming-soon__feature-title">Contracts</div>
-          <div class="coming-soon__feature-text">DoD & IC opportunities</div>
-        </div>
-        <div class="coming-soon__feature">
-          <svg class="coming-soon__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <div class="coming-soon__feature-title">Grants</div>
-          <div class="coming-soon__feature-text">SBIR, STTR & more</div>
-        </div>
-        <div class="coming-soon__feature">
-          <svg class="coming-soon__feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-          </svg>
-          <div class="coming-soon__feature-title">Partnerships</div>
-          <div class="coming-soon__feature-text">Prime & government</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="opportunities-sbir">
-    <div class="container">
-      <div class="opportunities-sbir__card">
-        <span class="opportunities-sbir__eyebrow">SBIR / STTR Signal</span>
-        <h2 class="opportunities-sbir__title">Use SBIR and STTR as transition tools, not just grant programs.</h2>
-        <p class="opportunities-sbir__text">
-          The old SBIR subdomain is deprecated. We now maintain SBIR/STTR resources and active opportunity tracking in one place so builders can move from topic discovery to mission-aligned execution faster.
-        </p>
-        <div class="opportunities-sbir__actions">
-          <a href="/knowledge/sbir" class="btn btn--primary">Open SBIR / STTR Guidance</a>
-          <a href="/access" class="btn btn--ghost">Get Matched To Opportunities</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Monthly Outlook -->
-  <section class="outlook-section">
-    <div class="container">
-      <div class="outlook-header">
-        <div class="outlook-header__label">
-          <span class="outlook-header__eyebrow">Monthly Outlook</span>
-          <h2 class="outlook-header__title">Upcoming Events</h2>
-        </div>
-        <span class="outlook-header__month" id="outlook-month"></span>
-      </div>
-      <div class="outlook-grid" id="outlook-grid">
-        <!-- Populated by outlook.js -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__grid">
-        <div class="footer__brand">
-          <a href="/" class="footer__logo">
-            <span class="footer__logo-text">
-              <span class="footer__logo-merge">Merge</span>
-              <span class="footer__logo-combinator">Combinator</span>
-            </span>
-            <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="Merge arrows" class="footer__logo-icon">
-          </a>
-          <p class="footer__tagline">The builder-led venture studio for national security.</p>
-        </div>
-
-        <div class="footer__links">
-          <div class="footer__column">
-            <h4 class="footer__heading">Platform</h4>
-            <ul class="footer__list">
-              <li><a href="/programs/the-combine">Combine</a></li>
-              <li><a href="/builders">Defense Builders</a></li>
-              <li><a href="/opportunities">Opportunities</a></li>
-              <li><a href="/merch">Merch</a></li>
-            </ul>
-          </div>
-
-          <div class="footer__column">
-            <h4 class="footer__heading">Company</h4>
-            <ul class="footer__list">
-              <li><a href="/about">About</a></li>
-              <li><a href="/about#faq">FAQ</a></li>
-              <li><a href="/#engage">Contact</a></li>
-              <li><a href="/builders">Careers</a></li>
-            </ul>
-          </div>
-
-          <div class="footer__column">
-            <h4 class="footer__heading">Resources</h4>
-            <ul class="footer__list">
-              <li><a href="/blog">Blog</a></li>
-              <li><a href="/portfolio">Case Studies</a></li>
-              <li><a href="/knowledge">Knowledge</a></li>
-              <li><a href="/ai/overview">AI Overview</a></li>
-              <li><a href="https://docs.mergecombinator.com">Docs</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer__bottom">
-        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
-        <p class="footer__location">Honolulu • Seattle • Las Vegas</p>
-      </div>
-    </div>
-  </footer>
-
-  <script type="module" src="script.js"></script>
-  <script type="module" src="js/navbar.js"></script>
-  <script type="module" src="js/opportunities/outlook.js"></script>
+    </main>
+  </noscript>
+  <script type="module" src="/opportunities/src/main.tsx"></script>
 </body>
 </html>

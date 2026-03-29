@@ -25,6 +25,9 @@ let analyticsContext = {
   source: "none",
   referrerHost: null,
   return_bucket: "unknown",
+  opportunity_id: null,
+  opportunity_code: null,
+  opportunity_title: null,
 };
 
 function generateId(prefix) {
@@ -206,6 +209,19 @@ function getAccessEntryMeta() {
     return { context, source, referrerHost };
   } catch {
     return { context: null, source: null, referrerHost: null };
+  }
+}
+
+function getOpportunityEntryContext() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("opp_id") || null;
+    const code = params.get("opp_code") || null;
+    const title = params.get("opp_title") || null;
+    if (!id && !code && !title) return null;
+    return { id, code, title };
+  } catch {
+    return null;
   }
 }
 
@@ -1148,6 +1164,7 @@ export default function MCOnboarding() {
   const loginHref = buildLoginHref(loginReturnTo);
   const referralContext = getReferralContextFromReturnTo(loginReturnTo);
   const entryMeta = getAccessEntryMeta();
+  const opportunityContext = getOpportunityEntryContext();
   const sessionId = getOrCreateSessionStorageId(ACCESS_SESSION_KEY, "access-session");
   const journeyId = getOrCreateSessionStorageId(ACCESS_JOURNEY_KEY, "access-journey");
 
@@ -1159,8 +1176,11 @@ export default function MCOnboarding() {
       source: entryMeta.source || "none",
       referrerHost: entryMeta.referrerHost || null,
       return_bucket: toReturnBucket(loginReturnTo),
+      opportunity_id: opportunityContext?.id || null,
+      opportunity_code: opportunityContext?.code || null,
+      opportunity_title: opportunityContext?.title || null,
     });
-  }, [sessionId, journeyId, entryMeta.context, entryMeta.source, entryMeta.referrerHost, referralContext, loginReturnTo]);
+  }, [sessionId, journeyId, entryMeta.context, entryMeta.source, entryMeta.referrerHost, referralContext, loginReturnTo, opportunityContext]);
 
   // Check if user is already authenticated — skip onboarding entirely
   useEffect(() => {
@@ -1186,6 +1206,9 @@ export default function MCOnboarding() {
       source: entryMeta.source,
       referrerHost: entryMeta.referrerHost,
       resolvedReturnTo: loginReturnTo,
+      opportunityId: opportunityContext?.id || null,
+      opportunityCode: opportunityContext?.code || null,
+      opportunityTitle: opportunityContext?.title || null,
     });
   // Intentionally fire once on initial render.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -1346,6 +1369,37 @@ export default function MCOnboarding() {
       <div class="onboarding__form">
         <div class="onboarding__form-inner">
           {typeof step === "number" && step >= 1 && step <= 4 && <ProgressBar step={step} />}
+          {opportunityContext && typeof step === "number" && step >= 1 && step <= 5 && (
+            <div
+              style={{
+                marginBottom: 18,
+                padding: "12px 14px",
+                border: "1px solid rgba(59, 130, 246, 0.25)",
+                background: "rgba(59, 130, 246, 0.08)",
+                borderRadius: 2,
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 11,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "rgba(125, 211, 252, 0.95)",
+                  marginBottom: 6,
+                }}
+              >
+                Opportunity Context
+              </div>
+              <div style={{ fontSize: 14, color: "rgba(229, 229, 229, 0.96)", lineHeight: 1.5 }}>
+                {opportunityContext.title || "Selected opportunity"}
+                {opportunityContext.code ? ` (${opportunityContext.code})` : ""}
+              </div>
+              <div style={{ fontSize: 13, color: "rgba(229, 229, 229, 0.62)", marginTop: 4 }}>
+                We’ll keep this attached to your request so we can route you to the right operators,
+                programs, and follow-up.
+              </div>
+            </div>
+          )}
           {step === 5 && (
             <div class="onboarding__divider">
               <div class="onboarding__divider-line" />
