@@ -6,6 +6,8 @@ import OpportunityCard from "./OpportunityCard";
 interface OpportunityListProps {
   onSelect: (opportunity: Opportunity) => void;
   initialKeyword?: string;
+  onToggleSave?: (opportunity: Opportunity) => void;
+  isSaved?: (opportunity: Opportunity) => boolean;
 }
 
 const STATUS_OPTIONS = [
@@ -37,6 +39,8 @@ const SORT_OPTIONS = [
 function OpportunityList({
   onSelect,
   initialKeyword = "",
+  onToggleSave,
+  isSaved,
 }: OpportunityListProps): React.JSX.Element {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [page, setPage] = useState(0);
@@ -378,6 +382,8 @@ function OpportunityList({
                 key={opp.id || opp.topicId}
                 opportunity={opp}
                 onClick={onSelect}
+                onToggleSave={onToggleSave}
+                isSaved={isSaved?.(opp)}
               />
             ))}
           </div>

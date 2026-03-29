@@ -5,8 +5,10 @@ import OpportunityList from "./components/OpportunityList";
 import TabBar from "./components/TabBar";
 import EventsPanel from "./components/EventsPanel";
 import RadarPanel from "./components/RadarPanel";
+import SavedPanel from "./components/SavedPanel";
 import type { Opportunity, OutlookEvent } from "./types/opportunity";
 import { fetchOutlookEvents, fetchOpportunity } from "./lib/api";
+import { useSavedOpportunities } from "./lib/saved-opportunities";
 
 function formatDate(dateString: string | undefined): string {
   if (!dateString) return "N/A";
@@ -41,13 +43,102 @@ function normalizeTopicCode(topicCode: string | undefined): string {
   return code;
 }
 
+function isHumanReadableSourceUrl(url: string | undefined): boolean {
+  if (!url) return false;
+  return !/\/topics\/api\/public\/topics\/.+\/details$/i.test(url);
+}
+
+function getOpportunityHref(opportunity: Opportunity): string {
+  if (isHumanReadableSourceUrl(opportunity.url)) return opportunity.url as string;
+  return `/opportunities/${opportunity.id || opportunity.topicId}`;
+}
+
+function getOpportunityLinkLabel(opportunity: Opportunity): string {
+  return isHumanReadableSourceUrl(opportunity.url) ? "View source" : "Open detail page";
+}
+
+function getOpportunityReturnPath(opportunity: Opportunity): string {
+  return `/opportunities/${opportunity.id || opportunity.topicId}`;
+}
+
+function buildOpportunityAccessUrl(
+  opportunity: Opportunity,
+  source = "opportunity-match",
+): string {
+  const params = new URLSearchParams({
+    context: "opportunities",
+    source,
+    returnTo: getOpportunityReturnPath(opportunity),
+  });
+  if (opportunity.topicId || opportunity.id) {
+    params.set("opp_id", opportunity.topicId || opportunity.id);
+  }
+  if (opportunity.topicCode) {
+    params.set("opp_code", opportunity.topicCode);
+  }
+  if (opportunity.topicTitle) {
+    params.set("opp_title", opportunity.topicTitle);
+  }
+  return `/access?${params.toString()}`;
+}
+
+function buildOpportunityEmailHref(opportunity: Opportunity): string {
+  const sourceUrl = getOpportunityHref(opportunity);
+  const origin =
+    typeof window !== "undefined" ? window.location.origin : "https://mergecombinator.com";
+  const accessUrl = `${origin}${buildOpportunityAccessUrl(opportunity, "opportunity-email")}`;
+  const subject = `Opportunity worth reviewing: ${opportunity.topicTitle}`;
+  const lines = [
+    opportunity.topicTitle,
+    opportunity.topicCode ? `Code: ${opportunity.topicCode}` : null,
+    `Component: ${opportunity.component}`,
+    `Program: ${opportunity.program}`,
+    `Status: ${opportunity.topicStatus}`,
+    `Source: ${sourceUrl}`,
+    "",
+    `Want operator access or help getting matched to the right path? ${accessUrl}`,
+  ].filter(Boolean);
+  return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+}
+
+function buildSavedOpportunitiesEmailHref(saved: Opportunity[]): string {
+  const origin =
+    typeof window !== "undefined" ? window.location.origin : "https://mergecombinator.com";
+  const subject = `Saved opportunities from Merge Combinator`;
+  const lines = [
+    "Saved opportunities:",
+    "",
+    ...saved.flatMap((opportunity, index) => {
+      const sourceUrl = getOpportunityHref(opportunity);
+      const accessUrl = `${origin}${buildOpportunityAccessUrl(opportunity, "saved-email")}`;
+      return [
+        `${index + 1}. ${opportunity.topicTitle}`,
+        opportunity.topicCode ? `Code: ${opportunity.topicCode}` : null,
+        `Component: ${opportunity.component} | Program: ${opportunity.program}`,
+        `Source: ${sourceUrl}`,
+        `Get matched: ${accessUrl}`,
+        "",
+      ].filter(Boolean) as string[];
+    }),
+  ];
+  return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
+}
+
 function OpportunityModal({
   opportunity,
   onClose,
+  onToggleSave,
+  isSaved,
 }: {
   opportunity: Opportunity;
   onClose: () => void;
+  onToggleSave: (opportunity: Opportunity) => void;
+  isSaved: boolean;
 }): React.JSX.Element {
+  const linkHref = getOpportunityHref(opportunity);
+  const isExternalLink = isHumanReadableSourceUrl(opportunity.url);
+  const accessHref = buildOpportunityAccessUrl(opportunity);
+  const emailHref = buildOpportunityEmailHref(opportunity);
   return (
     <>
       <style>{`
@@ -190,6 +281,14 @@ function OpportunityModal({
           display: flex;
           justify-content: space-between;
           align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+        }
+        .modal-footer-actions {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          flex-wrap: wrap;
         }
         .modal-footer-source {
           font-size: 0.75rem;
@@ -330,20 +429,31 @@ function OpportunityModal({
           </div>
 
           <div className="modal-footer">
-            {opportunity.url ? (
+            <div className="modal-footer-actions">
               <a
                 className="modal-footer-link"
-                href={opportunity.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={linkHref}
+                {...(isExternalLink
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
               >
-                View source
+                {getOpportunityLinkLabel(opportunity)}
               </a>
-            ) : (
-              <span className="modal-footer-link" style={{ opacity: 0.65 }}>
-                No source link
-              </span>
-            )}
+              <a className="modal-footer-link" href={emailHref}>
+                Email this
+              </a>
+              <button
+                className="modal-footer-link"
+                type="button"
+                onClick={() => onToggleSave(opportunity)}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+              >
+                {isSaved ? "Remove saved" : "Save"}
+              </button>
+              <a className="modal-footer-link" href={accessHref}>
+                Get matched
+              </a>
+            </div>
             <span className="modal-footer-source">
               Source: {opportunity.source}
             </span>
@@ -400,6 +510,8 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
     useState<Opportunity | null>(null);
   const [events, setEvents] = useState<OutlookEvent[]>([]);
   const [eventsLoading, setEventsLoading] = useState(false);
+  const { saved, savedCount, isSaved, toggleSaved, clearSaved } = useSavedOpportunities();
+  const savedEmailHref = useMemo(() => buildSavedOpportunitiesEmailHref(saved), [saved]);
 
   const loadEvents = useCallback(async () => {
     setEventsLoading(true);
@@ -432,6 +544,7 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
 
   const tabs = [
     { id: "solicitations", label: "Solicitations" },
+    { id: "saved", label: "Saved", count: savedCount || undefined },
     { id: "events", label: "Events", count: events.length || undefined },
     { id: "radar", label: "Radar" },
   ];
@@ -504,7 +617,22 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
       <TabBar tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
       {activeTab === "solicitations" && (
-        <OpportunityList onSelect={setSelectedOpportunity} initialKeyword={seo.keyword} />
+        <OpportunityList
+          onSelect={setSelectedOpportunity}
+          initialKeyword={seo.keyword}
+          onToggleSave={toggleSaved}
+          isSaved={isSaved}
+        />
+      )}
+
+      {activeTab === "saved" && (
+        <SavedPanel
+          saved={saved}
+          onSelect={setSelectedOpportunity}
+          onToggleSave={toggleSaved}
+          onClearSaved={clearSaved}
+          emailSavedHref={savedEmailHref}
+        />
       )}
 
       {activeTab === "events" && (
@@ -522,6 +650,8 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
         <OpportunityModal
           opportunity={selectedOpportunity}
           onClose={() => setSelectedOpportunity(null)}
+          onToggleSave={toggleSaved}
+          isSaved={isSaved(selectedOpportunity)}
         />
       )}
 
@@ -552,6 +682,7 @@ function OpportunityDetailPage(): React.JSX.Element {
   const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { isSaved, toggleSaved } = useSavedOpportunities();
 
   useEffect(() => {
     let isMounted = true;
@@ -652,7 +783,14 @@ function OpportunityDetailPage(): React.JSX.Element {
   }
 
   const dueDate = opportunity.responseDeadline ?? opportunity.closeDate;
-  const sourceUrl = opportunity.url;
+  const sourceUrl = getOpportunityHref(opportunity);
+  const isExternalSource = isHumanReadableSourceUrl(opportunity.url);
+  const sourceLabel = isHumanReadableSourceUrl(opportunity.url)
+    ? "View primary source"
+    : "Open opportunity summary";
+  const accessHref = buildOpportunityAccessUrl(opportunity);
+  const emailHref = buildOpportunityEmailHref(opportunity);
+  const saved = isSaved(opportunity);
 
   return (
     <article style={{ maxWidth: "860px", margin: "0 auto" }}>
@@ -690,13 +828,44 @@ function OpportunityDetailPage(): React.JSX.Element {
         </div>
       </div>
 
-      {sourceUrl && (
-        <p style={{ marginBottom: "1.25rem" }}>
-          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" style={{ color: "var(--mc-accent)" }}>
-            View primary source
-          </a>
-        </p>
-      )}
+      <p style={{ marginBottom: "0.75rem" }}>
+        <a
+          href={sourceUrl}
+          {...(isExternalSource ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          style={{ color: "var(--mc-accent)" }}
+        >
+          {sourceLabel}
+        </a>
+      </p>
+      <p
+        style={{
+          marginBottom: "1.25rem",
+          display: "flex",
+          gap: "0.9rem",
+          flexWrap: "wrap",
+        }}
+      >
+        <a href={emailHref} style={{ color: "var(--mc-accent)" }}>
+          Email this
+        </a>
+        <a href={accessHref} style={{ color: "var(--mc-accent)" }}>
+          Get matched through Merge
+        </a>
+        <button
+          type="button"
+          onClick={() => toggleSaved(opportunity)}
+          style={{
+            color: "var(--mc-accent)",
+            background: "none",
+            border: "none",
+            padding: 0,
+            cursor: "pointer",
+            font: "inherit",
+          }}
+        >
+          {saved ? "Remove saved" : "Save"}
+        </button>
+      </p>
 
       <section style={{ marginBottom: "1rem" }}>
         <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>Description</h2>

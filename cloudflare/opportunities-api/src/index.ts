@@ -350,6 +350,10 @@ const SBIR_HEADERS = {
           "User-Agent": "MergeCombinator-OpportunitiesAPI/0.1",
 };
 
+function buildSbirDetailUrl(topicId: string): string {
+          return `https://www.dodsbirsttr.mil/topics/api/public/topics/${encodeURIComponent(topicId)}/details`;
+}
+
 // ─── Main opportunities endpoint ──────────────────────────────────────────────
 // Query params:
 //   page, size, status, component, keyword, sort — same as before
@@ -404,7 +408,12 @@ app.get("/api/opportunities", async (c) => {
                                                       : Array.isArray(data.data) ? data.data as unknown[]
                                                       : [];
                                                     content.forEach((item: unknown) => {
-                                                                      (item as Record<string, unknown>).source = "sbir";
+                                                                      const record = item as Record<string, unknown>;
+                                                                      record.source = "sbir";
+                                                                      const topicId = String(record.topicId ?? record.id ?? "");
+                                                                      if (!record.url && topicId) {
+                                                                                        record.url = buildSbirDetailUrl(topicId);
+                                                                      }
                                                     });
                                                     allResults.push(...content);
                                                     // Only trust the count if the data fetch also succeeded,
@@ -547,7 +556,7 @@ app.get("/api/opportunities", async (c) => {
 // ─── Single opportunity by ID (SBIR only) ────────────────────────────────────
 app.get("/api/opportunities/:id", async (c) => {
           const id = c.req.param("id");
-          const SBIR_DETAILS_URL = `https://www.dodsbirsttr.mil/topics/api/public/topics/${id}/details`;
+          const SBIR_DETAILS_URL = buildSbirDetailUrl(id);
           try {
                       const response = await fetch(SBIR_DETAILS_URL, { headers: SBIR_HEADERS });
                       if (!response.ok) {
@@ -563,7 +572,11 @@ app.get("/api/opportunities/:id", async (c) => {
                                                     status
                                                   );
                       }
-                      const data = await response.json();
+                      const data = await response.json() as Record<string, unknown>;
+                      data.source = "sbir";
+                      if (!data.url) {
+                                    data.url = SBIR_DETAILS_URL;
+                      }
                       return c.json({ success: true, data });
           } catch (error) {
                       const message = error instanceof Error ? error.message : "Unknown error";
