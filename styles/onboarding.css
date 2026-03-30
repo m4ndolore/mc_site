@@ -673,6 +673,16 @@
   min-height: 16px;
 }
 
+.onboarding__context-badge {
+  font-size: 13px;
+  color: var(--ob-text-muted);
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 2px;
+  padding: 8px 12px;
+  margin-bottom: 16px;
+}
+
 .onboarding__field-hint {
   font-size: 12px;
   margin-top: 2px;
@@ -1011,19 +1021,34 @@
   /* Show mobile action bar */
   .onboarding__mobile-bar {
     display: flex;
+    flex-direction: column;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     z-index: 100;
-    padding: 12px 20px;
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    padding: 10px 20px;
+    padding-bottom: max(10px, env(safe-area-inset-bottom));
     background: var(--ob-near-black);
     border-top: 1px solid var(--ob-border);
-    gap: 10px;
-    align-items: center;
+    gap: 8px;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+  }
+
+  .onboarding__mobile-bar-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .onboarding__mobile-bar-step {
+    font-size: 12px;
+    color: var(--ob-text-muted);
+    font-family: var(--ob-font);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-left: auto;
   }
 
   .onboarding__mobile-bar-action {
