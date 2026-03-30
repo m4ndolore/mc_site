@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="120" viewBox="0 0 620 120">
+  <rect width="100%" height="100%" fill="none" />
+  <g transform="translate(0, 10)">
+    <text x="0" y="24" font-family="Lora, 'Times New Roman', serif" font-style="italic" font-size="22" font-weight="400" letter-spacing="0.02em" fill="#ffffff">Merge</text>
+    <text x="0" y="62" font-family="'Helvetica Neue', Inter, Helvetica, Arial, sans-serif" font-size="44" font-weight="700" letter-spacing="-0.02em" fill="#ffffff">Combinator</text>
+  </g>
+  <image href="mc-arrows.svg" x="480" y="30" width="88" height="44" />
+</svg>

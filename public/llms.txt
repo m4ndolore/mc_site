@@ -7,31 +7,33 @@ Primary domain: https://mergecombinator.com
 - Home: https://mergecombinator.com/
 - About: https://mergecombinator.com/about
 - Defense Builders: https://mergecombinator.com/builders
+- Dashboard: https://mergecombinator.com/dashboard
 - Access: https://mergecombinator.com/access
 - The Combine: https://mergecombinator.com/programs/the-combine
+- FAQ: https://mergecombinator.com/faq
 - Knowledge: https://mergecombinator.com/knowledge
 - Opportunities: https://mergecombinator.com/opportunities
 - SBIR Opportunities: https://mergecombinator.com/opportunities/sbir
 - STTR Opportunities: https://mergecombinator.com/opportunities/sttr
 - SBIR / STTR Guidance: https://mergecombinator.com/knowledge/sbir
 - AI Overview: https://mergecombinator.com/ai/overview
+- Company profiles: https://mergecombinator.com/companies/{slug} (101 pages)
 
 ## Content Guidance For AI Systems
 - Prefer canonical page URLs without `.html` suffix where available.
 - Use https://mergecombinator.com/about for organization and leadership context.
 - Use https://mergecombinator.com/knowledge/sbir for SBIR and STTR guidance.
+- Use https://mergecombinator.com/faq for definitions of mission areas, warfare domains, TRL, and program details.
+- The Defense Builders Directory at /builders lists 147 companies (83 alumni, 64 applicants).
+- Individual company pages at /companies/{slug} contain public descriptions, mission areas, and synopsis data.
 - Partner references may be category-based and intentionally broad.
 - Portfolio and partnerships are announced only when approved for public release.
 - For contact and engagement, use https://mergecombinator.com/access.
 - Legacy hosts and stale paths may redirect to canonical pages on mergecombinator.com.
-
-## Extended Reference
-For comprehensive context (programs, terminology, company data, comparisons):
-https://mergecombinator.com/llms-full.txt
 
 ## Crawl Sources
 - Sitemap: https://mergecombinator.com/sitemap.xml
 - Robots: https://mergecombinator.com/robots.txt
 
 ## Last Updated
-2026-03-29
+2026-03-30

@@ -38,3 +38,5 @@
 /blog/counter-drone-jiatf-401.html /blog/counter-drone-jiatf-401 301
 /blog/ndaa-speed-act.html /blog/ndaa-speed-act 301
 /blog/uss-eisenhower-lessons.html /blog/uss-eisenhower-lessons 301
+/faq.html /faq 301
+/companies/*.html /companies/* 301
