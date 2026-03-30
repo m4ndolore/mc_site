@@ -1,0 +1,264 @@
+/* ============================================
+   COMPANY ENTITY PAGE STYLES
+   Dark-native, Inter font, 2px radius (C2UX)
+   ============================================ */
+
+.company-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 100px var(--padding-x, clamp(16px, 3vw, 48px)) 60px;
+  font-family: var(--font-primary, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  color: var(--offwhite, #e5e5e5);
+}
+
+/* Breadcrumb */
+.company-page__breadcrumb {
+  font-size: var(--text-small, 14px);
+  color: var(--gray-medium, #737373);
+  margin-bottom: 24px;
+}
+
+.company-page__breadcrumb a {
+  color: var(--blue, #3b82f6);
+  text-decoration: none;
+}
+
+.company-page__breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* Header */
+.company-page__header {
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--ghost-gray, #525252);
+}
+
+.company-page__name {
+  font-size: var(--text-h1, clamp(28px, 3vw, 36px));
+  font-weight: 700;
+  color: var(--offwhite, #e5e5e5);
+  margin: 0 0 8px;
+  line-height: var(--lh-tight, 1.2);
+  letter-spacing: -0.02em;
+}
+
+.company-page__product {
+  font-size: var(--text-body, 16px);
+  color: var(--gray-light, #a3a3a3);
+  margin-bottom: 16px;
+}
+
+.company-page__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.company-page__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.company-page__badge--stage {
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.company-page__badge--mission {
+  background: rgba(59, 130, 246, 0.12);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.company-page__badge--domain {
+  background: rgba(34, 197, 94, 0.1);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.company-page__badge--product {
+  background: rgba(99, 102, 241, 0.1);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.company-page__badge--trl {
+  background: rgba(234, 179, 8, 0.1);
+  color: #fde047;
+  border: 1px solid rgba(234, 179, 8, 0.25);
+}
+
+.company-page__badge--funding {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--gray-light, #a3a3a3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.company-page__badge--team {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--gray-light, #a3a3a3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Body content */
+.company-page__body {
+  margin-bottom: 40px;
+}
+
+.company-page__description h2,
+.company-page__section h2 {
+  font-size: var(--text-h3, clamp(18px, 2vw, 22px));
+  font-weight: 600;
+  color: var(--offwhite, #e5e5e5);
+  margin: 0 0 12px;
+  line-height: var(--lh-snug, 1.3);
+}
+
+.company-page__description p,
+.company-page__section p {
+  font-size: var(--text-body, 16px);
+  color: var(--gray-light, #a3a3a3);
+  line-height: var(--lh-relaxed, 1.6);
+  margin: 0 0 12px;
+}
+
+.company-page__description p:last-child,
+.company-page__section p:last-child {
+  margin-bottom: 0;
+}
+
+.company-page__description {
+  margin-bottom: 32px;
+}
+
+.company-page__section {
+  margin-bottom: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Footer nav */
+.company-page__footer {
+  padding-top: 24px;
+  border-top: 1px solid var(--ghost-gray, #525252);
+}
+
+.company-page__footer a {
+  color: var(--blue, #3b82f6);
+  text-decoration: none;
+  font-size: var(--text-body, 16px);
+  font-weight: 500;
+}
+
+.company-page__footer a:hover {
+  text-decoration: underline;
+}
+
+/* FAQ items */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.faq-item {
+  padding: 24px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.faq-item:first-child {
+  padding-top: 0;
+}
+
+.faq-item__question {
+  font-size: var(--text-h3, clamp(18px, 2vw, 22px));
+  font-weight: 600;
+  color: var(--offwhite, #e5e5e5);
+  margin: 0 0 12px;
+  line-height: var(--lh-snug, 1.3);
+}
+
+.faq-item__answer p {
+  font-size: var(--text-body, 16px);
+  color: var(--gray-light, #a3a3a3);
+  line-height: var(--lh-relaxed, 1.6);
+  margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+  .company-page {
+    padding-top: 80px;
+    padding-bottom: 40px;
+  }
+
+  .company-page__name {
+    font-size: clamp(22px, 5vw, 28px);
+  }
+
+  .company-page__meta {
+    gap: 6px;
+  }
+
+  .company-page__badge {
+    font-size: 12px;
+    padding: 3px 8px;
+  }
+}
+
+/* ============================================
+   LIGHT THEME OVERRIDES
+   ============================================ */
+.light-theme .company-page__badge--stage {
+  background: rgba(59, 130, 246, 0.08);
+  color: #2563eb;
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.light-theme .company-page__badge--mission {
+  background: rgba(59, 130, 246, 0.08);
+  color: #2563eb;
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+.light-theme .company-page__badge--domain {
+  background: rgba(34, 197, 94, 0.08);
+  color: #16a34a;
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.light-theme .company-page__badge--product {
+  background: rgba(99, 102, 241, 0.08);
+  color: #4f46e5;
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.light-theme .company-page__badge--trl {
+  background: rgba(234, 179, 8, 0.08);
+  color: #a16207;
+  border-color: rgba(234, 179, 8, 0.2);
+}
+
+.light-theme .company-page__badge--funding,
+.light-theme .company-page__badge--team {
+  background: rgba(0, 0, 0, 0.04);
+  color: #525252;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.light-theme .company-page__section {
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+.light-theme .faq-item {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}

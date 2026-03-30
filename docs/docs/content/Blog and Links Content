@@ -1,0 +1,275 @@
+# Defense Builders Blog Content Generation Prompt
+
+## Context
+You are creating blog content for **Defense Builders**, the knowledge base for the SigmaBlox defense technology community. The goal is to educate defense tech entrepreneurs, operators, and investors on critical defense modernization topics. Write in a practitioner's voice—actionable, informed, and connecting policy to real-world implementation.
+
+## Target Audience
+- Defense technology entrepreneurs and startups
+- Defense contractors (primes and DIB members)
+- Military innovation officers and operators
+- Defense-focused investors
+- Government acquisition professionals
+
+---
+
+## Blog Article Series: December 2025 Defense Modernization Update
+
+Generate **6 interconnected blog articles** that build upon each other. Each article should be 800-1200 words, SEO-optimized, and include practical takeaways for the defense tech community.
+
+---
+
+### Article 1: FY26 NDAA & SPEED Act - What Defense Tech Companies Need to Know
+
+**Key Source**: House Armed Services Committee FY26 NDAA Resources (H.R. 3838)
+
+**Core Topics to Cover**:
+- The SPEED Act (Streamlining Procurement for Effective Execution and Delivery) - what it actually changes
+- Acquisition reform provisions and their impact on startups
+- Innovation & Technology initiatives in the NDAA
+- Key summaries to reference:
+  - Acquisition Reform
+  - Innovation & Technology  
+  - Ready, Capable, Lethal Fighting Forces
+  - Budget Savings & Reforms
+
+**Editorial Angle**: Frame around "compliance challenges ahead" - acknowledge this is a big step forward but implementation will be complex. What should defense tech companies do NOW to prepare?
+
+**Suggested Title Options**:
+- "FY26 NDAA Decoded: What the SPEED Act Means for Your Defense Startup"
+- "The SPEED Act Is Here—Are You Ready for Faster Procurement?"
+
+**Include**:
+- Link to official NDAA resources
+- Actionable checklist for companies
+- Timeline of expected implementation
+
+---
+
+### Article 2: The Pentagon's Counter-Drone Revolution - JIATF 401 and the New Marketplace
+
+**Key Sources**:
+- Defense One: "One-stop shopping for counter-drone gear is aim of joint task force" (Nov 2025)
+- Defense One: "Pentagon wants a common network for its counter-drone systems" (Dec 2025)
+- Army.mil: Pentagon interagency counter-drone cooperation (Nov 2025)
+
+**Core Topics to Cover**:
+- What is JIATF 401 and why it replaced the JCO (Joint Counter-small UAS Office)
+- The new online marketplace concept for C-UAS systems
+- Brig. Gen. Matt Ross's vision: common C2 framework in 90 days
+- Three lines of effort: homeland defense, warfighter lethality, joint force training
+- Groups 1-3 UAS threat focus (under 55 lbs)
+- Implications for C-UAS vendors and the procurement path
+
+**Editorial Angle**: This is a massive opportunity for defense tech companies. The Pentagon is essentially building an "app store" for counter-drone solutions. What does it take to get listed?
+
+**Suggested Title Options**:
+- "Inside JIATF 401: The Pentagon's New Counter-Drone Marketplace"
+- "Counter-Drone 2.0: How the Pentagon Is Finally Streamlining C-UAS Procurement"
+
+**Include**:
+- Quote from Ross: "I only have one measure of effectiveness, and that's delivering state-of-the-art counter-UAS capability to the warfighter"
+- Explanation of Group 1/2/3 UAS classifications
+- What the "common C2 framework" means for interoperability
+
+---
+
+### Article 3: Microsoft's DIB Identity Play - Competing with Tactical Solutions
+
+**Key Source**: ND-ISAC Microsoft Reference Identity Architectures for the US Defense Industrial Base (Whitepaper)
+
+**Core Topics to Cover**:
+- Microsoft's Collaboration Framework for DIB (5 levels of trust)
+- Cross-cloud collaboration challenges (Commercial ↔ GCC High ↔ DoD)
+- The "walled garden" concern: How Microsoft's architecture competes with existing theater solutions like Tactical ID (TIBA)
+- Key architectures explained:
+  - Data Enclave (Swivel Seat) vs Split Tenant
+  - "Meet Me" Extranet Enclaves
+  - GALSync solutions
+- CMMC compliance implications
+- Entra ID External Identities for B2B collaboration
+
+**Editorial Angle**: Microsoft is positioning hard in the DIB identity space. For companies already using Tactical ID or similar solutions, this creates a "walled garden" tension. What should DIB companies consider when evaluating their identity architecture?
+
+**Suggested Title Options**:
+- "Microsoft vs. Tactical ID: The Identity Architecture Battle in Defense"
+- "DIB Identity Architectures: What the ND-ISAC Whitepaper Means for Your CMMC Strategy"
+
+**Include**:
+- Explanation of GCC High vs Commercial tenant challenges
+- Cross-cloud external identities workflow
+- Decision framework: When to use data enclave vs split tenant vs "go all in"
+
+---
+
+### Article 4: TAK (Team Awareness Kit) for Security Forces - AFRL/RISC Development
+
+**Key Sources**:
+- Google Slides: AFRL/RISC TAK Development presentation
+- LinkedIn: Ralph Kohler's TAK promo for Air Force Security Forces
+
+**Core Topics to Cover**:
+- What is TAK and why it matters for distributed operations
+- AFRL/RISC's TAK development efforts
+- Security Forces use case - base defense and tactical coordination
+- TAK ecosystem: ATAK (Android), WinTAK, iTAK, TAK Server
+- Plugin architecture and extensibility
+- Integration with existing C2 systems
+
+**Editorial Angle**: TAK represents the democratization of tactical awareness. Originally built for SOF, it's now spreading across conventional forces. What does this mean for defense tech companies building situational awareness tools?
+
+**Suggested Title Options**:
+- "TAK Goes Mainstream: What AFRL's Security Forces Integration Means for Defense Tech"
+- "From SOF to Security Forces: The TAK Revolution Continues"
+
+**Include**:
+- Brief TAK history and evolution
+- Plugin development opportunities
+- How TAK fits into broader JADC2 efforts
+
+---
+
+### Article 5: DAF Innovation Reality Check - What's Actually Happening
+
+**Key Source**: AF.mil "Update on recent DAF efforts" (Dec 2, 2025) - SecAF Troy Meink and Gen. Ken Wilsbach memo
+
+**Core Topics to Cover**:
+
+**Implemented/Continuing**:
+- Large Scale Exercises (DLE) - largest Indo-Pacific exercise since Cold War
+- Warrant Officers program expansion (100+ graduated, cyber/IT focus)
+- SAF/IC (Integrated Capabilities Office)
+- SAF/OC (Office of Competitive Activities)
+- AFMC Integrated Development Office (IDO)
+- Multi-Capable Airmen training
+- Wing Units of Action (Air Expeditionary Wing 2.0)
+
+**Terminated**:
+- Airman Development Command (ADC) - AETC remains as-is
+- Integrated Capabilities Command - folded into HQ AF A5/7
+- ACC reorientation cancelled
+- New Air Base Wings cancelled
+
+**Editorial Angle**: "Innovation theater" vs actual change. What initiatives survived and what does that tell us about DAF priorities? The message: "fly, fix, fight" focus.
+
+**Suggested Title Options**:
+- "DAF Innovation Update: What Survived and What Got Cut"
+- "The Reality of Air Force Transformation in 2025"
+
+**Include**:
+- Analysis of what the cancellations mean
+- Why Wing UoA transitioned to AEW 2.0 vs A-staff construct
+- Quote: "Air superiority is not guaranteed"
+
+---
+
+### Article 6: Combat Lessons from the Red Sea - USS Eisenhower's 9-Month Crucible
+
+**Key Source**: The War Zone interview with Capt. Chris "Chowdah" Hill (Sep 2024)
+
+**Core Topics to Cover**:
+- Historic deployment: 770+ weapons expended, first combat uses of multiple systems
+- Firsts achieved:
+  - EA-18G Growler first air-to-air kill (drone)
+  - First AARGM combat use (destroyed Mi-24 Hind)
+  - SM-6 first combat use
+  - First female aviator air-to-air kill
+  - First anti-ship ballistic missiles used against US forces
+- Tactical adaptations:
+  - Drone defense (aerial and surface)
+  - Alert aircraft procedures
+  - Defense-in-depth with strike group
+- Leadership lessons:
+  - Morale in extended combat operations
+  - Starlink/WiFi as "game-changer"
+  - Demo the facility dog
+  - "Way of the Warrior Sailor" philosophy
+- Lessons applicable to high-end fight against China
+
+**Editorial Angle**: Real-world combat data is invaluable. What can defense tech companies learn from actual operational feedback vs PowerPoint exercises?
+
+**Suggested Title Options**:
+- "9 Months Under Fire: What the Eisenhower's Red Sea Deployment Teaches Defense Tech"
+- "From Combat Captain to Classroom: USS Ike's Lessons for the Defense Industrial Base"
+
+**Include**:
+- Specific tactical innovations (without OPSEC violations)
+- Quote: "Some of the logistical challenges, the resiliency challenges, and some of the stuff we learned with regard to drones and missiles... all of it is applicable in a future fight"
+- Morale and retention implications
+
+---
+
+## Cross-Linking Strategy
+
+Each article should reference and link to related articles in the series:
+
+| Article | Links To |
+|---------|----------|
+| 1 (NDAA) | 2 (C-UAS procurement), 5 (DAF innovation) |
+| 2 (JIATF 401) | 1 (NDAA acquisition), 6 (Red Sea lessons) |
+| 3 (Identity) | 1 (CMMC in NDAA), 4 (TAK integration) |
+| 4 (TAK) | 3 (Identity), 5 (DAF capabilities) |
+| 5 (DAF) | 1 (NDAA), 4 (TAK/MCA) |
+| 6 (Eisenhower) | 2 (C-UAS), 5 (readiness) |
+
+---
+
+## Formatting Requirements
+
+For each article:
+1. **Title**: Compelling, SEO-optimized (50-60 characters ideal)
+2. **Subtitle**: One-line summary of value proposition
+3. **Key Takeaways**: 3-5 bullet points at top (TL;DR)
+4. **Body**: 800-1200 words with H2/H3 structure
+5. **Callout Boxes**: 
+   - "Action Item" for practical next steps
+   - "Key Quote" for notable statements
+6. **Related Links**: To other articles in series + source materials
+7. **Tags**: Relevant categories (NDAA, C-UAS, Identity, Cybersecurity, Readiness, etc.)
+8. **CTA**: End with engagement prompt (newsletter signup, community join)
+
+---
+
+## Voice & Style Guidelines
+
+- **Tone**: Informed practitioner, not policy wonk
+- **Avoid**: Jargon soup, breathless hype, partisan framing
+- **Include**: Specific numbers, named sources, actionable recommendations
+- **Format**: Scannable with clear headers, bullets where appropriate
+- **Length**: Respects reader time while providing value
+
+---
+
+## Source Links for Reference
+
+1. FY26 NDAA: https://armedservices.house.gov/ndaa/fy26-ndaa-resources.htm
+2. JIATF 401 (Nov): https://www.defenseone.com/threats/2025/11/one-stop-shopping-counter-drone-gear-aim-joint-task-force/409533/
+3. JIATF 401 Network (Dec): https://www.defenseone.com/technology/2025/12/pentagon-wants-common-network-its-counter-drone-systems/410302/
+4. ND-ISAC Microsoft Identity: https://ndisac.org/wp-content/uploads/2023/11/Microsoft-Reference-Identity-Architectures-ND-ISAC-MSCloud-Whitepaper.pdf
+5. DAF Update: https://www.af.mil/News/Article-Display/Article/4346040/update-on-recent-daf-efforts/
+6. USS Eisenhower Interview: https://www.twz.com/news-features/carrier-captain-in-combat-what-went-on-during-7-months-under-fire-around-the-red-sea
+
+---
+
+## Additional Context: AFRL/RISC TAK Development
+
+*(Note: The Google Slides presentation "AFRL/RISC TAK DEVELOPMENT" was not directly accessible, but based on the LinkedIn post from Ralph Kohler, the presentation covers TAK integration for Air Force Security Forces. Request the actual slides content for more specific detail.)*
+
+Key points to research/expand:
+- RISC = Research Information Sciences Center (AFRL)
+- TAK deployment for installation security
+- Integration with existing Security Forces C2
+- Mobile/tactical coordination capabilities
+
+---
+
+## Metadata for CMS
+
+```yaml
+series_name: "December 2025 Defense Modernization"
+publication_date: "2025-12-XX"
+author: "Defense Builders Editorial"
+category: "Policy & Acquisition"
+featured_image: "[Generate or select appropriate header image]"
+excerpt_length: 155
+schema_type: "Article"
+```

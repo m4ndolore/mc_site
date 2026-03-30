@@ -1,0 +1,18 @@
+Comments from PACAF 613th Air Operations Center, Deputy Commander
+
+Do you believe this event is unique? And do you believe that uniqueness adds value to the warfighter or government partner?
+
+Yes I think this event was unique. For the government market I have never seen a similar level of interactivity with the incoming systems entrepreneurs or companies. In most cases the only interaction we have is either in very small group AKA single company meetings or in a really large forum like with a a conference floor or something where there's a hundred vendors and they have booths. 
+
+I absolutely believe this version provided significant value to the Warfighter above and beyond what we would normally see. While in some of these settings you could have lots of discussion with the teams you're always a little bit more limited in terms of what you can share because they are still in a competitive but not relationship with the government. This environment in which it has been sponsored to be an incubation event absolutely changed our interactions and the openness allowed us to talk with all of the groups in the same fashion which kept the Level Playing Field from an acquisition standpoint. Finally it allowed you to actually have the ability for the entrepreneurs to ask important questions because you had actual important members of the small businesses rather than them being overshadowed by the large businesses in a conference or by having the only people at a conference being the sales teans who may not have a deeper understanding of the technology and the team or who are unwilling to show what risks they have as a company which the CEOs that were here were able to do.
+
+Do you feel like the entrepreneur is more well equipped to work with the government because of the combine? 
+
+Yes I definitely feel that these teams are better equipped now to work with the government because of how they've been here. The briefings and academic material,  especially the Fireside Chats which are significantly more interactive, were an amazing ability to allow experts in this unique field of Defense acquisition communicate to the entrepreneurs things that either they just simply did not know because there aren't a lot of courses on how to do defense activation or they were provided lessons learned from people who have done it before. There is no better guidance than someone who has attempted and failed and then attempted in one a contract with the government on how to do that process. In addition the ability to communicate directly with government Representatives, some of them relatively senior, who know the ecosystem and architecture of the government was likely invaluable to people who either had limited or absolutely no interaction with the government and the military previously.
+
+Time & resources permitting, would you like to do this (or some version of this) again?
+
+Yes I would absolutely want to do this again in some form or fashion in the future. I feel it it was extremely valuable not just for the competitors but also for us as the military to be able to help grow the industrial base and also to be able to help teach us some of what is out there and share some of the things that ruined perfectly good products. I am going to work forward with our senior headquarters to try to attempt to get some additional sponsorship for some future event because I think this is extremely valuable and I will also attempt to talk to the other components, navy and army, on island to see if we can get this moved along a little bit better also.
+
+Deputy Commander
+PACAF 613th Air Operations Center
