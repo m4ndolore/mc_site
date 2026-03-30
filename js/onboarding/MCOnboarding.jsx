@@ -257,13 +257,6 @@ function getWelcomeCopy(context) {
       cta: "Sign in to Wingman \u2192",
     };
   }
-  if (context === "guild") {
-    return {
-      title: "Continue to your dashboard.",
-      subtitle: "Sign in to resume your workspace and network.",
-      cta: "Sign in \u2192",
-    };
-  }
   return {
     title: "Sign in to continue.",
     subtitle: "Looks like you've been here before. Sign in to access your sandbox, or start fresh if you're new.",
@@ -403,7 +396,7 @@ const HERO = {
     tag: "ACCOUNT CREATED",
     lines: ["You're in.", "Check your", "email."],
     accent: 0,
-    body: "Your account is live. Set your password and start exploring. We've tailored your sandbox based on what you told us.",
+    body: "Your account is live. Sign in and start exploring. We've tailored your sandbox based on what you told us.",
     pulse: "Status: provisioned",
   },
   "The Combine": {
@@ -735,7 +728,7 @@ function Step1({ areas, dispatch, onNext, loginHref }) {
         Continue &rarr;
       </button>
       <div class="onboarding__step-signin-hint">
-        Already have an account? <a href={loginHref}>Sign in &rarr;</a>
+        Already have access? <a href={loginHref}>Sign in &rarr;</a>
       </div>
     </div>
   );
@@ -893,11 +886,16 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
   }
 
   // ── Contact form phase ──
+  const fastTrackProduct = state.products?.length === 1 ? state.products[0] : null;
   return (
     <div class="onboarding__step">
       <div class="onboarding__step-label">ALMOST INSIDE &middot; 4 OF 4</div>
       <h2 class="onboarding__step-title">Tell us where to reach you.</h2>
       <p class="onboarding__step-subtitle">We'll send a verification code to confirm your email &mdash; no password needed.</p>
+
+      {fastTrackProduct && (
+        <div class="onboarding__context-badge">Requesting access to <strong>{fastTrackProduct}</strong></div>
+      )}
 
       {(submitError || otpError) && <div class="onboarding__error-banner">{submitError || otpError}</div>}
 
@@ -940,7 +938,7 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
       <button class="onboarding__btn onboarding__btn--text" onClick={onBack}>&larr; Back</button>
 
       <div class="onboarding__signin">
-        <p class="onboarding__signin-label">Already a member?</p>
+        <p class="onboarding__signin-label">Already have access?</p>
         <div class="onboarding__signin-row">
           <a href={loginHref} class="onboarding__signin-btn">Sign in with Email &rarr;</a>
           <a href={loginHref}
@@ -970,7 +968,7 @@ function Step5({ products, journey, role, loginUrl, dispatch, onDone }) {
           <div class="onboarding__confirmed-text">
             {autoPromoted
               ? "Your credentials were verified. Full access is ready."
-              : "Check your email to set your password and start exploring."}
+              : "Check your email to finish setting up your account."}
           </div>
         </div>
       </div>
@@ -985,7 +983,7 @@ function Step5({ products, journey, role, loginUrl, dispatch, onDone }) {
       <p class="onboarding__step-subtitle">
         {autoPromoted
           ? "Your sandbox is ready. Select your starting points and we'll have the right doors open."
-          : "While you set your password, tell us where you want to start. We'll tailor your sandbox."}
+          : "While we configure your account, tell us where you want to start."}
       </p>
 
       <div role="group" aria-label="Product selection" style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
@@ -1050,7 +1048,7 @@ function DoneScreen({ products, loginUrl, role, referralContext }) {
       <p class="onboarding__done-body">
         {autoPromoted
           ? "Your account is live with full access. Sign in to start exploring your sandbox."
-          : "Check your email to set your password. Your sandbox is being configured based on your selections."}
+          : "Check your email to finish setup. Your sandbox is being configured based on your selections."}
         {products.length > 0 && " We've noted your starting points."}
       </p>
       {loginUrl && (
@@ -1150,13 +1148,18 @@ function MobileActionBar({ step, state, onAction, onBack }) {
     backLabel = step > 1 ? "Back" : null;
   }
 
+  const stepLabel = step <= 4 && !state.otpSent ? `Step ${step} of 4` : null;
+
   return (
     <div class="onboarding__mobile-bar">
-      {backLabel && (
-        <button class="onboarding__mobile-bar-back" onClick={onBack}>
-          &larr; {backLabel}
-        </button>
-      )}
+      <div class="onboarding__mobile-bar-row">
+        {backLabel && (
+          <button class="onboarding__mobile-bar-back" onClick={onBack}>
+            &larr; {backLabel}
+          </button>
+        )}
+        {stepLabel && <span class="onboarding__mobile-bar-step">{stepLabel}</span>}
+      </div>
       <button class="onboarding__mobile-bar-action" disabled={disabled} onClick={onAction}>
         {label} &rarr;
       </button>
@@ -1204,7 +1207,7 @@ function getEntryShortcut() {
 }
 
 // ─── SIMPLIFIED FORM (A/B variant B) ─────────────────────────────────────────
-function SimplifiedForm({ loginHref, referralContext }) {
+function SimplifiedForm({ loginHref, referralContext, opportunityContext }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
@@ -1261,6 +1264,8 @@ function SimplifiedForm({ loginHref, referralContext }) {
           areas: [],
           outcomes: [],
           source: "simplified_form",
+          opportunityId: opportunityContext?.id || undefined,
+          opportunityCode: opportunityContext?.code || undefined,
         }),
       });
       const data = await res.json();
@@ -1286,7 +1291,7 @@ function SimplifiedForm({ loginHref, referralContext }) {
         <p class="onboarding__done-body">
           {autoPromoted
             ? "Your account is live. Sign in to start exploring."
-            : "Check your email to set your password. We're configuring your access."}
+            : "Check your email to finish setup. We're configuring your access."}
         </p>
         {loginHref && (
           <a href={loginHref} class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
@@ -1375,7 +1380,7 @@ function SimplifiedForm({ loginHref, referralContext }) {
       </button>
 
       <div class="onboarding__signin">
-        <p class="onboarding__signin-label">Already a member?</p>
+        <p class="onboarding__signin-label">Already have access?</p>
         <div class="onboarding__signin-row">
           <a href={loginHref} class="onboarding__signin-btn">Sign in &rarr;</a>
         </div>
@@ -1665,7 +1670,7 @@ export default function MCOnboarding() {
           ) : step === 6 ? (
             <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} referralContext={referralContext} />
           ) : abVariant.current === "B" && step === 1 ? (
-            <SimplifiedForm loginHref={loginHref} referralContext={referralContext} />
+            <SimplifiedForm loginHref={loginHref} referralContext={referralContext} opportunityContext={opportunityContext} />
           ) : step === 1 ? (
             <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} loginHref={loginHref} />
           ) : step === 2 ? (
