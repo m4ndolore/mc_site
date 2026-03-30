@@ -35,6 +35,67 @@ function sanitizeText(text: string | undefined): string {
     .trim();
 }
 
+function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&rsquo;/gi, "'")
+    .replace(/&lsquo;/gi, "'")
+    .replace(/&rdquo;/gi, '"')
+    .replace(/&ldquo;/gi, '"')
+    .replace(/&ndash;/gi, "-")
+    .replace(/&mdash;/gi, "-")
+    .replace(/&hellip;/gi, "...")
+    .replace(/&ouml;/gi, "o");
+}
+
+function htmlToParagraphs(text: string | undefined): string[] {
+  if (!text) return [];
+  const normalized = decodeHtmlEntities(
+    text
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>\s*<p>/gi, "\n\n")
+      .replace(/<\/li>\s*<li>/gi, "\n")
+      .replace(/<li>/gi, "• ")
+      .replace(/<\/?(ul|ol)>/gi, "\n")
+      .replace(/<[^>]*>/g, " "),
+  )
+    .replace(/\r/g, "")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n[ \t]+/g, "\n")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
+  if (!normalized) return [];
+  return normalized
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+}
+
+function RichTextBlock({ text }: { text: string | undefined }): React.JSX.Element | null {
+  const paragraphs = htmlToParagraphs(text);
+  if (!paragraphs.length) return null;
+
+  return (
+    <>
+      {paragraphs.map((paragraph, index) => (
+        <p
+          key={`${index}-${paragraph.slice(0, 32)}`}
+          style={{ color: "var(--mc-text-muted)", lineHeight: 1.75, marginBottom: "0.85rem" }}
+        >
+          {paragraph}
+        </p>
+      ))}
+    </>
+  );
+}
+
 function normalizeTopicCode(topicCode: string | undefined): string {
   if (!topicCode) return "";
   const code = topicCode.trim();
@@ -791,6 +852,13 @@ function OpportunityDetailPage(): React.JSX.Element {
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
   const saved = isSaved(opportunity);
+  const summarySections = [
+    { title: "Objective", body: opportunity.objective },
+    { title: "Description", body: opportunity.description },
+    { title: "Phase I", body: opportunity.phase1Description },
+    { title: "Phase II", body: opportunity.phase2Description },
+    { title: "Phase III", body: opportunity.phase3Description },
+  ].filter((section) => section.body);
 
   return (
     <article style={{ maxWidth: "860px", margin: "0 auto" }}>
@@ -805,6 +873,11 @@ function OpportunityDetailPage(): React.JSX.Element {
       <p style={{ color: "var(--mc-text-muted)", marginBottom: "1.25rem" }}>
         {opportunity.topicCode} • {opportunity.component} • {opportunity.program}
       </p>
+      {opportunity.solicitationTitle && (
+        <p style={{ color: "var(--mc-text-muted)", marginTop: "-0.5rem", marginBottom: "1.25rem" }}>
+          {opportunity.solicitationTitle}
+        </p>
+      )}
 
       <div
         style={{
@@ -825,6 +898,10 @@ function OpportunityDetailPage(): React.JSX.Element {
         <div>
           <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Deadline</div>
           <div>{formatDate(dueDate)}</div>
+        </div>
+        <div>
+          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Open</div>
+          <div>{formatDate(opportunity.openDate)}</div>
         </div>
       </div>
 
@@ -867,19 +944,88 @@ function OpportunityDetailPage(): React.JSX.Element {
         </button>
       </p>
 
-      <section style={{ marginBottom: "1rem" }}>
-        <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>Description</h2>
-        <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.7 }}>
-          {opportunity.description || "No description provided."}
-        </p>
-      </section>
+      {summarySections.map((section) => (
+        <section key={section.title} style={{ marginBottom: "1.5rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>{section.title}</h2>
+          <RichTextBlock text={section.body} />
+        </section>
+      ))}
 
-      {opportunity.objective && (
-        <section style={{ marginBottom: "1rem" }}>
-          <h2 style={{ fontSize: "1rem", marginBottom: "0.5rem" }}>Objective</h2>
-          <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.7 }}>
-            {opportunity.objective}
-          </p>
+      {opportunity.technologyAreas && opportunity.technologyAreas.length > 0 && (
+        <section style={{ marginBottom: "1.25rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>Technology Areas</h2>
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+            {opportunity.technologyAreas.map((area) => (
+              <span
+                key={area}
+                style={{
+                  fontSize: "0.75rem",
+                  color: "var(--mc-text-muted)",
+                  background: "var(--mc-bg-tertiary)",
+                  border: "1px solid var(--mc-border)",
+                  padding: "0.25rem 0.55rem",
+                }}
+              >
+                {area}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {opportunity.focusAreas && opportunity.focusAreas.length > 0 && (
+        <section style={{ marginBottom: "1.25rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>Focus Areas</h2>
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+            {opportunity.focusAreas.map((area) => (
+              <span
+                key={area}
+                style={{
+                  fontSize: "0.75rem",
+                  color: "var(--mc-text-muted)",
+                  background: "var(--mc-bg-tertiary)",
+                  border: "1px solid var(--mc-border)",
+                  padding: "0.25rem 0.55rem",
+                }}
+              >
+                {area}
+              </span>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {opportunity.referenceDocuments && opportunity.referenceDocuments.length > 0 && (
+        <section style={{ marginBottom: "1.25rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>References</h2>
+          <div style={{ display: "grid", gap: "0.75rem" }}>
+            {opportunity.referenceDocuments.map((document, index) => (
+              <div
+                key={`${document.title}-${index}`}
+                style={{
+                  padding: "0.9rem 1rem",
+                  border: "1px solid var(--mc-border)",
+                  background: "var(--charcoal)",
+                }}
+              >
+                <div style={{ color: "var(--mc-text-muted)", lineHeight: 1.65 }}>
+                  {sanitizeText(document.title)}
+                </div>
+                {document.url && (
+                  <div style={{ marginTop: "0.5rem" }}>
+                    <a
+                      href={document.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "var(--mc-accent)" }}
+                    >
+                      Open reference
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </section>
       )}
     </article>
