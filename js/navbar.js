@@ -7,7 +7,7 @@ const DEFAULT_NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/builders', label: 'Defense Builders' },
   { href: '/wingman', label: 'Wingman' },
-  { href: '/guild', label: 'Guild' },
+  { href: '/access', label: 'Dashboard' },
   { href: '/programs/the-combine', label: 'The Combine' },
 ];
 

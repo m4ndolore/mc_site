@@ -491,6 +491,21 @@ export default {
         refererUrl &&
         (refererUrl.pathname.startsWith("/combine") || SIGMABLOX_HOSTNAMES.has(refererUrl.hostname));
 
+      // Returning SigmaBlox users with an active session: skip the access page
+      // entirely and go straight to auth → /combine.
+      if (
+        (url.pathname === "/access" || url.pathname === "/access/") &&
+        isFromCombine
+      ) {
+        const session = await getSession(request, env);
+        if (session) {
+          return Response.redirect(
+            new URL(`/auth/login?returnTo=${encodeURIComponent("/combine")}&context=combine`, url.origin).toString(),
+            302
+          );
+        }
+      }
+
       // Normalize Sigmablox-originated access entries so downstream login can
       // deterministically route users back to the Combine context.
       if (
@@ -539,7 +554,7 @@ export default {
         response = withLastConsoleCookie(response, consoleValueFromPath(url.pathname), env, request);
       }
 
-      // Dashboard redirect for authenticated users → Guild
+      // Dashboard redirect for authenticated users → authenticated console
       if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
         const session = await getSession(request, env);
         if (session) {

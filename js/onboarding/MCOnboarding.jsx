@@ -259,9 +259,9 @@ function getWelcomeCopy(context) {
   }
   if (context === "guild") {
     return {
-      title: "Continue to Guild.",
-      subtitle: "Sign in to resume your Guild workspace and network.",
-      cta: "Sign in to Guild \u2192",
+      title: "Continue to your dashboard.",
+      subtitle: "Sign in to resume your workspace and network.",
+      cta: "Sign in \u2192",
     };
   }
   return {
@@ -438,7 +438,7 @@ const HERO = {
     tag: "ACCOUNT LIVE",
     lines: ["Your sandbox", "is ready.", "Sign in."],
     accent: 1,
-    body: "Your account is configured based on your selections. Sign in to Guild to start exploring.",
+    body: "Your account is configured based on your selections. Sign in to start exploring.",
     pulse: "Status: active",
   },
   returning_user: {
@@ -452,7 +452,7 @@ const HERO = {
     tag: "SESSION ACTIVE",
     lines: ["You're", "already", "signed in."],
     accent: 0,
-    body: "Your account is live. Head to Guild to access your sandbox, tools, and network.",
+    body: "Your account is live. Head to your dashboard to access your sandbox, tools, and network.",
     pulse: "Status: active",
   },
 };
@@ -939,10 +939,6 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
           <a href={loginHref} class="onboarding__signin-btn">Sign in with Email &rarr;</a>
           <a href={loginHref}
             class="onboarding__signin-btn onboarding__signin-btn--google">Continue via SSO</a>
-          <div style={{ position: "relative" }}>
-            <span class="onboarding__signin-cac">CAC/PIV</span>
-            <span class="onboarding__signin-cac-badge">soon</span>
-          </div>
         </div>
       </div>
     </div>
@@ -1020,9 +1016,25 @@ function getOrderedProducts(journey) {
   return order.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
 }
 
+// ─── CTA HELPERS ──────────────────────────────────────────────────────────────
+function getDoneCta(products, referralContext) {
+  // Product-specific CTA based on what they selected or where they came from
+  if (products.length === 1) {
+    const p = products[0];
+    if (p === "Wingman") return "Open Wingman";
+    if (p === "The Combine") return "Go to The Combine";
+    if (p === "Defense Builders") return "Browse Defense Builders";
+  }
+  if (referralContext === "wingman") return "Open Wingman";
+  if (referralContext === "combine") return "Go to The Combine";
+  if (referralContext === "builders") return "Browse Defense Builders";
+  return "Sign in to your dashboard";
+}
+
 // ─── DONE SCREEN ──────────────────────────────────────────────────────────────
-function DoneScreen({ products, loginUrl, role }) {
+function DoneScreen({ products, loginUrl, role, referralContext }) {
   const autoPromoted = role && role !== "restricted";
+  const ctaText = getDoneCta(products, referralContext);
   return (
     <div class="onboarding__done">
       <div class="onboarding__done-check">{"\u2713"}</div>
@@ -1037,7 +1049,7 @@ function DoneScreen({ products, loginUrl, role }) {
       </p>
       {loginUrl && (
         <a href={loginUrl} class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
-          Sign in to Guild &rarr;
+          {ctaText} &rarr;
         </a>
       )}
     </div>
@@ -1045,8 +1057,16 @@ function DoneScreen({ products, loginUrl, role }) {
 }
 
 // ─── AUTHENTICATED SCREEN ────────────────────────────────────────────────────
-function AuthenticatedScreen({ user }) {
+function AuthenticatedScreen({ user, referralContext }) {
   const displayName = user?.name || user?.email?.split("@")[0] || "Operator";
+  const ctaText = referralContext === "wingman" ? "Open Wingman"
+    : referralContext === "combine" ? "Go to The Combine"
+    : referralContext === "builders" ? "Browse Defense Builders"
+    : "Go to your dashboard";
+  const ctaHref = referralContext === "combine" ? "/combine"
+    : referralContext === "wingman" ? "https://wingman.mergecombinator.com/"
+    : referralContext === "builders" ? "/builders"
+    : "https://guild.mergecombinator.com";
   return (
     <div class="onboarding__done">
       <div class="onboarding__done-check">{"\u2713"}</div>
@@ -1054,8 +1074,8 @@ function AuthenticatedScreen({ user }) {
       <p class="onboarding__done-body">
         You're already signed in. Head to your dashboard to continue.
       </p>
-      <a href="https://guild.mergecombinator.com" class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
-        Go to Guild &rarr;
+      <a href={ctaHref} class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
+        {ctaText} &rarr;
       </a>
       <a href="/" class="onboarding__btn onboarding__btn--text" style={{ marginTop: 12, textAlign: "center" }}>
         &larr; Back to home
@@ -1084,10 +1104,6 @@ function WelcomeBack({ onNewUser, loginHref, referralContext }) {
         <div class="onboarding__signin-row">
           <a href={loginHref}
             class="onboarding__signin-btn onboarding__signin-btn--google" style={{ flex: 1 }}>Continue via SSO</a>
-          <div style={{ position: "relative" }}>
-            <span class="onboarding__signin-cac">CAC/PIV</span>
-            <span class="onboarding__signin-cac-badge">soon</span>
-          </div>
         </div>
       </div>
 
@@ -1143,6 +1159,26 @@ function MobileActionBar({ step, state, onAction, onBack }) {
 }
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
+// Map surface/context params to pre-selected product + fast-track to contact step
+function getEntryShortcut() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const surface = (params.get("surface") || "").toLowerCase();
+    const context = (params.get("context") || params.get("ref") || "").toLowerCase();
+    const key = surface || context;
+    const SURFACE_TO_PRODUCT = {
+      wingman: "Wingman",
+      combine: "The Combine",
+      builders: "Defense Builders",
+    };
+    const product = SURFACE_TO_PRODUCT[key];
+    if (!product) return null;
+    // Also fast-track if there's an opportunity attached
+    const hasOpp = params.has("opp_id") || params.has("opp_code");
+    return { product, hasOpp };
+  } catch { return null; }
+}
+
 export default function MCOnboarding() {
   const [state, dispatch] = useReducer(reducer, initialState, (init) => {
     const saved = loadState();
@@ -1153,11 +1189,17 @@ export default function MCOnboarding() {
         return { ...base, step: 0 };
       }
     } catch { /* localStorage blocked */ }
+    // Source-aware shortcut: skip discovery steps when coming from a known product
+    const shortcut = getEntryShortcut();
+    if (shortcut && base.step <= 1) {
+      return { ...base, step: 4, products: [shortcut.product] };
+    }
     return base;
   });
 
   const [authUser, setAuthUser] = useState(null);
   const liveRef = useRef(null);
+  const wasShortcut = useRef(!!getEntryShortcut() && state.step === 4);
   const { step } = state;
   const heroKey = getHeroKey(state);
   const loginReturnTo = resolveAccessReturnTo();
@@ -1356,7 +1398,7 @@ export default function MCOnboarding() {
     if (step === 4 && state.otpSent) dispatch({ type: "OTP_RESET" });
     else if (step === 2) goTo(1);
     else if (step === 3) goTo(2);
-    else if (step === 4) goTo(3);
+    else if (step === 4) goTo(wasShortcut.current ? 1 : 3);
   }, [step, state, goTo, dispatch]);
 
   return (
@@ -1409,11 +1451,11 @@ export default function MCOnboarding() {
           )}
 
           {step === "authenticated" ? (
-            <AuthenticatedScreen user={authUser} />
+            <AuthenticatedScreen user={authUser} referralContext={referralContext} />
           ) : step === 0 ? (
             <WelcomeBack onNewUser={() => goTo(1)} loginHref={loginHref} referralContext={referralContext} />
           ) : step === 6 ? (
-            <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} />
+            <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} referralContext={referralContext} />
           ) : step === 1 ? (
             <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} loginHref={loginHref} />
           ) : step === 2 ? (
@@ -1421,7 +1463,7 @@ export default function MCOnboarding() {
           ) : step === 3 ? (
             <Step3 journey={state.journey} dispatch={dispatch} onNext={() => goTo(4)} onBack={() => goTo(2)} />
           ) : step === 4 ? (
-            <Step4 state={state} dispatch={dispatch} onBack={() => goTo(3)} onSendOtp={handleSendOtp} onVerifyOtp={handleVerifyOtp} loginHref={loginHref} />
+            <Step4 state={state} dispatch={dispatch} onBack={() => goTo(wasShortcut.current ? 1 : 3)} onSendOtp={handleSendOtp} onVerifyOtp={handleVerifyOtp} loginHref={loginHref} />
           ) : (
             <Step5 products={state.products} journey={state.journey} role={state.role} loginUrl={state.loginUrl} dispatch={dispatch} onDone={() => dispatch({ type: "FINISH" })} />
           )}
