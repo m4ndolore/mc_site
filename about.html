@@ -707,7 +707,6 @@
       if (!origSlides.length || !track) return;
 
       var total = origSlides.length;
-      var gap = 20;
       var isMoving = false;
 
       // Clone last slide before first, and first slide after last
@@ -736,8 +735,9 @@
       var dots = dotsEl.querySelectorAll('.team-carousel__dot');
 
       function getOffset(trackIdx) {
-        var vpWidth = track.parentElement.offsetWidth;
-        return trackIdx * (vpWidth + gap);
+        var targetSlide = allSlides[trackIdx];
+        if (!targetSlide) return 0;
+        return targetSlide.offsetLeft;
       }
 
       function setPosition(trackIdx, animate) {
