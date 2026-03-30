@@ -5,6 +5,10 @@ export interface Opportunity {
   topicTitle: string;
   description: string;
   objective?: string;
+  solicitationTitle?: string;
+  phase1Description?: string;
+  phase2Description?: string;
+  phase3Description?: string;
   component: string;
   program: string;
   topicStatus: string;
@@ -17,6 +21,10 @@ export interface Opportunity {
   url?: string;
   postedDate: string;
   responseDeadline?: string;
+  referenceDocuments?: Array<{
+    title: string;
+    url?: string;
+  }>;
   estimatedValue?: {
     min?: number;
     max?: number;
