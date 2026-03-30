@@ -3,31 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <script>
+    // FOUC prevention: apply theme before first paint
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Browse companies selected for in-person operator validation through The Combine program. Cohort 25-1: 83 defense technology companies evaluated in Tulsa, OK.">
+  <meta name="description" content="Combine Cohort 25-1 — 83 companies selected for in-person operator validation in Tulsa, OK. Browse the full directory.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <link rel="canonical" href="https://mergecombinator.com/portfolio">
-  <meta property="og:title" content="Portfolio — Merge Combinator">
-  <meta property="og:description" content="Browse companies selected for in-person operator validation through The Combine program. Cohort 25-1: 83 defense technology companies evaluated in Tulsa, OK.">
+  <link rel="canonical" href="https://mergecombinator.com/combine/cohort25-1">
+  <meta name="keywords" content="the combine, defense tech, cohort, operator validation, national security, Tulsa">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Combine Cohort 25-1 — Merge Combinator">
+  <meta property="og:description" content="83 companies selected for in-person operator validation in Tulsa, OK. Browse the full directory.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
-  <meta property="og:url" content="https://mergecombinator.com/portfolio">
+  <meta property="og:url" content="https://mergecombinator.com/combine/cohort25-1">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Combine Cohort 25-1 — Merge Combinator">
+  <meta name="twitter:description" content="83 companies selected for in-person operator validation in Tulsa, OK.">
+  <meta name="twitter:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
-  <title>Portfolio — Merge Combinator</title>
+  <title>Combine Cohort 25-1 — Merge Combinator</title>
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "name": "Portfolio — Merge Combinator",
-    "url": "https://mergecombinator.com/portfolio",
-    "description": "Companies selected for in-person operator validation through The Combine program by Merge Combinator.",
+    "name": "The Combine: Cohort 25-1 — Merge Combinator",
+    "url": "https://mergecombinator.com/combine/cohort25-1",
+    "description": "83 defense technology companies selected for in-person operator validation in Tulsa, OK through The Combine program.",
+    "numberOfItems": 83,
     "isPartOf": {
       "@type": "WebSite",
       "name": "Merge Combinator",
@@ -36,40 +46,64 @@
   }
   </script>
 
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="styles/light-theme.css">
+  <!-- Styles -->
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles/light-theme.css">
 </head>
 <body>
   <div id="mc-navbar"></div>
 
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
   <section class="portfolio-hero">
     <div class="portfolio-hero__bg">
       <div class="portfolio-hero__gradient"></div>
       <div class="portfolio-hero__grid"></div>
     </div>
+
     <div class="container">
       <div class="portfolio-hero__content fade-up">
-        <span class="section-label section-label--light">Combine Cohorts</span>
-        <h1 class="portfolio-hero__title">Companies from The Combine.</h1>
+        <span class="section-label section-label--light">Cohort 25-1</span>
+        <h1 class="portfolio-hero__title">The Combine: Tulsa, OK</h1>
         <p class="portfolio-hero__subtitle">
-          Browse companies selected for in-person operator validation through The Combine program.
+          83 companies. One week. In-person operator validation<br>with mission owners from across the Indo-Pacific.
         </p>
       </div>
     </div>
   </section>
 
-  <section class="section--lg">
-    <div class="container" style="max-width: 720px;">
-      <div class="stagger-children" style="display: grid; gap: 16px;">
-        <a href="/combine/cohort25-1" style="display: block; text-decoration: none; color: inherit; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: 2px; padding: 24px; transition: border-color 0.2s;">
-          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;">Cohort 25-1</div>
-          <h3 style="font-size: 20px; color: var(--white); margin-bottom: 8px;">Tulsa, OK</h3>
-          <p style="color: rgba(255,255,255,.68); margin: 0;">83 companies selected for in-person operator validation.</p>
-        </a>
+  <!-- ============================================
+       FILTER TAGS
+       ============================================ -->
+  <section class="portfolio-filters section--xs">
+    <div class="container">
+      <div class="filter-tags fade-up">
+        <button class="filter-tag filter-tag--active" data-filter="all">All</button>
+        <button class="filter-tag" data-filter="autonomy">Autonomy</button>
+        <button class="filter-tag" data-filter="isr">ISR</button>
+        <button class="filter-tag" data-filter="logistics">Logistics</button>
+        <button class="filter-tag" data-filter="cyber">Cyber</button>
+        <button class="filter-tag" data-filter="c2">C2</button>
+      </div>
+      <p class="portfolio-filters__count" id="portfolio-count"></p>
+    </div>
+  </section>
+
+  <!-- ============================================
+       COMPANY GRID (API-driven)
+       ============================================ -->
+  <section class="portfolio-grid section--lg">
+    <div class="container">
+      <div class="portfolio-grid__wrapper stagger-children" id="cohort-grid">
+        <!-- Populated by JS from API/seeded data -->
       </div>
     </div>
   </section>
 
+  <!-- ============================================
+       CTA SECTION
+       ============================================ -->
   <section class="portfolio-cta">
     <div class="portfolio-cta__bg">
       <div class="portfolio-cta__grid"></div>
@@ -77,13 +111,16 @@
     </div>
     <div class="container">
       <div class="portfolio-cta__content fade-up">
-        <h2 class="portfolio-cta__title">Apply to the next cohort.</h2>
+        <h2 class="portfolio-cta__title">Build with the next cohort.</h2>
         <p class="portfolio-cta__subtitle">
-          The Combine puts funded teams in front of operators who own the problem. One week. In person.
+          Apply to The Combine or join Defense Builders to connect with operators and mission owners.
         </p>
         <div class="portfolio-cta__buttons">
           <a href="/programs/the-combine" class="btn btn--primary btn--large btn--glow">
             Apply to The Combine
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
           </a>
           <a href="/builders" class="btn btn--ghost btn--large">Join Defense Builders</a>
         </div>
@@ -91,6 +128,9 @@
     </div>
   </section>
 
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
   <footer class="footer">
     <div class="container">
       <div class="footer__grid">
@@ -114,6 +154,7 @@
               <li><a href="/opportunities">Opportunities</a></li>
             </ul>
           </div>
+
           <div class="footer__column">
             <h4 class="footer__heading">Company</h4>
             <ul class="footer__list">
@@ -122,6 +163,7 @@
               <li><a href="/#engage">Contact</a></li>
             </ul>
           </div>
+
           <div class="footer__column">
             <h4 class="footer__heading">Resources</h4>
             <ul class="footer__list">
@@ -130,6 +172,7 @@
               <li><a href="https://docs.mergecombinator.com">Docs</a></li>
             </ul>
           </div>
+
           <div class="footer__column">
             <h4 class="footer__heading">Legal</h4>
             <ul class="footer__list">
@@ -140,6 +183,7 @@
           </div>
         </div>
       </div>
+
       <div class="footer__bottom">
         <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
         <p class="footer__location">Honolulu &bull; Seattle &bull; Las Vegas</p>
@@ -147,7 +191,9 @@
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script type="module" src="/js/navbar.js"></script>
   <script type="module" src="/script.js"></script>
+  <script type="module" src="/js/combine/cohort.js"></script>
 </body>
 </html>
