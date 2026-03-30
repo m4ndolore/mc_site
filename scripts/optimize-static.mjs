@@ -23,8 +23,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const DATA_PATH = join(ROOT, 'public', 'data', 'companies.json');
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
+const CF_IMAGES_BASE = 'https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw';
 
 // ── Helpers ──────────────────────────────────────────────────────────
+
+function getLogoUrl(c) {
+  if (c.cfImageId) return `${CF_IMAGES_BASE}/${c.cfImageId}/public`;
+  return null; // Airtable URLs expire — don't use logoUrl
+}
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -133,11 +139,18 @@ function buildCompanyCard(c) {
     metaHtml += `<span class="builder-tag cohort">${escapeHtml(c.productType)}</span>`;
   }
 
+  const logo = getLogoUrl(c);
+  const logoHtml = logo
+    ? `<img src="${escapeHtml(logo)}" alt="${escapeHtml(c.name)} logo" class="builder-card__logo" loading="lazy" width="48" height="48" style="width:48px;height:48px;object-fit:contain;border-radius:2px;background:rgba(255,255,255,.04);flex-shrink:0;">`
+    : '';
+
   return `<a href="/companies/${slug}" class="builder-card" data-company-id="${escapeHtml(c.id)}" style="text-decoration:none;color:inherit;">
-  <div class="builder-card__content">
+  <div class="builder-card__content" style="${logo ? 'display:flex;gap:14px;align-items:flex-start;' : ''}">
+    ${logoHtml}<div>
     <h3 class="builder-card__name">${escapeHtml(c.name)}</h3>${c.productName ? `\n    <div class="builder-card__tagline" style="margin-bottom:8px;font-size:0.9rem;color:var(--text-secondary);">${escapeHtml(c.productName)}</div>` : ''}
     <div class="builder-card__tags">${metaHtml}</div>
     <p class="builder-card__tagline">${desc}</p>
+    </div>
   </div>
 </a>`;
 }
@@ -165,6 +178,12 @@ function injectBuilders(html) {
   html = html.replace(
     /(<span class="builders-stats__value" id="stat-cohorts">)0(<\/span>)/,
     `$1${stats.cohorts}$2`
+  );
+
+  // 2b. Inject last refresh timestamp
+  html = html.replace(
+    /(<div class="rail-kv__value" id="builders-last-refresh">).*?(<\/div>)/,
+    `$1Built ${BUILD_DATE}$2`
   );
 
   // 3. Grounding paragraph — insert before #builders-grid section
@@ -364,10 +383,11 @@ function generateEntityPage(c) {
   <meta property="og:description" content="${escapeHtml(descTrunc)}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mergecombinator.com/companies/${slug}">
-  <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <meta property="og:image" content="${getLogoUrl(c) || `${CF_IMAGES_BASE}/logo-arrows-2/public`}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="${escapeHtml(c.name)} — Merge Combinator">
   <meta name="twitter:description" content="${escapeHtml(descTrunc)}">
+  <meta name="twitter:image" content="${getLogoUrl(c) || `${CF_IMAGES_BASE}/logo-arrows-2/public`}">
   <title>${escapeHtml(c.name)} — Merge Combinator</title>
 
   <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
@@ -401,7 +421,10 @@ function generateEntityPage(c) {
     <nav class="company-page__breadcrumb">
       <a href="/builders">Builders</a> / ${escapeHtml(c.name)}
     </nav>
-    <header class="company-page__header">
+    <header class="company-page__header">${(() => {
+    const logo = getLogoUrl(c);
+    return logo ? `\n      <img src="${escapeHtml(logo)}" alt="${escapeHtml(c.name)} logo" class="company-page__logo" loading="lazy" width="80" height="80" style="width:80px;height:80px;object-fit:contain;border-radius:4px;background:rgba(255,255,255,.04);margin-bottom:12px;">` : '';
+  })()}
       <h1 class="company-page__name">${escapeHtml(c.name)}</h1>${c.productName ? `\n      <div class="company-page__product">${escapeHtml(c.productName)}</div>` : ''}
       <div class="company-page__meta">
         ${buildMetaBadges(c)}
