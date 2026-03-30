@@ -60,6 +60,18 @@ function getCategories(company) {
 }
 
 /**
+ * Normalize a URL - ensure it has a protocol prefix
+ * @param {string} url
+ * @returns {string}
+ */
+function normalizeUrl(url) {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    return `https://${trimmed}`;
+}
+
+/**
  * Render a portfolio card
  * @param {Object} company
  * @returns {string} HTML string
@@ -95,7 +107,7 @@ function renderPortfolioCard(company) {
                     ${tagsHtml}
                 </div>
                 ${company.website ? `
-                <a href="${escapeHtml(company.website)}" class="portfolio-card__link" target="_blank" rel="noopener">
+                <a href="${escapeHtml(normalizeUrl(company.website))}" class="portfolio-card__link" target="_blank" rel="noopener">
                     External Site
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
