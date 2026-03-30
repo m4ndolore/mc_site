@@ -673,6 +673,15 @@
   min-height: 16px;
 }
 
+.onboarding__field-hint {
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.onboarding__field-hint--gov {
+  color: #22c55e;
+}
+
 /* ─── OTP Input ──────────────────────────── */
 .onboarding__otp-input-wrap {
   margin-bottom: 24px;

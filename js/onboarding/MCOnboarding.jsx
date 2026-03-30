@@ -835,6 +835,9 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
     dispatch({ type: "OTP_SET_CODE", code: val });
   };
 
+  const GOV_RE = /\.(gov|mil)$/i;
+  const isGovEmail = GOV_RE.test((formData.email || "").trim().split("@")[1] || "");
+
   const fields = [
     { key: "name", label: "NAME", placeholder: "Your full name", type: "text", required: true },
     { key: "email", label: "EMAIL", placeholder: "your@organization.gov", type: "email", required: true },
@@ -924,6 +927,9 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
             <div id={`ob-${f.key}-error`} class="onboarding__field-error" role="alert">
               {errors[f.key] || ""}
             </div>
+            {f.key === "email" && isGovEmail && !errors.email && (
+              <div class="onboarding__field-hint onboarding__field-hint--gov">Government email detected &mdash; expedited access.</div>
+            )}
           </div>
         ))}
       </div>
@@ -1159,6 +1165,24 @@ function MobileActionBar({ step, state, onAction, onBack }) {
 }
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
+// ─── A/B TEST: simplified form for organic traffic ───────────────────────────
+const AB_STORAGE_KEY = "mc-access-ab-variant";
+function getAbVariant() {
+  try {
+    const stored = sessionStorage.getItem(AB_STORAGE_KEY);
+    if (stored === "A" || stored === "B") return stored;
+    const variant = Math.random() < 0.5 ? "A" : "B";
+    sessionStorage.setItem(AB_STORAGE_KEY, variant);
+    return variant;
+  } catch { return "A"; } // fallback to full wizard if storage blocked
+}
+function isOrganicAccess() {
+  try {
+    const p = new URLSearchParams(window.location.search);
+    return !p.has("surface") && !p.has("context") && !p.has("ref") && !p.has("opp_id") && !p.has("opp_code");
+  } catch { return false; }
+}
+
 // Map surface/context params to pre-selected product + fast-track to contact step
 function getEntryShortcut() {
   try {
@@ -1177,6 +1201,187 @@ function getEntryShortcut() {
     if (!product && !hasOpp) return null;
     return { product, hasOpp };
   } catch { return null; }
+}
+
+// ─── SIMPLIFIED FORM (A/B variant B) ─────────────────────────────────────────
+function SimplifiedForm({ loginHref, referralContext }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
+  const [verifying, setVerifying] = useState(false);
+  const [error, setError] = useState(null);
+  const [done, setDone] = useState(false);
+  const [role, setRole] = useState(null);
+  const otpRef = useRef(null);
+
+  const GOV_RE = /\.(gov|mil)$/i;
+  const isGovEmail = GOV_RE.test((email || "").trim().split("@")[1] || "");
+
+  useEffect(() => { track("ab_variant_view", { variant: "B" }); }, []);
+  useEffect(() => { if (sent && otpRef.current) otpRef.current.focus(); }, [sent]);
+
+  const handleSend = async () => {
+    if (!name.trim() || !email.trim()) return;
+    setSending(true);
+    setError(null);
+    track("otp_send_start", { email: email.trim(), variant: "B" });
+    try {
+      const res = await fetch(`${API_ENDPOINT.replace("/provision", "")}/otp/send`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim(), name: name.trim() }),
+      });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.error?.message || `HTTP ${res.status}`);
+      }
+      setSent(true);
+      track("otp_sent", { email: email.trim(), variant: "B" });
+    } catch (e) {
+      setError(e.message || "Failed to send code. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  const handleVerify = async () => {
+    if (otpCode.length !== 6) return;
+    setVerifying(true);
+    setError(null);
+    try {
+      const res = await fetch(`${API_ENDPOINT.replace("/provision", "")}/otp/verify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email.trim(),
+          name: name.trim(),
+          code: otpCode,
+          areas: [],
+          outcomes: [],
+          source: "simplified_form",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
+      setRole(data?.data?.role || "restricted");
+      setDone(true);
+      track("submit_success", { variant: "B", role: data?.data?.role });
+      try { localStorage.setItem(COMPLETED_KEY, "1"); } catch {}
+    } catch (e) {
+      setError(e.message || "Verification failed. Please try again.");
+    } finally {
+      setVerifying(false);
+    }
+  };
+
+  if (done) {
+    const autoPromoted = role && role !== "restricted";
+    const ctaText = getDoneCta([], referralContext);
+    return (
+      <div class="onboarding__done">
+        <div class="onboarding__done-check">{"\u2713"}</div>
+        <h2 class="onboarding__done-title">{autoPromoted ? "You're in." : "Almost there."}</h2>
+        <p class="onboarding__done-body">
+          {autoPromoted
+            ? "Your account is live. Sign in to start exploring."
+            : "Check your email to set your password. We're configuring your access."}
+        </p>
+        {loginHref && (
+          <a href={loginHref} class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
+            {ctaText} &rarr;
+          </a>
+        )}
+      </div>
+    );
+  }
+
+  if (sent) {
+    return (
+      <div class="onboarding__step">
+        <h2 class="onboarding__step-title">Check your email.</h2>
+        <p class="onboarding__step-subtitle">
+          We sent a 6-digit code to <strong>{email}</strong>.
+        </p>
+        {error && <div class="onboarding__error-banner">{error}</div>}
+        <div class="onboarding__otp-input-wrap">
+          <input
+            ref={otpRef}
+            type="text"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            placeholder="000000"
+            maxLength={6}
+            value={otpCode}
+            class="onboarding__otp-input"
+            onInput={e => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+            onKeyDown={e => { if (e.key === "Enter" && otpCode.length === 6) handleVerify(); }}
+          />
+        </div>
+        <button class="onboarding__btn onboarding__btn--primary-full" disabled={otpCode.length !== 6 || verifying} onClick={handleVerify}>
+          {verifying ? "Verifying\u2026" : "Verify & Create Account \u2192"}
+        </button>
+        <div class="onboarding__otp-actions">
+          <button class="onboarding__btn onboarding__btn--text" onClick={() => { setSent(false); setOtpCode(""); setError(null); }}>
+            &larr; Change email
+          </button>
+          <button class="onboarding__btn onboarding__btn--text" disabled={sending} onClick={handleSend}>
+            Resend code
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div class="onboarding__step">
+      <h2 class="onboarding__step-title">Get started.</h2>
+      <p class="onboarding__step-subtitle">Create your account in seconds. No password needed.</p>
+
+      {error && <div class="onboarding__error-banner">{error}</div>}
+
+      <div class="onboarding__fields">
+        <div>
+          <label class="onboarding__field-label" for="ob-simple-name">NAME *</label>
+          <input
+            id="ob-simple-name"
+            type="text"
+            placeholder="Your full name"
+            value={name}
+            class="onboarding__field-input"
+            onInput={e => setName(e.target.value)}
+          />
+        </div>
+        <div>
+          <label class="onboarding__field-label" for="ob-simple-email">EMAIL *</label>
+          <input
+            id="ob-simple-email"
+            type="email"
+            inputMode="email"
+            placeholder="your@organization.gov"
+            value={email}
+            class="onboarding__field-input"
+            onInput={e => setEmail(e.target.value)}
+          />
+          {isGovEmail && (
+            <div class="onboarding__field-hint onboarding__field-hint--gov">Government email detected &mdash; expedited access.</div>
+          )}
+        </div>
+      </div>
+
+      <button class="onboarding__btn onboarding__btn--primary-full" disabled={!name.trim() || !email.trim() || sending} onClick={handleSend}>
+        {sending ? "Sending code\u2026" : "Get Started \u2192"}
+      </button>
+
+      <div class="onboarding__signin">
+        <p class="onboarding__signin-label">Already a member?</p>
+        <div class="onboarding__signin-row">
+          <a href={loginHref} class="onboarding__signin-btn">Sign in &rarr;</a>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function MCOnboarding() {
@@ -1200,6 +1405,8 @@ export default function MCOnboarding() {
   const [authUser, setAuthUser] = useState(null);
   const liveRef = useRef(null);
   const wasShortcut = useRef(!!getEntryShortcut() && state.step === 4);
+  // A/B test: simplified form for organic traffic
+  const abVariant = useRef(isOrganicAccess() && !localStorage.getItem(COMPLETED_KEY) ? getAbVariant() : "A");
   const { step } = state;
   const heroKey = getHeroKey(state);
   const loginReturnTo = resolveAccessReturnTo();
@@ -1221,6 +1428,7 @@ export default function MCOnboarding() {
       opportunity_id: opportunityContext?.id || null,
       opportunity_code: opportunityContext?.code || null,
       opportunity_title: opportunityContext?.title || null,
+      ab_variant: abVariant.current,
     });
   }, [sessionId, journeyId, entryMeta.context, entryMeta.source, entryMeta.referrerHost, referralContext, loginReturnTo, opportunityContext]);
 
@@ -1410,7 +1618,7 @@ export default function MCOnboarding() {
 
       <div class="onboarding__form">
         <div class="onboarding__form-inner">
-          {typeof step === "number" && step >= 1 && step <= 4 && <ProgressBar step={step} />}
+          {typeof step === "number" && step >= 1 && step <= 4 && abVariant.current !== "B" && <ProgressBar step={step} />}
           {opportunityContext && typeof step === "number" && step >= 1 && step <= 5 && (
             <div
               style={{
@@ -1456,6 +1664,8 @@ export default function MCOnboarding() {
             <WelcomeBack onNewUser={() => goTo(1)} loginHref={loginHref} referralContext={referralContext} />
           ) : step === 6 ? (
             <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} referralContext={referralContext} />
+          ) : abVariant.current === "B" && step === 1 ? (
+            <SimplifiedForm loginHref={loginHref} referralContext={referralContext} />
           ) : step === 1 ? (
             <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} loginHref={loginHref} />
           ) : step === 2 ? (
