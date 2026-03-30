@@ -157,7 +157,7 @@
       }
 
       // Inline waitlist form handler
-      var API = 'https://api.mergecombinator.com/access/otp/send';
+      var API = 'https://api.mergecombinator.com/access/waitlist';
       function handleWaitlist(form, statusEl) {
         form.addEventListener('submit', function(e) {
           e.preventDefault();
@@ -172,10 +172,10 @@
           fetch(API, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, name: '', surface: 'wingman', waitlist: true })
+            body: JSON.stringify({ email: email, surface: 'wingman', source: 'wingman_page' })
           }).then(function(res) {
-            if (res.ok || res.status === 400 || res.status === 409) {
-              // 409 = already exists, still a success for waitlist purposes
+            if (res.ok || res.status === 409) {
+              // 409 = already on the list, still a success
               statusEl.textContent = "You\u2019re on the list. We\u2019ll be in touch.";
               statusEl.classList.add('wingman-waitlist__status--ok');
               btn.textContent = 'Submitted';

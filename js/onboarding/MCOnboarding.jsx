@@ -1171,10 +1171,10 @@ function getEntryShortcut() {
       combine: "The Combine",
       builders: "Defense Builders",
     };
-    const product = SURFACE_TO_PRODUCT[key];
-    if (!product) return null;
-    // Also fast-track if there's an opportunity attached
+    const product = SURFACE_TO_PRODUCT[key] || null;
     const hasOpp = params.has("opp_id") || params.has("opp_code");
+    // Fast-track if we have a known product OR an opportunity link
+    if (!product && !hasOpp) return null;
     return { product, hasOpp };
   } catch { return null; }
 }
@@ -1189,10 +1189,10 @@ export default function MCOnboarding() {
         return { ...base, step: 0 };
       }
     } catch { /* localStorage blocked */ }
-    // Source-aware shortcut: skip discovery steps when coming from a known product
+    // Source-aware shortcut: skip discovery steps when coming from a known product or opportunity
     const shortcut = getEntryShortcut();
     if (shortcut && base.step <= 1) {
-      return { ...base, step: 4, products: [shortcut.product] };
+      return { ...base, step: 4, products: shortcut.product ? [shortcut.product] : [] };
     }
     return base;
   });
