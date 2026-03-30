@@ -1104,20 +1104,27 @@
 }
 
 @media (max-width: 640px) {
+  /* Collapse hero to compact bar on mobile — form gets full attention */
   .onboarding__hero {
-    padding: 24px 20px;
+    padding: 16px 20px;
+    min-height: auto;
   }
 
-  .onboarding__hero-headline {
-    font-size: 28px;
+  .onboarding__hero-content,
+  .onboarding__hero-stats,
+  .onboarding__hero-grid,
+  .onboarding__hero-glow--blue,
+  .onboarding__hero-glow--green,
+  .onboarding__hero-accent {
+    display: none;
   }
 
-  .onboarding__hero-body {
-    font-size: 13px;
+  .onboarding__hero-top {
+    flex: none;
   }
 
-  .onboarding__hero-stats {
-    grid-template-columns: 1fr 1fr;
+  .onboarding__wordmark {
+    margin-bottom: 0;
   }
 
   .onboarding__form {
@@ -1135,20 +1142,7 @@
 
 @media (max-width: 480px) {
   .onboarding__hero {
-    padding: 20px 16px;
-  }
-
-  .onboarding__wordmark {
-    margin-bottom: 24px;
-  }
-
-  .onboarding__hero-headline {
-    font-size: 24px;
-    margin-bottom: 12px;
-  }
-
-  .onboarding__hero-badge {
-    display: none;
+    padding: 14px 16px;
   }
 
   .onboarding__form {

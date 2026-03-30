@@ -79,3 +79,15 @@ model Problem {
   @@index([ownerId])
   @@map("problems")
 }
+
+model WaitlistEntry {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String
+  surface   String
+  source    String?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@unique([email, surface])
+  @@index([surface])
+  @@map("waitlist_entries")
+}

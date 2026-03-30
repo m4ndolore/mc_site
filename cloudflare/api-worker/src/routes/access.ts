@@ -248,4 +248,39 @@ access.post('/provision', async (c) => {
   }), 201)
 })
 
+// ── Lightweight waitlist capture (no OTP, no provisioning) ──────────────────
+access.post('/waitlist', async (c) => {
+  const requestId = c.get('requestId')
+  let body: { email?: string; surface?: string; source?: string }
+
+  try {
+    body = await c.req.json()
+  } catch {
+    return c.json(err('INVALID_INPUT', 'Invalid JSON body', { request_id: requestId }), 400)
+  }
+
+  const email = body.email?.trim().toLowerCase()
+  if (!email || !EMAIL_RE.test(email)) {
+    return c.json(err('INVALID_INPUT', 'Valid email is required', { request_id: requestId }), 400)
+  }
+
+  const surface = body.surface?.trim().toLowerCase() || 'general'
+  const source = body.source?.trim() || null
+
+  const { prisma } = getDb(c.env.HYPERDRIVE)
+
+  try {
+    await prisma.waitlistEntry.upsert({
+      where: { email_surface: { email, surface } },
+      create: { email, surface, source },
+      update: {},  // already on the list — no-op
+    })
+  } catch (e) {
+    console.error('Waitlist insert failed:', e)
+    return c.json(err('DB_ERROR', 'Failed to save waitlist entry', { request_id: requestId }), 502)
+  }
+
+  return c.json(ok({ joined: true, email, surface }, { request_id: requestId }))
+})
+
 export { access as accessRouter }
