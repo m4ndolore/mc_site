@@ -3,315 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <script>
-    // FOUC prevention: apply theme before first paint
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Merge Combinator Portfolio - Ventures and deployments born from validated problem sets and operator partnerships.">
+  <meta name="description" content="Browse companies selected for in-person operator validation through The Combine program. Cohort 25-1: 83 defense technology companies evaluated in Tulsa, OK.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://mergecombinator.com/portfolio">
-  <meta name="keywords" content="defense tech, portfolio, ventures, case studies, national security">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Portfolio - Merge Combinator">
-  <meta property="og:description" content="Ventures and deployments born from validated problem sets and operator partnerships.">
+  <meta property="og:title" content="Portfolio — Merge Combinator">
+  <meta property="og:description" content="Browse companies selected for in-person operator validation through The Combine program. Cohort 25-1: 83 defense technology companies evaluated in Tulsa, OK.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
   <meta property="og:url" content="https://mergecombinator.com/portfolio">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Portfolio - Merge Combinator">
-  <meta name="twitter:description" content="Merge Combinator Portfolio - Ventures and deployments born from validated problem sets and operator partnerships.">
-  <meta name="twitter:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
-  <title>Portfolio - Merge Combinator</title>
+  <title>Portfolio — Merge Combinator</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Portfolio — Merge Combinator",
+    "url": "https://mergecombinator.com/portfolio",
+    "description": "Companies selected for in-person operator validation through The Combine program by Merge Combinator.",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Merge Combinator",
+      "url": "https://mergecombinator.com"
+    }
+  }
+  </script>
+
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/light-theme.css">
 </head>
 <body>
   <div id="mc-navbar"></div>
 
-  <!-- ============================================
-       PORTFOLIO HERO SECTION
-       ============================================ -->
   <section class="portfolio-hero">
     <div class="portfolio-hero__bg">
       <div class="portfolio-hero__gradient"></div>
       <div class="portfolio-hero__grid"></div>
     </div>
-
     <div class="container">
       <div class="portfolio-hero__content fade-up">
-        <span class="section-label section-label--light">Portfolio</span>
-        <h1 class="portfolio-hero__title">Ventures and deployments born from validated problem sets.</h1>
+        <span class="section-label section-label--light">Combine Cohorts</span>
+        <h1 class="portfolio-hero__title">Companies from The Combine.</h1>
         <p class="portfolio-hero__subtitle">
-          Operator partnerships driving real-world deployments across the Indo-Pacific theater.
+          Browse companies selected for in-person operator validation through The Combine program.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- ============================================
-       FILTER TAGS
-       ============================================ -->
-  <section class="portfolio-filters section--xs">
-    <div class="container">
-      <div class="filter-tags fade-up">
-        <button class="filter-tag filter-tag--active" data-filter="all">All</button>
-        <button class="filter-tag" data-filter="autonomy">Autonomy</button>
-        <button class="filter-tag" data-filter="isr">ISR</button>
-        <button class="filter-tag" data-filter="logistics">Logistics</button>
-        <button class="filter-tag" data-filter="cyber">Cyber</button>
-        <button class="filter-tag" data-filter="c2">C2</button>
-      </div>
-      <p class="portfolio-filters__count" id="portfolio-count"></p>
-    </div>
-  </section>
-
-  <!-- ============================================
-       FEATURED CASE STUDY
-       ============================================ -->
-  <section class="featured-case section">
-    <div class="container">
-      <article class="featured-card fade-up" data-category="autonomy c2">
-        <div class="featured-card__bg">
-          <div class="featured-card__gradient"></div>
-          <div class="featured-card__grid"></div>
-        </div>
-
-        <div class="featured-card__content">
-          <div class="featured-card__text">
-            <div class="featured-card__badge">
-              <span class="featured-card__badge-dot"></span>
-              Featured Venture
-            </div>
-            <h2 class="featured-card__title">SigmaBlox</h2>
-            <p class="featured-card__description">
-              AI-powered mission planning for tactical edge deployment. Building the next generation of
-              autonomous decision support systems for special operations teams operating in contested environments.
-            </p>
-            <div class="featured-card__tags">
-              <span class="case-tag case-tag--autonomy">Autonomy</span>
-              <span class="case-tag case-tag--c2">C2</span>
-            </div>
-            <div class="featured-card__stats">
-              <div class="featured-card__stat">
-                <span class="featured-card__stat-value">6</span>
-                <span class="featured-card__stat-label">Deployments</span>
-              </div>
-              <div class="featured-card__stat-divider"></div>
-              <div class="featured-card__stat">
-                <span class="featured-card__stat-value">3</span>
-                <span class="featured-card__stat-label">Countries</span>
-              </div>
-              <div class="featured-card__stat-divider"></div>
-              <div class="featured-card__stat">
-                <span class="featured-card__stat-value">12</span>
-                <span class="featured-card__stat-label">Operators</span>
-              </div>
-            </div>
-            <span class="btn btn--ghost btn--pending">
-              View Case Study
-              <span style="margin-left: 8px; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: #d97706; text-transform: uppercase;">PENDING</span>
-            </span>
-          </div>
-
-          <div class="featured-card__visual">
-            <div class="featured-card__image">
-              <!-- Gradient placeholder with grid pattern -->
-              <svg class="featured-card__diagram" viewBox="0 0 400 400" fill="none">
-                <!-- Grid pattern -->
-                <defs>
-                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(42, 127, 219, 0.2)" stroke-width="1"/>
-                  </pattern>
-                  <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#2A7FDB" stop-opacity="0.3"/>
-                    <stop offset="100%" stop-color="#1E5FA8" stop-opacity="0.1"/>
-                  </linearGradient>
-                  <filter id="glow">
-                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                    <feMerge>
-                      <feMergeNode in="coloredBlur"/>
-                      <feMergeNode in="SourceGraphic"/>
-                    </feMerge>
-                  </filter>
-                </defs>
-
-                <rect width="400" height="400" fill="url(#cardGradient)"/>
-                <rect width="400" height="400" fill="url(#grid)"/>
-
-                <!-- Central node network -->
-                <g filter="url(#glow)">
-                  <circle cx="200" cy="200" r="60" fill="none" stroke="#2A7FDB" stroke-width="2" opacity="0.4"/>
-                  <circle cx="200" cy="200" r="40" fill="none" stroke="#2A7FDB" stroke-width="2" opacity="0.6"/>
-                  <circle cx="200" cy="200" r="20" fill="#2A7FDB" opacity="0.8"/>
-
-                  <!-- Satellite nodes -->
-                  <circle cx="120" cy="120" r="12" fill="#5DA06F" opacity="0.6"/>
-                  <circle cx="280" cy="120" r="12" fill="#5DA06F" opacity="0.6"/>
-                  <circle cx="120" cy="280" r="12" fill="#5DA06F" opacity="0.6"/>
-                  <circle cx="280" cy="280" r="12" fill="#5DA06F" opacity="0.6"/>
-
-                  <!-- Connection lines -->
-                  <line x1="200" y1="200" x2="120" y2="120" stroke="#2A7FDB" stroke-width="1" opacity="0.4"/>
-                  <line x1="200" y1="200" x2="280" y2="120" stroke="#2A7FDB" stroke-width="1" opacity="0.4"/>
-                  <line x1="200" y1="200" x2="120" y2="280" stroke="#2A7FDB" stroke-width="1" opacity="0.4"/>
-                  <line x1="200" y1="200" x2="280" y2="280" stroke="#2A7FDB" stroke-width="1" opacity="0.4"/>
-                </g>
-              </svg>
-            </div>
-          </div>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============================================
-       PORTFOLIO GRID
-       ============================================ -->
-  <section class="portfolio-grid section--lg">
-    <div class="container">
-      <div class="portfolio-grid__wrapper stagger-children">
-        <!-- AeroScan -->
-        <article class="portfolio-card" data-category="isr autonomy">
-          <div class="portfolio-card__visual">
-            <div class="portfolio-card__gradient portfolio-card__gradient--isr"></div>
-            <div class="portfolio-card__pattern"></div>
-          </div>
-          <div class="portfolio-card__content">
-            <h3 class="portfolio-card__title">AeroScan</h3>
-            <p class="portfolio-card__description">
-              Low-cost ISR platform for maritime domain awareness
-            </p>
-            <div class="portfolio-card__tags">
-              <span class="case-tag case-tag--isr">ISR</span>
-              <span class="case-tag case-tag--autonomy">Autonomy</span>
-            </div>
-            <span class="portfolio-card__link portfolio-card__link--pending">
-              View Case Study
-              <span class="portfolio-card__pending-badge">PENDING</span>
-            </span>
-          </div>
-        </article>
-
-        <!-- LogiFlow -->
-        <article class="portfolio-card" data-category="logistics">
-          <div class="portfolio-card__visual">
-            <div class="portfolio-card__gradient portfolio-card__gradient--logistics"></div>
-            <div class="portfolio-card__pattern"></div>
-          </div>
-          <div class="portfolio-card__content">
-            <h3 class="portfolio-card__title">LogiFlow</h3>
-            <p class="portfolio-card__description">
-              Predictive logistics for contested environments
-            </p>
-            <div class="portfolio-card__tags">
-              <span class="case-tag case-tag--logistics">Logistics</span>
-            </div>
-            <span class="portfolio-card__link portfolio-card__link--pending">
-              View Case Study
-              <span class="portfolio-card__pending-badge">PENDING</span>
-            </span>
-          </div>
-        </article>
-
-        <!-- CyberShield -->
-        <article class="portfolio-card" data-category="cyber">
-          <div class="portfolio-card__visual">
-            <div class="portfolio-card__gradient portfolio-card__gradient--cyber"></div>
-            <div class="portfolio-card__pattern"></div>
-          </div>
-          <div class="portfolio-card__content">
-            <h3 class="portfolio-card__title">CyberShield</h3>
-            <p class="portfolio-card__description">
-              Zero-trust architecture for tactical networks
-            </p>
-            <div class="portfolio-card__tags">
-              <span class="case-tag case-tag--cyber">Cyber</span>
-            </div>
-            <span class="portfolio-card__link portfolio-card__link--pending">
-              View Case Study
-              <span class="portfolio-card__pending-badge">PENDING</span>
-            </span>
-          </div>
-        </article>
-
-        <!-- GridLink -->
-        <article class="portfolio-card" data-category="c2">
-          <div class="portfolio-card__visual">
-            <div class="portfolio-card__gradient portfolio-card__gradient--c2"></div>
-            <div class="portfolio-card__pattern"></div>
-          </div>
-          <div class="portfolio-card__content">
-            <h3 class="portfolio-card__title">GridLink</h3>
-            <p class="portfolio-card__description">
-              Mesh communications for denied environments
-            </p>
-            <div class="portfolio-card__tags">
-              <span class="case-tag case-tag--c2">C2</span>
-            </div>
-            <span class="portfolio-card__link portfolio-card__link--pending">
-              View Case Study
-              <span class="portfolio-card__pending-badge">PENDING</span>
-            </span>
-          </div>
-        </article>
-
-        <!-- EdgeAI -->
-        <article class="portfolio-card" data-category="autonomy">
-          <div class="portfolio-card__visual">
-            <div class="portfolio-card__gradient portfolio-card__gradient--autonomy"></div>
-            <div class="portfolio-card__pattern"></div>
-          </div>
-          <div class="portfolio-card__content">
-            <h3 class="portfolio-card__title">EdgeAI</h3>
-            <p class="portfolio-card__description">
-              On-device AI inference for tactical edge computing
-            </p>
-            <div class="portfolio-card__tags">
-              <span class="case-tag case-tag--autonomy">Autonomy</span>
-            </div>
-            <span class="portfolio-card__link portfolio-card__link--pending">
-              View Case Study
-              <span class="portfolio-card__pending-badge">PENDING</span>
-            </span>
-          </div>
-        </article>
-
-        <!-- SecureComm -->
-        <article class="portfolio-card" data-category="cyber c2">
-          <div class="portfolio-card__visual">
-            <div class="portfolio-card__gradient portfolio-card__gradient--cyber-alt"></div>
-            <div class="portfolio-card__pattern"></div>
-          </div>
-          <div class="portfolio-card__content">
-            <h3 class="portfolio-card__title">SecureComm</h3>
-            <p class="portfolio-card__description">
-              Quantum-resistant encryption for field operations
-            </p>
-            <div class="portfolio-card__tags">
-              <span class="case-tag case-tag--cyber">Cyber</span>
-              <span class="case-tag case-tag--c2">C2</span>
-            </div>
-            <span class="portfolio-card__link portfolio-card__link--pending">
-              View Case Study
-              <span class="portfolio-card__pending-badge">PENDING</span>
-            </span>
-          </div>
-        </article>
+  <section class="section--lg">
+    <div class="container" style="max-width: 720px;">
+      <div class="stagger-children" style="display: grid; gap: 16px;">
+        <a href="/combine/cohort25-1" style="display: block; text-decoration: none; color: inherit; background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.1); border-radius: 2px; padding: 24px; transition: border-color 0.2s;">
+          <div style="font-family: var(--font-mono); font-size: 12px; color: var(--blue); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 8px;">Cohort 25-1</div>
+          <h3 style="font-size: 20px; color: var(--white); margin-bottom: 8px;">Tulsa, OK</h3>
+          <p style="color: rgba(255,255,255,.68); margin: 0;">83 companies selected for in-person operator validation.</p>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ============================================
-       CTA SECTION
-       ============================================ -->
   <section class="portfolio-cta">
     <div class="portfolio-cta__bg">
       <div class="portfolio-cta__grid"></div>
@@ -319,26 +77,20 @@
     </div>
     <div class="container">
       <div class="portfolio-cta__content fade-up">
-        <h2 class="portfolio-cta__title">Ready to build the next venture?</h2>
+        <h2 class="portfolio-cta__title">Apply to the next cohort.</h2>
         <p class="portfolio-cta__subtitle">
-          Join Merge Combinator and turn validated problems into deployed solutions.
+          The Combine puts funded teams in front of operators who own the problem. One week. In person.
         </p>
         <div class="portfolio-cta__buttons">
-          <a href="/#engage" class="btn btn--primary btn--large btn--glow">
-            Build With Us
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+          <a href="/programs/the-combine" class="btn btn--primary btn--large btn--glow">
+            Apply to The Combine
           </a>
-          <a href="/#platform" class="btn btn--ghost btn--large">Learn More</a>
+          <a href="/builders" class="btn btn--ghost btn--large">Join Defense Builders</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================
-       FOOTER (Same as index.html)
-       ============================================ -->
   <footer class="footer">
     <div class="container">
       <div class="footer__grid">
@@ -351,28 +103,6 @@
             <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="Merge arrows" class="footer__logo-icon">
           </a>
           <p class="footer__tagline">The builder-led venture studio for national security.</p>
-          <div class="footer__social">
-            <a href="https://www.linkedin.com/company/merge-combinator/" class="footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-            </a>
-            <a href="https://x.com/FPExtraordinAir" class="footer__social-link" aria-label="X (Twitter)" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-            </a>
-            <a href="/programs/the-combine" class="footer__social-link" aria-label="Combine" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-              </svg>
-            </a>
-            <a href="/knowledge" class="footer__social-link" aria-label="Knowledge" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-              </svg>
-            </a>
-          </div>
         </div>
 
         <div class="footer__links">
@@ -382,30 +112,24 @@
               <li><a href="/programs/the-combine">Combine</a></li>
               <li><a href="/builders">Defense Builders</a></li>
               <li><a href="/opportunities">Opportunities</a></li>
-              <li><a href="/merch">Merch</a></li>
             </ul>
           </div>
-
           <div class="footer__column">
             <h4 class="footer__heading">Company</h4>
             <ul class="footer__list">
               <li><a href="/about">About</a></li>
               <li><a href="/about#faq">FAQ</a></li>
               <li><a href="/#engage">Contact</a></li>
-              <li><a href="/builders">Careers</a></li>
             </ul>
           </div>
-
           <div class="footer__column">
             <h4 class="footer__heading">Resources</h4>
             <ul class="footer__list">
               <li><a href="/blog">Blog</a></li>
-              <li><a href="/portfolio">Case Studies</a></li>
               <li><a href="/knowledge">Knowledge</a></li>
               <li><a href="https://docs.mergecombinator.com">Docs</a></li>
             </ul>
           </div>
-
           <div class="footer__column">
             <h4 class="footer__heading">Legal</h4>
             <ul class="footer__list">
@@ -416,7 +140,6 @@
           </div>
         </div>
       </div>
-
       <div class="footer__bottom">
         <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
         <p class="footer__location">Honolulu &bull; Seattle &bull; Las Vegas</p>
@@ -424,9 +147,7 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script type="module" src="/js/navbar.js"></script>
   <script type="module" src="/script.js"></script>
-  <script type="module" src="/js/portfolio/index.js"></script>
 </body>
 </html>

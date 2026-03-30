@@ -9,6 +9,7 @@
 /marketplace /guild 301
 /guild/ /guild 301
 /combine /programs/the-combine 301
+/combine/cohort25-1.html /combine/cohort25-1 301
 /sbir /knowledge/sbir 301
 /contact /access 301
 /updates/ai-post-engagement-detector /blog 301
@@ -42,3 +43,5 @@
 /blog/counter-drone-jiatf-401.html /blog/counter-drone-jiatf-401 301
 /blog/ndaa-speed-act.html /blog/ndaa-speed-act 301
 /blog/uss-eisenhower-lessons.html /blog/uss-eisenhower-lessons 301
+/faq.html /faq 301
+/companies/*.html /companies/* 301
