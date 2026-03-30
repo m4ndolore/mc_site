@@ -7,7 +7,8 @@
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Merge Combinator, the venture studio for national security builders. Build what warfighters need with operators across the Indo-Pacific.">
+  <meta name="description" content="Merge Combinator co-founds defense ventures with operators who own the problem. Founded by domain and technical experts, US Weapons School SME and TOPGUN graduates. Based in Honolulu.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://mergecombinator.com/">
   <meta name="keywords" content="defense tech, national security, venture studio, Indo-Pacific, warfighter, dual-use technology">
 
@@ -18,17 +19,17 @@
   <link rel="shortcut icon" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Merge Combinator — Build What Warfighters Need">
-  <meta property="og:description" content="The builder-led venture studio for national security. Discover, build, and deploy with operators.">
+  <meta property="og:title" content="Merge Combinator | Build What Warfighters Need">
+  <meta property="og:description" content="Merge Combinator co-founds defense ventures with operators who own the problem. Domain and technical experts, Weapons School SME and TOPGUN graduates. Honolulu.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
   <meta property="og:url" content="https://mergecombinator.com/">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Merge Combinator — Build What Warfighters Need">
-  <meta name="twitter:description" content="Merge Combinator, the venture studio for national security builders. Build what warfighters need with operators across the Indo-Pacific.">
+  <meta name="twitter:title" content="Merge Combinator | Build What Warfighters Need">
+  <meta name="twitter:description" content="Merge Combinator co-founds defense ventures with operators who own the problem. Domain and technical experts, Weapons School SME and TOPGUN graduates. Honolulu.">
   <meta name="twitter:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
 
-  <title>Merge Combinator — Build What Warfighters Need</title>
+  <title>Merge Combinator | Build What Warfighters Need</title>
 
   <!-- Resource Hints -->
   <link rel="preconnect" href="https://imagedelivery.net">
@@ -42,6 +43,89 @@
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/light-theme.css">
+
+  <style>
+    .quote-carousel { position: relative; max-width: 800px; margin: 0 auto; }
+    .quote-carousel__viewport { overflow: hidden; }
+    .quote-carousel__track {
+      display: flex;
+      will-change: transform;
+    }
+    .quote-carousel__track.is-animating {
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .quote-carousel__slide {
+      flex: 0 0 100%;
+      min-width: 0;
+      opacity: 0.15;
+      filter: blur(2px);
+      transition: opacity 0.5s ease, filter 0.5s ease;
+      pointer-events: none;
+    }
+    .quote-carousel__slide.is-active {
+      opacity: 1;
+      filter: blur(0);
+      pointer-events: auto;
+    }
+    .quote-carousel__slide .testimonial-card {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+    .quote-carousel__slide .testimonial-card__quote p {
+      font-size: 18px;
+      line-height: 1.7;
+      font-style: italic;
+    }
+    .quote-carousel__nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    .quote-carousel__btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 2px;
+      border: 1px solid rgba(59,130,246,.4);
+      background: rgba(59,130,246,.06);
+      color: var(--blue);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .quote-carousel__btn:hover {
+      border-color: var(--blue);
+      background: rgba(59,130,246,.14);
+      box-shadow: 0 0 20px rgba(59,130,246,.35);
+    }
+    .quote-carousel__dots {
+      display: flex;
+      gap: 6px;
+    }
+    .quote-carousel__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.2);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .quote-carousel__dot.is-active {
+      background: var(--blue);
+      transform: scale(1.25);
+    }
+    .quote-carousel__counter {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+      letter-spacing: .05em;
+    }
+  </style>
 
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -95,22 +179,18 @@
         <div class="hero__badges reveal">
           <div class="hero__badge">
             <span class="hero__badge-dot"></span>
-            Critical Technology
+            Venture Studio
           </div>
           <div class="hero__badge">
             <span class="hero__badge-dot"></span>
-            Problem Solving at Scale
-          </div>
-          <div class="hero__badge">
-            <span class="hero__badge-dot"></span>
-            1 to n
+            Indo-Pacific
           </div>
         </div>
         <h1 class="hero__title reveal">Build What<br>Warfighters Need.</h1>
         <p class="hero__subtitle reveal">
-          If you're building for the Indo-Pacific mission, build with us.
+          Merge Combinator co-founds and builds defense ventures with operators who own the problem.
           <br>
-          Merge Combinator, the venture studio for national security builders.
+          Founded by domain and technical experts, US Weapons School SME and TOPGUN graduates, focused on rebuilding Air Dominance. Based in Honolulu.
         </p>
         <div class="hero__ctas reveal">
           <a href="/builders" class="btn btn--primary btn--glow">
@@ -128,18 +208,18 @@
         </div>
         <div class="hero__stats reveal">
           <div class="hero__stat">
-            <span class="hero__stat-number" data-stat="companies">125+</span>
-            <span class="hero__stat-label">Companies</span>
+            <span class="hero__stat-number">83</span>
+            <span class="hero__stat-label">Combine Cohort 01</span>
           </div>
           <div class="hero__stat-divider"></div>
           <div class="hero__stat">
-            <span class="hero__stat-number" data-stat="operators">65</span>
-            <span class="hero__stat-label">Coaches</span>
+            <span class="hero__stat-number">21</span>
+            <span class="hero__stat-label">Finalists Deployed</span>
           </div>
           <div class="hero__stat-divider"></div>
           <div class="hero__stat">
-            <span class="hero__stat-number" data-stat="problem-sets">20+</span>
-            <span class="hero__stat-label">Problem Sets</span>
+            <span class="hero__stat-number">1 week</span>
+            <span class="hero__stat-label">In-Person Validation</span>
           </div>
         </div>
         <p class="reveal" style="margin-top: 16px; color: rgba(255,255,255,.72); font-size: 14px;">
@@ -234,16 +314,25 @@
     </div>
   </section>
 
+  <!-- Crawlable definition block for search and AI extraction -->
+  <section style="background: var(--charcoal); padding: 28px 0;">
+    <div class="container" style="max-width: 860px;">
+      <p style="color: rgba(255,255,255,.76); line-height: 1.75; margin: 0; font-size: 15px;">
+        Merge Combinator is a venture studio for national security builders based in Honolulu, Hawaii. Founded by US Weapons School and TOPGUN graduates, we co-found defense technology ventures with operators who own the problem. Our flagship program, The Combine, evaluated 83 companies in Cohort 25-1 (Tulsa, OK) through in-person operator validation. 21 finalists deployed alongside mission owners across the Indo-Pacific. We are not an accelerator or fund. We build companies from formation through transition and sustainment.
+      </p>
+    </div>
+  </section>
+
   <!-- ============================================
        SECTION 2: PLATFORM OVERVIEW (New Palantir-style)
        ============================================ -->
   <section class="platform section--lg" id="platform">
     <div class="container">
       <header class="platform__header fade-up">
-        <span class="section-label">The Platform</span>
-        <h2 class="platform__title">A vertically integrated, warfighter-centered builder studio.</h2>
+        <span class="section-label">How It Works</span>
+        <h2 class="platform__title">Operators bring the problems. Builders bring the technology. We build ventures.</h2>
         <p class="platform__subtitle">
-          Merge connects real operational problems, technical builders, and field deployments into one end-to-end pipeline.
+          Three programs, one pipeline: discover real problems, form ventures around them, deploy to the field.
         </p>
       </header>
 
@@ -268,10 +357,9 @@
         <div class="platform__panel platform__panel--active" id="panel-discover" role="tabpanel" aria-labelledby="tab-discover">
           <div class="platform__panel-content">
             <div class="platform__panel-text">
-              <h3 class="platform__panel-title">The Combine: Validating Critical Problems and Solutions</h3>
+              <h3 class="platform__panel-title">The Combine: In-Person Operator Validation</h3>
               <p class="platform__panel-body">
-                Where founders, operators, and mission owners solve real problems and form teams.
-                The best week in defense tech for early-stage founders.
+                One week, in person. We put funded companies in a room with the operators who own the problem. 83 companies attended Cohort 01 in Tulsa. 21 advanced as finalists where they deployed alongside mission owners to validate mission fit.
               </p>
               <ul class="platform__features">
                 <li>
@@ -337,7 +425,7 @@
             <div class="platform__panel-text">
               <h3 class="platform__panel-title">Merge Studio: Venture Formation</h3>
               <p class="platform__panel-body">
-                We co-found ventures in demand by mission owners. Backed by operators, SME, and builders committed to the mission.
+                We co-found companies from validated problems. Equity and governance structured at formation, not retrofitted later. We are not a passive investor.
               </p>
               <ul class="platform__features">
                 <li>
@@ -350,7 +438,7 @@
                   <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
                     <path d="M16.667 5L7.5 14.167L3.333 10" stroke="#2A7FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
-                  Rapid prototyping & iteration
+                  Rapid prototyping &amp; advanced manufacturing
                 </li>
                 <li>
                   <svg class="platform__feature-icon" viewBox="0 0 20 20" fill="none">
@@ -383,9 +471,9 @@
         <div class="platform__panel" id="panel-deploy" role="tabpanel" aria-labelledby="tab-deploy">
           <div class="platform__panel-content">
             <div class="platform__panel-text">
-              <h3 class="platform__panel-title">Defense Builders: Deployment Platform</h3>
+              <h3 class="platform__panel-title">Defense Builders: The Network</h3>
               <p class="platform__panel-body">
-                The digital platform connecting founders, SMEs, and operators. Run pilots, solve technical problems, and deploy fast.
+                Open-access platform where builders, operators, and mission owners find each other. Problem sets, briefs, and direct introductions when there's fit.
               </p>
               <ul class="platform__features">
                 <li>
@@ -429,7 +517,7 @@
         </div>
       </div>
       <div class="ecosystem__footer">
-        <a href="/guild" class="ecosystem__link">Explore Guild &rarr;</a>
+        <a href="/access" class="ecosystem__link">Explore the Network &rarr;</a>
       </div>
     </div>
   </section>
@@ -443,8 +531,8 @@
     </div>
     <div class="container">
       <header class="pipeline-section__header fade-up">
-        <span class="section-label section-label--light">How It Works</span>
-        <h2 class="pipeline-section__title">From problem to deployment — compressed timelines, real feedback.</h2>
+        <span class="section-label section-label--light">Pipeline</span>
+        <h2 class="pipeline-section__title">Problem to deployment. Weeks, not years.</h2>
       </header>
 
       <div class="pipeline-visual fade-up">
@@ -564,19 +652,20 @@
     <div class="container">
       <div class="why-merge__content">
         <div class="why-merge__text reveal">
-          <span class="section-label section-label--light">The Mission</span>
-          <h2 class="why-merge__title">Our national security demands better technology, faster.</h2>
+          <span class="section-label section-label--light">Why Merge</span>
+          <h2 class="why-merge__title">Promising technology stalls between prototype and fielded capability. We close that gap.</h2>
           <div class="why-merge__body">
-            <p>Operators face accelerating threats. Founders struggle to access real problems. Traditional acquisition moves slowly, trapped by legacy overhead and siloed processes.</p>
-            <p class="why-merge__emphasis">Innovation must happen next to the mission — not behind a desk.</p>
-            <p>Merge creates a new model: A rapid, informed, operator-driven cycle where real problems translate into real prototypes and real deployments.</p>
+            <p>Operators know the problems. Builders have the technology. But they rarely meet early enough to build something that actually gets fielded. Merge Combinator puts them in the same room from day one.</p>
+            <p class="why-merge__emphasis">Our team has built with and is trusted by Palantir, Anduril, COCOM, OuSW, DARPA, Kessel Run, SOCOM, AFMC, AFRL, and DIU.</p>
           </div>
 
           <div class="why-merge__logos">
-            <span class="why-merge__logos-label">Experience from:</span>
+            <span class="why-merge__logos-label">Built with and trusted by:</span>
             <div class="why-merge__logos-grid">
               <span class="why-merge__logo-text">Palantir</span>
               <span class="why-merge__logo-text">Anduril</span>
+              <span class="why-merge__logo-text">DARPA</span>
+              <span class="why-merge__logo-text">Kessel Run</span>
               <span class="why-merge__logo-text">SOCOM</span>
               <span class="why-merge__logo-text">DIU</span>
             </div>
@@ -618,13 +707,13 @@
   <section class="ecosystem section--lg" id="ecosystem">
     <div class="container">
       <header class="ecosystem__header fade-up">
-        <span class="section-label">The Ecosystem</span>
-        <h2 class="ecosystem__title">Three programs. One mission.</h2>
+        <span class="section-label">Programs</span>
+        <h2 class="ecosystem__title">Three programs. Find your focus.</h2>
       </header>
 
-      <div class="bento-grid fade-up">
-        <!-- Large card - The Combine -->
-        <article class="bento-card bento-card--large">
+      <div class="bento-grid fade-up" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: auto;">
+        <!-- The Combine -->
+        <article class="bento-card bento-card--medium" style="grid-column: span 1;">
           <div class="bento-card__bg">
             <div class="bento-card__pattern"></div>
           </div>
@@ -634,12 +723,12 @@
             </div>
             <h3 class="bento-card__title">The Combine</h3>
             <p class="bento-card__body">
-              One week, in person. Funded and emerging teams get real validation from operators and mission owners close to the requirement.
+              One week, in person. Funded teams present directly to operators who own the problem. Cohort 01: 83 companies in Tulsa, 21 finalists.
             </p>
             <ul class="bento-card__list">
-              <li>Validate against real problem owners</li>
-              <li>Pressure-test solution fit with direct operator feedback</li>
-              <li>Leave with decisions, next steps, and champions</li>
+              <li>Structured operator feedback, not panel theater</li>
+              <li>Match decisions and next-step commitments on day 5</li>
+              <li>Alumni earn a verified listing and network access</li>
             </ul>
             <a href="/programs/the-combine" class="bento-card__cta">
               Apply to The Combine
@@ -650,20 +739,20 @@
           </div>
         </article>
 
-        <!-- Medium card - Merge Studio -->
-        <article class="bento-card bento-card--medium">
+        <!-- Merge Studio -->
+        <article class="bento-card bento-card--medium" style="grid-column: span 1;">
           <div class="bento-card__content">
             <div class="bento-card__header">
               <span class="bento-card__phase bento-card__phase--build">Build</span>
             </div>
             <h3 class="bento-card__title">Merge Studio</h3>
             <p class="bento-card__body">
-              We co-found and build ventures born from validated problem sets—backed by operators, technical builders, and deployment partners.
+              We co-found companies from validated Combine problems. Equity structured at formation. We build alongside founders, not from the sidelines.
             </p>
             <ul class="bento-card__list">
-              <li>Venture formation around validated needs</li>
-              <li>Rapid prototyping and iteration cycles</li>
-              <li>Field-driven design, not deck-driven</li>
+              <li>Co-founded ventures, not advisory engagements</li>
+              <li>Operator-informed from day one</li>
+              <li>Built for transition pathways, not demo day</li>
             </ul>
             <a href="/access" class="bento-card__cta">
               Get involved
@@ -674,20 +763,20 @@
           </div>
         </article>
 
-        <!-- Medium card - Defense Builders -->
-        <article class="bento-card bento-card--medium">
+        <!-- Defense Builders -->
+        <article class="bento-card bento-card--medium" style="grid-column: span 1;">
           <div class="bento-card__content">
             <div class="bento-card__header">
               <span class="bento-card__phase bento-card__phase--deploy">Deploy</span>
             </div>
             <h3 class="bento-card__title">Defense Builders</h3>
             <p class="bento-card__body">
-              The platform where builders and mission owners execute: briefs, problems, champions, and access paths to pilots.
+              Open-access network. Builders, operators, and mission owners connect around real problem sets and opportunities.
             </p>
             <ul class="bento-card__list">
-              <li>Problem sets, champions, and builders in one workflow</li>
-              <li>Briefs (de-attributed) to reduce information overload</li>
-              <li>Guild listings for vetted teams (private beta)</li>
+              <li>Problem sets and opportunity briefs</li>
+              <li>Direct introductions when there's fit</li>
+              <li>Verified listings for Combine alumni (private beta)</li>
             </ul>
             <a href="/access" class="bento-card__cta">
               Join Defense Builders
@@ -698,21 +787,6 @@
           </div>
         </article>
 
-        <!-- Small card - Metrics -->
-        <article class="bento-card bento-card--small bento-card--dark">
-          <div class="bento-card__content">
-            <span class="bento-card__metric" data-stat="operators">150+</span>
-            <span class="bento-card__metric-label">Operators & SMEs engaged</span>
-          </div>
-        </article>
-
-        <!-- Small card - Deployments -->
-        <article class="bento-card bento-card--small bento-card--accent">
-          <div class="bento-card__content">
-            <span class="bento-card__metric">IP</span>
-            <span class="bento-card__metric-label">Indo-Pacific deployments</span>
-          </div>
-        </article>
       </div>
     </div>
   </section>
@@ -805,9 +879,9 @@
   <section class="social-proof section" id="social-proof">
     <div class="container">
       <header class="social-proof__header fade-up">
-        <h2 class="social-proof__title">Trusted by builders across the Indo-Pacific.</h2>
+        <h2 class="social-proof__title">Organizations our team has worked with.</h2>
         <p class="social-proof__subtitle">
-          Teams, founders, operators, and experts from leading organizations have participated in Merge and SigmaBlox programs.
+          Combine participants and partners from across the Indo-Pacific defense ecosystem.
         </p>
       </header>
 
@@ -849,54 +923,178 @@
   <section class="testimonials section--lg" id="feedback">
     <div class="container">
       <header class="testimonials__header fade-up">
-        <span class="section-label section-label--light">Operational Feedback</span>
-        <h2 class="testimonials__title">What participants report</h2>
+        <span class="section-label section-label--light">Feedback</span>
+        <h2 class="testimonials__title">What Combine participants told us</h2>
       </header>
 
-      <div class="testimonials__carousel fade-up">
-        <div class="testimonial-card">
-          <div class="testimonial-card__quote">
-            <p>Government stakeholders cite a level of direct interactivity with defense tech founders that traditional acquisition programs do not achieve. The format produces actionable signal for warfighter requirements.</p>
-          </div>
-          <div class="testimonial-card__author">
-            <div class="testimonial-card__avatar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div class="quote-carousel fade-up" id="quote-carousel">
+        <div class="quote-carousel__viewport">
+          <div class="quote-carousel__track">
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>I have never seen a similar level of interactivity with incoming systems entrepreneurs or companies. This environment absolutely changed our interactions and the openness allowed us to talk with all of the groups in the same fashion which kept the level playing field from an acquisition standpoint.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  </div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">Deputy Commander</span>
+                    <span class="testimonial-card__role">PACAF 613th Air Operations Center</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="testimonial-card__info">
-              <span class="testimonial-card__name">Government Stakeholder Feedback</span>
-              <span class="testimonial-card__role">The Combine cohort participants</span>
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>This week was actually emotional for me. Many of the events I have attended have had good folks there, with good intentions, but this was different. It was like an absolute calling. The static was gone and what was left was pure.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">AT</div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">Art Trevethan</span>
+                    <span class="testimonial-card__role">Ringmaster, Acceleration Reach Transition</span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>You and your team did an amazing job in Oklahoma, and I made significant changes to my company after returning. We recently won a contract. Learning to pitch our solution in a more clear way helped with these. That insight was invaluable, and I could not have implemented without your help.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">JC</div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">Jim Connors</span>
+                    <span class="testimonial-card__role">Founder, DigitalCM</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>This was, debatably, the most fulfilling week of my professional career. There are already a ton of conversations happening around partnerships, next steps, follow-ups, and emails.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">WB</div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">Wes Bergmann</span>
+                    <span class="testimonial-card__role">Lead Investor, BetaBlox</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>It's an outstanding biz accelerator program unlike anything I've ever seen. I've been a coach and mentor for a number of programs in the US and AUS. But nothing quite like the week I just had.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">CB</div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">Catherine Bair</span>
+                    <span class="testimonial-card__role">Coach &amp; Mentor, US/AUS Defense Programs</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>Best professional event I've been to. I'm honored to be a part of this group. You are some of the smartest and most dedicated entrepreneurs I've met and we are fighting to help the warfighter defend our country and way of life.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">AD</div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">Aaron Dallek</span>
+                    <span class="testimonial-card__role">CEO, Dmaterial</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>Echoing everyone here, just wanted to say a heartfelt thank you for pulling off the inaugural Sigmablox. The fact that it came together at all is impressive. The fact that it came together this well is a testament to the team. One of the biggest standouts for me was the advice from people who know how to get stuff done.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">SB</div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">Shane Ballman</span>
+                    <span class="testimonial-card__role">Founder, SynapseMX</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>The results of the trip far exceeded our expectations: invitations to several PACAF exercises, sponsorship for IATT for our capability, advocacy for ACES to be considered during the PACAF C2 Working, and many conversations about contracting.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">JV</div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">Josh VanBuskirk</span>
+                    <span class="testimonial-card__role">Hadron</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>Thank you for hosting SigmaBlox last week. I've been talking it up around my network as something every defense and dual-use founder should be looking forward to next year.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">EB</div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">Emma Bates</span>
+                    <span class="testimonial-card__role">Founder, Defense/Dual-Use</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="quote-carousel__slide">
+              <div class="testimonial-card">
+                <div class="testimonial-card__quote">
+                  <p>Best. Event. Ever. You all are absolute heroes. Thanks for letting me hang.</p>
+                </div>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">JJ</div>
+                  <div class="testimonial-card__info">
+                    <span class="testimonial-card__name">John Janet</span>
+                    <span class="testimonial-card__role">Devtech Group</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
 
-        <div class="testimonial-card">
-          <div class="testimonial-card__quote">
-            <p>Founders describe the concentrated format — entrepreneurs, operators, and contract opportunities in one room — as a forcing function that eliminates months of cold outreach.</p>
-          </div>
-          <div class="testimonial-card__author">
-            <div class="testimonial-card__avatar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-            </div>
-            <div class="testimonial-card__info">
-              <span class="testimonial-card__name">Founder Feedback</span>
-              <span class="testimonial-card__role">The Combine cohort participants</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div class="testimonial-card__quote">
-            <p>Alumni report that Combine participation prepared them for competitive defense tech environments including Crucible and xTech Igniter programs.</p>
-          </div>
-          <div class="testimonial-card__author">
-            <div class="testimonial-card__avatar">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            </div>
-            <div class="testimonial-card__info">
-              <span class="testimonial-card__name">Alumni Feedback</span>
-              <span class="testimonial-card__role">The Combine cohort participants</span>
-            </div>
-          </div>
+        <div class="quote-carousel__nav">
+          <button class="quote-carousel__btn" id="quote-prev" aria-label="Previous quote">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <div class="quote-carousel__dots" id="quote-dots"></div>
+          <span class="quote-carousel__counter" id="quote-counter"></span>
+          <button class="quote-carousel__btn" id="quote-next" aria-label="Next quote">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
         </div>
       </div>
     </div>
@@ -909,8 +1107,8 @@
     <div class="container">
       <header class="engage__header fade-up">
         <span class="section-label">Get Involved</span>
-        <h2 class="engage__title">How to Engage</h2>
-        <p class="engage__subtitle">Where builders, operators, primes, and mission owners connect.</p>
+        <h2 class="engage__title">Problem Solvers Meet Problem Owners</h2>
+        <p class="engage__subtitle">Three critical roles, brought together with one focus: Mission Outcomes.</p>
       </header>
 
       <div class="engage__cards stagger-children">
@@ -937,7 +1135,7 @@
         </article>
 
         <article class="engage-card engage-card--featured">
-          <div class="engage-card__badge">Most Popular</div>
+          <div class="engage-card__badge">Most Critical</div>
           <div class="engage-card__icon-wrap">
             <div class="engage-card__icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1007,16 +1205,16 @@
       <div class="final-cta__content reveal">
         <h2 class="final-cta__title">Build what warfighters need.</h2>
         <p class="final-cta__subtitle">
-          Join Merge Combinator and become part of the next wave of national security innovation.
+          Merge Combinator works with founders, operators, and mission owners who are ready to solve real problems. If that's you, let's talk.
         </p>
         <div class="final-cta__buttons">
-          <a href="/builders" class="btn btn--primary btn--large btn--glow">
+          <a href="/access" class="btn btn--primary btn--large btn--glow">
             Build With Us
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M4 10H16M16 10L10 4M16 10L10 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </a>
-          <a href="#platform" class="btn btn--ghost btn--large">Learn More</a>
+          <a href="/about" class="btn btn--ghost btn--large">Learn About Merge</a>
         </div>
       </div>
     </div>
@@ -1067,7 +1265,7 @@
             <ul class="footer__list">
               <li><a href="/builders">Defense Builders</a></li>
               <li><a href="/wingman">Wingman</a></li>
-              <li><a href="/guild">Guild</a></li>
+              <li><a href="/access">Dashboard</a></li>
               <li><a href="/programs/the-combine">The Combine</a></li>
               <li><a href="/briefs">Briefs</a></li>
               <li><a href="/merch">Merch</a></li>
@@ -1118,5 +1316,13 @@
   <script type="module" src="js/homepage/index.js"></script>
   <script type="module" src="script.js"></script>
   <script type="module" src="js/navbar.js"></script>
+  <script type="module">
+    import { initQuoteCarousel } from '/js/quote-carousel.js';
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => initQuoteCarousel());
+    } else {
+      initQuoteCarousel();
+    }
+  </script>
 </body>
 </html>

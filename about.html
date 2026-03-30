@@ -341,6 +341,7 @@
           <p class="hero__subtitle reveal" style="max-width: 860px; justify-content: right; margin-bottom: 0 auto;">
             Focused on the Indo-Pacific, we co-found and build new ventures around urgent operational problems. Our model runs end-to-end: from operator-informed problem discovery through build, transition, and sustainment.
           </p>
+          <p style="font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,.4); letter-spacing: .05em; margin-top: 10px;">Last updated: March 2026</p>
           <div class="hero__ctas reveal" style="justify-content:center">
             <a href="/access" class="btn btn--primary btn--glow">Request Access</a>
             <a href="/programs/the-combine" class="btn btn--ghost">The Combine</a>
@@ -652,7 +653,7 @@
             <ul class="footer__list">
               <li><a href="/builders">Defense Builders</a></li>
               <li><a href="/wingman">Wingman</a></li>
-              <li><a href="/guild">Guild</a></li>
+              <li><a href="/access">Dashboard</a></li>
               <li><a href="/programs/the-combine">The Combine</a></li>
               <li><a href="/briefs">Briefs</a></li>
               <li><a href="/merch">Merch</a></li>
@@ -707,7 +708,6 @@
       if (!origSlides.length || !track) return;
 
       var total = origSlides.length;
-      var gap = 20;
       var isMoving = false;
 
       // Clone last slide before first, and first slide after last
@@ -736,8 +736,9 @@
       var dots = dotsEl.querySelectorAll('.team-carousel__dot');
 
       function getOffset(trackIdx) {
-        var vpWidth = track.parentElement.offsetWidth;
-        return trackIdx * (vpWidth + gap);
+        var targetSlide = allSlides[trackIdx];
+        if (!targetSlide) return 0;
+        return targetSlide.offsetLeft;
       }
 
       function setPosition(trackIdx, animate) {
