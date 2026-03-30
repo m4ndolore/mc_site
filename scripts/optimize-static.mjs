@@ -186,12 +186,14 @@ function injectBuilders(html) {
     `$1Built ${BUILD_DATE}$2`
   );
 
-  // 3. Grounding paragraph — insert before #builders-grid section
+  // 3. Grounding paragraph — insert before #builders-grid section (idempotent)
   const topMissions = missionAreas.slice(0, 4).join(', ');
   const groundingText = `<div class="builders-grounding" style="padding:0 0 20px;">
   <p style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary,#a3a3a3);margin:0;">The Defense Builders Directory lists ${stats.total} companies evaluated for The Combine program by Merge Combinator. ${stats.alumni} alumni completed in-person operator validation in Cohort 25-1 (Tulsa, OK). ${stats.applicants} applicants are under review. Companies span ${stats.missionAreas} mission areas including ${topMissions} across ${stats.warfareDomains} warfare domains.</p>
 </div>`;
 
+  // Strip any existing grounding blocks before re-injecting
+  html = html.replace(/<div class="builders-grounding"[\s\S]*?<\/div>\s*/g, '');
   html = html.replace(
     '<!-- Builders Grid -->',
     `${groundingText}\n          <!-- Builders Grid -->`
@@ -212,7 +214,8 @@ function injectBuilders(html) {
     `<div class="builders-grid__items" id="builders-grid">\n${gridContent}\n</div>\n          </section>`
   );
 
-  // 5. JSON-LD
+  // 5. JSON-LD (idempotent — strip existing before injecting)
+  html = html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>\s*/g, '');
   const jsonLd = `<script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -256,7 +259,8 @@ function injectDashboard(html) {
     `$1Built ${BUILD_DATE}$2`
   );
 
-  // 3. Grounding paragraph after subtitle
+  // 3. Grounding paragraph after subtitle (idempotent)
+  html = html.replace(/<p class="dashboard__grounding"[^>]*>[\s\S]*?<\/p>\s*/g, '');
   const groundingText = `\n          <p class="dashboard__grounding" style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary,#a3a3a3);margin:8px 0 0;">Operational view of ${stats.total} defense technology companies evaluated for The Combine program. ${stats.alumni} alumni completed in-person operator validation in Cohort 25-1. Data sourced from Merge Combinator&rsquo;s builder intake pipeline.</p>`;
 
   html = html.replace(
@@ -264,7 +268,8 @@ function injectDashboard(html) {
     `$1${groundingText}`
   );
 
-  // 4. JSON-LD
+  // 4. JSON-LD (idempotent — strip existing before injecting)
+  html = html.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>\s*/g, '');
   const jsonLd = `<script type="application/ld+json">
   {
     "@context": "https://schema.org",
