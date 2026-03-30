@@ -57,6 +57,8 @@ export default defineConfig({
         about: resolve(__dirname, 'about.html'),
         'ai-overview': resolve(__dirname, 'ai/overview.html'),
         '404': resolve(__dirname, '404.html'),
+        // Combine cohorts
+        'combine-cohort25-1': resolve(__dirname, 'combine/cohort25-1.html'),
         // Programs
         'programs-index': resolve(__dirname, 'programs/index.html'),
         'programs-combine': resolve(__dirname, 'programs/the-combine.html'),
@@ -65,6 +67,7 @@ export default defineConfig({
         'knowledge-acq': resolve(__dirname, 'knowledge/acquisition.html'),
         'knowledge-sbir': resolve(__dirname, 'knowledge/sbir.html'),
         'knowledge-compliance': resolve(__dirname, 'knowledge/compliance.html'),
+        'knowledge-defense-venture-studio': resolve(__dirname, 'knowledge/defense-venture-studio.html'),
         // Blog articles
         'blog-counter-drone': resolve(__dirname, 'blog/counter-drone-jiatf-401.html'),
         'blog-ndaa': resolve(__dirname, 'blog/ndaa-speed-act.html'),

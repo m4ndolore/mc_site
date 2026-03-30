@@ -2,10 +2,32 @@
 User-agent: *
 Allow: /
 
+# AI crawlers — explicitly allowed for citation and indexing
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
 # Sitemap
 Sitemap: https://mergecombinator.com/sitemap.xml
-# AI indexing guidance
-Allow: /llms.txt
 
-# Disallow admin/API paths (when implemented)
+# AI indexing guidance
+# See also: https://mergecombinator.com/llms.txt
+# See also: https://mergecombinator.com/llms-full.txt
+# See also: https://mergecombinator.com/ai/overview
+
+# Disallow admin/API paths
 Disallow: /api/
