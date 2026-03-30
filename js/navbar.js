@@ -87,7 +87,7 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
             </svg>
           </button>
           <a href="${signInHref}" class="nav__btn nav__btn--secondary">Sign in</a>
-          <a href="/access" class="nav__btn nav__btn--access">Join</a>
+          <a href="/access" class="nav__btn nav__btn--access">Get Started</a>
         </div>
       </nav>
 
