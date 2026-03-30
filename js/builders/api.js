@@ -449,8 +449,11 @@ export async function fetchPrivateApi(endpoint, options = {}) {
  * @returns {string|null} - Logo URL or null
  */
 function getLogoUrl(company) {
-    // Prefer stored logo (permanent) over Airtable URL (expires)
-    // Logo endpoint uses company ID (legacyAirtableId or id), not storedLogoId
+    // 1. Prefer Cloudflare Images (permanent, fast CDN)
+    if (company.cfImageId) {
+        return `https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/${company.cfImageId}/public`;
+    }
+    // 2. Stored logo via API endpoint
     if (company.storedLogoId) {
         const apiBase = getApiBase();
         const companyId = company.legacyAirtableId || company.id || company.airtableId;
@@ -458,7 +461,8 @@ function getLogoUrl(company) {
             return `${apiBase}/api/logo/${companyId}`;
         }
     }
-    return company.logoUrl || null;
+    // 3. Skip logoUrl — Airtable signed URLs expire within hours
+    return null;
 }
 
 /**

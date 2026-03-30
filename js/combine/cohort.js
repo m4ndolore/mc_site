@@ -80,7 +80,8 @@ function getLogoUrl(company) {
     if (company.cfImageId) {
         return `https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/${company.cfImageId}/public`;
     }
-    return company.logoUrl || null;
+    // Skip logoUrl — Airtable signed URLs expire within hours
+    return null;
 }
 
 function renderCard(company) {
