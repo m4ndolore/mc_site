@@ -16,8 +16,6 @@ import {
 // Configuration
 // ────────────────────────────────────────────────────────────────────────────
 
-const SIGMABLOX_HOSTNAMES = new Set(["www.sigmablox.com", "sigmablox.com"]);
-
 const HOP_BY_HOP_HEADERS = new Set([
   "connection",
   "keep-alive",
@@ -52,25 +50,8 @@ const SUBDOMAIN_PLACEHOLDER_REDIRECTS = new Map([
 const LEGACY_PATH_REDIRECTS = new Map([
   ["/sbir", "/knowledge/sbir"],
   ["/contact", "/access"],
+  ["/combine", "/programs/the-combine"],
 ]);
-
-// ────────────────────────────────────────────────────────────────────────────
-// HTML Injection Templates
-// ────────────────────────────────────────────────────────────────────────────
-
-const BANNER_HTML = `
-  <div data-mc-banner="true" style="position: sticky; top: 0; z-index: 2147483647; font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; background: #0b1116; color: #e9f2ff; border-bottom: 1px solid rgba(233, 242, 255, 0.12); padding: 10px 16px; text-align: center; letter-spacing: 0.02em;">
-    <span style="opacity: 0.9;">Brought to you by Merge Combinator. Build what warfighters need.</span>
-    <a href="/builders" style="margin-left: 12px; color: #7fd1ff; text-decoration: none; font-weight: 600;">Explore our Defense Builders -&gt;</a>
-  </div>
-`;
-
-const BANNER_FOOTER_HTML = `
-  <div style="font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif; background: #0b1116; color: #e9f2ff; border-top: 1px solid rgba(233, 242, 255, 0.12); padding: 12px 16px; text-align: center; letter-spacing: 0.02em;">
-    <span style="opacity: 0.9;">Brought to you by Merge Combinator. Build what warfighters need.</span>
-    <a href="/builders" style="margin-left: 12px; color: #7fd1ff; text-decoration: none; font-weight: 600;">Explore our Defense Builders -&gt;</a>
-  </div>
-`;
 
 // ────────────────────────────────────────────────────────────────────────────
 // MC Pages HTML Transformation (Turnstile injection)
@@ -110,80 +91,12 @@ function transformMcPagesHtml(response, env, url) {
     .transform(response);
 }
 
-const SHIM_HTML = `
-  <script>
-    (function () {
-      if (!location.pathname.startsWith("/combine")) return;
-      var prefix = "/combine";
-      var localApiOrigin = null;
-      if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-        localApiOrigin = "http://localhost:2368";
-      }
-      function rewriteUrl(input) {
-        if (!input) return input;
-        try {
-          if (typeof input === "string") {
-            if (localApiOrigin && input.startsWith("https://api.sigmablox.com")) {
-              return localApiOrigin + input.slice("https://api.sigmablox.com".length);
-            }
-            if (input.startsWith("/") && !input.startsWith(prefix)) {
-              return prefix + input;
-            }
-            if (input.startsWith(location.origin)) {
-              var url = new URL(input);
-              if (!url.pathname.startsWith(prefix)) {
-                url.pathname = prefix + url.pathname;
-              }
-              return url.toString();
-            }
-            return input;
-          }
-          return input;
-        } catch (e) {
-          return input;
-        }
-      }
-
-      var originalFetch = window.fetch;
-      if (originalFetch) {
-        window.fetch = function (input, init) {
-          if (typeof input === "string") {
-            return originalFetch.call(this, rewriteUrl(input), init);
-          }
-          if (input instanceof Request) {
-            var rewritten = rewriteUrl(input.url);
-            if (rewritten !== input.url) {
-              var cloned = input.clone();
-              return originalFetch.call(this, new Request(rewritten, cloned), init);
-            }
-          }
-          return originalFetch.call(this, input, init);
-        };
-      }
-
-      var originalOpen = XMLHttpRequest.prototype.open;
-      XMLHttpRequest.prototype.open = function (method, url) {
-        var rewritten = rewriteUrl(url);
-        return originalOpen.apply(this, [method, rewritten].concat([].slice.call(arguments, 2)));
-      };
-
-      if (navigator.sendBeacon) {
-        var originalBeacon = navigator.sendBeacon.bind(navigator);
-        navigator.sendBeacon = function (url, data) {
-          return originalBeacon(rewriteUrl(url), data);
-        };
-      }
-    })();
-  <\/script>
-`;
-
 // ────────────────────────────────────────────────────────────────────────────
 // Helper Functions
 // ────────────────────────────────────────────────────────────────────────────
 
 const REQUIRED_ORIGIN_VARS = [
   "MC_PAGES_ORIGIN",
-  "SIGMABLOX_ORIGIN",
 ];
 
 function getOrigins(env) {
@@ -193,7 +106,6 @@ function getOrigins(env) {
   }
   return {
     mcPages: env.MC_PAGES_ORIGIN,
-    sigmablox: env.SIGMABLOX_ORIGIN,
     opportunities: env.OPPORTUNITIES_PAGES_URL || "https://mc-opportunities.pages.dev",
   };
 }
@@ -204,8 +116,9 @@ function getRoutes(origins) {
   // handled in step 1.5 before route matching. Only proxy routes remain here.
   // /wingman is served by Pages (wingman.html) — not redirected.
   // /control no longer proxied — redirected to Guild /admin in step 3
+  // /combine is now a 301 redirect to /programs/the-combine (handled by _redirects)
+  // SigmaBlox proxy removed — see docs/plans/2026-03-29-seo-optimization-implementation-prompt.md
   return [
-    { prefix: "/combine", origin: origins.sigmablox, stripPrefix: true, preserveRoot: true },
     { prefix: "/opportunities", origin: origins.opportunities, stripPrefix: true, preserveRoot: true },
   ];
 }
@@ -304,88 +217,6 @@ function buildUpstreamHeaders(request, { stripCookies = false } = {}) {
 }
 
 // ────────────────────────────────────────────────────────────────────────────
-// Sigmablox URL Rewriting
-// ────────────────────────────────────────────────────────────────────────────
-
-function shouldRewriteBanner(response) {
-  const contentType = response.headers.get("content-type") || "";
-  return contentType.includes("text/html");
-}
-
-function isRedirectResponse(response) {
-  return [301, 302, 303, 307, 308].includes(response.status);
-}
-
-function rewriteSigmabloxLocation(value) {
-  if (!value) return null;
-
-  if (value.startsWith("//")) {
-    const url = new URL(`https:${value}`);
-    if (SIGMABLOX_HOSTNAMES.has(url.hostname)) {
-      return `/combine${url.pathname}${url.search}${url.hash}`;
-    }
-    return null;
-  }
-
-  if (value.startsWith("http://") || value.startsWith("https://")) {
-    const url = new URL(value);
-    if (SIGMABLOX_HOSTNAMES.has(url.hostname)) {
-      return `/combine${url.pathname}${url.search}${url.hash}`;
-    }
-    return null;
-  }
-
-  if (value.startsWith("/")) {
-    if (value.startsWith("/combine")) {
-      return value;
-    }
-    return `/combine${value}`;
-  }
-
-  return null;
-}
-
-function rewriteSigmabloxUrl(value) {
-  if (!value) return null;
-  const trimmed = value.trim();
-
-  if (
-    trimmed.startsWith("mailto:") ||
-    trimmed.startsWith("tel:") ||
-    trimmed.startsWith("javascript:") ||
-    trimmed.startsWith("#")
-  ) {
-    return null;
-  }
-
-  if (trimmed.startsWith("//")) {
-    const url = new URL(`https:${trimmed}`);
-    if (SIGMABLOX_HOSTNAMES.has(url.hostname)) {
-      return `/combine${url.pathname}${url.search}${url.hash}`;
-    }
-    return null;
-  }
-
-  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
-    const url = new URL(trimmed);
-    if (SIGMABLOX_HOSTNAMES.has(url.hostname)) {
-      return `/combine${url.pathname}${url.search}${url.hash}`;
-    }
-    return null;
-  }
-
-  if (trimmed.startsWith("/") && !trimmed.startsWith("/combine")) {
-    return `/combine${trimmed}`;
-  }
-
-  if (trimmed === "/combine" || trimmed === "/combine/") {
-    return "/combine/combine/";
-  }
-
-  return null;
-}
-
-// ────────────────────────────────────────────────────────────────────────────
 // Main Fetch Handler
 // ────────────────────────────────────────────────────────────────────────────
 
@@ -436,6 +267,9 @@ export default {
     if (legacyTarget) {
       return Response.redirect(`https://${CANONICAL_HOST}${legacyTarget}${url.search}`, 301);
     }
+    if (url.pathname.startsWith("/combine/")) {
+      return Response.redirect(`https://${CANONICAL_HOST}/programs/the-combine`, 301);
+    }
     if (url.pathname.startsWith("/updates/")) {
       return Response.redirect(`https://${CANONICAL_HOST}/blog`, 301);
     }
@@ -483,60 +317,8 @@ export default {
       (entry) => url.pathname === entry.prefix || url.pathname.startsWith(`${entry.prefix}/`)
     );
 
-    // 5) No route matched - fall through to Pages or Sigmablox
+    // 5) No route matched - fall through to MC Pages
     if (!route) {
-      const referer = request.headers.get("referer") || "";
-      const refererUrl = referer ? new URL(referer) : null;
-      const isFromCombine =
-        refererUrl &&
-        (refererUrl.pathname.startsWith("/combine") || SIGMABLOX_HOSTNAMES.has(refererUrl.hostname));
-
-      // Returning SigmaBlox users with an active session: skip the access page
-      // entirely and go straight to auth → /combine.
-      if (
-        (url.pathname === "/access" || url.pathname === "/access/") &&
-        isFromCombine
-      ) {
-        const session = await getSession(request, env);
-        if (session) {
-          return Response.redirect(
-            new URL(`/auth/login?returnTo=${encodeURIComponent("/combine")}&context=combine`, url.origin).toString(),
-            302
-          );
-        }
-      }
-
-      // Normalize Sigmablox-originated access entries so downstream login can
-      // deterministically route users back to the Combine context.
-      if (
-        (url.pathname === "/access" || url.pathname === "/access/") &&
-        isFromCombine &&
-        !url.searchParams.has("context") &&
-        !url.searchParams.has("returnTo") &&
-        !url.searchParams.has("return_to")
-      ) {
-        const normalized = new URL(url.toString());
-        normalized.searchParams.set("context", "combine");
-        normalized.searchParams.set("source", "sigmablox");
-        return Response.redirect(normalized.toString(), 302);
-      }
-
-      const isAccessPath = url.pathname === "/access" || url.pathname === "/access/";
-
-      if (isFromCombine && !isAccessPath) {
-        const sigmabloxUrl = new URL(url.pathname, origins.sigmablox);
-        sigmabloxUrl.search = url.search;
-        const clonedRequest = request.clone();
-        const upstreamHeaders = buildUpstreamHeaders(request);
-        return fetch(
-          new Request(sigmabloxUrl, {
-            method: request.method,
-            headers: upstreamHeaders,
-            body: clonedRequest.body,
-          })
-        );
-      }
-
       // Default to MC Pages
       const mcPagesUrl = new URL(url.pathname, origins.mcPages);
       mcPagesUrl.search = url.search;
@@ -589,120 +371,6 @@ export default {
       response = withLastConsoleCookie(response, consoleValueFromPath(url.pathname), env, request);
     }
 
-    // 8) Sigmablox redirect rewriting
-    if (route.origin === origins.sigmablox && isRedirectResponse(response)) {
-      const location = response.headers.get("location");
-      let replacement = rewriteSigmabloxLocation(location);
-
-      const isCombineDeep = url.pathname === "/combine/combine" || url.pathname === "/combine/combine/";
-      if (isCombineDeep && (replacement === "/combine" || replacement === "/combine/")) {
-        replacement = "/combine/combine/";
-      }
-
-      if (replacement) {
-        const isCombineRoot =
-          route.prefix === "/combine" && (url.pathname === "/combine" || url.pathname === "/combine/");
-        if (isCombineRoot && replacement.startsWith("/combine")) {
-          const followUrl = new URL(replacement, url.origin);
-          const followTarget = resolveTarget(followUrl, route);
-          response = await fetch(new Request(followTarget, request));
-        } else {
-          const headers = new Headers(response.headers);
-          headers.set("location", replacement);
-          return new Response(null, { status: 302, headers });
-        }
-      } else {
-        return response;
-      }
-    }
-
-    // 9) Sigmablox HTML rewriting (banner injection + URL rewriting)
-    if (route.origin !== origins.sigmablox || !shouldRewriteBanner(response)) {
-      return response;
-    }
-
-    let headerAdjusted = false;
-    let shimInjected = false;
-
-    return new HTMLRewriter()
-      .on("head", {
-        element(element) {
-          if (shimInjected) return;
-          element.append(SHIM_HTML, { html: true });
-          shimInjected = true;
-        },
-      })
-      .on("header", {
-        element(element) {
-          if (headerAdjusted) return;
-          const existing = element.getAttribute("style") || "";
-          const next = `${existing}${existing ? " " : ""}margin-top: 44px; top: 44px;`;
-          element.setAttribute("style", next);
-          headerAdjusted = true;
-        },
-      })
-      .on("a", {
-        element(element) {
-          const href = element.getAttribute("href");
-          const replacement = rewriteSigmabloxUrl(href);
-          if (replacement) {
-            element.setAttribute("href", replacement);
-          }
-        },
-      })
-      .on("link", {
-        element(element) {
-          const href = element.getAttribute("href");
-          const replacement = rewriteSigmabloxUrl(href);
-          if (replacement) {
-            element.setAttribute("href", replacement);
-          }
-        },
-      })
-      .on("script", {
-        element(element) {
-          const src = element.getAttribute("src");
-          const replacement = rewriteSigmabloxUrl(src);
-          if (replacement) {
-            element.setAttribute("src", replacement);
-          }
-        },
-      })
-      .on("img", {
-        element(element) {
-          const src = element.getAttribute("src");
-          const replacement = rewriteSigmabloxUrl(src);
-          if (replacement) {
-            element.setAttribute("src", replacement);
-          }
-        },
-      })
-      .on("form", {
-        element(element) {
-          const action = element.getAttribute("action");
-          const replacement = rewriteSigmabloxUrl(action);
-          if (replacement) {
-            element.setAttribute("action", replacement);
-          }
-        },
-      })
-      .on("body", {
-        element(element) {
-          if (shimInjected) return;
-          element.prepend(SHIM_HTML, { html: true });
-          shimInjected = true;
-        },
-      })
-      .on("body", {
-        element(element) {
-          element.prepend(BANNER_HTML, { html: true });
-        },
-      })
-      .on("body", {
-        element(element) {
-          element.append(BANNER_FOOTER_HTML, { html: true });
-        },
-      })
-      .transform(response);
+    return response;
   },
 };
