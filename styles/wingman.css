@@ -60,20 +60,98 @@
 
 .wingman-hero__ctas {
   display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wingman-hero__links {
+  display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
+  gap: 8px 20px;
 }
 
 .wingman-hero__tertiary {
   font-size: 0.9rem;
   color: var(--signal-blue);
   text-decoration: none;
-  margin-left: 8px;
 }
 
 .wingman-hero__tertiary:hover {
   text-decoration: underline;
+}
+
+/* Inline waitlist form */
+.wingman-waitlist__row {
+  display: flex;
+  gap: 8px;
+  max-width: 440px;
+}
+
+.wingman-waitlist--center .wingman-waitlist__row {
+  margin: 0 auto;
+}
+
+.wingman-waitlist__input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--offwhite);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.wingman-waitlist__input:focus {
+  border-color: rgba(34, 197, 94, 0.5);
+}
+
+.wingman-waitlist__input::placeholder {
+  color: var(--gray-medium);
+}
+
+.wingman-waitlist__btn {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.wingman-waitlist__status {
+  font-size: 0.85rem;
+  margin-top: 8px;
+  min-height: 1.2em;
+}
+
+.wingman-waitlist--center .wingman-waitlist__status {
+  text-align: center;
+}
+
+.wingman-waitlist__status--ok {
+  color: #22c55e;
+}
+
+.wingman-waitlist__status--err {
+  color: #ef4444;
+}
+
+.wingman-cta__pilot-link {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: var(--signal-blue);
+  text-decoration: none;
+}
+
+.wingman-cta__pilot-link:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .wingman-waitlist__row {
+    flex-direction: column;
+  }
 }
 
 /* Value Props Section */

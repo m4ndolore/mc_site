@@ -61,9 +61,17 @@
       <p class="wingman-hero__support">Your data. Your device. Your Wingman.</p>
       <div class="wingman-hero__ctas">
         <a href="https://wingman.mergecombinator.com/" class="btn btn--primary" id="open-wingman-btn" style="display: none;">Open Wingman</a>
-        <a href="https://guild.mergecombinator.com/apply?surface=wingman&utm_source=wingman_page&utm_medium=waitlist&utm_campaign=pilot_rollout" class="btn btn--primary" id="request-wingman-btn">Join Wingman Waitlist</a>
-        <a href="/access?surface=wingman" class="btn btn--ghost">Request a pilot for my team</a>
-        <a href="/briefs" class="wingman-hero__tertiary">See sample briefs →</a>
+        <form class="wingman-waitlist" id="wingman-waitlist" autocomplete="on">
+          <div class="wingman-waitlist__row">
+            <input type="email" name="email" required placeholder="your@email.com" class="wingman-waitlist__input" autocomplete="email" aria-label="Email address">
+            <button type="submit" class="btn btn--primary wingman-waitlist__btn">Get Early Access</button>
+          </div>
+          <div class="wingman-waitlist__status" id="waitlist-status" role="status" aria-live="polite"></div>
+        </form>
+        <div class="wingman-hero__links">
+          <a href="/access?surface=wingman" class="wingman-hero__tertiary">Request a pilot for my team →</a>
+          <a href="/briefs" class="wingman-hero__tertiary">See sample briefs →</a>
+        </div>
       </div>
     </div>
   </section>
@@ -109,11 +117,15 @@
   <section class="wingman-cta">
     <div class="container">
       <h2 class="wingman-cta__title">Need a Wingman?</h2>
-      <p class="wingman-cta__desc">Request access for yourself or your team. Wingman is rolling out to Defense Builders members first.</p>
-      <div class="wingman-cta__buttons">
-        <a href="https://guild.mergecombinator.com/apply?surface=wingman&utm_source=wingman_page&utm_medium=cta&utm_campaign=pilot_rollout" class="btn btn--primary">Join Wingman Waitlist</a>
-        <a href="/builders" class="btn btn--ghost">Join Defense Builders</a>
-      </div>
+      <p class="wingman-cta__desc">Rolling out to Defense Builders members first. Drop your email and we'll let you know when it's your turn.</p>
+      <form class="wingman-waitlist wingman-waitlist--center" id="wingman-waitlist-bottom" autocomplete="on">
+        <div class="wingman-waitlist__row">
+          <input type="email" name="email" required placeholder="your@email.com" class="wingman-waitlist__input" autocomplete="email" aria-label="Email address">
+          <button type="submit" class="btn btn--primary wingman-waitlist__btn">Get Early Access</button>
+        </div>
+        <div class="wingman-waitlist__status" id="waitlist-status-bottom" role="status" aria-live="polite"></div>
+      </form>
+      <a href="/access?surface=wingman" class="wingman-cta__pilot-link">Need a team pilot? Request access →</a>
     </div>
   </section>
 
@@ -134,16 +146,59 @@
   <script type="module" src="/script.js"></script>
   <script type="module" src="js/navbar.js"></script>
   <script>
-    // Feature flag: show "Open Wingman" button when console is enabled
-    // MC_CONFIG is injected by the worker based on WINGMAN_CONSOLE_ENABLED env var
     (function() {
-      const config = window.MC_CONFIG || {};
-      const openBtn = document.getElementById('open-wingman-btn');
-      const requestBtn = document.getElementById('request-wingman-btn');
+      // Feature flag: show "Open Wingman" button when console is enabled
+      var config = window.MC_CONFIG || {};
       if (config.wingmanConsoleEnabled) {
+        var openBtn = document.getElementById('open-wingman-btn');
         if (openBtn) openBtn.style.display = '';
-        if (requestBtn) requestBtn.style.display = 'none';
+        // Hide waitlist forms when console is live
+        document.querySelectorAll('.wingman-waitlist').forEach(function(f) { f.style.display = 'none'; });
       }
+
+      // Inline waitlist form handler
+      var API = 'https://api.mergecombinator.com/access/otp/send';
+      function handleWaitlist(form, statusEl) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          var email = form.querySelector('input[name="email"]').value.trim();
+          if (!email) return;
+          var btn = form.querySelector('button[type="submit"]');
+          btn.disabled = true;
+          btn.textContent = 'Submitting\u2026';
+          statusEl.textContent = '';
+          statusEl.className = 'wingman-waitlist__status';
+
+          fetch(API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email, name: '', surface: 'wingman', waitlist: true })
+          }).then(function(res) {
+            if (res.ok || res.status === 400 || res.status === 409) {
+              // 409 = already exists, still a success for waitlist purposes
+              statusEl.textContent = "You\u2019re on the list. We\u2019ll be in touch.";
+              statusEl.classList.add('wingman-waitlist__status--ok');
+              btn.textContent = 'Submitted';
+              form.querySelector('input[name="email"]').disabled = true;
+            } else {
+              throw new Error('HTTP ' + res.status);
+            }
+          }).catch(function() {
+            statusEl.textContent = 'Something went wrong. Try again or request access below.';
+            statusEl.classList.add('wingman-waitlist__status--err');
+            btn.disabled = false;
+            btn.textContent = 'Get Early Access';
+          });
+        });
+      }
+
+      var heroForm = document.getElementById('wingman-waitlist');
+      var heroStatus = document.getElementById('waitlist-status');
+      if (heroForm && heroStatus) handleWaitlist(heroForm, heroStatus);
+
+      var bottomForm = document.getElementById('wingman-waitlist-bottom');
+      var bottomStatus = document.getElementById('waitlist-status-bottom');
+      if (bottomForm && bottomStatus) handleWaitlist(bottomForm, bottomStatus);
     })();
   </script>
 </body>
