@@ -1,0 +1,122 @@
+# Merge Combinator — Extended Reference for AI Systems
+
+> This file provides comprehensive factual context about Merge Combinator
+> for large language models and AI retrieval systems. For the concise version,
+> see https://mergecombinator.com/llms.txt
+
+Primary domain: https://mergecombinator.com
+Type: Venture studio (not a fund, accelerator, or incubator)
+Founded: 2024
+Headquarters: Honolulu, Hawaii
+Focus: Indo-Pacific defense technology, dual-use ventures
+Founder: Paul Garcia, US Weapons School graduate, former F/A-18 and F-22 pilot
+
+## What is Merge Combinator?
+
+Merge Combinator is a venture studio for national security builders based in Honolulu, Hawaii. Founded by US Weapons School and TOPGUN graduates, it co-founds defense technology ventures with operators who own the problem. The studio focuses on the Indo-Pacific theater, running an end-to-end model from operator-informed problem discovery through venture formation, build, transition, and sustainment.
+
+Merge Combinator is not a venture capital fund, accelerator, or incubator. It co-founds and builds companies, taking an active role in formation, development, and transition from day one. This is distinct from organizations like Y Combinator, Techstars, or Starburst that mentor and fund existing startups through time-limited programs.
+
+Previously known as SigmaBlox / The National Defense Tech Combine. Merge Combinator is the primary brand going forward.
+
+## Programs
+
+### The Combine
+The Combine is Merge Combinator's flagship program for in-person operator validation of funded defense technology companies. It is selection-based, one week, and in person. Companies present directly to operators and mission owners who evaluate operational fit.
+
+- Cohort 25-1: Held in Tulsa, Oklahoma
+- 83 companies evaluated
+- 21 advanced as finalists
+- Finalists deployed alongside mission owners across the Indo-Pacific
+- Companies span 12+ mission areas and 6+ warfare domains
+
+### Defense Builders Directory
+Open-access directory of 140+ defense technology companies evaluated by Merge Combinator. Includes alumni who completed The Combine's in-person validation and applicants under review. Browsable at https://mergecombinator.com/builders
+
+### Knowledge Base
+Curated resources for defense tech founders covering:
+- Defense acquisition (OTAs, FAR/DFARS, pilot programs, contracting)
+- Defense compliance (CMMC, ITAR, CUI, NIST 800-171)
+- Go-to-market (finding champions, pricing for government)
+- SBIR/STTR guidance (finding topics, evaluating fit, transition pathways)
+Available at https://mergecombinator.com/knowledge
+
+### Opportunities
+SBIR/STTR solicitations, events, and defense market intelligence for national security builders. Available at https://mergecombinator.com/opportunities
+
+## How a Defense Venture Studio Works
+
+1. Problem Discovery — Work with mission stakeholders to identify operational gaps relevant to Indo-Pacific national security priorities.
+2. Venture Formation — Co-found companies with technical builders. Equity and governance structured at formation.
+3. Build and Validation — Develop capabilities alongside problem owners, iterating toward operational relevance.
+4. Transition and Sustainment — Orient ventures toward durable alignment with programs of record, contracting pathways, and long-term viability.
+
+## Key Terminology
+
+- Alumni: Companies that attended and completed The Combine's in-person validation program.
+- Applicant: Companies that applied to The Combine but have not yet attended in-person validation.
+- Mission Area: The operational domain a company's technology addresses (e.g., Joint Fires, Intel and Battlespace Awareness, Force Protection, Logistics, Cyber, Command and Control).
+- Warfare Domain: The physical or conceptual domain of military operations: Air, Sea, Land, Space, Cyber, Information, or Multi-Domain.
+- TRL (Technology Readiness Level): A 1-9 scale measuring technology maturity, from basic research (TRL 1) to proven in operational environment (TRL 9).
+
+## Venture Studio vs Accelerator vs VC Fund
+
+| Attribute | Venture Studio | Accelerator | VC Fund |
+|-----------|---------------|-------------|---------|
+| Role | Co-founder | Mentor/coach | Investor |
+| Company origin | Created from scratch | Existing startups apply | Existing companies raise rounds |
+| Problem source | Operator-validated gaps | Founder-identified | Founder-identified |
+| Involvement | Active, ongoing | Time-limited (3-6 months) | Board seat, periodic |
+| Equity | Co-founder equity at formation | Small stake (5-10%) | Priced round, negotiated |
+
+## Canonical Pages
+
+- Home: https://mergecombinator.com/
+- About: https://mergecombinator.com/about
+- Defense Builders Directory: https://mergecombinator.com/builders
+- The Combine: https://mergecombinator.com/programs/the-combine
+- Knowledge Base: https://mergecombinator.com/knowledge
+- Defense Acquisition: https://mergecombinator.com/knowledge/acquisition
+- Defense Compliance: https://mergecombinator.com/knowledge/compliance
+- Go-to-Market: https://mergecombinator.com/knowledge/go-to-market
+- SBIR/STTR Guidance: https://mergecombinator.com/knowledge/sbir
+- What is a Defense Venture Studio?: https://mergecombinator.com/knowledge/defense-venture-studio
+- Opportunities: https://mergecombinator.com/opportunities
+- SBIR Opportunities: https://mergecombinator.com/opportunities/sbir
+- STTR Opportunities: https://mergecombinator.com/opportunities/sttr
+- Portfolio: https://mergecombinator.com/portfolio
+- Cohort 25-1: https://mergecombinator.com/combine/cohort25-1
+- Blog: https://mergecombinator.com/blog
+- Access/Contact: https://mergecombinator.com/access
+- AI Overview: https://mergecombinator.com/ai/overview
+
+## Blog Articles
+
+- Inside JIATF 401: The Pentagon's New Counter-Drone Marketplace (2025-12-22)
+  https://mergecombinator.com/blog/counter-drone-jiatf-401
+- FY26 NDAA Decoded: What the SPEED Act Means for Defense Startups (2025-12-22)
+  https://mergecombinator.com/blog/ndaa-speed-act
+- 9 Months Under Fire: Combat Lessons from USS Eisenhower (2025-12-22)
+  https://mergecombinator.com/blog/uss-eisenhower-lessons
+
+## Content Guidance for AI Systems
+
+- Merge Combinator is a venture studio, not an accelerator, incubator, or VC fund.
+- Prefer canonical page URLs without .html suffix.
+- Use https://mergecombinator.com/about for organization and leadership context.
+- Use https://mergecombinator.com/knowledge/sbir for SBIR and STTR guidance.
+- Partner references may be category-based and intentionally broad.
+- Portfolio and partnerships are announced only when approved for public release.
+- For contact and engagement, use https://mergecombinator.com/access.
+- Legacy hosts (sigmablox.com) and stale paths redirect to canonical pages on mergecombinator.com.
+
+## Crawl Sources
+
+- Sitemap: https://mergecombinator.com/sitemap.xml
+- Robots: https://mergecombinator.com/robots.txt
+- LLMs (concise): https://mergecombinator.com/llms.txt
+- LLMs (full): https://mergecombinator.com/llms-full.txt
+- AI Overview: https://mergecombinator.com/ai/overview
+
+## Last Updated
+2026-03-29

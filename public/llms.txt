@@ -25,9 +25,13 @@ Primary domain: https://mergecombinator.com
 - For contact and engagement, use https://mergecombinator.com/access.
 - Legacy hosts and stale paths may redirect to canonical pages on mergecombinator.com.
 
+## Extended Reference
+For comprehensive context (programs, terminology, company data, comparisons):
+https://mergecombinator.com/llms-full.txt
+
 ## Crawl Sources
 - Sitemap: https://mergecombinator.com/sitemap.xml
 - Robots: https://mergecombinator.com/robots.txt
 
 ## Last Updated
-2026-03-06
+2026-03-29
