@@ -69,7 +69,7 @@ export function renderBuilderCard(company) {
  * @returns {string} - HTML string
  */
 export function renderBuilderModal(company, options = {}) {
-    const { authenticated = false, user = null } = options;
+    const { authenticated = false, user = null, isAdminUser = false } = options;
     const logoHtml = company.logo
         ? `<img src="${escapeHtml(company.logo)}" alt="${escapeHtml(company.name)} logo" class="modal-logo">`
         : `<div class="modal-logo" style="display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;background:linear-gradient(135deg,#667eea,#764ba2);">${escapeHtml(company.name.charAt(0))}</div>`;
@@ -267,12 +267,22 @@ export function renderBuilderModal(company, options = {}) {
     const entitySlug = toSlug(company.name);
     const entityLink = `<a href="/companies/${entitySlug}" class="modal-entity-link">Full profile</a>`;
 
+    const editBtn = isAdminUser
+        ? `<button class="modal-edit-btn" id="modal-edit-toggle" data-company-id="${escapeHtml(company.id)}" title="Edit company">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Edit
+          </button>`
+        : '';
+
     return `
         <div class="modal-header">
             ${logoHtml}
             <div class="modal-title-section">
                 <h2 class="modal-title">${escapeHtml(displayName)}</h2>
-                <div class="modal-cohort">${escapeHtml(company.cohort || '')} · ${entityLink}</div>
+                <div class="modal-cohort">${escapeHtml(company.cohort || '')} · ${entityLink} ${editBtn}</div>
                 ${websiteHtml}
             </div>
         </div>
@@ -284,6 +294,118 @@ export function renderBuilderModal(company, options = {}) {
         </div>
         ${ctaBox}
     `;
+}
+
+/**
+ * Check if user is an admin (mc-admins group)
+ * @param {Object} user - User object from auth
+ * @returns {boolean}
+ */
+export function isAdmin(user) {
+    if (!user || !user.groups) return false;
+    const groups = Array.isArray(user.groups) ? user.groups : [];
+    return groups.some(g => String(g).toLowerCase() === 'mc-admins');
+}
+
+/**
+ * Render the edit form for a company (admin only)
+ * @param {Object} company - Company data
+ * @returns {string} - HTML string
+ */
+export function renderBuilderEditForm(company) {
+    const CTA_OPTIONS = ['AAI', 'BIO', 'LOG', 'Q-BID', 'SCADE', 'SHY'];
+    const companyCtas = company.ctas || [];
+
+    const ctaChips = CTA_OPTIONS.map(cta => {
+        const active = companyCtas.includes(cta) ? ' active' : '';
+        return `<button type="button" class="edit-cta-chip${active}" data-cta="${cta}">${cta}</button>`;
+    }).join('');
+
+    const PIPELINE_OPTIONS = ['alumni', 'applicant'];
+    const pipelineSelect = PIPELINE_OPTIONS.map(p =>
+        `<option value="${p}"${company.pipelineStage === p ? ' selected' : ''}>${p.charAt(0).toUpperCase() + p.slice(1)}</option>`
+    ).join('');
+
+    const FUNDING_OPTIONS = ['', 'Angel/Private', 'Bootstrapped', 'Grant Funded', 'Series Funding'];
+    const fundingSelect = FUNDING_OPTIONS.map(f =>
+        `<option value="${escapeHtml(f)}"${company.fundingStage === f ? ' selected' : ''}>${f || '—'}</option>`
+    ).join('');
+
+    return `
+        <form class="edit-form" id="company-edit-form" data-company-id="${escapeHtml(company.id)}">
+            <div class="edit-form__group">
+                <label class="edit-form__label">Company Name</label>
+                <input type="text" name="name" value="${escapeAttr(company.name)}" class="edit-form__input" required>
+            </div>
+            <div class="edit-form__group">
+                <label class="edit-form__label">Product Name</label>
+                <input type="text" name="productName" value="${escapeAttr(company.productName || '')}" class="edit-form__input">
+            </div>
+            <div class="edit-form__group">
+                <label class="edit-form__label">Description</label>
+                <textarea name="description" rows="4" class="edit-form__textarea">${escapeHtml(company.description || '')}</textarea>
+            </div>
+            <div class="edit-form__row">
+                <div class="edit-form__group">
+                    <label class="edit-form__label">Mission Area</label>
+                    <input type="text" name="missionArea" value="${escapeAttr(company.missionArea || '')}" class="edit-form__input">
+                </div>
+                <div class="edit-form__group">
+                    <label class="edit-form__label">Pipeline Stage</label>
+                    <select name="pipelineStage" class="edit-form__select">${pipelineSelect}</select>
+                </div>
+            </div>
+            <div class="edit-form__group">
+                <label class="edit-form__label">Critical Technology Areas</label>
+                <div class="edit-form__cta-chips" id="edit-cta-chips">${ctaChips}</div>
+                <input type="hidden" name="ctas" id="edit-ctas-value" value="${escapeAttr(JSON.stringify(companyCtas))}">
+            </div>
+            <div class="edit-form__row">
+                <div class="edit-form__group">
+                    <label class="edit-form__label">Warfare Domain</label>
+                    <input type="text" name="warfareDomain" value="${escapeAttr(company.warfareDomain || '')}" class="edit-form__input" placeholder="Air, Land, Sea">
+                </div>
+                <div class="edit-form__group">
+                    <label class="edit-form__label">Technology Area</label>
+                    <input type="text" name="technologyArea" value="${escapeAttr(company.technologyArea || '')}" class="edit-form__input">
+                </div>
+            </div>
+            <div class="edit-form__row">
+                <div class="edit-form__group">
+                    <label class="edit-form__label">TRL Level</label>
+                    <input type="number" name="trlLevel" min="1" max="9" value="${company.trlLevel || ''}" class="edit-form__input">
+                </div>
+                <div class="edit-form__group">
+                    <label class="edit-form__label">Funding Stage</label>
+                    <select name="fundingStage" class="edit-form__select">${fundingSelect}</select>
+                </div>
+                <div class="edit-form__group">
+                    <label class="edit-form__label">Product Type</label>
+                    <input type="text" name="productType" value="${escapeAttr(company.productType || '')}" class="edit-form__input" placeholder="Software, Hardware, Both">
+                </div>
+            </div>
+            <div class="edit-form__row">
+                <div class="edit-form__group">
+                    <label class="edit-form__label">Website</label>
+                    <input type="text" name="website" value="${escapeAttr(company.website || '')}" class="edit-form__input">
+                </div>
+                <div class="edit-form__group">
+                    <label class="edit-form__label">Location</label>
+                    <input type="text" name="location" value="${escapeAttr(company.location || '')}" class="edit-form__input">
+                </div>
+            </div>
+            <div class="edit-form__actions">
+                <button type="submit" class="edit-form__save">Save Changes</button>
+                <button type="button" class="edit-form__cancel" id="edit-cancel">Cancel</button>
+            </div>
+            <div class="edit-form__status" id="edit-status"></div>
+        </form>
+    `;
+}
+
+function escapeAttr(str) {
+    if (str == null) return '';
+    return String(str).replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 /**
