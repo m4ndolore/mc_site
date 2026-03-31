@@ -11,9 +11,11 @@ import {
 import {
     renderBuilderCard,
     renderBuilderModal,
+    renderBuilderEditForm,
     renderEmptyState,
     renderLoadingState,
-    renderErrorState
+    renderErrorState,
+    isAdmin
 } from './components.js';
 import {
     filterCompanies,
@@ -330,18 +332,122 @@ function openModal(companyId) {
     currentCompany = allCompanies.find(c => c.id === companyId);
     if (!currentCompany) return;
 
+    const adminUser = isAdmin(authState.user);
+
     // Pass auth state to modal renderer
     if (modalBody) {
         modalBody.innerHTML = renderBuilderModal(currentCompany, {
             authenticated: authState.authenticated,
-            user: authState.user
+            user: authState.user,
+            isAdminUser: adminUser,
         });
+
+        // Wire edit toggle for admins
+        if (adminUser) {
+            const editBtn = modalBody.querySelector('#modal-edit-toggle');
+            if (editBtn) {
+                editBtn.addEventListener('click', () => enterEditMode(currentCompany));
+            }
+        }
     }
     if (modal) {
         modal.classList.add('active');
         modal.setAttribute('aria-hidden', 'false');
     }
     document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Switch modal to edit mode
+ * @param {Object} company - Company to edit
+ */
+function enterEditMode(company) {
+    if (!modalBody) return;
+    modalBody.innerHTML = renderBuilderEditForm(company);
+
+    // Wire CTA chip toggles
+    const ctaContainer = modalBody.querySelector('#edit-cta-chips');
+    const ctaHidden = modalBody.querySelector('#edit-ctas-value');
+    if (ctaContainer && ctaHidden) {
+        ctaContainer.addEventListener('click', (e) => {
+            const chip = e.target.closest('.edit-cta-chip');
+            if (!chip) return;
+            chip.classList.toggle('active');
+            const selected = Array.from(ctaContainer.querySelectorAll('.edit-cta-chip.active'))
+                .map(c => c.dataset.cta);
+            ctaHidden.value = JSON.stringify(selected);
+        });
+    }
+
+    // Wire cancel
+    const cancelBtn = modalBody.querySelector('#edit-cancel');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => openModal(company.id));
+    }
+
+    // Wire save
+    const form = modalBody.querySelector('#company-edit-form');
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const statusEl = modalBody.querySelector('#edit-status');
+            const saveBtn = form.querySelector('.edit-form__save');
+
+            const formData = new FormData(form);
+            const payload = {};
+            for (const [key, value] of formData.entries()) {
+                if (key === 'ctas') {
+                    payload.ctas = JSON.parse(value);
+                } else if (key === 'trlLevel') {
+                    payload.trlLevel = value ? parseInt(value, 10) : null;
+                } else {
+                    payload[key] = value || null;
+                }
+            }
+
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving\u2026';
+            if (statusEl) { statusEl.textContent = ''; statusEl.className = 'edit-form__status'; }
+
+            try {
+                const res = await fetch(`https://api.mergecombinator.com/guild/companies/${company.id}`, {
+                    method: 'PATCH',
+                    credentials: 'include',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!res.ok) {
+                    const body = await res.json().catch(() => ({}));
+                    throw new Error(body?.error?.message || `HTTP ${res.status}`);
+                }
+
+                const { data } = await res.json();
+
+                // Update local state
+                Object.assign(company, data.company);
+                const idx = allCompanies.findIndex(c => c.id === company.id);
+                if (idx >= 0) allCompanies[idx] = { ...allCompanies[idx], ...data.company };
+
+                if (statusEl) {
+                    statusEl.textContent = 'Saved.';
+                    statusEl.classList.add('edit-form__status--ok');
+                }
+                saveBtn.textContent = 'Saved';
+
+                // Return to view mode after brief delay
+                setTimeout(() => openModal(company.id), 800);
+
+            } catch (err) {
+                if (statusEl) {
+                    statusEl.textContent = err.message || 'Save failed.';
+                    statusEl.classList.add('edit-form__status--err');
+                }
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save Changes';
+            }
+        });
+    }
 }
 
 /**

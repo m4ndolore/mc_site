@@ -864,6 +864,196 @@
     color: #34d399;
 }
 
+/* ── Admin Edit Mode ──────────────────────────────────────────────── */
+.modal-edit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 2px;
+    color: #60a5fa;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 8px;
+    transition: all 0.15s;
+    vertical-align: middle;
+}
+
+.modal-edit-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: #3b82f6;
+}
+
+.edit-form {
+    padding: 20px 32px 32px;
+}
+
+.edit-form__group {
+    margin-bottom: 14px;
+}
+
+.edit-form__label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 4px;
+}
+
+.edit-form__input,
+.edit-form__textarea,
+.edit-form__select {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 2px;
+    color: #e5e5e5;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+}
+
+.edit-form__input:focus,
+.edit-form__textarea:focus,
+.edit-form__select:focus {
+    border-color: rgba(59, 130, 246, 0.5);
+}
+
+.edit-form__textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.edit-form__select {
+    appearance: none;
+    cursor: pointer;
+}
+
+.edit-form__row {
+    display: flex;
+    gap: 12px;
+}
+
+.edit-form__row > .edit-form__group {
+    flex: 1;
+    min-width: 0;
+}
+
+.edit-form__cta-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.edit-cta-chip {
+    padding: 5px 12px;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 2px;
+    background: rgba(34, 197, 94, 0.05);
+    color: rgba(255, 255, 255, 0.55);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.edit-cta-chip:hover {
+    border-color: rgba(34, 197, 94, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.edit-cta-chip.active {
+    border-color: #22c55e;
+    color: #fff;
+    background: rgba(34, 197, 94, 0.2);
+}
+
+.edit-form__actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.edit-form__save {
+    padding: 10px 24px;
+    background: #3b82f6;
+    border: none;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: filter 0.15s;
+}
+
+.edit-form__save:hover:not(:disabled) {
+    filter: brightness(1.1);
+}
+
+.edit-form__save:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.edit-form__cancel {
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.edit-form__cancel:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+.edit-form__status {
+    margin-top: 10px;
+    font-size: 13px;
+    min-height: 1.2em;
+}
+
+.edit-form__status--ok { color: #22c55e; }
+.edit-form__status--err { color: #ef4444; }
+
+/* Light theme */
+.light-theme .modal-edit-btn {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.25);
+    color: #2563eb;
+}
+
+.light-theme .edit-form__input,
+.light-theme .edit-form__textarea,
+.light-theme .edit-form__select {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.12);
+    color: #1e293b;
+}
+
+.light-theme .edit-cta-chip {
+    border-color: rgba(34, 197, 94, 0.2);
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.light-theme .edit-cta-chip.active {
+    border-color: #16a34a;
+    color: #16a34a;
+    background: rgba(34, 197, 94, 0.1);
+}
+
 /* Synopsis entries — structured company profile sections in modal */
 .modal-synopsis-entry {
     padding: 16px 32px;

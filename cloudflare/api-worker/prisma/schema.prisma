@@ -80,6 +80,49 @@ model Problem {
   @@map("problems")
 }
 
+model Company {
+  id                String   @id @default(uuid()) @db.Uuid
+  legacyAirtableId  String?  @map("legacy_airtable_id")
+  name              String
+  productName       String?  @map("product_name")
+  website           String?
+  logoUrl           String?  @map("logo_url")
+  cfImageId         String?  @map("cf_image_id")
+  location          String?
+  description       String?
+  missionArea       String?  @map("mission_area")
+  warfareDomain     String?  @map("warfare_domain")
+  technologyArea    String?  @map("technology_area")
+  productType       String?  @map("product_type")
+  trlLevel          Int?     @map("trl_level")
+  technicalMaturity String?  @map("technical_maturity")
+  fundingStage      String?  @map("funding_stage")
+  teamSize          String?  @map("team_size")
+  pipelineStage     String   @default("applicant") @map("pipeline_stage")
+  ctas              String[] @default([])
+  // Combine-specific
+  cohort            String?
+  cohortId          String?  @map("cohort_id")
+  cohortLabel       String?  @map("cohort_label")
+  tulsaAttended     String?  @map("tulsa_attended")
+  combineStandout   String?  @map("combine_standout")
+  badgeJudges       String?  @map("badge_judges")
+  podRanking        Int?     @map("pod_ranking")
+  upvoteCount       Int      @default(0) @map("upvote_count")
+  // Structured content (stored as JSON strings)
+  synopsisSections  Json?    @map("synopsis_sections")
+  synopsisRaw       String?  @map("synopsis_raw")
+  competitionScores Json?    @map("competition_scores")
+  // Timestamps
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([pipelineStage])
+  @@index([missionArea])
+  @@index([name])
+  @@map("companies")
+}
+
 model WaitlistEntry {
   id        String   @id @default(uuid()) @db.Uuid
   email     String

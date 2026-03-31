@@ -283,4 +283,26 @@ access.post('/waitlist', async (c) => {
   return c.json(ok({ joined: true, email, surface }, { request_id: requestId }))
 })
 
+// ── Public company list (for JS hydration on builders page) ─────────────────
+access.get('/companies', async (c) => {
+  const requestId = c.get('requestId')
+
+  try {
+    const { prisma } = getDb(c.env.HYPERDRIVE)
+    const companies = await prisma.company.findMany({
+      orderBy: [{ pipelineStage: 'asc' }, { name: 'asc' }],
+    })
+
+    return c.json(ok({ companies }, {
+      request_id: requestId,
+      total: companies.length,
+    }), 200)
+  } catch (e) {
+    const message = e instanceof Error ? e.message : 'Unknown error'
+    return c.json(err('DB_ERROR', `Failed to query companies: ${message}`, {
+      request_id: requestId,
+    }), 503)
+  }
+})
+
 export { access as accessRouter }
