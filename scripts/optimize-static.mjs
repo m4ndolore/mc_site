@@ -186,7 +186,7 @@ function injectBuilders(html) {
   // 3. Grounding paragraph — insert before #builders-grid section (idempotent)
   const topMissions = missionAreas.slice(0, 4).join(', ');
   const groundingText = `<div class="builders-grounding" style="padding:0 0 20px;">
-  <p style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary,#a3a3a3);margin:0;">The Defense Builders Directory lists ${stats.total} companies evaluated for The Combine program by Merge Combinator. ${stats.alumni} alumni completed in-person operator validation in Cohort 25-1 (Tulsa, OK). ${stats.applicants} applicants are under review. Companies span ${stats.missionAreas} mission areas including ${topMissions} across ${stats.warfareDomains} warfare domains.</p>
+  <p style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary,#a3a3a3);margin:0;">The Defense Builders Directory lists ${stats.total} companies hand-selected to attend Merge Combinator's first Defense Tech Combine. This included our in-person competition, SigmaBlox (Tulsa, OK), where ${stats.alumni} companies competed and learned from Government and Industry SME. Scores, observations, and analytics are used by USG stakeholders as market research and source selection for government contracts. Cohort 25-1 spanned six national Critical Technology Areas: Applied Artificial Intelligence (AAI), Biomanufacturing (BIO), Contested Logistics Technologies (LOG), Quantum and Battlefield Information Dominance (Q-BID), Scaled Directed Energy (SCADE), and Scaled Hypersonics (SHY).</p>
 </div>`;
 
   // Strip any existing grounding blocks before re-injecting
