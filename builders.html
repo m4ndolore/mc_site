@@ -40,7 +40,7 @@
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/styles/builders.css">
   <link rel="stylesheet" href="/styles/light-theme.css">
-    <script type="application/ld+json">
+          <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -70,16 +70,16 @@
         </div>
         <div class="builders-console__bar" role="group" aria-label="Builders console status bar">
           <div class="builders-console__cell">
-            <div class="builders-console__label">Orders</div>
-            <div class="builders-console__value">Filter and task builder records</div>
+            <div class="builders-console__label">Search</div>
+            <div class="builders-console__value">Filter by mission area, domain, or keyword</div>
           </div>
           <div class="builders-console__cell">
-            <div class="builders-console__label">Status</div>
-            <div class="builders-console__value">Inventory, auth state, and coverage visible</div>
+            <div class="builders-console__label">Cohort 25-1</div>
+            <div class="builders-console__value">83 alumni validated in Tulsa, OK</div>
           </div>
           <div class="builders-console__cell">
-            <div class="builders-console__label">Commentary</div>
-            <div class="builders-console__value">Records respond to live filters</div>
+            <div class="builders-console__label">Applicants</div>
+            <div class="builders-console__value">64 companies under review</div>
           </div>
         </div>
       </div>
@@ -104,8 +104,8 @@
                 <span class="builders-stats__label">Domains</span>
               </div>
               <div class="builders-stats__item">
-                <span class="builders-stats__value" id="stat-cohorts">1</span>
-                <span class="builders-stats__label">Cohorts</span>
+                <span class="builders-stats__value" id="stat-cohorts">25-1</span>
+                <span class="builders-stats__label">Cohort</span>
               </div>
             </div>
           </section>
@@ -131,9 +131,9 @@
                 <option value="">All Mission Areas</option>
               </select>
 
-              <select id="filter-tech" class="builders-filters__select" aria-label="Filter by warfare domain">
-                <option value="">All Domains</option>
-              </select>
+              <div id="filter-domains-multi" class="builders-filters__chips" aria-label="Filter by warfare domain">
+                <!-- Populated by JS with domain chips -->
+              </div>
 
             </div>
 
@@ -1637,7 +1637,7 @@
               </div>
               <div class="rail-kv">
                 <div class="rail-kv__label">Last refresh</div>
-                <div class="rail-kv__value" id="builders-last-refresh">Built 2026-03-30</div>
+                <div class="rail-kv__value" id="builders-last-refresh">Built 2026-03-31</div>
               </div>
               <div class="rail-kv">
                 <div class="rail-kv__label">Total records</div>
