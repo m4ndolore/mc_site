@@ -29,6 +29,7 @@ let allCompanies = [];
 let currentCompany = null;
 let authState = { authenticated: false, user: null };
 let totalBuildersCount = 0;
+let staticGridHtml = null; // Preserved static HTML for filter reset
 
 // DOM Elements
 const grid = document.getElementById('builders-grid');
@@ -96,6 +97,7 @@ function updateRailTotal(count) {
 function summarizeFilters(filters, resultsCount) {
     const parts = [];
     if (filters.search) parts.push(`"${filters.search}"`);
+    if (filters.ctas && filters.ctas.length > 0) parts.push(filters.ctas.join(', '));
     if (filters.missionArea) parts.push(filters.missionArea);
     if (filters.warfareDomains && filters.warfareDomains.length > 0) {
         parts.push(filters.warfareDomains.join(', '));
@@ -119,11 +121,46 @@ function updateRailFilters(filters, resultsCount) {
 }
 
 /**
+ * Enhance existing static cards with modal click handlers.
+ * Static cards are <a> tags with data-company-id attributes injected at build time.
+ * We add click interception so they open modals when JS data is available,
+ * but preserve the link as a fallback if JS fails or data hasn't loaded.
+ */
+function enhanceStaticCards() {
+    if (!grid) return;
+    const staticCards = grid.querySelectorAll('a.builder-card[data-company-id]');
+    if (staticCards.length === 0) return;
+
+    staticCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            const companyId = card.dataset.companyId;
+            // Only intercept if we have JS data loaded for this company
+            const company = allCompanies.find(c => c.id === companyId);
+            if (company) {
+                e.preventDefault();
+                openModal(companyId);
+            }
+            // Otherwise let the <a> navigate to entity page
+        });
+    });
+}
+
+/**
  * Initialize the builder directory
  */
 async function init() {
-    // Show loading state
-    if (grid) grid.innerHTML = renderLoadingState();
+    // Detect if static cards exist from build-time injection
+    const hasStaticCards = grid && grid.querySelectorAll('a.builder-card[data-company-id]').length > 0;
+
+    // Preserve original static HTML so we can restore it when filters are cleared
+    if (hasStaticCards) {
+        staticGridHtml = grid.innerHTML;
+    }
+
+    // Only show loading spinner if no static content exists
+    if (grid && !hasStaticCards) {
+        grid.innerHTML = renderLoadingState();
+    }
 
     // Check auth status in parallel with data fetch
     checkAuth().then(state => {
@@ -133,6 +170,14 @@ async function init() {
         console.warn('[Builders] Auth check failed:', err.message);
         updateRailAuth({ authenticated: false, user: null });
     });
+
+    // Setup event listeners early so filters work immediately
+    setupEventListeners();
+
+    // If static cards exist, enhance them with modal handlers immediately
+    if (hasStaticCards) {
+        enhanceStaticCards();
+    }
 
     try {
         // Fetch companies — prefers seeded/enriched data, falls back to API
@@ -167,16 +212,24 @@ async function init() {
         // Populate filter dropdowns
         populateFilters(filterOptions);
 
-        // Render initial view
-        renderBuilders(allCompanies);
-        updateRailFilters(getFilterState(), allCompanies.length);
-
-        // Setup event listeners
-        setupEventListeners();
+        // Re-enhance static cards now that allCompanies is populated
+        // (modal handlers now have data to render)
+        if (hasStaticCards) {
+            enhanceStaticCards();
+            updateResultsCount(allCompanies.length);
+            updateRailFilters(getFilterState(), allCompanies.length);
+        } else {
+            // No static cards — render JS cards
+            renderBuilders(allCompanies);
+            updateRailFilters(getFilterState(), allCompanies.length);
+        }
 
     } catch (error) {
         console.error('[Builders] Failed to initialize:', error);
-        if (grid) grid.innerHTML = renderErrorState(error.message);
+        // Only show error state if there are no static cards to fall back on
+        if (grid && !hasStaticCards) {
+            grid.innerHTML = renderErrorState(error.message);
+        }
     }
 }
 
@@ -239,13 +292,34 @@ function renderBuilders(companies) {
 }
 
 /**
- * Apply filters and re-render
+ * Check if any filters are actively set
+ * @param {Object} filters
+ * @returns {boolean}
+ */
+function hasActiveFilters(filters) {
+    return !!(filters.search || filters.missionArea || filters.warfareDomain || filters.fundingStage || (filters.ctas && filters.ctas.length > 0) || (filters.warfareDomains && filters.warfareDomains.length > 0));
+}
+
+/**
+ * Apply filters and re-render.
+ * When filters are active, replaces static cards with filtered JS cards.
+ * When filters are cleared, restores original static HTML if available.
  */
 function applyFilters() {
     const filters = getFilterState();
     const filtered = filterCompanies(allCompanies, filters);
     updateRailRefresh();
-    renderBuilders(filtered);
+
+    if (!hasActiveFilters(filters) && staticGridHtml) {
+        // Filters cleared — restore static cards
+        if (grid) grid.innerHTML = staticGridHtml;
+        enhanceStaticCards();
+        updateResultsCount(allCompanies.length);
+        updateRailFilters(filters, allCompanies.length);
+    } else {
+        // Filters active — render JS cards for filtered set
+        renderBuilders(filtered);
+    }
 }
 
 /**
@@ -263,7 +337,10 @@ function openModal(companyId) {
             user: authState.user
         });
     }
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+    }
     document.body.style.overflow = 'hidden';
 }
 
@@ -271,7 +348,10 @@ function openModal(companyId) {
  * Close the modal
  */
 function closeModal() {
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.setAttribute('aria-hidden', 'true');
+    }
     document.body.style.overflow = '';
     currentCompany = null;
 }
@@ -290,12 +370,23 @@ function setupEventListeners() {
         });
     }
 
-    // Filter dropdowns
-    const filterIds = ['filter-mission', 'filter-funding'];
+    // Filter dropdowns (filter-tech is the legacy domain select in builders.html)
+    const filterIds = ['filter-mission', 'filter-funding', 'filter-tech'];
     filterIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('change', applyFilters);
     });
+
+    // CTA chip multi-select (OR logic)
+    const ctaContainer = document.getElementById('filter-cta-chips');
+    if (ctaContainer) {
+        ctaContainer.addEventListener('click', (e) => {
+            const chip = e.target.closest('.builders-filters__chip');
+            if (!chip) return;
+            chip.classList.toggle('active');
+            applyFilters();
+        });
+    }
 
     // Domain chip multi-select (OR logic)
     const domainsContainer = document.getElementById('filter-domains-multi');

@@ -25,6 +25,14 @@ export function filterCompanies(companies, filters) {
             }
         }
 
+        // CTA (Critical Technology Area) filter — OR logic
+        if (filters.ctas && filters.ctas.length > 0) {
+            const companyCtas = company.ctas || [];
+            if (!companyCtas.some(c => filters.ctas.includes(c))) {
+                return false;
+            }
+        }
+
         // Mission area filter
         if (filters.missionArea) {
             const hasMission = company.missionAreas?.includes(filters.missionArea) ||
@@ -123,9 +131,14 @@ export function getFilterState() {
     const domainChips = document.querySelectorAll('#filter-domains-multi .domain-chip.active');
     const warfareDomains = Array.from(domainChips).map(c => c.dataset.domain);
 
+    // Collect selected CTA chips
+    const ctaChips = document.querySelectorAll('#filter-cta-chips .builders-filters__chip.active');
+    const ctas = Array.from(ctaChips).map(c => c.dataset.cta);
+
     return {
         search: document.getElementById('search-input')?.value || '',
         missionArea: document.getElementById('filter-mission')?.value || '',
+        ctas,
         warfareDomains,
         warfareDomain: '', // Legacy — chips replace the select
         fundingStage: document.getElementById('filter-funding')?.value || '',
