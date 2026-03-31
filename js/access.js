@@ -1,5 +1,5 @@
 // js/access.js
-// Access page: chip selection, Turnstile, form submission
+// Access-quick page: chip selection, Turnstile, form submission via MC API
 
 (function () {
   const form = document.getElementById('access-form');
@@ -10,7 +10,7 @@
 
   if (!form || !chipsContainer) return;
 
-  const ENDPOINT = 'https://api.sigmablox.com/api/access-request';
+  const API_ENDPOINT = 'https://api.mergecombinator.com/access/provision';
   const selectedInterests = new Set();
 
   // ── Chip toggle ───────────────────────────────
@@ -62,31 +62,27 @@
       return;
     }
 
-    if (!turnstileToken && turnstileSiteKey) {
-      showError('Please complete the verification challenge.');
-      return;
-    }
-
     submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting\u2026';
 
     const formData = new FormData(form);
     const payload = {
       name: formData.get('name'),
       email: formData.get('email'),
-      interests: Array.from(selectedInterests),
+      areas: Array.from(selectedInterests),
       'cf-turnstile-response': turnstileToken || '',
       source: window.location.href,
-      requestedAt: new Date().toISOString(),
     };
 
     try {
-      const response = await fetch(ENDPOINT, {
+      const response = await fetch(API_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
-      if (response.ok) {
+      if (response.ok || response.status === 409) {
+        // 409 = EMAIL_EXISTS, still a success for quick access
         form.style.display = 'none';
         successEl.style.display = 'flex';
       } else {
@@ -97,6 +93,7 @@
       errorEl.style.display = 'flex';
     } finally {
       submitBtn.disabled = false;
+      submitBtn.textContent = 'Get Access';
     }
   });
 
@@ -109,14 +106,5 @@
       chipsContainer.style.outlineOffset = '';
       chipsContainer.style.borderRadius = '';
     }, 2000);
-  }
-
-  function showError(message) {
-    const textEl = errorEl.querySelector('.access-request__error-text');
-    if (textEl) textEl.textContent = message;
-    errorEl.style.display = 'flex';
-    setTimeout(() => {
-      errorEl.style.display = 'none';
-    }, 4000);
   }
 })();
