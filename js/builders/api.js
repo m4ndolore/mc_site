@@ -284,11 +284,15 @@ export async function fetchCompanies(options = {}) {
         return MOCK_DATA;
     }
 
-    // Production: try live API first
+    // Production: prefer seeded data (enriched at build time with all companies)
+    // Only fall back to live API if seeded data is unavailable
+    const seeded = await loadSeededData();
+    if (seeded) return seeded;
+
+    // Seeded data unavailable — try live API
     const apiBase = getApiBase();
     const params = new URLSearchParams();
 
-    // Query parameters per API spec
     if (options.missionArea) params.set('missionArea', options.missionArea);
     if (options.warfareDomain) params.set('warfareDomain', options.warfareDomain);
     if (options.fundingStage) params.set('fundingStage', options.fundingStage);
@@ -312,24 +316,17 @@ export async function fetchCompanies(options = {}) {
 
         const data = await response.json();
 
-        // Check for application-level errors (API returns 200 but with error)
         if (data.error) {
             throw new Error(`API error: ${data.error}`);
         }
 
-        // Check for empty data - use seeded fallback
         if (!data.companies || data.companies.length === 0) {
-            console.warn('[Builders] API returned empty data, trying seeded fallback');
-            const seeded = await loadSeededData();
-            if (seeded) return seeded;
+            throw new Error('API returned empty data');
         }
 
         return data;
     } catch (error) {
-        // Live API failed, try seeded data fallback
-        console.warn('[Builders] API failed, trying seeded fallback:', error.message);
-        const seeded = await loadSeededData();
-        if (seeded) return seeded;
+        console.warn('[Builders] API failed:', error.message);
 
         // No seeded data, throw original error
         throw error;
