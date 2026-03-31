@@ -7,7 +7,7 @@ const DEFAULT_NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/builders', label: 'Defense Builders' },
   { href: '/wingman', label: 'Wingman' },
-  { href: '/access', label: 'Dashboard' },
+  { href: '/access', label: 'Get Started' },
   { href: '/programs/the-combine', label: 'The Combine' },
 ];
 
@@ -233,7 +233,7 @@ async function initAuth() {
 }
 
 // ── Main entry ──
-export default function initNavbar() {
+export default async function initNavbar() {
   const mount = document.getElementById('mc-navbar');
   if (!mount) return;
 
@@ -242,19 +242,16 @@ export default function initNavbar() {
   mount.dataset.initialized = 'true';
 
   const activePath = getActivePath();
-  mount.innerHTML = renderNavHTML(activePath, DEFAULT_NAV_LINKS, DEFAULT_PLATFORM_LINKS);
 
-  const boot = () => {
-    initScrollBehavior();
-    initMobileMenu();
-    initDropdown();
-    initThemeToggle();
-    initAuth();
-  };
-  loadNavConfig().then(({ navLinks, platformLinks }) => {
-    mount.innerHTML = renderNavHTML(activePath, navLinks, platformLinks);
-    boot();
-  });
+  // Load config first, render once
+  const { navLinks, platformLinks } = await loadNavConfig();
+  mount.innerHTML = renderNavHTML(activePath, navLinks, platformLinks);
+
+  initScrollBehavior();
+  initMobileMenu();
+  initDropdown();
+  initThemeToggle();
+  initAuth();
 }
 
 // ── Theme toggle ──

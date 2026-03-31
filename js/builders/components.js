@@ -97,34 +97,66 @@ export function renderBuilderModal(company, options = {}) {
         ? `<span class="builder-tag domain">${escapeHtml(company.warfareDomain)}</span>`
         : '';
 
-    // Build sections
-    const descriptionSection = `
-        <div class="modal-section">
-            <h4 class="modal-section-title">About</h4>
-            <p>${escapeHtml(company.description || company.tagline)}</p>
-        </div>
-    `;
+    // Structured synopsis sections (matches entity page order)
+    const SYNOPSIS_ORDER = [
+        { key: 'problem', label: 'Problem' },
+        { key: 'solution', label: 'Solution' },
+        { key: 'fieldValidation', label: 'Field Validation' },
+        { key: 'technologyMaturity', label: 'Technology Maturity' },
+        { key: 'strategicAdvantage', label: 'Strategic Advantage' },
+        { key: 'goToMarketAccess', label: 'Go-to-Market Access' },
+        { key: 'dualUsePotential', label: 'Dual-Use Potential' },
+        { key: 'team', label: 'Team' },
+        { key: 'competitiveLandscape', label: 'Competitive Landscape' },
+        { key: 'primaryUser', label: 'Primary User' },
+        { key: 'userCriticalProblem', label: 'User-Critical Problem' },
+    ];
 
-    const missionSection = missionTags ? `
+    // Build content section — structured synopsis or plain description fallback
+    let contentSection = '';
+    const sections = company.synopsisSections;
+
+    if (sections && typeof sections === 'object') {
+        contentSection = SYNOPSIS_ORDER
+            .filter(({ key }) => sections[key])
+            .map(({ key, label }) => `
+                <div class="modal-synopsis-entry">
+                    <h4 class="modal-section-title">${escapeHtml(label)}</h4>
+                    <p>${escapeHtml(sections[key])}</p>
+                </div>
+            `).join('');
+    }
+
+    if (!contentSection) {
+        contentSection = `
+            <div class="modal-section">
+                <h4 class="modal-section-title">About</h4>
+                <p>${escapeHtml(company.description || company.tagline)}</p>
+            </div>
+        `;
+    }
+
+    // Classification tags — mission areas and warfare domains inline
+    const classificationTags = [missionTags, domainTag].filter(Boolean).join('');
+    const classificationSection = classificationTags ? `
         <div class="modal-section">
-            <h4 class="modal-section-title">Mission Areas</h4>
-            <div class="modal-tags">${missionTags}</div>
+            <h4 class="modal-section-title">Classification</h4>
+            <div class="modal-tags">${classificationTags}</div>
         </div>
     ` : '';
 
-    const domainSection = domainTag ? `
-        <div class="modal-section">
-            <h4 class="modal-section-title">Warfare Domain</h4>
-            <div class="modal-tags">${domainTag}</div>
-        </div>
-    ` : '';
-
-    // Company details section
+    // Company details section — enriched with new fields
     const detailItems = [];
-    if (company.trlLevel) detailItems.push(`<span class="modal-detail-item"><strong>TRL:</strong> ${escapeHtml(company.trlLevel)}</span>`);
+    if (company.trlLevel) {
+        const maturity = company.technicalMaturity ? ` (${escapeHtml(company.technicalMaturity)})` : '';
+        detailItems.push(`<span class="modal-detail-item"><strong>TRL:</strong> ${escapeHtml(company.trlLevel)}${maturity}</span>`);
+    }
     if (company.fundingStage) detailItems.push(`<span class="modal-detail-item"><strong>Stage:</strong> ${escapeHtml(company.fundingStage)}</span>`);
     if (company.teamSize) detailItems.push(`<span class="modal-detail-item"><strong>Team:</strong> ${escapeHtml(company.teamSize)}</span>`);
+    if (company.productType) detailItems.push(`<span class="modal-detail-item"><strong>Type:</strong> ${escapeHtml(company.productType)}</span>`);
+    if (company.technologyArea) detailItems.push(`<span class="modal-detail-item"><strong>Tech:</strong> ${escapeHtml(company.technologyArea)}</span>`);
     if (company.location) detailItems.push(`<span class="modal-detail-item"><strong>Location:</strong> ${escapeHtml(company.location)}</span>`);
+    if (company.pipelineStage) detailItems.push(`<span class="modal-detail-item"><strong>Status:</strong> ${escapeHtml(company.pipelineStage === 'alumni' ? 'Alumni' : 'Applicant')}</span>`);
 
     const detailsSection = detailItems.length > 0 ? `
         <div class="modal-section">
@@ -232,21 +264,22 @@ export function renderBuilderModal(company, options = {}) {
 
     // Use displayName if available
     const displayName = company.displayName || company.name;
+    const entitySlug = toSlug(company.name);
+    const entityLink = `<a href="/companies/${entitySlug}" class="modal-entity-link">Full profile</a>`;
 
     return `
         <div class="modal-header">
             ${logoHtml}
             <div class="modal-title-section">
                 <h2 class="modal-title">${escapeHtml(displayName)}</h2>
-                <div class="modal-cohort">${escapeHtml(company.cohort || '')}</div>
+                <div class="modal-cohort">${escapeHtml(company.cohort || '')} · ${entityLink}</div>
                 ${websiteHtml}
             </div>
         </div>
         <div class="modal-body">
-            ${descriptionSection}
             ${detailsSection}
-            ${missionSection}
-            ${domainSection}
+            ${classificationSection}
+            ${contentSection}
             ${linksSection}
         </div>
         ${ctaBox}
@@ -291,6 +324,20 @@ export function renderErrorState(message) {
             <p>${escapeHtml(message)}</p>
         </div>
     `;
+}
+
+/**
+ * Generate URL slug from company name (matches optimize-static.mjs)
+ * @param {string} name - Company name
+ * @returns {string} - URL slug
+ */
+function toSlug(name) {
+    return name
+        .replace(/,?\s*(Inc\.?|LLC\.?|Corporation|Corp\.?|Technologies|Technology)\s*/gi, '')
+        .replace(/[^\w\s-]/g, '')
+        .trim()
+        .replace(/\s+/g, '-')
+        .toLowerCase();
 }
 
 /**

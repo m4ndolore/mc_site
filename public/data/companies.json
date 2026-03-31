@@ -5627,11 +5627,11 @@
     ]
   },
   "metadata": {
-    "fetchedAt": "2026-03-31T01:44:51.593Z",
-    "buildAt": "2026-03-31T01:44:51.594Z",
+    "fetchedAt": "2026-03-31T10:06:09.770Z",
+    "buildAt": "2026-03-31T10:06:09.773Z",
     "source": "api",
     "apiBase": "https://api.sigmablox.com",
-    "enrichedAt": "2026-03-31T01:44:51.753Z",
+    "enrichedAt": "2026-03-31T10:06:09.940Z",
     "enrichmentSources": [
       "Cohort 25-1-Cohort 25-1.csv",
       "Prod List-Grid view.csv"
