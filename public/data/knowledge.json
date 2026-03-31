@@ -24,7 +24,7 @@
     {
       "id": "compliance",
       "title": "Compliance",
-      "description": "CMMC, ITAR, CUI handling, clearances.",
+      "description": "Navigate CMMC maturity levels, ITAR requirements, CUI handling, and clearances.",
       "color": "#f59e0b",
       "icon": "shield"
     }
