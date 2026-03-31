@@ -135,11 +135,11 @@ async function init() {
     });
 
     try {
-        // Fetch companies from API
-        const data = await fetchCompanies({ limit: 100 });
+        // Fetch companies — prefers seeded/enriched data, falls back to API
+        const data = await fetchCompanies();
 
-        // Extract and normalize companies (filter to only SigmaBlox attendees)
-        allCompanies = extractCompanies(data, { filterAttended: true });
+        // Extract and normalize all companies (alumni + applicants)
+        allCompanies = extractCompanies(data, { filterAttended: false });
 
         // Try to get filter options from API, fall back to extracting from data
         let filterOptions;
