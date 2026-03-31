@@ -175,10 +175,7 @@ function injectBuilders(html) {
     /(<span class="builders-stats__value" id="stat-tech-areas">)0(<\/span>)/,
     `$1${stats.warfareDomains}$2`
   );
-  html = html.replace(
-    /(<span class="builders-stats__value" id="stat-cohorts">)0(<\/span>)/,
-    `$1${stats.cohorts}$2`
-  );
+  // Cohort label is "25-1" in HTML — not a computed stat, skip replacement
 
   // 2b. Inject last refresh timestamp
   html = html.replace(

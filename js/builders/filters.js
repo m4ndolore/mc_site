@@ -34,9 +34,27 @@ export function filterCompanies(companies, filters) {
             }
         }
 
-        // Warfare domain filter (replaces CTA)
-        if (filters.warfareDomain) {
-            if (company.warfareDomain !== filters.warfareDomain) {
+        // Warfare domain filter — OR logic across selected domains
+        // Company matches if ANY of its domains overlap with ANY selected domain
+        if (filters.warfareDomains && filters.warfareDomains.length > 0) {
+            const companyDomains = (company.warfareDomain || '')
+                .split(',')
+                .map(d => d.trim().toLowerCase())
+                .filter(Boolean);
+            const selectedDomains = filters.warfareDomains.map(d => d.toLowerCase());
+            const hasOverlap = companyDomains.some(d => selectedDomains.includes(d));
+            if (!hasOverlap) {
+                return false;
+            }
+        }
+
+        // Legacy single warfareDomain filter (backward compat)
+        if (filters.warfareDomain && (!filters.warfareDomains || filters.warfareDomains.length === 0)) {
+            const companyDomains = (company.warfareDomain || '')
+                .split(',')
+                .map(d => d.trim().toLowerCase())
+                .filter(Boolean);
+            if (!companyDomains.includes(filters.warfareDomain.toLowerCase())) {
                 return false;
             }
         }
@@ -48,32 +66,33 @@ export function filterCompanies(companies, filters) {
             }
         }
 
-        // Legacy CTA filter support
-        if (filters.cta && !filters.warfareDomain) {
-            if (company.warfareDomain !== filters.cta) {
-                return false;
-            }
-        }
-
         return true;
     });
 }
 
 /**
- * Populate filter dropdowns with options
+ * Populate filter dropdowns and domain chips
  * @param {Object} options - {missionAreas, warfareDomains, fundingStages, cohorts}
  */
 export function populateFilters(options) {
     const missionSelect = document.getElementById('filter-mission');
-    const domainSelect = document.getElementById('filter-domain');
     const fundingSelect = document.getElementById('filter-funding');
-    // Legacy support
-    const techSelect = document.getElementById('filter-tech');
+    const domainsContainer = document.getElementById('filter-domains-multi');
 
-    // Extract arrays with fallbacks for missing properties
     const missionAreas = options?.missionAreas || [];
     const warfareDomains = options?.warfareDomains || [];
     const fundingStages = options?.fundingStages || [];
+
+    // Normalize warfare domains — extract individual domains from comma-separated values
+    const uniqueDomains = new Set();
+    warfareDomains.forEach(d => {
+        d.split(',').map(s => s.trim()).filter(Boolean).forEach(s => {
+            // Normalize casing
+            const normalized = s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
+            uniqueDomains.add(normalized);
+        });
+    });
+    const sortedDomains = [...uniqueDomains].sort();
 
     // Mission areas
     if (missionSelect && missionAreas.length > 0) {
@@ -81,25 +100,17 @@ export function populateFilters(options) {
             missionAreas.map(m => `<option value="${escapeAttr(m)}">${escapeHtml(m)}</option>`).join('');
     }
 
-    // Warfare domains
-    if (domainSelect && warfareDomains.length > 0) {
-        domainSelect.innerHTML = '<option value="">All Domains</option>' +
-            warfareDomains.map(d => `<option value="${escapeAttr(d)}">${escapeHtml(d)}</option>`).join('');
+    // Domain chips (multi-select)
+    if (domainsContainer && sortedDomains.length > 0) {
+        domainsContainer.innerHTML = sortedDomains.map(d =>
+            `<button type="button" class="domain-chip" data-domain="${escapeAttr(d)}">${escapeHtml(d)}</button>`
+        ).join('');
     }
 
     // Funding stages
     if (fundingSelect && fundingStages.length > 0) {
         fundingSelect.innerHTML = '<option value="">All Funding Stages</option>' +
             fundingStages.map(f => `<option value="${escapeAttr(f)}">${escapeHtml(f)}</option>`).join('');
-    }
-
-    // Legacy tech select (uses warfare domains)
-    if (techSelect) {
-        const domains = warfareDomains.length > 0 ? warfareDomains : (options?.ctas || []);
-        if (domains.length > 0) {
-            techSelect.innerHTML = '<option value="">All Domains</option>' +
-                domains.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
-        }
     }
 }
 
@@ -108,14 +119,16 @@ export function populateFilters(options) {
  * @returns {Object} - Current filter state
  */
 export function getFilterState() {
+    // Collect selected domain chips
+    const domainChips = document.querySelectorAll('#filter-domains-multi .domain-chip.active');
+    const warfareDomains = Array.from(domainChips).map(c => c.dataset.domain);
+
     return {
         search: document.getElementById('search-input')?.value || '',
         missionArea: document.getElementById('filter-mission')?.value || '',
-        warfareDomain: document.getElementById('filter-domain')?.value ||
-                       document.getElementById('filter-tech')?.value || '',
+        warfareDomains,
+        warfareDomain: '', // Legacy — chips replace the select
         fundingStage: document.getElementById('filter-funding')?.value || '',
-        // Legacy alias
-        cta: document.getElementById('filter-tech')?.value || ''
     };
 }
 
@@ -138,16 +151,16 @@ export function updateStats(stats) {
     if (elements.domains) elements.domains.textContent = stats.warfareDomains || stats.ctas;
     if (elements.techAreas) elements.techAreas.textContent = stats.warfareDomains || stats.ctas;
     if (elements.fundingStages) elements.fundingStages.textContent = stats.fundingStages;
-    if (elements.cohorts) elements.cohorts.textContent = stats.cohorts;
+    // Don't overwrite cohort label — it's "25-1" not a count
 }
 
 /**
- * Update results count - operational language per C2UX
+ * Update results count
  * @param {number} count - Number of results
  */
 export function updateResultsCount(count) {
     const el = document.getElementById('results-count');
-    if (el) el.textContent = `${count} record${count !== 1 ? 's' : ''}`;
+    if (el) el.textContent = `${count} ${count === 1 ? 'company' : 'companies'}`;
 }
 
 // Utility functions

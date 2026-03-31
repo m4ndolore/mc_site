@@ -41,16 +41,17 @@ const railTotalCount = document.getElementById('builders-total-count');
 const railFilterSummary = document.getElementById('builders-filter-summary');
 
 /**
- * Format a timestamp for the status rail
+ * Format a timestamp for the status rail (date + time)
  * @param {Date} date
  * @returns {string}
  */
 function formatTime(date) {
     try {
         return new Intl.DateTimeFormat(undefined, {
+            month: 'short',
+            day: 'numeric',
             hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
+            minute: '2-digit'
         }).format(date);
     } catch (error) {
         console.warn('[Builders] Failed to format time:', error);
@@ -87,21 +88,24 @@ function updateRailTotal(count) {
 }
 
 /**
- * Create an operational summary of active filters
+ * Create a human-readable summary of active filters
  * @param {Object} filters
  * @param {number} resultsCount
  * @returns {string}
  */
 function summarizeFilters(filters, resultsCount) {
     const parts = [];
-    if (filters.search) parts.push(`search=${filters.search}`);
-    if (filters.missionArea) parts.push(`mission=${filters.missionArea}`);
-    if (filters.warfareDomain) parts.push(`domain=${filters.warfareDomain}`);
-    if (filters.fundingStage) parts.push(`stage=${filters.fundingStage}`);
-    if (filters.cohort) parts.push(`cohort=${filters.cohort}`);
+    if (filters.search) parts.push(`"${filters.search}"`);
+    if (filters.missionArea) parts.push(filters.missionArea);
+    if (filters.warfareDomains && filters.warfareDomains.length > 0) {
+        parts.push(filters.warfareDomains.join(', '));
+    } else if (filters.warfareDomain) {
+        parts.push(filters.warfareDomain);
+    }
+    if (filters.fundingStage) parts.push(filters.fundingStage);
 
-    const filterText = parts.length > 0 ? parts.join(' · ') : 'No filters applied.';
-    return `${filterText} Results=${resultsCount}`;
+    if (parts.length === 0) return 'Showing all companies';
+    return `Filtered by ${parts.join(' + ')}`;
 }
 
 /**
@@ -286,17 +290,23 @@ function setupEventListeners() {
         });
     }
 
-    // Filter dropdowns - support both new and legacy IDs
-    const filterIds = [
-        'filter-mission',
-        'filter-domain',
-        'filter-funding',
-        'filter-tech'  // Legacy
-    ];
+    // Filter dropdowns
+    const filterIds = ['filter-mission', 'filter-funding'];
     filterIds.forEach(id => {
         const el = document.getElementById(id);
         if (el) el.addEventListener('change', applyFilters);
     });
+
+    // Domain chip multi-select (OR logic)
+    const domainsContainer = document.getElementById('filter-domains-multi');
+    if (domainsContainer) {
+        domainsContainer.addEventListener('click', (e) => {
+            const chip = e.target.closest('.domain-chip');
+            if (!chip) return;
+            chip.classList.toggle('active');
+            applyFilters();
+        });
+    }
 
     // Modal close button
     if (modalClose) modalClose.addEventListener('click', closeModal);
