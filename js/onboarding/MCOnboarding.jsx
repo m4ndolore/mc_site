@@ -239,8 +239,8 @@ function getWelcomeCopy(context) {
   if (context === "combine") {
     return {
       title: "Continue to The Combine.",
-      subtitle: "You came from Sigmablox. Sign in to continue with Combine context on Merge Combinator.",
-      cta: "Sign in to The Combine \u2192",
+      subtitle: "Sign in to access The Combine. Your application and validation status are linked to your account.",
+      cta: "Sign in \u2192",
     };
   }
   if (context === "builders") {
@@ -259,8 +259,8 @@ function getWelcomeCopy(context) {
   }
   return {
     title: "Sign in to continue.",
-    subtitle: "Looks like you've been here before. Sign in to access your sandbox, or start fresh if you're new.",
-    cta: "Sign in with Email \u2192",
+    subtitle: "Sign in to access your account, or request access if you're new.",
+    cta: "Sign in \u2192",
   };
 }
 
@@ -431,21 +431,21 @@ const HERO = {
     tag: "ACCOUNT LIVE",
     lines: ["Your sandbox", "is ready.", "Sign in."],
     accent: 1,
-    body: "Your account is configured based on your selections. Sign in to start exploring.",
+    body: "Your account is configured. Sign in to start exploring.",
     pulse: "Status: active",
   },
   returning_user: {
     tag: "WELCOME BACK",
-    lines: ["Good to", "see you", "again."],
-    accent: 2,
-    body: "Sign in to pick up where you left off. Your sandbox and selections are waiting.",
-    pulse: "Status: active",
+    lines: ["Pick up", "where you", "left off."],
+    accent: 1,
+    body: "Sign in to continue. Your account and preferences are ready.",
+    pulse: null,
   },
   authenticated: {
     tag: "SESSION ACTIVE",
     lines: ["You're", "already", "signed in."],
     accent: 0,
-    body: "Your account is live. Head to your dashboard to access your sandbox, tools, and network.",
+    body: "Your account is live. Head to your dashboard to continue.",
     pulse: "Status: active",
   },
 };
@@ -682,9 +682,9 @@ function HeroPanel({ heroKey }) {
 
       <div class="onboarding__hero-stats">
         {[
-          { n: "Forward Deployed", l: "problem discovery" },
+          { n: "83", l: "Combine alumni" },
           { n: "Indo-Pacific", l: "primary focus" },
-          { n: "1 to n", l: "build // scale" },
+          { n: "140+", l: "companies evaluated" },
         ].map(s => (
           <div key={s.l}>
             <div class="onboarding__stat-value">{s.n}</div>
@@ -940,9 +940,7 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
       <div class="onboarding__signin">
         <p class="onboarding__signin-label">Already have access?</p>
         <div class="onboarding__signin-row">
-          <a href={loginHref} class="onboarding__signin-btn">Sign in with Email &rarr;</a>
-          <a href={loginHref}
-            class="onboarding__signin-btn onboarding__signin-btn--google">Continue via SSO</a>
+          <a href={loginHref} class="onboarding__signin-btn">Sign in &rarr;</a>
         </div>
       </div>
     </div>
@@ -1104,10 +1102,6 @@ function WelcomeBack({ onNewUser, loginHref, referralContext }) {
           <a href={loginHref} class="onboarding__btn onboarding__btn--primary-full" style={{ textAlign: "center", textDecoration: "none" }}>
             {copy.cta}
           </a>
-        </div>
-        <div class="onboarding__signin-row">
-          <a href={loginHref}
-            class="onboarding__signin-btn onboarding__signin-btn--google" style={{ flex: 1 }}>Continue via SSO</a>
         </div>
       </div>
 
