@@ -623,7 +623,10 @@ function getHeroKey(state) {
     return "multi_areas";
   }
   if (step === 3) return "journey_step";
-  if (step === 4) return journey || "contact_step";
+  if (step === 4) {
+    if (products.length === 1) return products[0];
+    return journey || "contact_step";
+  }
   if (step === 5) return "post_submit";
   if (step === 6) {
     if (products.length === 1) return products[0];
@@ -831,6 +834,8 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
   const GOV_RE = /\.(gov|mil)$/i;
   const isGovEmail = GOV_RE.test((formData.email || "").trim().split("@")[1] || "");
 
+  const fastTrackProduct = state.products?.length === 1 ? state.products[0] : null;
+
   const fields = [
     { key: "name", label: "NAME", placeholder: "Your full name", type: "text", required: true },
     { key: "email", label: "EMAIL", placeholder: "your@organization.gov", type: "email", required: true },
@@ -841,7 +846,7 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
   if (otpSent) {
     return (
       <div class="onboarding__step">
-        <div class="onboarding__step-label">VERIFY &middot; 4 OF 4</div>
+        <div class="onboarding__step-label">{fastTrackProduct ? "VERIFY" : "VERIFY \u00B7 4 OF 4"}</div>
         <h2 class="onboarding__step-title">Check your email.</h2>
         <p class="onboarding__step-subtitle">
           We sent a 6-digit code to <strong>{formData.email}</strong>. Enter it below to verify your account.
@@ -886,10 +891,9 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
   }
 
   // ── Contact form phase ──
-  const fastTrackProduct = state.products?.length === 1 ? state.products[0] : null;
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">ALMOST INSIDE &middot; 4 OF 4</div>
+      <div class="onboarding__step-label">{fastTrackProduct ? "GET ACCESS" : "ALMOST INSIDE \u00B7 4 OF 4"}</div>
       <h2 class="onboarding__step-title">Tell us where to reach you.</h2>
       <p class="onboarding__step-subtitle">We'll send a verification code to confirm your email &mdash; no password needed.</p>
 
