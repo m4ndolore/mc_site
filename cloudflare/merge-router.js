@@ -221,7 +221,7 @@ function buildUpstreamHeaders(request, { stripCookies = false } = {}) {
 // ────────────────────────────────────────────────────────────────────────────
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const host = request.headers.get("host") || url.hostname;
     const wingmanEnabled = String(env.WINGMAN_CONSOLE_ENABLED || "").toLowerCase() === "true";
@@ -294,6 +294,65 @@ export default {
     if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
       const target = `https://${API_HOST}${url.pathname}${url.search}`;
       return Response.redirect(target, 301);
+    }
+
+    // 1.7) Outbound click redirect: /go/:slug?url=<target>&src=<source_page>
+    if (url.pathname.startsWith('/go/')) {
+      const slug = decodeURIComponent(url.pathname.slice(4).replace(/\/$/, ''));
+      const targetRaw = url.searchParams.get('url');
+      const sourcePage = url.searchParams.get('src') || 'unknown';
+
+      if (!targetRaw || !slug) {
+        return Response.redirect(`https://${CANONICAL_HOST}/builders`, 302);
+      }
+
+      // Ensure target has protocol
+      let targetUrl = targetRaw.trim();
+      if (!/^https?:\/\//i.test(targetUrl)) {
+        targetUrl = `https://${targetUrl}`;
+      }
+
+      // Append UTM parameters
+      try {
+        const target = new URL(targetUrl);
+        if (!target.searchParams.has('utm_source')) {
+          target.searchParams.set('utm_source', 'mergecombinator');
+          target.searchParams.set('utm_medium', sourcePage);
+          target.searchParams.set('utm_campaign', 'builders_directory');
+        }
+        targetUrl = target.toString();
+      } catch {
+        return Response.redirect(`https://${CANONICAL_HOST}/builders`, 302);
+      }
+
+      // Fire-and-forget: Analytics Engine write
+      if (env.OUTBOUND_CLICKS) {
+        try {
+          env.OUTBOUND_CLICKS.writeDataPoint({
+            blobs: [
+              slug,
+              sourcePage,
+              targetUrl,
+              request.headers.get('referer') || '',
+              (request.headers.get('user-agent') || '').slice(0, 256),
+            ],
+            doubles: [Date.now()],
+          });
+        } catch (e) {
+          console.error('[mc-router] analytics engine write failed', e);
+        }
+      }
+
+      // Fire-and-forget: Postgres aggregate via API worker
+      ctx.waitUntil(
+        fetch(`https://${API_HOST}/analytics/outbound/event`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ company_slug: slug, source_page: sourcePage }),
+        }).catch((e) => console.error('[mc-router] outbound analytics post failed', e))
+      );
+
+      return Response.redirect(targetUrl, 302);
     }
 
     const origins = getOrigins(env);

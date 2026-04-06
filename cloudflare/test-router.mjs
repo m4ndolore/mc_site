@@ -220,6 +220,47 @@ function testRedirectSafety() {
   return failed === 0;
 }
 
+// Test that /go/ outbound redirect paths are NOT caught by convergence redirects
+function testOutboundRedirect() {
+  console.log("Testing /go/ paths bypass convergence redirects...");
+
+  const testCases = [
+    // [pathname, search, expected status, expected location]
+    ["/go/zeromark", "", null, null],
+    ["/go/kinard-technologies", "", null, null],
+    ["/go/nooks", "?url=https://nooks.works&src=builders", null, null],
+  ];
+
+  let passed = 0;
+  let failed = 0;
+
+  for (const [pathname, search, expectedStatus, expectedLocation] of testCases) {
+    const result = convergenceRedirect(pathname, search);
+
+    if (expectedStatus === null) {
+      if (result === null) {
+        console.log(`  ✓ ${pathname}${search} → (no redirect, continues to route matching)`);
+        passed++;
+      } else {
+        console.log(`  ✗ ${pathname}${search} → ${result.status} ${result.location} (expected: no redirect)`);
+        failed++;
+      }
+    } else {
+      if (result && result.status === expectedStatus && result.location === expectedLocation) {
+        console.log(`  ✓ ${pathname}${search} → ${result.status} ${result.location}`);
+        passed++;
+      } else {
+        const actual = result ? `${result.status} ${result.location}` : "null";
+        console.log(`  ✗ ${pathname}${search} → ${actual} (expected: ${expectedStatus} ${expectedLocation})`);
+        failed++;
+      }
+    }
+  }
+
+  console.log(`\nOutbound redirects: ${passed} passed, ${failed} failed\n`);
+  return failed === 0;
+}
+
 // Test route matching order (only proxy routes — redirected paths never reach here)
 function testRouteMatching() {
   console.log("Testing route matching order (proxy routes only)...");
@@ -612,6 +653,7 @@ async function main() {
 
   // Unit tests (always run — no network required)
   const convergenceTestsPassed = testConvergenceRedirects();
+  const outboundTestsPassed = testOutboundRedirect();
   const subdomainTestsPassed = testSubdomainRedirects();
   const redirectSafetyPassed = testRedirectSafety();
   const routeTestsPassed = testRouteMatching();
@@ -619,7 +661,8 @@ async function main() {
 
   if (unitOnly) {
     console.log("=".repeat(60));
-    const allPassed = convergenceTestsPassed && subdomainTestsPassed &&
+    const allPassed = convergenceTestsPassed && outboundTestsPassed &&
+                      subdomainTestsPassed &&
                       redirectSafetyPassed && routeTestsPassed && sanitizeTestsPassed;
     console.log(allPassed ? "✓ All unit tests passed!" : "✗ Some unit tests failed!");
     process.exit(allPassed ? 0 : 1);
@@ -647,7 +690,8 @@ async function main() {
 
   // Summary
   console.log("=".repeat(60));
-  const allPassed = convergenceTestsPassed && subdomainTestsPassed &&
+  const allPassed = convergenceTestsPassed && outboundTestsPassed &&
+                    subdomainTestsPassed &&
                     redirectSafetyPassed && routeTestsPassed && sanitizeTestsPassed &&
                     smokeTestsPassed && publicPathsPassed && authRedirectsPassed &&
                     authMePassed && turnstileTestsPassed && canonicalTestsPassed;
