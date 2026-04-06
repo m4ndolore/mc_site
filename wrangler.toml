@@ -48,6 +48,11 @@ TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
 # SBIR_ORIGIN, WINGMAN_CONSOLE_ENABLED → no longer referenced
 WINGMAN_CONSOLE_ENABLED = "false"
 
+# Outbound click analytics (raw event stream)
+[[analytics_engine_datasets]]
+binding = "OUTBOUND_CLICKS"
+dataset = "mc_outbound_clicks"
+
 # -----------------------------------------------------------------------------
 # Staging environment - for testing changes before production
 # Deploy with: wrangler deploy --env staging
@@ -72,6 +77,10 @@ OPPORTUNITIES_PAGES_URL = "https://mc-opportunities.pages.dev"
 TURNSTILE_SITE_KEY = "0x4AAAAAACLB7AvgydG3i6FP"
 WINGMAN_CONSOLE_ENABLED = "false"
 
+[[env.staging.analytics_engine_datasets]]
+binding = "OUTBOUND_CLICKS"
+dataset = "mc_outbound_clicks_staging"
+
 # -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
 # Run with: wrangler dev --env dev
@@ -89,3 +98,7 @@ CONTROL_ORIGIN = "http://localhost:3300"
 # Use Turnstile test key for local dev (always passes)
 TURNSTILE_SITE_KEY = "1x00000000000000000000AA"
 WINGMAN_CONSOLE_ENABLED = "false"
+
+[[env.dev.analytics_engine_datasets]]
+binding = "OUTBOUND_CLICKS"
+dataset = "mc_outbound_clicks_dev"

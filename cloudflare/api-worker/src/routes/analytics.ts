@@ -4,6 +4,7 @@ import { ok, err } from '../lib/envelope'
 import { verifyOidc } from '../middleware/verify-oidc'
 import { getDb } from '../lib/db'
 import { fetchAccessSummary, writeAccessEvent } from '../repos/guild/access-analytics'
+import { writeOutboundClick, fetchOutboundSummary } from '../repos/guild/outbound-clicks'
 
 const analytics = new Hono<{ Bindings: Env; Variables: AppVars }>()
 
@@ -92,6 +93,75 @@ analytics.get('/access/summary', async (c) => {
   } catch (error) {
     console.error('access analytics summary failed', error)
     return c.json(err('ANALYTICS_UNAVAILABLE', 'Access analytics storage is not initialized', {
+      request_id: requestId,
+    }), 503)
+  }
+
+  return c.json(ok(summary, {
+    request_id: requestId,
+    issued_at: new Date().toISOString(),
+  }))
+})
+
+/* ─── Outbound click analytics ─── */
+
+analytics.post('/outbound/event', async (c) => {
+  const requestId = c.get('requestId')
+  const origin = c.req.header('Origin') || null
+
+  if (origin && !INGEST_ALLOWED_ORIGINS.has(origin)) {
+    return c.json(err('FORBIDDEN', 'Origin not allowed', { request_id: requestId }), 403)
+  }
+
+  let body: { company_slug?: string; source_page?: string }
+  try {
+    body = await c.req.json()
+  } catch {
+    return c.json(err('INVALID_INPUT', 'Invalid JSON body', { request_id: requestId }), 400)
+  }
+
+  const companySlug = typeof body.company_slug === 'string' ? body.company_slug.trim() : ''
+  if (!companySlug) {
+    return c.json(err('INVALID_INPUT', 'Missing required field: company_slug', { request_id: requestId }), 400)
+  }
+
+  const sourcePage = typeof body.source_page === 'string' && body.source_page.trim()
+    ? body.source_page.trim()
+    : 'unknown'
+
+  try {
+    const { pool } = getDb(c.env.HYPERDRIVE)
+    await writeOutboundClick(pool, companySlug, sourcePage)
+    return c.json(ok({ accepted: true, stored: true }, { request_id: requestId }), 202)
+  } catch (error) {
+    // Never break caller UX because analytics storage is unavailable.
+    console.error('outbound click ingest failed', error)
+    return c.json(ok({ accepted: true, stored: false }, {
+      request_id: requestId,
+      warning: 'analytics_storage_unavailable',
+    }), 202)
+  }
+})
+
+analytics.use('/outbound/summary', verifyOidc)
+
+analytics.get('/outbound/summary', async (c) => {
+  const requestId = c.get('requestId')
+  if (!requireOpsRole(c)) {
+    return c.json(err('FORBIDDEN', 'Access restricted', { request_id: requestId }), 403)
+  }
+
+  const daysRaw = c.req.query('days')
+  const days = daysRaw ? Number(daysRaw) : 30
+  const lookback = Number.isFinite(days) ? Math.floor(days) : 30
+
+  const { pool } = getDb(c.env.HYPERDRIVE)
+  let summary
+  try {
+    summary = await fetchOutboundSummary(pool, lookback)
+  } catch (error) {
+    console.error('outbound analytics summary failed', error)
+    return c.json(err('ANALYTICS_UNAVAILABLE', 'Outbound analytics storage is not initialized', {
       request_id: requestId,
     }), 503)
   }
