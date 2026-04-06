@@ -1,100 +1,56 @@
-# REQ-INFRA-002: mc-docs-contributors Group Infrastructure
+# REQ-INFRA-002: Internal Docs Admin Access Infrastructure
 
 ## Description
-Create and configure the VIA group and Outline group required for contributor access control.
+Create the minimum VIA and Outline configuration needed so a small allowlisted set of internal `@mergecombinator.com` users can access docs during the internal-development phase.
 
 ## Target
-**Metric**: mc-docs-contributors group exists in VIA and Outline, linked via OIDC claims
+**Metric**: Approved internal users can access docs with the same canonical admin authorization model used by Guild `/admin`.
 
 ## Implementation
 
-### 1. VIA Group Setup (Authentik Admin)
+### 1. Canonical Auth Model
 
-Access: https://via.mergecombinator.com/if/admin/
+- Single source of truth: token-derived canonical `admin` role
+- `/control` remains a legacy redirect alias to Guild `/admin`
+- Docs should follow the same admin rule unless a narrower internal exception is explicitly introduced later
 
-```bash
-# Via Authentik Admin UI:
-# 1. Navigate to Directory → Groups
-# 2. Create Group:
-#    - Name: mc-docs-contributors
-#    - Is Superuser: No
-# 3. Note the group ID (UUID) for API reference
+### 2. VIA Setup
 
-# Or via API:
-curl -X POST -H "Authorization: Bearer $AUTHENTIK_ADMIN_TOKEN" \
-  -H "Content-Type: application/json" \
-  "https://via.mergecombinator.com/api/v3/core/groups/" \
-  -d '{
-    "name": "mc-docs-contributors",
-    "is_superuser": false
-  }'
-```
+Access: `https://via.mergecombinator.com/if/admin/`
 
-### 2. OAuth2 Provider Scope Update
+- Ensure the small internal allowlist of `@mergecombinator.com` users is assigned the canonical admin role/group that resolves to `admin` in token claims
+- Verify the docs OIDC provider includes `openid email profile groups`
+- Confirm issued tokens expose the role/group data needed for downstream auth checks
 
-The `outline-docs` OAuth2 provider must include the `groups` scope:
+### 3. Outline Setup
 
-1. Navigate to Applications → Providers → outline-docs
-2. Verify scopes include: `openid email profile groups`
-3. If missing, add `groups` to the scope list
+Access: `https://docs.mergecombinator.com`
 
-### 3. Outline Group Setup
+- Configure docs access for the same approved internal users
+- Keep docs intentionally internal during the current development phase
+- Do not broaden access to general Guild users yet
 
-Access: Outline homelab at `100.66.200.39:3100` or via https://docs.mergecombinator.com
+### 4. Session Alignment
 
-```bash
-# Via Outline Admin UI (as admin user):
-# 1. Navigate to Settings → Groups
-# 2. Create Group:
-#    - Name: mc-docs-contributors
-#    - Description: "Knowledge base contributors with edit access"
-# 3. Set collection permissions:
-#    - Grant "Edit" on public collections
-#    - Grant "View" on sensitive/internal collections
-
-# Or via Outline API (requires admin API key):
-OUTLINE_API_KEY="your-api-key"
-OUTLINE_URL="https://docs.mergecombinator.com"
-
-# Create the group
-curl -X POST "$OUTLINE_URL/api/groups.create" \
-  -H "Authorization: Bearer $OUTLINE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"name": "mc-docs-contributors"}'
-```
-
-### 4. Collection Permission Configuration
-
-After creating the group in Outline:
-
-1. Navigate to each collection requiring contributor access
-2. Click Settings → Permissions
-3. Add "mc-docs-contributors" group with "Edit" permission
-4. Keep default "View" for all other authenticated users
-
-### 5. Sync Mechanism
-
-The approval workflow triggers both:
-1. Authentik API: Add user to `mc-docs-contributors` group
-2. Outline API: Add user to `mc-docs-contributors` group
-
-This dual-sync ensures:
-- VIA identity has correct group claims in tokens
-- Outline has correct group membership for permission checks
+- Prefer shared session continuity so an already-authenticated internal admin does not need to log in again on docs
+- If true SSO continuity is not yet achievable, document the exact gap and keep the access model narrow while docs remains internal
 
 ## Status
 - **Status**: PENDING
 - **Phase**: 3
-- **Priority**: HIGH (blocks REQ-DOCS-003)
+- **Priority**: HIGH
 
 ## Validation
-- User in VIA group has `mc-docs-contributors` in userinfo response
-- User in Outline group can create/edit documents
-- User NOT in groups has read-only access
+- Approved internal admin can access Guild `/admin`
+- Same user can access `docs.mergecombinator.com`
+- Non-approved user cannot access internal docs
+- Token claims reflect canonical admin role/group data as expected
 
 ## Dependencies
 - REQ-AUTH-001 (VIA configured)
-- REQ-DOCS-001 (Outline SSO working)
+- REQ-DOCS-001 (Outline reachable and using VIA)
+- REQ-PLATFORM-001 (single-source admin auth direction)
 
 ## Notes
-Outline does NOT natively sync groups from OIDC claims. The approval workflow must explicitly call both APIs.
+- This replaces the broader “contributors” framing for now.
+- The immediate goal is narrow internal access for 3 approved `@mergecombinator.com` users, not a public or community contributor workflow.

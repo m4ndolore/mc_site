@@ -1,23 +1,24 @@
-# REQ-BUG-015: Docs page redirects back to base site instead of loading
+# REQ-BUG-015: Docs host access and session alignment
 
 ## Description
-Clicking the Docs link in the Guild SPA navigation redirects back to the base site (mergecombinator.com) instead of loading docs.mergecombinator.com. This may be a routing issue in merge-router, a missing DNS record, or an Outline Wiki configuration problem.
+The docs host previously redirected back to the base site instead of loading Outline. Routing now appears to work from the main-site navigation, but access is still not aligned with the intended experience: docs and MC require separate logins, and docs is still treated as an internal tool in development rather than a broadly accessible Guild surface.
 
 ## Target
-Docs link loads docs.mergecombinator.com with VIA SSO session intact.
+`docs.mergecombinator.com` loads successfully, internal users do not need to authenticate twice between MC and docs, and docs remains intentionally gated until it is ready for broader Guild exposure.
 
 ## Acceptance Criteria
-- [ ] Docs link navigates to docs.mergecombinator.com
-- [ ] Page loads without redirect loop
-- [ ] SSO session carries over (user is authenticated)
+- [x] Main-site Docs link navigates to `docs.mergecombinator.com`
+- [x] Docs host loads without redirecting back to MC
+- [ ] Accessed/internal user does not need a second login when moving from MC to docs
+- [ ] Docs exposure model is explicit: either hidden from Guild or intentionally linked with correct auth behavior
 
 ## Implementation
-- **Status**: BLOCKED
+- **Status**: PARTIAL
 - **Phase**: 9 (Platform Convergence)
 - **Priority**: MEDIUM
 - **Effort**: 0.5w
 - **Dependencies**: REQ-DOCS-001
-- **Notes**: Root cause identified: mc-router CF Worker catches `docs.mergecombinator.com` via route pattern and proxies to MC Pages (mc-site-dr4.pages.dev) instead of Outline Wiki. Needs Cloudflare dashboard action.
+- **Notes**: Routing appears fixed as of 2026-04-06 from the main-site navbar. Remaining gap is session/auth alignment: MC and docs still require separate logins. There is also no current Guild-facing docs entry point in this codebase, which is acceptable for now if docs remains intentionally internal.
 
 ---
 
@@ -55,3 +56,20 @@ The mc-router CF Worker is bound to `*mergecombinator.com/*` routes in Cloudflar
 ### Blocked On
 - Cloudflare dashboard access to modify worker routes (Option A) or Outline Wiki origin URL (Option B)
 - Verification that Outline Wiki is still running and accessible
+
+## Sitrep - 2026-04-06
+
+**Session**: codex-2026-04-06
+**Status**: PARTIAL
+
+### Reassessment
+- Main-site docs links now resolve to `https://docs.mergecombinator.com` successfully.
+- The original redirect-back-to-MC failure mode is no longer the primary issue.
+- There is not currently a distinct Guild docs link visible in this codebase.
+- Docs and MC still appear to require separate logins, so cross-app session sharing / SSO continuity is not yet working from a user perspective.
+- Docs is still intended as an internal tool in development, so lack of broad Guild exposure is not itself a bug if kept intentional.
+
+### Remaining
+- Verify whether docs should remain hidden from Guild surfaces for now.
+- Fix session continuity so an already-accessed internal user does not need to log in again on docs.
+- Update navigation/product docs so expected docs access behavior is explicit.

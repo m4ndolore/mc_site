@@ -29,17 +29,18 @@ Normalization currently allows legacy group naming to still map:
   - `cloudflare/api-worker/src/lib/authentik.ts`
   - `cloudflare/api-worker/src/routes/access.ts`
 
-### 3) Control route authorization source (router groups)
-- `/control` is authorized by group allowlist, not role hierarchy.
-- Default allowlist: `via-admins`, `sigmablox-admins`
+### 3) Admin route authorization source (legacy `/control` alias)
+- Historical docs referred to `/control` as a separate admin surface.
+- Current runtime behavior redirects `/control` to Guild `/admin`.
 - File: `cloudflare/merge-router.js`
 
 ## Split Source of Truth (Current)
-There is a real split today:
+There is still policy ambiguity today:
 - API endpoints use token roles + computed `roleLevel`.
-- Router `/control` uses explicit admin groups.
+- Legacy docs still talk about `/control` as if it were a separate admin console.
+- Current runtime redirects `/control` to Guild `/admin`, so the remaining task is to make Guild admin and internal docs use one canonical admin rule.
 
-This is the inconsistency causing role confusion across surfaces.
+This is the inconsistency causing role confusion across surfaces and documentation.
 
 ## Approved Direction
 Decision: **Option B**
@@ -51,11 +52,11 @@ Decision: **Option B**
 1. Validate production role reality with persona tests:
 - `/guild/me` returns expected `roles` and `role_level` for admin/trusted/member/restricted personas.
 
-2. Unify `/control` authorization model:
-- Choose one model and document precedence:
-  - group-based as canonical, or
-  - role-based as canonical, or
-  - explicit dual-mode fallback with deterministic priority.
+2. Unify admin authorization model:
+- Treat `/control` as a legacy alias, not a separate console product.
+- Choose one model and document precedence for Guild `/admin` and any internal docs gating:
+  - role-based as canonical (preferred), or
+  - explicit group-based policy if needed for narrow exceptions.
 
 3. Update runbooks + RTMX:
 - Ensure all docs reflect current `CONSOLE_ROLLOUT_MODE="on"` baseline.
@@ -63,7 +64,7 @@ Decision: **Option B**
 
 4. Add automated tests after policy choice:
 - Token claim parsing + role-level mapping tests.
-- `/control` authorization tests for chosen canonical model.
+- Guild `/admin` authorization tests for the chosen canonical model.
 
 ## Archived Planning Docs
 Historical implementation planning moved to:

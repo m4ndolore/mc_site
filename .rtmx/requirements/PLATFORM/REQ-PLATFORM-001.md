@@ -135,10 +135,15 @@ Current role status + forward plan: `docs/platform/2026-03-13-roles-live-and-for
 ### Role Model Decision (2026-03-13)
 - [x] Option B selected: keep canonical role hierarchy (`admin`, `trusted`, `industry`, `member`, `restricted`) and reduce sprawl by limiting where roles are actively assigned.
 - [x] Live provisioning remains simplified to `trusted` and `restricted` in access onboarding.
-- [ ] Remove split authorization source for `/control`:
+- [ ] Remove stale `/control` auth ambiguity:
+  - Current runtime behavior is `/control` → Guild `/admin` redirect, not a standalone console surface.
   - Current API path uses token roles + computed `roleLevel`.
-  - Current router `/control` path uses admin group allowlist (`via-admins`, `sigmablox-admins`).
-  - Decision pending on migration path: group-only, role-only, or dual-mode with explicit precedence.
+  - Remaining decision is to define one canonical admin rule for Guild `/admin` and any internal docs access.
+  - Preferred direction: token-derived canonical `admin` role as the single source of truth.
+
+### Active Ship Gate (2026-03-31)
+- The current release gate is tracked in `docs/platform/2026-03-31-platform-ship-checklist.md`.
+- No phase 10 growth work should start before the Guild/API live verification path is closed or explicitly waived.
 
 ### Phase 2: User & Company Profiles (3 weeks)
 - [ ] Port user profile management to MC (account settings, profile editing)

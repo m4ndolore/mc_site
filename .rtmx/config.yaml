@@ -11,21 +11,36 @@ categories:
   AUTH:
     description: VIA authentication integration
     prefix: REQ-AUTH
+  BUGS:
+    description: Bug fixes and issues
+    prefix: REQ-BUG
+  C2UX:
+    description: Command center UX evolution
+    prefix: REQ-C2UX
   CONTENT:
     description: Protected content and access control
     prefix: REQ-CONTENT
   DOCS:
     description: Documentation site integration
     prefix: REQ-DOCS
-  C2UX:
-    description: Command center UX evolution
-    prefix: REQ-C2UX
+  INFRA:
+    description: Platform and deployment infrastructure
+    prefix: REQ-INFRA
   LEGAL:
     description: Privacy policies and legal compliance
     prefix: REQ-LEGAL
-  BUGS:
-    description: Bug fixes and issues
-    prefix: REQ-BUG
+  MERCH:
+    description: Merch operations and catalog work
+    prefix: REQ-MERCH
+  PLATFORM:
+    description: Cross-system convergence and authenticated platform migration
+    prefix: REQ-PLATFORM
+  SECURITY:
+    description: Security risks, mitigations, and hardening follow-up
+    prefix: REQ-SEC
+  UX:
+    description: Site UX, onboarding, and experience improvements
+    prefix: REQ-UX
 
 # Phase definitions
 phases:
@@ -33,6 +48,13 @@ phases:
   2: Protected Content - Restricted builder data
   3: Docs Integration - Knowledge base SSO
   4: Command Center - Operational UX evolution
+  5: Stabilization - Post-launch polish and cleanup
+  6: Design System - Shared navigation and interaction polish
+  7: Funnel - Access, content, and SEO improvements
+  8: Governance - Truth, documentation, and RTMX hygiene
+  9: Platform Convergence - Guild/API/authenticated surface migration
+  10: Growth - Post-platform onboarding and expansion work
+  11: Security - Hardening and risk mitigation follow-up
 
 # Priority levels
 priorities:
