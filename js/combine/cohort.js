@@ -1,6 +1,8 @@
 // js/combine/cohort.js
 // Combine cohort directory — displays companies from API with category filtering
 
+import { outboundUrl, toCompanySlug } from '../lib/outbound.js';
+
 const API_BASE = 'https://api.sigmablox.com';
 
 let allCompanies = [];
@@ -119,7 +121,7 @@ function renderCard(company) {
                     ${tagsHtml}
                 </div>
                 ${company.website ? `
-                <a href="${escapeHtml(normalizeUrl(company.website))}" class="portfolio-card__link" target="_blank" rel="noopener">
+                <a href="${escapeHtml(outboundUrl(normalizeUrl(company.website), toCompanySlug(company.name || company.companyName || 'unknown'), 'cohort'))}" class="portfolio-card__link" target="_blank" rel="noopener">
                     Website
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

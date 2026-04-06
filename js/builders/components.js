@@ -1,5 +1,17 @@
 // js/builders/components.js
 // UI components for builder directory
+import { outboundUrl } from '../lib/outbound.js';
+
+/**
+ * Ensure a URL has a protocol prefix.
+ * Handles missing protocol, www-only, and mixed-case schemes.
+ */
+function normalizeUrl(url) {
+    if (!url) return '';
+    const trimmed = url.trim();
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    return `https://${trimmed}`;
+}
 
 /**
  * Render a builder card (YC Launches style with rocket upvote)
@@ -74,10 +86,12 @@ export function renderBuilderModal(company, options = {}) {
         ? `<img src="${escapeHtml(company.logo)}" alt="${escapeHtml(company.name)} logo" class="modal-logo">`
         : `<div class="modal-logo" style="display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;background:linear-gradient(135deg,#667eea,#764ba2);">${escapeHtml(company.name.charAt(0))}</div>`;
 
-    const websiteUrl = company.website || '';
+    const websiteUrl = normalizeUrl(company.website || '');
     const websiteDisplay = websiteUrl.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    const companySlug = toSlug(company.name);
+    const websiteGoUrl = outboundUrl(websiteUrl, companySlug, 'builders');
     const websiteHtml = websiteUrl
-        ? `<a href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener" class="modal-website">
+        ? `<a href="${escapeHtml(websiteGoUrl)}" target="_blank" rel="noopener" class="modal-website">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                 <polyline points="15 3 21 3 21 9"/>
@@ -230,7 +244,7 @@ export function renderBuilderModal(company, options = {}) {
                         </button>
                     ` : ''}
                     ${websiteUrl ? `
-                        <a href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener" class="modal-cta-btn modal-cta-btn--secondary">
+                        <a href="${escapeHtml(websiteGoUrl)}" target="_blank" rel="noopener" class="modal-cta-btn modal-cta-btn--secondary">
                             External Site
                         </a>
                     ` : ''}
@@ -253,7 +267,7 @@ export function renderBuilderModal(company, options = {}) {
                         Authenticate
                     </a>
                     ${websiteUrl ? `
-                        <a href="${escapeHtml(websiteUrl)}" target="_blank" rel="noopener" class="modal-cta-btn modal-cta-btn--secondary">
+                        <a href="${escapeHtml(websiteGoUrl)}" target="_blank" rel="noopener" class="modal-cta-btn modal-cta-btn--secondary">
                             External Site
                         </a>
                     ` : ''}

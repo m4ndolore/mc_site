@@ -1,6 +1,8 @@
 // js/portfolio/index.js
 // Portfolio page - displays companies from live API with category filtering
 
+import { outboundUrl, toCompanySlug } from '../lib/outbound.js';
+
 /**
  * API base URL
  */
@@ -107,7 +109,7 @@ function renderPortfolioCard(company) {
                     ${tagsHtml}
                 </div>
                 ${company.website ? `
-                <a href="${escapeHtml(normalizeUrl(company.website))}" class="portfolio-card__link" target="_blank" rel="noopener">
+                <a href="${escapeHtml(outboundUrl(normalizeUrl(company.website), toCompanySlug(company.name || company.companyName || 'unknown'), 'portfolio'))}" class="portfolio-card__link" target="_blank" rel="noopener">
                     External Site
                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                         <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
