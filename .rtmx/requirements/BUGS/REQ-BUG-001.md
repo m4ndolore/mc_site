@@ -32,7 +32,7 @@ When attempting passkey authentication on mergecombinator.com (which is not conf
 - Link back to auth method selection
 
 ## Implementation
-- **Status**: PARTIAL
+- **Status**: COMPLETE
 - **Phase**: 1
 - **Priority**: MEDIUM
 
@@ -116,3 +116,11 @@ docker exec sigmablox-authentik-server-1 ak apply_blueprint /blueprints/via-poli
 - Flow: `via-auth-denied`
 - Stage: `via-auth-denied-redirect`
 - Stage Binding: connecting stage to flow
+
+---
+
+## Closure — 2026-04-06
+
+**Status: COMPLETE.** Option B (recovery page) implemented and deployed. Passkey cancel/WebAuthn errors show recovery popup with Try Again, Reset Authentication, and Contact Support options.
+
+**Accepted limitation:** Identification-stage errors (unknown email) don't trigger the popup due to Authentik's closed shadow DOM in `<ak-stage-identification>`. This is a different failure path (wrong email, not wrong auth method) and doesn't warrant further investment. If shadow DOM access improves in future Authentik versions, this could be revisited.
