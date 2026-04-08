@@ -389,7 +389,11 @@ export async function fetchPrivateApi(endpoint, options = {}) {
     return response.json();
 }
 
-function getLogoUrl() {
+function getLogoUrl(company) {
+    if (company.cfImageId) {
+        return `https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/${company.cfImageId}/public`;
+    }
+    // Airtable signed URLs expire within hours — skip logoUrl
     return null;
 }
 

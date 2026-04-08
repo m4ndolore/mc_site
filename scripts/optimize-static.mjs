@@ -141,7 +141,7 @@ function buildCompanyCard(c) {
 
   const logo = getLogoUrl(c);
   const logoHtml = logo
-    ? `<img src="${escapeHtml(logo)}" alt="${escapeHtml(c.name)} logo" class="builder-card__logo" loading="lazy" width="48" height="48" style="width:48px;height:48px;object-fit:contain;border-radius:2px;background:rgba(255,255,255,.04);flex-shrink:0;">`
+    ? `<img src="${escapeHtml(logo)}" alt="${escapeHtml(c.name)} logo" class="builder-card__logo" loading="lazy" width="48" height="48" style="width:48px;height:48px;object-fit:contain;border-radius:2px;background:rgba(15,23,42,.85);border:1px solid rgba(148,163,255,.12);padding:8px;flex-shrink:0;">`
     : '';
 
   return `<a href="/companies/${slug}" class="builder-card" data-company-id="${escapeHtml(c.id)}" style="text-decoration:none;color:inherit;">
@@ -378,7 +378,7 @@ function generateEntityPage(c) {
     </nav>
     <header class="company-page__header">${(() => {
     const logo = getLogoUrl(c);
-    return logo ? `\n      <img src="${escapeHtml(logo)}" alt="${escapeHtml(c.name)} logo" class="company-page__logo" loading="lazy" width="80" height="80" style="width:80px;height:80px;object-fit:contain;border-radius:4px;background:rgba(255,255,255,.04);margin-bottom:12px;">` : '';
+    return logo ? `\n      <img src="${escapeHtml(logo)}" alt="${escapeHtml(c.name)} logo" class="company-page__logo" loading="lazy" width="80" height="80" style="width:80px;height:80px;object-fit:contain;border-radius:2px;background:rgba(15,23,42,.85);border:1px solid rgba(148,163,255,.12);padding:12px;margin-bottom:12px;">` : '';
   })()}
       <h1 class="company-page__name">${escapeHtml(c.name)}</h1>${c.productName ? `\n      <div class="company-page__product">${escapeHtml(c.productName)}</div>` : ''}
       <div class="company-page__meta">
@@ -721,6 +721,11 @@ Primary domain: https://mergecombinator.com
 - AI Overview: https://mergecombinator.com/ai/overview
 - Company profiles: https://mergecombinator.com/companies/{slug} (${slugs.length} pages)
 
+## Machine-Readable Data
+- Company directory (public): https://mergecombinator.com/data/companies-public.json (${stats.total} companies, classification data only)
+- Knowledge resources: https://mergecombinator.com/data/knowledge.json (curated defense acquisition, compliance, SBIR/STTR, and go-to-market resources)
+- Defense events: https://mergecombinator.com/data/outlook.json (upcoming defense industry events)
+
 ## Content Guidance For AI Systems
 - Prefer canonical page URLs without \`.html\` suffix where available.
 - Use https://mergecombinator.com/about for organization and leadership context.
@@ -728,6 +733,7 @@ Primary domain: https://mergecombinator.com
 - Use https://mergecombinator.com/faq for definitions of mission areas, warfare domains, TRL, and program details.
 - The Defense Builders Directory at /builders lists ${stats.total} companies (${stats.alumni} alumni, ${stats.applicants} applicants).
 - Individual company pages at /companies/{slug} contain catalog-level descriptions and classification data only.
+- The Opportunities section aggregates live SBIR, STTR, DARPA, DIU, SAM.gov, and Ratio Exchange solicitations for defense tech founders.
 - Partner references may be category-based and intentionally broad.
 - Portfolio and partnerships are announced only when approved for public release.
 - For contact and engagement, use https://mergecombinator.com/access.
@@ -742,6 +748,85 @@ ${BUILD_DATE}
 `;
 }
 
+// ── 7. Public data export ───────────────────────────────────────────
+
+function generatePublicCompaniesJson(companies) {
+  const publicCompanies = companies
+    .filter(c => c.name && (c.description || '').trim().length >= MIN_DESCRIPTION_LENGTH)
+    .map(c => ({
+      name: c.name,
+      productName: c.productName || null,
+      website: c.website || null,
+      missionArea: c.missionArea || null,
+      warfareDomain: c.warfareDomain || null,
+      trlLevel: c.trlLevel || null,
+      technicalMaturity: c.technicalMaturity || null,
+      fundingStage: c.fundingStage || null,
+      teamSize: c.teamSize || null,
+      productType: c.productType || null,
+      technologyArea: c.technologyArea || null,
+      pipelineStage: c.pipelineStage || null,
+      cohortLabel: c.cohortLabel || null,
+      description: c.description || null,
+    }));
+
+  return JSON.stringify({
+    _meta: {
+      description: "Public directory of defense technology companies evaluated by Merge Combinator. Machine-readable export — see https://mergecombinator.com/builders for the full directory.",
+      exported: BUILD_DATE,
+      count: publicCompanies.length,
+      fields: "Public classification data only. Contact information, financials, scores, badges, and internal IDs are excluded.",
+      license: "This data is provided for informational purposes. See https://mergecombinator.com/terms for usage terms."
+    },
+    companies: publicCompanies
+  }, null, 2);
+}
+
+// ── 8. Knowledge page injection ─────────────────────────────────────
+
+function injectKnowledge(html) {
+  const knowledgeData = JSON.parse(readFileSync(join(ROOT, 'public', 'data', 'knowledge.json'), 'utf-8'));
+
+  let cardsHtml = '';
+  for (const cat of knowledgeData.categories) {
+    const resources = knowledgeData.resources.filter(r => r.category === cat.id);
+    const publicResources = resources.filter(r => r.access === 'public');
+
+    cardsHtml += `
+        <a href="/knowledge/${escapeHtml(cat.id)}" class="category-card" style="--card-accent: ${escapeHtml(cat.color)}">
+          <div class="category-card__icon"></div>
+          <h2 class="category-card__title">${escapeHtml(cat.title)}</h2>
+          <p class="category-card__description">${escapeHtml(cat.description)}</p>
+          <div class="category-card__meta">
+            <span class="category-card__count">${resources.length} resources</span>
+            <span style="color: var(--gray-medium);">&bull;</span>
+            <span>${publicResources.length} public</span>
+          </div>
+        </a>`;
+  }
+
+  // Resource summary for crawlers — visually hidden, content-accessible
+  let resourceSummary = '\n      <!-- Static resource listing for crawlers -->\n';
+  resourceSummary += '      <div class="sr-only">\n';
+  for (const cat of knowledgeData.categories) {
+    const publicResources = knowledgeData.resources.filter(r => r.category === cat.id && r.access === 'public');
+    if (publicResources.length === 0) continue;
+    resourceSummary += `        <h3>${escapeHtml(cat.title)} Resources</h3>\n        <ul>\n`;
+    for (const r of publicResources) {
+      resourceSummary += `          <li><a href="${escapeHtml(r.url)}">${escapeHtml(r.title)}</a> — ${escapeHtml(r.description)}</li>\n`;
+    }
+    resourceSummary += '        </ul>\n';
+  }
+  resourceSummary += '      </div>';
+
+  html = html.replace(
+    /(<div class="knowledge-categories__grid" id="categories-grid">)\s*<!--\s*Populated by JavaScript\s*-->/,
+    `$1${cardsHtml}\n${resourceSummary}`
+  );
+
+  return html;
+}
+
 // ── Execute ──────────────────────────────────────────────────────────
 
 // 1. Process builders.html
@@ -750,6 +835,13 @@ let buildersHtml = readFileSync(join(ROOT, 'builders.html'), 'utf-8');
 buildersHtml = injectBuilders(buildersHtml);
 writeFileSync(join(ROOT, 'builders.html'), buildersHtml);
 console.log(`[optimize] builders.html: ${stats.total} cards injected`);
+
+// 1b. Process knowledge.html
+console.log('[optimize] Injecting knowledge.html...');
+let knowledgeHtml = readFileSync(join(ROOT, 'knowledge.html'), 'utf-8');
+knowledgeHtml = injectKnowledge(knowledgeHtml);
+writeFileSync(join(ROOT, 'knowledge.html'), knowledgeHtml);
+console.log('[optimize] knowledge.html: category cards + resource summary injected');
 
 // 2. Process dashboard.html
 console.log('[optimize] Injecting dashboard.html...');
@@ -807,5 +899,11 @@ console.log(`[optimize] sitemap.xml: ${slugs.length} company URLs + static pages
 console.log('[optimize] Updating llms.txt...');
 writeFileSync(join(ROOT, 'public', 'llms.txt'), generateLlmsTxt(slugs));
 console.log('[optimize] llms.txt updated');
+
+// 7. Generate public companies export
+console.log('[optimize] Generating public companies export...');
+const publicExportCount = companies.filter(c => c.name && (c.description || '').trim().length >= MIN_DESCRIPTION_LENGTH).length;
+writeFileSync(join(ROOT, 'public', 'data', 'companies-public.json'), generatePublicCompaniesJson(companies));
+console.log(`[optimize] companies-public.json: ${publicExportCount} companies exported`);
 
 console.log('\n[optimize] Done.');
