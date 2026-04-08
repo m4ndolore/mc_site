@@ -11,10 +11,14 @@
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { sanitizeCompaniesPayloadForPublic } from './company-data-privacy.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUTPUT_DIR = join(__dirname, '..', 'public', 'data');
 const OUTPUT_PATH = join(OUTPUT_DIR, 'companies.json');
+const PRIVATE_DATA_DIR = join(__dirname, '..', '.private', 'data');
+const PRIVATE_DATA_PATH = join(PRIVATE_DATA_DIR, 'companies.json');
+const PRIVATE_SEED_PATH = join(PRIVATE_DATA_DIR, 'companies.seed.json');
 
 // Ensure output directory exists
 if (!existsSync(OUTPUT_DIR)) {
@@ -245,6 +249,20 @@ function loadCachedData() {
     }
 }
 
+function loadPrivateCachedData() {
+    if (!existsSync(PRIVATE_DATA_PATH)) {
+        return null;
+    }
+
+    try {
+        const content = readFileSync(PRIVATE_DATA_PATH, 'utf-8');
+        return JSON.parse(content);
+    } catch (error) {
+        console.warn('[seed] Failed to load private cached data:', error.message);
+        return null;
+    }
+}
+
 /**
  * Main seeding function
  */
@@ -270,8 +288,9 @@ async function seed() {
     } catch (error) {
         console.warn('[seed] API unavailable:', error.message);
 
-        // Fall back to cached data (only if it has actual companies)
-        const cached = loadCachedData();
+        // Prefer the private cache if present. The public cache is sanitized and
+        // should only be used when no private source is available.
+        const cached = loadPrivateCachedData() || loadCachedData();
         if (cached && cached.companies && cached.companies.length > 0) {
             console.log('[seed] Using cached data from previous build:', cached.companies.length, 'companies');
             companiesData = { companies: cached.companies, pagination: cached.pagination };
@@ -307,11 +326,19 @@ async function seed() {
         }
     };
 
-    // Write to output file
-    writeFileSync(OUTPUT_PATH, JSON.stringify(outputData, null, 2));
+    if (!existsSync(PRIVATE_DATA_DIR)) {
+        mkdirSync(PRIVATE_DATA_DIR, { recursive: true });
+    }
+    writeFileSync(PRIVATE_SEED_PATH, JSON.stringify(outputData, null, 2));
+    console.log('[seed] Written private seed artifact to:', PRIVATE_SEED_PATH);
+
+    // Write a catalog-only public artifact. Rich/private company data must be
+    // served from an authenticated API, not from public/data.
+    const publicOutputData = sanitizeCompaniesPayloadForPublic(outputData);
+    writeFileSync(OUTPUT_PATH, JSON.stringify(publicOutputData, null, 2));
     console.log('[seed] Written to:', OUTPUT_PATH);
-    console.log('[seed] Companies:', outputData.companies.length);
-    console.log('[seed] Source:', outputData.metadata.source);
+    console.log('[seed] Companies:', publicOutputData.companies.length);
+    console.log('[seed] Source:', publicOutputData.metadata.source);
     console.log('[seed] Seeding complete');
 }
 

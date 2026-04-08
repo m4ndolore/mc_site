@@ -2,7 +2,7 @@
 /**
  * optimize-static.mjs — SEO & AI visibility build step.
  *
- * Reads enriched companies.json and:
+ * Reads catalog-only public companies.json and:
  *  1. Computes aggregate stats
  *  2. Injects stats + cards into builders.html
  *  3. Injects stats + grounding into dashboard.html
@@ -286,47 +286,7 @@ function injectDashboard(html) {
 
 // ── 3. Entity Pages ──────────────────────────────────────────────────
 
-const SYNOPSIS_ORDER = [
-  { key: 'problem', label: 'Problem' },
-  { key: 'solution', label: 'Solution' },
-  { key: 'fieldValidation', label: 'Field Validation' },
-  { key: 'strategicAdvantage', label: 'Strategic Advantage' },
-  { key: 'goToMarketAccess', label: 'Go-to-Market Access' },
-  { key: 'dualUsePotential', label: 'Dual-Use Potential' },
-  { key: 'team', label: 'Team' },
-  { key: 'competitiveLandscape', label: 'Competitive Landscape' },
-  { key: 'primaryUser', label: 'Primary User' },
-  { key: 'userCriticalProblem', label: 'User-Critical Problem' },
-  { key: 'technologyMaturity', label: 'Technology Maturity' },
-];
-
 const FOUC_SCRIPT = `(function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();`;
-
-function renderSynopsisSections(sections) {
-  if (!sections) return '';
-  let html = '';
-  for (const { key, label } of SYNOPSIS_ORDER) {
-    const content = sections[key];
-    if (!content) continue;
-    const paragraphs = content.split(/\n\n+/).map(p => p.trim()).filter(Boolean);
-    const pHtml = paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('\n        ');
-    html += `\n      <div class="company-page__section">
-        <h2>${escapeHtml(label)}</h2>
-        ${pHtml}
-      </div>`;
-  }
-  return html;
-}
-
-function renderSynopsisRaw(raw) {
-  if (!raw) return '';
-  const paragraphs = raw.split(/\n\n+/).map(p => p.trim()).filter(Boolean);
-  const pHtml = paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('\n        ');
-  return `\n      <div class="company-page__section">
-        <h2>Synopsis</h2>
-        ${pHtml}
-      </div>`;
-}
 
 function buildMetaBadges(c) {
   const badges = [];
@@ -361,13 +321,6 @@ function generateEntityPage(c) {
   const slug = toSlug(c.name);
   const descTrunc = truncate(c.description, 155);
   const cohortOrPool = c.cohortLabel || 'Applicant Pool';
-
-  let synopsisHtml = '';
-  if (c.synopsisSections) {
-    synopsisHtml = renderSynopsisSections(c.synopsisSections);
-  } else if (c.synopsisRaw) {
-    synopsisHtml = renderSynopsisRaw(c.synopsisRaw);
-  }
 
   const descParagraphs = (c.description || '').split(/\n\n+/).map(p => p.trim()).filter(Boolean);
   const descHtml = descParagraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('\n        ');
@@ -436,7 +389,7 @@ function generateEntityPage(c) {
       <div class="company-page__description">
         <h2>Overview</h2>
         ${descHtml}
-      </div>${synopsisHtml}
+      </div>
     </section>
     <nav class="company-page__footer">
       <a href="/builders">&larr; Back to Builders Directory</a>
@@ -774,7 +727,7 @@ Primary domain: https://mergecombinator.com
 - Use https://mergecombinator.com/knowledge/sbir for SBIR and STTR guidance.
 - Use https://mergecombinator.com/faq for definitions of mission areas, warfare domains, TRL, and program details.
 - The Defense Builders Directory at /builders lists ${stats.total} companies (${stats.alumni} alumni, ${stats.applicants} applicants).
-- Individual company pages at /companies/{slug} contain public descriptions, mission areas, and synopsis data.
+- Individual company pages at /companies/{slug} contain catalog-level descriptions and classification data only.
 - Partner references may be category-based and intentionally broad.
 - Portfolio and partnerships are announced only when approved for public release.
 - For contact and engagement, use https://mergecombinator.com/access.

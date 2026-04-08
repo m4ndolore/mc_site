@@ -7,18 +7,18 @@ After logging in via VIA on the Guild SPA (`guild.mergecombinator.com`), navigat
 Authenticated users see their profile at /guild/me and builder listings at /builders/*.
 
 ## Acceptance Criteria
-- [ ] Guild SPA sends access token as `Authorization: Bearer <token>` to api.mergecombinator.com
-- [ ] /guild/me returns 200 with user profile and guild_user_id
-- [ ] /builders/companies returns 200 with paginated company list
-- [ ] /builders/coaches returns 200 with paginated coach list
+- [x] Guild SPA sends access token as `Authorization: Bearer <token>` to api.mergecombinator.com
+- [x] /guild/me returns 200 with user profile and guild_user_id
+- [x] /builders/companies returns 200 with paginated company list
+- [x] /builders/coaches returns 200 with paginated coach list
 
 ## Implementation
-- **Status**: PARTIAL
+- **Status**: COMPLETE
 - **Phase**: 9 (Platform Convergence)
 - **Priority**: HIGH
 - **Effort**: 1.0w
 - **Dependencies**: REQ-PLATFORM-001
-- **Notes**: Guild SPA OIDC PKCE integration complete. oidc-client-ts configured for VIA, apiFetch() wrapper attaches Bearer tokens and unwraps envelopes, response shape adapters bridge CompanyDto/CoachDto → legacy UI shapes. All 4 page components (Builders, BuilderDetail, Champions, ChampionDetail) wired to api.mergecombinator.com. Build passes clean. Awaiting: VIA redirect URI config + deploy + E2E smoke test.
+- **Notes**: 2026-04-07 live verification complete. VIA redirect URI registered, Guild SPA deployed, and authenticated users access profile and builder listings.
 
 ## Sitrep - 2026-02-27
 

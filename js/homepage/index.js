@@ -1,10 +1,5 @@
 // js/homepage/index.js
-// Homepage - loads stats from live API
-
-/**
- * API base URL
- */
-const API_BASE = 'https://api.sigmablox.com';
+// Homepage - loads stats from catalog-only company data
 
 /**
  * DOM selectors for stat elements
@@ -55,32 +50,15 @@ async function loadSeededData() {
 }
 
 /**
- * Fetch company stats - prioritizes seeded data on localhost, tries live API in production
+ * Fetch company stats from catalog-only static company data.
  * @returns {Promise<Object|null>}
  */
 async function fetchCompanyStats() {
-    // On localhost, prioritize seeded data to avoid CORS errors
-    if (isLocalhost()) {
-        return await loadSeededData();
+    const data = await loadSeededData();
+    if (!data) {
+        console.warn('[Homepage] No seeded data available', isLocalhost() ? 'on localhost' : 'in production');
     }
-
-    // In production, try live API first, fall back to seeded data
-    try {
-        const response = await fetch(`${API_BASE}/api/public/companies?limit=100`);
-        if (!response.ok) {
-            throw new Error(`API returned ${response.status}`);
-        }
-
-        const data = await response.json();
-        if (data.companies && data.companies.length > 0) {
-            return data;
-        }
-        // API returned empty, try seeded data
-        throw new Error('API returned empty data');
-    } catch (error) {
-        console.warn('[Homepage] Live API failed:', error.message, '- trying seeded data');
-        return await loadSeededData();
-    }
+    return data;
 }
 
 /**
@@ -139,11 +117,11 @@ function updateStatElements(stats) {
  * Initialize homepage stats
  */
 async function init() {
-    // Fetch stats from live API
+    // Fetch stats from the catalog-only static payload.
     const data = await fetchCompanyStats();
 
     if (data) {
-        // Calculate and update stats from API data
+        // Calculate and update stats from company data.
         const stats = calculateStats(data);
         updateStatElements(stats);
     } else {

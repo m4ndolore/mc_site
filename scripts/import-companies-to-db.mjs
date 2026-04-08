@@ -66,7 +66,9 @@ function assignCTAs(company) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 async function main() {
-  const jsonPath = resolve(__dirname, '../public/data/companies.json');
+  const jsonPath = process.env.COMPANIES_JSON_PATH
+    ? resolve(process.cwd(), process.env.COMPANIES_JSON_PATH)
+    : resolve(__dirname, '../.private/data/companies.json');
   const { companies } = JSON.parse(readFileSync(jsonPath, 'utf8'));
   console.log(`Loaded ${companies.length} companies from JSON`);
 

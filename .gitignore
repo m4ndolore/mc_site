@@ -43,6 +43,8 @@ plugin.zip
 .playwright-mcp.wrangler/
 .playwright-mcp/
 .worktrees/
+.private/
+assets/data/
 **/*.tsbuildinfo
 
 # Visual artifacts — see docs/VISUAL_ARTIFACT_POLICY.md

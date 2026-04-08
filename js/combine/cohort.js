@@ -1,9 +1,7 @@
 // js/combine/cohort.js
-// Combine cohort directory — displays companies from API with category filtering
+// Combine cohort directory — displays catalog-only company data with category filtering
 
 import { outboundUrl, toCompanySlug } from '../lib/outbound.js';
-
-const API_BASE = 'https://api.sigmablox.com';
 
 let allCompanies = [];
 let currentFilter = 'all';
@@ -57,33 +55,11 @@ function escapeHtml(str) {
         .replace(/'/g, '&#039;');
 }
 
-/**
- * Extract the problem summary from the description blob.
- * Looks for text after "Problem\n" up to the next section header,
- * or falls back to the first ~200 chars.
- */
 function extractSummary(description) {
     if (!description) return '';
-    // Try to extract just the Problem section
-    const problemMatch = description.match(/Problem\n([\s\S]*?)(?:\n(?:Solution|Field|Technology|Strategic|Go-to-Market|Dual-Use|Team|Competitive|Primary|User-Critical)\b)/i);
-    if (problemMatch) {
-        return problemMatch[1].trim().replace(/\n/g, ' ');
-    }
-    // Fallback: first sentence or 200 chars
     const firstLine = description.split('\n')[0].trim();
     if (firstLine.length > 10) return firstLine;
     return description.substring(0, 200).replace(/\n/g, ' ').trim();
-}
-
-/**
- * Get a company logo URL. Prefers cfImageId, falls back to logoUrl.
- */
-function getLogoUrl(company) {
-    if (company.cfImageId) {
-        return `https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/${company.cfImageId}/public`;
-    }
-    // Skip logoUrl — Airtable signed URLs expire within hours
-    return null;
 }
 
 function renderCard(company) {
@@ -196,26 +172,10 @@ async function loadSeededData() {
 }
 
 async function loadCompanies() {
-    if (isLocalhost()) {
-        const seededData = await loadSeededData();
-        if (seededData) return seededData;
-        console.warn('[Cohort] No seeded data available on localhost');
-        return [];
-    }
-
-    try {
-        const response = await fetch(`${API_BASE}/api/public/companies?limit=100`);
-        if (!response.ok) throw new Error(`Failed to load data: ${response.status}`);
-        const data = await response.json();
-        if (data.companies && data.companies.length > 0) return data.companies;
-        throw new Error('API returned empty data');
-    } catch (error) {
-        console.warn('[Cohort] Live API failed:', error.message, '- trying seeded data');
-        const seededData = await loadSeededData();
-        if (seededData) return seededData;
-        console.error('[Cohort] No data available');
-        return [];
-    }
+    const seededData = await loadSeededData();
+    if (seededData) return seededData;
+    console.warn('[Cohort] No seeded data available', isLocalhost() ? 'on localhost' : 'in production');
+    return [];
 }
 
 async function init() {

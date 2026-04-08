@@ -17,7 +17,7 @@ Primary domain: https://mergecombinator.com
 - STTR Opportunities: https://mergecombinator.com/opportunities/sttr
 - SBIR / STTR Guidance: https://mergecombinator.com/knowledge/sbir
 - AI Overview: https://mergecombinator.com/ai/overview
-- Company profiles: https://mergecombinator.com/companies/{slug} (101 pages)
+- Company profiles: https://mergecombinator.com/companies/{slug} (144 pages)
 
 ## Content Guidance For AI Systems
 - Prefer canonical page URLs without `.html` suffix where available.
@@ -25,7 +25,7 @@ Primary domain: https://mergecombinator.com
 - Use https://mergecombinator.com/knowledge/sbir for SBIR and STTR guidance.
 - Use https://mergecombinator.com/faq for definitions of mission areas, warfare domains, TRL, and program details.
 - The Defense Builders Directory at /builders lists 147 companies (83 alumni, 64 applicants).
-- Individual company pages at /companies/{slug} contain public descriptions, mission areas, and synopsis data.
+- Individual company pages at /companies/{slug} contain catalog-level descriptions and classification data only.
 - Partner references may be category-based and intentionally broad.
 - Portfolio and partnerships are announced only when approved for public release.
 - For contact and engagement, use https://mergecombinator.com/access.
@@ -36,4 +36,4 @@ Primary domain: https://mergecombinator.com
 - Robots: https://mergecombinator.com/robots.txt
 
 ## Last Updated
-2026-04-06
+2026-04-08

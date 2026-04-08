@@ -111,44 +111,12 @@ export function renderBuilderModal(company, options = {}) {
         ? `<span class="builder-tag domain">${escapeHtml(company.warfareDomain)}</span>`
         : '';
 
-    // Structured synopsis sections (matches entity page order)
-    const SYNOPSIS_ORDER = [
-        { key: 'problem', label: 'Problem' },
-        { key: 'solution', label: 'Solution' },
-        { key: 'fieldValidation', label: 'Field Validation' },
-        { key: 'technologyMaturity', label: 'Technology Maturity' },
-        { key: 'strategicAdvantage', label: 'Strategic Advantage' },
-        { key: 'goToMarketAccess', label: 'Go-to-Market Access' },
-        { key: 'dualUsePotential', label: 'Dual-Use Potential' },
-        { key: 'team', label: 'Team' },
-        { key: 'competitiveLandscape', label: 'Competitive Landscape' },
-        { key: 'primaryUser', label: 'Primary User' },
-        { key: 'userCriticalProblem', label: 'User-Critical Problem' },
-    ];
-
-    // Build content section — structured synopsis or plain description fallback
-    let contentSection = '';
-    const sections = company.synopsisSections;
-
-    if (sections && typeof sections === 'object') {
-        contentSection = SYNOPSIS_ORDER
-            .filter(({ key }) => sections[key])
-            .map(({ key, label }) => `
-                <div class="modal-synopsis-entry">
-                    <h4 class="modal-section-title">${escapeHtml(label)}</h4>
-                    <p>${escapeHtml(sections[key])}</p>
-                </div>
-            `).join('');
-    }
-
-    if (!contentSection) {
-        contentSection = `
-            <div class="modal-section">
-                <h4 class="modal-section-title">About</h4>
-                <p>${escapeHtml(company.description || company.tagline)}</p>
-            </div>
-        `;
-    }
+    const contentSection = `
+        <div class="modal-section">
+            <h4 class="modal-section-title">About</h4>
+            <p>${escapeHtml(company.description || company.tagline)}</p>
+        </div>
+    `;
 
     // Classification tags — mission areas and warfare domains inline
     const classificationTags = [missionTags, domainTag].filter(Boolean).join('');

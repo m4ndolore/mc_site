@@ -250,12 +250,11 @@ async function loadSeededData() {
 }
 
 /**
- * Fetch companies from public API
+ * Fetch companies from catalog-only static data
  * Priority:
  *   - Localhost: 1) Seeded data, 2) Mock data fallback (no live API)
- *   - Production: 1) Live API, 2) Seeded data fallback
+ *   - Production: 1) Seeded data
  *
- * API spec: https://api.sigmablox.com/api/public/companies
  * Returns: { companies: [], total: number, limit: number, offset: number }
  *
  * @param {Object} options - Query options
@@ -284,53 +283,12 @@ export async function fetchCompanies(options = {}) {
         return MOCK_DATA;
     }
 
-    // Production: prefer seeded data (enriched at build time with all companies)
-    // Only fall back to live API if seeded data is unavailable
+    // Production: prefer the catalog-only static payload. Public pages must not
+    // fetch the live company list because it can include role-gated fields.
     const seeded = await loadSeededData();
     if (seeded) return seeded;
 
-    // Seeded data unavailable — try live API
-    const apiBase = getApiBase();
-    const params = new URLSearchParams();
-
-    if (options.missionArea) params.set('missionArea', options.missionArea);
-    if (options.warfareDomain) params.set('warfareDomain', options.warfareDomain);
-    if (options.fundingStage) params.set('fundingStage', options.fundingStage);
-    if (options.limit) params.set('limit', options.limit.toString());
-    if (options.offset) params.set('offset', options.offset.toString());
-
-    const queryString = params.toString();
-    const url = `${apiBase}/api/public/companies${queryString ? '?' + queryString : ''}`;
-
-    try {
-        const response = await fetchWithRetry(url, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch companies: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.error) {
-            throw new Error(`API error: ${data.error}`);
-        }
-
-        if (!data.companies || data.companies.length === 0) {
-            throw new Error('API returned empty data');
-        }
-
-        return data;
-    } catch (error) {
-        console.warn('[Builders] API failed:', error.message);
-
-        // No seeded data, throw original error
-        throw error;
-    }
+    throw new Error('Seeded public company data is unavailable');
 }
 
 /**
@@ -386,20 +344,13 @@ export async function fetchCompanyById(id) {
         return company;
     }
 
-    const apiBase = getApiBase();
-
-    const response = await fetchWithRetry(`${apiBase}/api/public/companies/${encodeURIComponent(id)}`, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json'
-        }
-    });
-
-    if (!response.ok) {
-        throw new Error(`Failed to fetch company: ${response.status}`);
+    const seeded = await loadSeededData();
+    const company = seeded?.companies?.find(c => c.id === id || c.airtableId === id);
+    if (!company) {
+        throw new Error('Company not found in seeded public data');
     }
 
-    return response.json();
+    return company;
 }
 
 /**
@@ -438,27 +389,7 @@ export async function fetchPrivateApi(endpoint, options = {}) {
     return response.json();
 }
 
-/**
- * Build logo URL from stored logo or fall back to logoUrl
- * storedLogoId indicates a permanent logo exists; served via /api/logo/:companyId
- * The logo endpoint uses legacyAirtableId or id, not the storedLogoId itself
- * @param {Object} company - Raw company from API
- * @returns {string|null} - Logo URL or null
- */
-function getLogoUrl(company) {
-    // 1. Prefer Cloudflare Images (permanent, fast CDN)
-    if (company.cfImageId) {
-        return `https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/${company.cfImageId}/public`;
-    }
-    // 2. Stored logo via API endpoint
-    if (company.storedLogoId) {
-        const apiBase = getApiBase();
-        const companyId = company.legacyAirtableId || company.id || company.airtableId;
-        if (companyId) {
-            return `${apiBase}/api/logo/${companyId}`;
-        }
-    }
-    // 3. Skip logoUrl — Airtable signed URLs expire within hours
+function getLogoUrl() {
     return null;
 }
 
@@ -466,95 +397,12 @@ function getLogoUrl(company) {
  * Normalize company data from API to internal format
  * Handles both API format (id, name) and legacy format (airtableId, companyName)
  *
- * API spec fields: id, name, productName, website, logoUrl, location,
+ * API spec fields: id, name, productName, website, location,
  * missionArea, warfareDomain, description, trlLevel, fundingStage, teamSize
  *
  * @param {Object} company - Raw company from API
  * @returns {Object} - Normalized company object
  */
-/**
- * Map of known section header variants → canonical synopsis field keys.
- * Covers both "Title\ntext" and "Title: text" patterns found in company data.
- */
-const SYNOPSIS_LABEL_MAP = {
-    'problem':                  'problem',
-    'core issue':               'problem',
-    'solution':                 'solution',
-    'the result':               'solution',
-    'field validation':         'fieldValidation',
-    'validation':               'fieldValidation',
-    'status':                   'fieldValidation',
-    'anticipated traction':     'fieldValidation',
-    'technology maturity':      'technologyMaturity',
-    'technology maturity (trl)':'technologyMaturity',
-    'maturity':                 'technologyMaturity',
-    'strategic advantage':      'strategicAdvantage',
-    'advantage':                'strategicAdvantage',
-    'strategic edge':           'strategicAdvantage',
-    'go-to-market access':      'goToMarketAccess',
-    'go-to-market':             'goToMarketAccess',
-    'g2m':                      'goToMarketAccess',
-    'gtm':                      'goToMarketAccess',
-    'market':                   'goToMarketAccess',
-    'dual-use potential':       'dualUsePotential',
-    'dual-use':                 'dualUsePotential',
-    'dual use':                 'dualUsePotential',
-    'industries':               'dualUsePotential',
-    'team':                     'team',
-    'competitive landscape':    'competitiveLandscape',
-    'competition':              'competitiveLandscape',
-    'competitors':              'competitiveLandscape',
-    'primary user':             'primaryUser',
-    'primary users':            'primaryUser',
-    'user':                     'primaryUser',
-    'users':                    'primaryUser',
-    'user-critical problem':    'userCriticalProblem',
-    "user's critical problem":  'userCriticalProblem',
-    'user and problem':         'userCriticalProblem',
-};
-
-/**
- * Parse unstructured synopsis text into structured sections.
- * Handles two formats:
- *   1. "Label\nBody text" (newline-separated, used in description field)
- *   2. "Label: Body text"  (colon-separated, used in synopsisRaw field)
- * @param {string} text - Raw synopsis text
- * @returns {Object|null} - Parsed sections keyed by canonical field names, or null if unparseable
- */
-function parseSynopsisText(text) {
-    if (!text || text.length < 50) return null;
-
-    // Build a regex that matches any known label at a paragraph boundary
-    // We sort labels longest-first so "Go-to-Market Access" matches before "Market"
-    const labels = Object.keys(SYNOPSIS_LABEL_MAP).sort((a, b) => b.length - a.length);
-    const escaped = labels.map(l => l.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-    // Match "Label: text", "Label\ntext", or "Label Text" (space before uppercase)
-    const labelPattern = new RegExp(
-        `(?:^|\\n\\n?)\\s*(${escaped.join('|')})\\s*(?::\\s*|\\n|\\s+(?=[A-Z0-9]))`,
-        'gi'
-    );
-
-    const matches = [...text.matchAll(labelPattern)];
-    if (matches.length < 2) return null; // Need at least 2 sections to consider it structured
-
-    const sections = {};
-    for (let i = 0; i < matches.length; i++) {
-        const match = matches[i];
-        const label = match[1].toLowerCase().trim();
-        const key = SYNOPSIS_LABEL_MAP[label];
-        if (!key) continue;
-
-        const bodyStart = match.index + match[0].length;
-        const bodyEnd = i + 1 < matches.length ? matches[i + 1].index : text.length;
-        const body = text.slice(bodyStart, bodyEnd).trim();
-        if (body && !sections[key]) {
-            sections[key] = body;
-        }
-    }
-
-    return Object.keys(sections).length >= 2 ? sections : null;
-}
-
 export function normalizeCompany(company) {
     // Handle both API format (id, name) and legacy format (airtableId, companyName)
     const companyId = company.id || company.airtableId || company._id;
@@ -613,10 +461,6 @@ export function normalizeCompany(company) {
         upvoteCount: company.upvoteCount || 0,
         founders: company.founders || '',
         location: company.location || '',
-        synopsisSections: company.synopsisSections
-            || parseSynopsisText(company.synopsisRaw)
-            || parseSynopsisText(company.description || company.problemStatement)
-            || null,
         pipelineStage: company.pipelineStage || '',
         createdAt,
         updatedAt

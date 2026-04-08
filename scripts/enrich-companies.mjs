@@ -9,12 +9,16 @@
  * Run: node scripts/enrich-companies.mjs [--dry-run]
  */
 
-import { readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { sanitizeCompaniesPayloadForPublic } from './company-data-privacy.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DATA_PATH = join(__dirname, '..', 'public', 'data', 'companies.json');
+const PRIVATE_DATA_DIR = join(__dirname, '..', '.private', 'data');
+const PRIVATE_DATA_PATH = join(PRIVATE_DATA_DIR, 'companies.json');
+const PRIVATE_SEED_PATH = join(PRIVATE_DATA_DIR, 'companies.seed.json');
 const COHORT_CSV = join(__dirname, '..', 'assets', 'data', 'Cohort 25-1-Cohort 25-1.csv');
 const PROD_CSV = join(__dirname, '..', 'assets', 'data', 'Prod List-Grid view.csv');
 
@@ -124,13 +128,23 @@ function normalizeUrl(url) {
 }
 
 // ── Load data ───────────────────────────────────────────────────────
-const raw = JSON.parse(readFileSync(DATA_PATH, 'utf-8'));
-const cohortRecords = csvToObjects(readFileSync(COHORT_CSV, 'utf-8'));
-const prodRecords = csvToObjects(readFileSync(PROD_CSV, 'utf-8'));
+const hasCsvSources = existsSync(COHORT_CSV) && existsSync(PROD_CSV);
+const SOURCE_DATA_PATH = hasCsvSources && existsSync(PRIVATE_SEED_PATH)
+  ? PRIVATE_SEED_PATH
+  : existsSync(PRIVATE_DATA_PATH)
+    ? PRIVATE_DATA_PATH
+    : DATA_PATH;
+const raw = JSON.parse(readFileSync(SOURCE_DATA_PATH, 'utf-8'));
+const cohortRecords = hasCsvSources ? csvToObjects(readFileSync(COHORT_CSV, 'utf-8')) : [];
+const prodRecords = hasCsvSources ? csvToObjects(readFileSync(PROD_CSV, 'utf-8')) : [];
 
-console.log(`[enrich] Loaded ${raw.companies.length} PG companies`);
-console.log(`[enrich] Loaded ${cohortRecords.length} Cohort CSV records`);
-console.log(`[enrich] Loaded ${prodRecords.length} Prod List CSV records`);
+console.log(`[enrich] Loaded ${raw.companies.length} PG companies from ${SOURCE_DATA_PATH}`);
+if (hasCsvSources) {
+  console.log(`[enrich] Loaded ${cohortRecords.length} Cohort CSV records`);
+  console.log(`[enrich] Loaded ${prodRecords.length} Prod List CSV records`);
+} else {
+  console.log('[enrich] Local CSV sources absent; using existing private/API company data without CSV enrichment.');
+}
 console.log();
 
 // ── Build lookups ───────────────────────────────────────────────────
@@ -373,7 +387,7 @@ if (dryRun) {
     console.log(JSON.stringify(sample, null, 2).slice(0, 2000));
   }
 } else {
-  const output = {
+  const privateOutput = {
     ...raw,
     pagination: { ...raw.pagination, total: raw.companies.length },
     metadata: {
@@ -382,6 +396,13 @@ if (dryRun) {
       enrichmentSources: ['Cohort 25-1-Cohort 25-1.csv', 'Prod List-Grid view.csv'],
     },
   };
-  writeFileSync(DATA_PATH, JSON.stringify(output, null, 2));
-  console.log(`\n[enrich] Written ${raw.companies.length} companies to ${DATA_PATH}`);
+  if (!existsSync(PRIVATE_DATA_DIR)) {
+    mkdirSync(PRIVATE_DATA_DIR, { recursive: true });
+  }
+  writeFileSync(PRIVATE_DATA_PATH, JSON.stringify(privateOutput, null, 2));
+
+  const publicOutput = sanitizeCompaniesPayloadForPublic(privateOutput);
+  writeFileSync(DATA_PATH, JSON.stringify(publicOutput, null, 2));
+  console.log(`\n[enrich] Written private artifact to ${PRIVATE_DATA_PATH}`);
+  console.log(`[enrich] Written catalog-only public artifact to ${DATA_PATH}`);
 }
