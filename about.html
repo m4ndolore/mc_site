@@ -736,8 +736,8 @@
       var dots = dotsEl.querySelectorAll('.team-carousel__dot');
 
       function getOffset(trackIdx) {
-        var vpWidth = track.parentElement.offsetWidth;
-        return trackIdx * (vpWidth + gap);
+        var slideWidth = allSlides[0].offsetWidth;
+        return trackIdx * (slideWidth + gap);
       }
 
       function setPosition(trackIdx, animate) {
