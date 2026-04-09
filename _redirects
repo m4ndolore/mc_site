@@ -1,6 +1,7 @@
 # Cloudflare Pages redirects
 # Note: CF Pages automatically serves .html files without extension
 # Only add redirects for non-standard routing here
+/join /access?context=combine 301
 /marketplace /access 301
 /guild /access 301
 /guild/ /access 301

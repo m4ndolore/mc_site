@@ -50,6 +50,7 @@ const SUBDOMAIN_PLACEHOLDER_REDIRECTS = new Map([
 const LEGACY_PATH_REDIRECTS = new Map([
   ["/sbir", "/knowledge/sbir"],
   ["/contact", "/access"],
+  ["/join", "/access?context=combine"],
   ["/combine", "/programs/the-combine"],
 ]);
 
