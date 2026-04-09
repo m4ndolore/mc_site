@@ -31,7 +31,7 @@ The Combine is Merge Combinator's flagship program for in-person operator valida
 - Companies span 12+ mission areas and 6+ warfare domains
 
 ### Defense Builders Directory
-Open-access directory of 140+ defense technology companies evaluated by Merge Combinator. Includes alumni who completed The Combine's in-person validation and applicants under review. Browsable at https://mergecombinator.com/builders
+Open-access directory of 147 defense technology companies evaluated by Merge Combinator. Includes alumni who completed The Combine's in-person validation and applicants under review. Browsable at https://mergecombinator.com/builders
 
 ### Knowledge Base
 Curated resources for defense tech founders covering:
@@ -42,7 +42,7 @@ Curated resources for defense tech founders covering:
 Available at https://mergecombinator.com/knowledge
 
 ### Opportunities
-SBIR/STTR solicitations, events, and defense market intelligence for national security builders. Available at https://mergecombinator.com/opportunities
+Aggregated defense and national security opportunities from SBIR, STTR, DARPA, DIU, SAM.gov, GoColosseum, and Ratio Exchange. Includes open solicitations, challenge problems, and CSOs from defense innovation hubs (DEFENSEWERX, SOFWERX, ERDCWERX, Tradewind, Doolittle Institute). Updated hourly. Available at https://mergecombinator.com/opportunities
 
 ## How a Defense Venture Studio Works
 
@@ -68,6 +68,15 @@ SBIR/STTR solicitations, events, and defense market intelligence for national se
 | Problem source | Operator-validated gaps | Founder-identified | Founder-identified |
 | Involvement | Active, ongoing | Time-limited (3-6 months) | Board seat, periodic |
 | Equity | Co-founder equity at formation | Small stake (5-10%) | Priced round, negotiated |
+
+## Machine-Readable Data
+
+Structured data files are available for programmatic access:
+- Company directory (public): https://mergecombinator.com/data/companies-public.json
+- Knowledge resources: https://mergecombinator.com/data/knowledge.json
+- Defense events calendar: https://mergecombinator.com/data/outlook.json
+
+Company data includes name, product, mission area, warfare domain, TRL level, funding stage, team size, and public description. Contact information, financials, scores, and badges are excluded.
 
 ## Canonical Pages
 
@@ -119,4 +128,4 @@ SBIR/STTR solicitations, events, and defense market intelligence for national se
 - AI Overview: https://mergecombinator.com/ai/overview
 
 ## Last Updated
-2026-03-29
+2026-04-08
