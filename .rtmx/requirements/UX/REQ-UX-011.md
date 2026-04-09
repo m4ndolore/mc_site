@@ -1,7 +1,7 @@
 # REQ-UX-011: Access Page Redesign
 
 ## Metadata
-- **Status**: PARTIAL
+- **Status**: COMPLETE
 - **Priority**: HIGH
 - **Phase**: 7
 - **Effort**: 1.5 weeks
@@ -16,12 +16,12 @@ Redesign /access as first-class entry point replacing SigmaBlox join flow, with 
 - [x] Split-panel layout with hero and form
 - [x] Dark/light theme support
 - [x] Mobile responsive
-- [ ] Replace SigmaBlox /join redirect
-- [ ] Verify end-to-end auth flow
-- [ ] Context-aware routing (?context=combine etc)
+- [x] Replace SigmaBlox /join redirect
+- [x] Verify end-to-end auth flow
+- [x] Context-aware routing (?context=combine etc)
 
 ## Implementation
 Split-panel layout shipped: left hero with Pentagon bg + features, right panel with request access form (Builders/The Combine/Guild chips) + compact sign-in (email + Google/CAC SSO).
 
 ## Remaining
-Replace SigmaBlox /join redirect, verify end-to-end auth flow, context-aware routing.
+None. Shipped and reflected as COMPLETE in RTMX database.

@@ -1,9 +1,9 @@
 /**
  * Privacy helpers for company data artifacts.
  *
- * The public site can only ship catalog-level fields. Evaluation details,
- * application summaries, internal IDs, rankings, scores, notes, and direct
- * contact/resource fields must stay out of public/data/companies.json.
+ * Public company profiles should keep rich narrative and technical metadata
+ * while withholding direct contact details, fundraising/financial fields, and
+ * evaluation outcomes such as scores, rankings, and badges.
  */
 
 const PUBLIC_COMPANY_FIELDS = [
@@ -17,7 +17,6 @@ const PUBLIC_COMPANY_FIELDS = [
   'warfareDomain',
   'trlLevel',
   'technicalMaturity',
-  'fundingStage',
   'teamSize',
   'productType',
   'technologyArea',
@@ -26,6 +25,10 @@ const PUBLIC_COMPANY_FIELDS = [
   'cohortLabel',
   'tulsaAttended',
   'pipelineStage',
+  'description',
+  'problemStatement',
+  'synopsisRaw',
+  'synopsisSections',
 ];
 
 export const RESTRICTED_COMPANY_FIELDS = [
@@ -33,10 +36,7 @@ export const RESTRICTED_COMPANY_FIELDS = [
   'legacyAirtableId',
   'logoUrl',
   'storedLogoId',
-  'description',
-  'problemStatement',
-  'synopsisRaw',
-  'synopsisSections',
+  'fundingStage',
   'competitionScores',
   'podRanking',
   'combineStandout',
@@ -53,11 +53,17 @@ export const RESTRICTED_COMPANY_FIELDS = [
   'pitchLink',
 ];
 
-function compact(parts) {
-  return parts.filter(Boolean).join(' ');
+const NARRATIVE_KEYS = [
+  'description',
+  'problemStatement',
+  'synopsisRaw',
+];
+
+function hasMeaningfulText(value) {
+  return typeof value === 'string' && value.trim().length >= 40;
 }
 
-export function buildPublicDescription(company) {
+function buildPublicFallbackDescription(company) {
   const name = company.name || company.companyName || 'This company';
   const product = company.productName ? `${company.productName}` : null;
   const mission = company.missionArea ? `${company.missionArea}` : 'national security';
@@ -67,16 +73,62 @@ export function buildPublicDescription(company) {
     : company.productType
       ? `${company.productType}`.toLowerCase()
       : 'technology';
-
   const lead = product
     ? `${name} builds ${product}, a ${productType} capability for ${mission} missions.`
     : `${name} builds ${productType} capabilities for ${mission} missions.`;
 
-  return compact([
-    lead,
-    domain ? `Its work is relevant to the ${domain} domain.` : null,
-    'Detailed evaluation notes, rankings, competition scores, and application materials require authorized access.',
-  ]);
+  if (domain) {
+    return `${lead} Its work is relevant to the ${domain} domain.`;
+  }
+
+  return lead;
+}
+
+function getPublicDescription(company) {
+  for (const key of NARRATIVE_KEYS) {
+    if (hasMeaningfulText(company[key])) {
+      return company[key].trim();
+    }
+  }
+
+  const sections = company.synopsisSections;
+  if (sections && typeof sections === 'object') {
+    const firstSection = Object.values(sections).find(hasMeaningfulText);
+    if (firstSection) {
+      return firstSection.trim();
+    }
+  }
+
+  return buildPublicFallbackDescription(company);
+}
+
+function getPublicProblemStatement(company) {
+  if (hasMeaningfulText(company.problemStatement)) {
+    return company.problemStatement.trim();
+  }
+
+  const sections = company.synopsisSections;
+  if (sections && typeof sections === 'object' && hasMeaningfulText(sections.problem)) {
+    return sections.problem.trim();
+  }
+
+  return null;
+}
+
+function isPublicCompany(company) {
+  return company.pipelineStage === 'alumni' || company.tulsaAttended === 'Attended';
+}
+
+function sanitizeFilters(filters) {
+  if (!filters || typeof filters !== 'object') {
+    return null;
+  }
+
+  return {
+    missionAreas: Array.isArray(filters.missionAreas) ? filters.missionAreas : [],
+    warfareDomains: Array.isArray(filters.warfareDomains) ? filters.warfareDomains : [],
+    cohorts: Array.isArray(filters.cohorts) ? filters.cohorts : [],
+  };
 }
 
 export function sanitizeCompanyForPublic(company) {
@@ -88,14 +140,19 @@ export function sanitizeCompanyForPublic(company) {
     }
   }
 
-  publicCompany.description = buildPublicDescription(company);
+  publicCompany.description = getPublicDescription(company);
+
+  const problemStatement = getPublicProblemStatement(company);
+  if (problemStatement) {
+    publicCompany.problemStatement = problemStatement;
+  }
 
   return publicCompany;
 }
 
 export function sanitizeCompaniesPayloadForPublic(payload) {
   const companies = Array.isArray(payload.companies)
-    ? payload.companies.map(sanitizeCompanyForPublic)
+    ? payload.companies.filter(isPublicCompany).map(sanitizeCompanyForPublic)
     : [];
 
   return {
@@ -104,12 +161,13 @@ export function sanitizeCompaniesPayloadForPublic(payload) {
       ...(payload.pagination || {}),
       total: companies.length,
     },
-    filters: payload.filters || null,
+    filters: sanitizeFilters(payload.filters),
     metadata: {
       ...(payload.metadata || {}),
       publicSanitizedAt: new Date().toISOString(),
-      publicPrivacyModel: 'catalog-only',
+      publicPrivacyModel: 'rich-public-profile',
       restrictedFieldCount: RESTRICTED_COMPANY_FIELDS.length,
+      publicAudience: 'cohort-competitors',
     },
   };
 }

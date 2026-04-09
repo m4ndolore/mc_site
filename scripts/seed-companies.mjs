@@ -332,8 +332,9 @@ async function seed() {
     writeFileSync(PRIVATE_SEED_PATH, JSON.stringify(outputData, null, 2));
     console.log('[seed] Written private seed artifact to:', PRIVATE_SEED_PATH);
 
-    // Write a catalog-only public artifact. Rich/private company data must be
-    // served from an authenticated API, not from public/data.
+    // Write the curated public artifact. Rich narrative metadata remains public
+    // for cohort competitors, while restricted outcomes/contact fields stay out
+    // of public/data.
     const publicOutputData = sanitizeCompaniesPayloadForPublic(outputData);
     writeFileSync(OUTPUT_PATH, JSON.stringify(publicOutputData, null, 2));
     console.log('[seed] Written to:', OUTPUT_PATH);

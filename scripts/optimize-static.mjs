@@ -2,7 +2,7 @@
 /**
  * optimize-static.mjs — SEO & AI visibility build step.
  *
- * Reads catalog-only public companies.json and:
+ * Reads rich-but-restricted public companies.json and:
  *  1. Computes aggregate stats
  *  2. Injects stats + cards into builders.html
  *  3. Injects stats + grounding into dashboard.html
@@ -60,6 +60,51 @@ function truncate(str, max) {
   return s.slice(0, max - 3).replace(/\s+\S*$/, '') + '...';
 }
 
+const SYNOPSIS_SECTION_LABELS = {
+  problem: 'Problem',
+  solution: 'Solution',
+  fieldValidation: 'Field Validation',
+  technologyMaturity: 'Technology Maturity',
+  strategicAdvantage: 'Strategic Advantage',
+  goToMarketAccess: 'Go-To-Market Access',
+  dualUsePotential: 'Dual-Use Potential',
+  team: 'Team',
+  competitiveLandscape: 'Competitive Landscape',
+  primaryUser: 'Primary User',
+  userCriticalProblem: 'User-Critical Problem',
+};
+
+function renderTextParagraphs(text) {
+  if (!text) return '';
+  return String(text)
+    .split(/\n\n+/)
+    .map(paragraph => paragraph.trim())
+    .filter(Boolean)
+    .map(paragraph => `<p>${escapeHtml(paragraph)}</p>`)
+    .join('\n        ');
+}
+
+function renderSynopsisSectionsHtml(company) {
+  if (!company.synopsisSections || typeof company.synopsisSections !== 'object') {
+    return '';
+  }
+
+  const sections = Object.entries(company.synopsisSections)
+    .filter(([, value]) => typeof value === 'string' && value.trim());
+
+  if (sections.length === 0) {
+    return '';
+  }
+
+  const sectionHtml = sections.map(([key, value]) => `
+      <section class="company-page__section">
+        <h2>${escapeHtml(SYNOPSIS_SECTION_LABELS[key] || key)}</h2>
+        ${renderTextParagraphs(value)}
+      </section>`).join('\n');
+
+  return sectionHtml;
+}
+
 function toSlug(name) {
   return name
     .replace(/,?\s*(Inc\.?|LLC\.?|Corporation|Corp\.?|Technologies|Technology)\s*/gi, '')
@@ -97,7 +142,7 @@ function getRecentCount(companies) {
 
 // ── Load Data ────────────────────────────────────────────────────────
 
-console.log('[optimize] Loading enriched companies.json...');
+console.log('[optimize] Loading public companies.json...');
 const raw = JSON.parse(readFileSync(DATA_PATH, 'utf-8'));
 const companies = raw.companies;
 
@@ -186,7 +231,7 @@ function injectBuilders(html) {
   // 3. Grounding paragraph — insert before #builders-grid section (idempotent)
   const topMissions = missionAreas.slice(0, 4).join(', ');
   const groundingText = `<div class="builders-grounding" style="padding:0 0 20px;">
-  <p style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary,#a3a3a3);margin:0;">The Defense Builders Directory lists ${stats.total} companies hand-selected to attend Merge Combinator's first Defense Tech Combine. This included our in-person competition, SigmaBlox (Tulsa, OK), where ${stats.alumni} companies competed and learned from Government and Industry SME. Scores, observations, and analytics are used by USG stakeholders as market research and source selection for government contracts. Cohort 25-1 spanned six national Critical Technology Areas: Applied Artificial Intelligence (AAI), Biomanufacturing (BIO), Contested Logistics Technologies (LOG), Quantum and Battlefield Information Dominance (Q-BID), Scaled Directed Energy (SCADE), and Scaled Hypersonics (SHY).</p>
+  <p style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary,#a3a3a3);margin:0;">The Defense Builders Directory highlights ${stats.total} high-signal companies selected from Merge Combinator's in-person Defense Tech Combine cohort. Public profiles retain rich company narrative and technical metadata while withholding direct contact details, fundraising data, scores, badges, and internal evaluation outcomes.</p>
 </div>`;
 
   // Strip any existing grounding blocks before re-injecting
@@ -198,12 +243,14 @@ function injectBuilders(html) {
 
   // 4. Replace skeleton cards with static company cards
   const alumniCards = alumni.map(buildCompanyCard).join('\n');
-  const applicantDivider = `\n<div class="builders-grid__section-divider" style="padding:24px 0 12px;border-top:1px solid rgba(255,255,255,0.06);margin-top:16px;">
+  const applicantDivider = applicants.length > 0
+    ? `\n<div class="builders-grid__section-divider" style="padding:24px 0 12px;border-top:1px solid rgba(255,255,255,0.06);margin-top:16px;">
   <h2 class="builders-grid__section-title" style="font-size:1.25rem;font-weight:700;color:var(--text-primary,#e8e8e8);margin:0;">Applicants</h2>
-</div>`;
-  const applicantCards = applicants.map(buildCompanyCard).join('\n');
+</div>`
+    : '';
+  const applicantCards = applicants.length > 0 ? applicants.map(buildCompanyCard).join('\n') : '';
 
-  const gridContent = alumniCards + applicantDivider + '\n' + applicantCards;
+  const gridContent = alumniCards + applicantDivider + (applicantCards ? '\n' + applicantCards : '');
 
   // Replace the skeleton content inside #builders-grid
   html = html.replace(
@@ -322,8 +369,15 @@ function generateEntityPage(c) {
   const descTrunc = truncate(c.description, 155);
   const cohortOrPool = c.cohortLabel || 'Applicant Pool';
 
-  const descParagraphs = (c.description || '').split(/\n\n+/).map(p => p.trim()).filter(Boolean);
-  const descHtml = descParagraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('\n        ');
+  const overviewSource = c.description || c.problemStatement || c.synopsisRaw || '';
+  const descHtml = renderTextParagraphs(overviewSource);
+  const synopsisHtml = renderSynopsisSectionsHtml(c)
+    || (c.synopsisRaw && c.synopsisRaw !== c.description
+      ? `<section class="company-page__section">
+        <h2>Profile</h2>
+        ${renderTextParagraphs(c.synopsisRaw)}
+      </section>`
+      : '');
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -390,6 +444,7 @@ function generateEntityPage(c) {
         <h2>Overview</h2>
         ${descHtml}
       </div>
+      ${synopsisHtml}
     </section>
     <nav class="company-page__footer">
       <a href="/builders">&larr; Back to Builders Directory</a>
@@ -473,8 +528,8 @@ function generateFaqPage() {
       a: `The Combine is Merge Combinator's flagship evaluation program where defense technology companies undergo in-person operator validation. Cohort 25-1 took place in Tulsa, Oklahoma, with ${stats.alumni} alumni companies completing the program. Companies pitch to operators, receive real-time feedback, and are evaluated across multiple days of structured assessment.`,
     },
     {
-      q: 'What is the difference between Alumni and Applicants?',
-      a: `Alumni are companies that completed The Combine's in-person operator validation process. There are currently ${stats.alumni} alumni from Cohort 25-1. Applicants are companies under review for future cohorts — currently ${stats.applicants} applicants in the pipeline. Both groups are listed in the Defense Builders Directory.`,
+      q: 'Why does the public directory focus on alumni only?',
+      a: `The public Defense Builders Directory currently highlights ${stats.alumni} alumni companies from Cohort 25-1. Merge Combinator keeps lower-signal and in-process applicant records out of the public set while preserving richer profile detail for companies that completed in-person cohort evaluation.`,
     },
     {
       q: 'What are Mission Areas?',
@@ -494,7 +549,7 @@ function generateFaqPage() {
     },
     {
       q: 'How is company data collected and updated?',
-      a: 'Company data originates from applications submitted through Merge Combinator\'s builder intake pipeline. Alumni data is enriched with evaluation results from The Combine program. The dataset is updated during each cohort cycle and when new applicants submit. All public-facing data has been reviewed — competition scores, rankings, and internal notes are not displayed.',
+      a: 'Company data originates from applications submitted through Merge Combinator\'s builder intake pipeline. Alumni data is enriched with richer narrative and technical metadata from The Combine program. The public dataset is curated to keep only the strongest cohort competitors while withholding direct contact information, fundraising data, scores, badges, and internal evaluation outcomes.',
     },
     {
       q: 'How do I apply to The Combine?',
@@ -722,7 +777,7 @@ Primary domain: https://mergecombinator.com
 - Company profiles: https://mergecombinator.com/companies/{slug} (${slugs.length} pages)
 
 ## Machine-Readable Data
-- Company directory (public): https://mergecombinator.com/data/companies-public.json (${stats.total} companies, classification data only)
+- Company directory (public): https://mergecombinator.com/data/companies-public.json (${stats.total} cohort competitors, rich profile metadata with restricted outcomes/contact fields withheld)
 - Knowledge resources: https://mergecombinator.com/data/knowledge.json (curated defense acquisition, compliance, SBIR/STTR, and go-to-market resources)
 - Defense events: https://mergecombinator.com/data/outlook.json (upcoming defense industry events)
 
@@ -732,7 +787,7 @@ Primary domain: https://mergecombinator.com
 - Use https://mergecombinator.com/knowledge/sbir for SBIR and STTR guidance.
 - Use https://mergecombinator.com/faq for definitions of mission areas, warfare domains, TRL, and program details.
 - The Defense Builders Directory at /builders lists ${stats.total} companies (${stats.alumni} alumni, ${stats.applicants} applicants).
-- Individual company pages at /companies/{slug} contain catalog-level descriptions and classification data only.
+- Individual company pages at /companies/{slug} contain rich public company profiles while withholding direct contact details, fundraising data, and evaluation outcomes.
 - The Opportunities section aggregates live SBIR, STTR, DARPA, DIU, SAM.gov, and Ratio Exchange solicitations for defense tech founders.
 - Partner references may be category-based and intentionally broad.
 - Portfolio and partnerships are announced only when approved for public release.
@@ -752,21 +807,28 @@ ${BUILD_DATE}
 
 function generatePublicCompaniesJson(companies) {
   const publicCompanies = companies
-    .filter(c => c.name && (c.description || '').trim().length >= MIN_DESCRIPTION_LENGTH)
+    .filter(c => c.name)
     .map(c => ({
+      id: c.id || null,
       name: c.name,
       productName: c.productName || null,
       website: c.website || null,
+      cfImageId: c.cfImageId || null,
+      location: c.location || null,
       missionArea: c.missionArea || null,
       warfareDomain: c.warfareDomain || null,
       trlLevel: c.trlLevel || null,
       technicalMaturity: c.technicalMaturity || null,
-      fundingStage: c.fundingStage || null,
       teamSize: c.teamSize || null,
       productType: c.productType || null,
       technologyArea: c.technologyArea || null,
       pipelineStage: c.pipelineStage || null,
+      cohort: c.cohort || null,
+      cohortId: c.cohortId || null,
       cohortLabel: c.cohortLabel || null,
+      problemStatement: c.problemStatement || null,
+      synopsisRaw: c.synopsisRaw || null,
+      synopsisSections: c.synopsisSections || null,
       description: c.description || null,
     }));
 
@@ -775,7 +837,7 @@ function generatePublicCompaniesJson(companies) {
       description: "Public directory of defense technology companies evaluated by Merge Combinator. Machine-readable export — see https://mergecombinator.com/builders for the full directory.",
       exported: BUILD_DATE,
       count: publicCompanies.length,
-      fields: "Public classification data only. Contact information, financials, scores, badges, and internal IDs are excluded.",
+      fields: "Rich public company metadata. Contact information, fundraising data, scores, badges, and internal evaluation outcomes are excluded.",
       license: "This data is provided for informational purposes. See https://mergecombinator.com/terms for usage terms."
     },
     companies: publicCompanies
@@ -902,7 +964,7 @@ console.log('[optimize] llms.txt updated');
 
 // 7. Generate public companies export
 console.log('[optimize] Generating public companies export...');
-const publicExportCount = companies.filter(c => c.name && (c.description || '').trim().length >= MIN_DESCRIPTION_LENGTH).length;
+const publicExportCount = companies.filter(c => c.name).length;
 writeFileSync(join(ROOT, 'public', 'data', 'companies-public.json'), generatePublicCompaniesJson(companies));
 console.log(`[optimize] companies-public.json: ${publicExportCount} companies exported`);
 

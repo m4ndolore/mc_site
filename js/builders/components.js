@@ -13,6 +13,64 @@ function normalizeUrl(url) {
     return `https://${trimmed}`;
 }
 
+const SYNOPSIS_SECTION_LABELS = {
+    problem: 'Problem',
+    solution: 'Solution',
+    fieldValidation: 'Field Validation',
+    technologyMaturity: 'Technology Maturity',
+    strategicAdvantage: 'Strategic Advantage',
+    goToMarketAccess: 'Go-To-Market Access',
+    dualUsePotential: 'Dual-Use Potential',
+    team: 'Team',
+    competitiveLandscape: 'Competitive Landscape',
+    primaryUser: 'Primary User',
+    userCriticalProblem: 'User-Critical Problem'
+};
+
+function renderParagraphs(text) {
+    if (!text) return '';
+    return String(text)
+        .split(/\n\n+/)
+        .map(paragraph => paragraph.trim())
+        .filter(Boolean)
+        .map(paragraph => `<p>${escapeHtml(paragraph)}</p>`)
+        .join('');
+}
+
+function renderProfileSection(company) {
+    if (company.synopsisSections && typeof company.synopsisSections === 'object') {
+        const sections = Object.entries(company.synopsisSections)
+            .filter(([, value]) => typeof value === 'string' && value.trim());
+
+        if (sections.length > 0) {
+            const content = sections.map(([key, value]) => `
+                <div class="modal-rich-block">
+                    <h5 class="modal-rich-block__title">${escapeHtml(SYNOPSIS_SECTION_LABELS[key] || key)}</h5>
+                    ${renderParagraphs(value)}
+                </div>
+            `).join('');
+
+            return `
+                <div class="modal-section">
+                    <h4 class="modal-section-title">Profile</h4>
+                    <div class="modal-rich-grid">${content}</div>
+                </div>
+            `;
+        }
+    }
+
+    if (company.synopsisRaw) {
+        return `
+            <div class="modal-section">
+                <h4 class="modal-section-title">Profile</h4>
+                ${renderParagraphs(company.synopsisRaw)}
+            </div>
+        `;
+    }
+
+    return '';
+}
+
 /**
  * Render a builder card (YC Launches style with rocket upvote)
  * @param {Object} company - Company data
@@ -114,9 +172,10 @@ export function renderBuilderModal(company, options = {}) {
     const contentSection = `
         <div class="modal-section">
             <h4 class="modal-section-title">About</h4>
-            <p>${escapeHtml(company.description || company.tagline)}</p>
+            ${renderParagraphs(company.description || company.problemStatement || company.tagline)}
         </div>
     `;
+    const profileSection = renderProfileSection(company);
 
     // Classification tags — mission areas and warfare domains inline
     const classificationTags = [missionTags, domainTag].filter(Boolean).join('');
@@ -133,7 +192,6 @@ export function renderBuilderModal(company, options = {}) {
         const maturity = company.technicalMaturity ? ` (${escapeHtml(company.technicalMaturity)})` : '';
         detailItems.push(`<span class="modal-detail-item"><strong>TRL:</strong> ${escapeHtml(company.trlLevel)}${maturity}</span>`);
     }
-    if (company.fundingStage) detailItems.push(`<span class="modal-detail-item"><strong>Stage:</strong> ${escapeHtml(company.fundingStage)}</span>`);
     if (company.teamSize) detailItems.push(`<span class="modal-detail-item"><strong>Team:</strong> ${escapeHtml(company.teamSize)}</span>`);
     if (company.productType) detailItems.push(`<span class="modal-detail-item"><strong>Type:</strong> ${escapeHtml(company.productType)}</span>`);
     if (company.technologyArea) detailItems.push(`<span class="modal-detail-item"><strong>Tech:</strong> ${escapeHtml(company.technologyArea)}</span>`);
@@ -228,7 +286,7 @@ export function renderBuilderModal(company, options = {}) {
             <div class="modal-cta-box">
                 <h4 class="modal-cta-box__title">Restricted Access</h4>
                 <p class="modal-cta-box__text">
-                    Authentication required for pitch materials, team roster, and direct coordination.
+                    Authentication required for pitch materials and direct coordination.
                 </p>
                 <div class="modal-cta-box__actions">
                     <a href="/auth/login?returnTo=${encodeURIComponent(window.location.pathname)}" class="modal-cta-btn modal-cta-btn--primary">
@@ -272,6 +330,7 @@ export function renderBuilderModal(company, options = {}) {
             ${detailsSection}
             ${classificationSection}
             ${contentSection}
+            ${profileSection}
             ${linksSection}
         </div>
         ${ctaBox}

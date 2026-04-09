@@ -404,5 +404,5 @@ if (dryRun) {
   const publicOutput = sanitizeCompaniesPayloadForPublic(privateOutput);
   writeFileSync(DATA_PATH, JSON.stringify(publicOutput, null, 2));
   console.log(`\n[enrich] Written private artifact to ${PRIVATE_DATA_PATH}`);
-  console.log(`[enrich] Written catalog-only public artifact to ${DATA_PATH}`);
+  console.log(`[enrich] Written curated public artifact to ${DATA_PATH}`);
 }

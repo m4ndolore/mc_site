@@ -402,7 +402,7 @@ function getLogoUrl(company) {
  * Handles both API format (id, name) and legacy format (airtableId, companyName)
  *
  * API spec fields: id, name, productName, website, location,
- * missionArea, warfareDomain, description, trlLevel, fundingStage, teamSize
+ * missionArea, warfareDomain, description, trlLevel, teamSize
  *
  * @param {Object} company - Raw company from API
  * @returns {Object} - Normalized company object
@@ -447,13 +447,15 @@ export function normalizeCompany(company) {
         logo: getLogoUrl(company),
         tagline: company.description || company.problemStatement || '',
         description: company.description || company.problemStatement || '',
+        problemStatement: company.problemStatement || '',
+        synopsisRaw: company.synopsisRaw || '',
+        synopsisSections: company.synopsisSections || null,
         website: company.website || '',
         missionAreas,
         primaryMission: company.missionArea || '',
         warfareDomain: company.warfareDomain || '',
         trlLevel: company.trlLevel != null ? String(company.trlLevel) : '',
         technicalMaturity: company.technicalMaturity || '',
-        fundingStage: company.fundingStage || '',
         teamSize: company.teamSize || '',
         productType: company.productType || '',
         technologyArea: company.technologyArea || '',
