@@ -223,38 +223,57 @@
       letter-spacing: .05em;
     }
 
-    /* ── Partner Logo Grid ── */
-    .partner-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+    /* ── Partner Logo Marquee ── */
+    .partner-marquee {
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
     }
-    .partner-grid__item {
+    .partner-marquee__track {
+      display: flex;
+      gap: 48px;
+      align-items: center;
+      width: max-content;
+      animation: marquee-scroll 40s linear infinite;
+    }
+    .partner-marquee__track:hover {
+      animation-play-state: paused;
+    }
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .partner-marquee__item {
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
       background: rgba(255,255,255,.03);
       border: 1px solid rgba(255,255,255,.08);
       border-radius: 2px;
-      padding: 18px 14px;
-      min-height: 88px;
+      padding: 20px 28px;
+      min-height: 96px;
+      min-width: 180px;
       transition: border-color 0.2s, background 0.2s;
     }
-    .partner-grid__item:hover {
+    .partner-marquee__item:hover {
       border-color: rgba(255,255,255,.2);
       background: rgba(255,255,255,.06);
     }
-    .partner-grid__item img {
-      max-height: 52px;
-      max-width: 100%;
+    .partner-marquee__item img {
+      max-height: 64px;
+      max-width: 160px;
       width: auto;
       object-fit: contain;
     }
-
-    @media (max-width: 1024px) {
-      .partner-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+    .partner-marquee__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.4);
+      text-align: center;
+      margin-top: 20px;
     }
 
     .about-faq {
@@ -312,8 +331,13 @@
         width: 112px;
         height: 138px;
       }
-      .partner-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .partner-marquee__item {
+        min-width: 140px;
+        padding: 16px 20px;
+      }
+      .partner-marquee__item img {
+        max-height: 48px;
+        max-width: 120px;
       }
     }
   </style>
@@ -494,40 +518,108 @@
             Government stakeholders, mission teams, and innovation organizations across the Indo-Pacific and the broader national security enterprise.
           </p>
         </header>
-        <div class="partner-grid fade-up">
-          <div class="partner-grid__item" title="Defense Innovation Unit">
-            <img src="/assets/logos/partners/DIU.svg" alt="Defense Innovation Unit" loading="lazy">
+        <div class="partner-marquee fade-up">
+          <div class="partner-marquee__track">
+            <!-- First set -->
+            <div class="partner-marquee__item" title="Defense Innovation Unit">
+              <img src="/assets/logos/partners/DIU.svg" alt="Defense Innovation Unit">
+            </div>
+            <div class="partner-marquee__item" title="U.S. Indo-Pacific Command">
+              <img src="/assets/logos/partners/indopacom.svg" alt="U.S. Indo-Pacific Command">
+            </div>
+            <div class="partner-marquee__item" title="Air Force Research Laboratory">
+              <img src="/assets/logos/partners/AFRL.svg" alt="Air Force Research Laboratory">
+            </div>
+            <div class="partner-marquee__item" title="Air Force Special Operations Command">
+              <img src="/assets/logos/partners/AFSOC.svg" alt="Air Force Special Operations Command">
+            </div>
+            <div class="partner-marquee__item" title="Cloudflare">
+              <img src="/assets/logos/partners/cloudflare.svg" alt="Cloudflare">
+            </div>
+            <div class="partner-marquee__item" title="Google Public Sector">
+              <img src="/assets/logos/partners/google_public_sector.svg" alt="Google Public Sector">
+            </div>
+            <div class="partner-marquee__item" title="Red Hat">
+              <img src="/assets/logos/partners/redhat.svg" alt="Red Hat">
+            </div>
+            <div class="partner-marquee__item" title="SOFWERX">
+              <img src="/assets/logos/partners/sofwerx.svg" alt="SOFWERX">
+            </div>
+            <div class="partner-marquee__item" title="TAK Product Center">
+              <img src="/assets/logos/partners/tak_product_center.svg" alt="TAK Product Center">
+            </div>
+            <div class="partner-marquee__item" title="KForm">
+              <img src="/assets/logos/partners/kform.svg" alt="KForm">
+            </div>
+            <div class="partner-marquee__item" title="BetaBlox">
+              <img src="/assets/logos/partners/betablox.svg" alt="BetaBlox">
+            </div>
+            <div class="partner-marquee__item" title="613th Air Operations Center">
+              <img src="/assets/logos/partners/613_aoc.svg" alt="613th Air Operations Center">
+            </div>
+            <div class="partner-marquee__item" title="DIU Onramp Hawaii">
+              <img src="/assets/logos/partners/diu_onramp_hawaii.svg" alt="DIU Onramp Hawaii">
+            </div>
+            <div class="partner-marquee__item" title="Overmatch">
+              <img src="/assets/logos/partners/overmatch.svg" alt="Overmatch">
+            </div>
+            <div class="partner-marquee__item" title="Bravo Hackathon">
+              <img src="/assets/logos/partners/bravo_hackathon.svg" alt="Bravo Hackathon">
+            </div>
+            <div class="partner-marquee__item" title="MCHMR">
+              <img src="/assets/logos/partners/mchmr.svg" alt="MCHMR">
+            </div>
+            <!-- Duplicate set for seamless loop -->
+            <div class="partner-marquee__item" title="Defense Innovation Unit">
+              <img src="/assets/logos/partners/DIU.svg" alt="Defense Innovation Unit">
+            </div>
+            <div class="partner-marquee__item" title="U.S. Indo-Pacific Command">
+              <img src="/assets/logos/partners/indopacom.svg" alt="U.S. Indo-Pacific Command">
+            </div>
+            <div class="partner-marquee__item" title="Air Force Research Laboratory">
+              <img src="/assets/logos/partners/AFRL.svg" alt="Air Force Research Laboratory">
+            </div>
+            <div class="partner-marquee__item" title="Air Force Special Operations Command">
+              <img src="/assets/logos/partners/AFSOC.svg" alt="Air Force Special Operations Command">
+            </div>
+            <div class="partner-marquee__item" title="Cloudflare">
+              <img src="/assets/logos/partners/cloudflare.svg" alt="Cloudflare">
+            </div>
+            <div class="partner-marquee__item" title="Google Public Sector">
+              <img src="/assets/logos/partners/google_public_sector.svg" alt="Google Public Sector">
+            </div>
+            <div class="partner-marquee__item" title="Red Hat">
+              <img src="/assets/logos/partners/redhat.svg" alt="Red Hat">
+            </div>
+            <div class="partner-marquee__item" title="SOFWERX">
+              <img src="/assets/logos/partners/sofwerx.svg" alt="SOFWERX">
+            </div>
+            <div class="partner-marquee__item" title="TAK Product Center">
+              <img src="/assets/logos/partners/tak_product_center.svg" alt="TAK Product Center">
+            </div>
+            <div class="partner-marquee__item" title="KForm">
+              <img src="/assets/logos/partners/kform.svg" alt="KForm">
+            </div>
+            <div class="partner-marquee__item" title="BetaBlox">
+              <img src="/assets/logos/partners/betablox.svg" alt="BetaBlox">
+            </div>
+            <div class="partner-marquee__item" title="613th Air Operations Center">
+              <img src="/assets/logos/partners/613_aoc.svg" alt="613th Air Operations Center">
+            </div>
+            <div class="partner-marquee__item" title="DIU Onramp Hawaii">
+              <img src="/assets/logos/partners/diu_onramp_hawaii.svg" alt="DIU Onramp Hawaii">
+            </div>
+            <div class="partner-marquee__item" title="Overmatch">
+              <img src="/assets/logos/partners/overmatch.svg" alt="Overmatch">
+            </div>
+            <div class="partner-marquee__item" title="Bravo Hackathon">
+              <img src="/assets/logos/partners/bravo_hackathon.svg" alt="Bravo Hackathon">
+            </div>
+            <div class="partner-marquee__item" title="MCHMR">
+              <img src="/assets/logos/partners/mchmr.svg" alt="MCHMR">
+            </div>
           </div>
-          <div class="partner-grid__item" title="U.S. Indo-Pacific Command">
-            <img src="/assets/logos/partners/indopacom.svg" alt="U.S. Indo-Pacific Command" loading="lazy">
-          </div>
-          <div class="partner-grid__item" title="Air Force Research Laboratory">
-            <img src="/assets/logos/partners/AFRL.svg" alt="Air Force Research Laboratory" loading="lazy">
-          </div>
-          <div class="partner-grid__item" title="Air Force Special Operations Command">
-            <img src="/assets/logos/partners/AFSOC.svg" alt="Air Force Special Operations Command" loading="lazy">
-          </div>
-          <div class="partner-grid__item" title="SOFWERX">
-            <img src="/assets/logos/partners/sofwerx.svg" alt="SOFWERX" loading="lazy">
-          </div>
-          <div class="partner-grid__item" title="TAK Product Center">
-            <img src="/assets/logos/partners/tak_product_center.svg" alt="TAK Product Center" loading="lazy">
-          </div>
-          <div class="partner-grid__item" title="613th Air Operations Center">
-            <img src="/assets/logos/partners/613_aoc.svg" alt="613th Air Operations Center" loading="lazy">
-          </div>
-          <div class="partner-grid__item" title="DIU Onramp Hawaii">
-            <img src="/assets/logos/partners/diu_onramp_hawaii.svg" alt="DIU Onramp Hawaii" loading="lazy">
-          </div>
-          <div class="partner-grid__item" title="Overmatch">
-            <img src="/assets/logos/partners/overmatch.svg" alt="Overmatch" loading="lazy">
-          </div>
-          <div class="partner-grid__item" title="Bravo Hackathon">
-            <img src="/assets/logos/partners/bravo_hackathon.svg" alt="Bravo Hackathon" loading="lazy">
-          </div>
-          <div class="partner-grid__item" title="MCHMR">
-            <img src="/assets/logos/partners/mchmr.svg" alt="MCHMR" loading="lazy">
-          </div>
+          <p class="partner-marquee__label">Hover to pause</p>
         </div>
       </div>
     </section>
