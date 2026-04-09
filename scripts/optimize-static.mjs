@@ -706,6 +706,7 @@ function generateSitemap(slugs) {
     { loc: '/knowledge/acquisition', priority: '0.7', changefreq: 'monthly' },
     { loc: '/knowledge/compliance', priority: '0.7', changefreq: 'monthly' },
     { loc: '/knowledge/go-to-market', priority: '0.7', changefreq: 'monthly' },
+    { loc: '/knowledge/defense-venture-studio', priority: '0.7', changefreq: 'monthly' },
     { loc: '/access', priority: '0.8', changefreq: 'weekly' },
     { loc: '/combine/cohort25-1', priority: '0.7', changefreq: 'monthly' },
     { loc: '/learn', priority: '0.6', changefreq: 'monthly' },
@@ -797,6 +798,7 @@ Primary domain: https://mergecombinator.com
 ## Crawl Sources
 - Sitemap: https://mergecombinator.com/sitemap.xml
 - Robots: https://mergecombinator.com/robots.txt
+- Blog RSS: https://mergecombinator.com/blog.rss
 
 ## Last Updated
 ${BUILD_DATE}
@@ -889,6 +891,98 @@ function injectKnowledge(html) {
   return html;
 }
 
+// ── 9. Blog RSS feed ────────────────────────────────────────────────
+
+function generateBlogRss() {
+  const articles = [
+    {
+      title: 'Inside JIATF 401: The Pentagon\'s New Counter-Drone Marketplace',
+      slug: 'counter-drone-jiatf-401',
+      date: '2025-12-22',
+      category: 'Policy &amp; Acquisition',
+      description: 'The Pentagon is building an app store for counter-drone solutions. JIATF 401 replaces the Joint Counter-small UAS Office with a streamlined approach — including an online marketplace for vetted systems and a common C2 framework targeted within 90 days.',
+    },
+    {
+      title: '9 Months Under Fire: Combat Lessons from the USS Eisenhower',
+      slug: 'uss-eisenhower-lessons',
+      date: '2025-12-22',
+      category: 'Combat Lessons',
+      description: '770+ weapons expended, multiple combat firsts, and critical insights for defense tech companies from the most intense carrier deployment since WWII.',
+    },
+    {
+      title: 'FY26 NDAA Decoded: What the SPEED Act Means for Your Defense Startup',
+      slug: 'ndaa-speed-act',
+      date: '2025-12-22',
+      category: 'Policy &amp; Acquisition',
+      description: 'The SPEED Act promises faster procurement. What is actually changing, implementation challenges ahead, and what defense tech companies should do now.',
+    },
+  ];
+
+  const items = articles.map(a => `    <item>
+      <title>${escapeHtml(a.title)}</title>
+      <link>https://mergecombinator.com/blog/${a.slug}</link>
+      <guid isPermaLink="true">https://mergecombinator.com/blog/${a.slug}</guid>
+      <pubDate>${new Date(a.date).toUTCString()}</pubDate>
+      <category>${a.category}</category>
+      <description>${escapeHtml(a.description)}</description>
+    </item>`).join('\n');
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Insights — Merge Combinator</title>
+    <link>https://mergecombinator.com/blog</link>
+    <description>Perspectives on defense innovation, operator-driven development, and the future of national security technology.</description>
+    <language>en-us</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <atom:link href="https://mergecombinator.com/blog.rss" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public</url>
+      <title>Merge Combinator</title>
+      <link>https://mergecombinator.com</link>
+    </image>
+${items}
+  </channel>
+</rss>
+`;
+}
+
+// ── 10. Opportunities static injection ──────────────────────────────
+
+function injectOpportunities(html) {
+  const staticContent = `
+      <main class="opp-static" style="max-width: 900px; margin: 40px auto; padding: 0 16px; font-family: Inter, Arial, sans-serif; color: #e2e8f0;">
+        <h1 style="font-size: 2rem; margin-bottom: 8px;">Defense Opportunities</h1>
+        <p style="color: #94a3b8; margin-bottom: 24px;">Track solicitations, events, and market intelligence for national security builders. Updated hourly from multiple sources.</p>
+
+        <h2 style="font-size: 1.25rem; margin-bottom: 12px;">Sources</h2>
+        <ul style="color: #94a3b8; line-height: 1.8;">
+          <li><strong style="color: #e2e8f0;">SBIR/STTR</strong> — Small Business Innovation Research and Small Business Technology Transfer solicitations from sbir.gov</li>
+          <li><strong style="color: #e2e8f0;">DARPA</strong> — Defense Advanced Research Projects Agency broad agency announcements and open solicitations</li>
+          <li><strong style="color: #e2e8f0;">DIU</strong> — Defense Innovation Unit commercial solutions openings</li>
+          <li><strong style="color: #e2e8f0;">GoColosseum</strong> — Department of the Air Force innovation challenges and pitch events</li>
+          <li><strong style="color: #e2e8f0;">Ratio Exchange</strong> — 261+ challenges from defense innovation hubs (DEFENSEWERX, SOFWERX, ERDCWERX, Tradewind, Doolittle Institute, HSWERX, FLEETWERX)</li>
+          <li><strong style="color: #e2e8f0;">SAM.gov</strong> — Federal contract opportunities in defense and national security categories</li>
+        </ul>
+
+        <h2 style="font-size: 1.25rem; margin: 24px 0 12px;">Quick Links</h2>
+        <ul style="line-height: 1.8;">
+          <li><a href="/opportunities/sbir" style="color: #3b82f6;">SBIR Opportunities</a></li>
+          <li><a href="/opportunities/sttr" style="color: #3b82f6;">STTR Opportunities</a></li>
+          <li><a href="/knowledge/sbir" style="color: #3b82f6;">SBIR/STTR Guidance</a></li>
+          <li><a href="/knowledge" style="color: #3b82f6;">Knowledge Base</a></li>
+        </ul>
+      </main>`;
+
+  // Inject inside #root — React.render replaces all children on mount
+  html = html.replace(
+    '<div id="root"></div>',
+    `<div id="root">${staticContent}\n    </div>`
+  );
+
+  return html;
+}
+
 // ── Execute ──────────────────────────────────────────────────────────
 
 // 1. Process builders.html
@@ -967,5 +1061,20 @@ console.log('[optimize] Generating public companies export...');
 const publicExportCount = companies.filter(c => c.name).length;
 writeFileSync(join(ROOT, 'public', 'data', 'companies-public.json'), generatePublicCompaniesJson(companies));
 console.log(`[optimize] companies-public.json: ${publicExportCount} companies exported`);
+
+// 8. Generate blog RSS feed
+console.log('[optimize] Generating blog.rss...');
+writeFileSync(join(ROOT, 'public', 'blog.rss'), generateBlogRss());
+console.log('[optimize] blog.rss generated');
+
+// 9. Inject opportunities static content
+const oppHtmlPath = join(ROOT, 'opportunities', 'index.html');
+if (existsSync(oppHtmlPath)) {
+  console.log('[optimize] Injecting opportunities static content...');
+  let oppHtml = readFileSync(oppHtmlPath, 'utf-8');
+  oppHtml = injectOpportunities(oppHtml);
+  writeFileSync(oppHtmlPath, oppHtml);
+  console.log('[optimize] opportunities/index.html: static source summary injected');
+}
 
 console.log('\n[optimize] Done.');

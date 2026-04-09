@@ -31,7 +31,7 @@ The Combine is Merge Combinator's flagship program for in-person operator valida
 - Companies span 12+ mission areas and 6+ warfare domains
 
 ### Defense Builders Directory
-Open-access directory of 147 defense technology companies evaluated by Merge Combinator. Includes alumni who completed The Combine's in-person validation and applicants under review. Browsable at https://mergecombinator.com/builders
+Open-access directory of 134 defense technology companies evaluated by Merge Combinator. Includes alumni who completed The Combine's in-person validation and applicants under review. Browsable at https://mergecombinator.com/builders
 
 ### Knowledge Base
 Curated resources for defense tech founders covering:
@@ -125,6 +125,7 @@ Company data includes name, product, mission area, warfare domain, TRL level, fu
 - Robots: https://mergecombinator.com/robots.txt
 - LLMs (concise): https://mergecombinator.com/llms.txt
 - LLMs (full): https://mergecombinator.com/llms-full.txt
+- Blog RSS: https://mergecombinator.com/blog.rss
 - AI Overview: https://mergecombinator.com/ai/overview
 
 ## Last Updated

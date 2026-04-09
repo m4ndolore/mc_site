@@ -40,6 +40,7 @@ Primary domain: https://mergecombinator.com
 ## Crawl Sources
 - Sitemap: https://mergecombinator.com/sitemap.xml
 - Robots: https://mergecombinator.com/robots.txt
+- Blog RSS: https://mergecombinator.com/blog.rss
 
 ## Last Updated
 2026-04-09

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Insights — Merge Combinator</title>
+    <link>https://mergecombinator.com/blog</link>
+    <description>Perspectives on defense innovation, operator-driven development, and the future of national security technology.</description>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 09 Apr 2026 03:16:14 GMT</lastBuildDate>
+    <atom:link href="https://mergecombinator.com/blog.rss" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public</url>
+      <title>Merge Combinator</title>
+      <link>https://mergecombinator.com</link>
+    </image>
+    <item>
+      <title>Inside JIATF 401: The Pentagon&#39;s New Counter-Drone Marketplace</title>
+      <link>https://mergecombinator.com/blog/counter-drone-jiatf-401</link>
+      <guid isPermaLink="true">https://mergecombinator.com/blog/counter-drone-jiatf-401</guid>
+      <pubDate>Mon, 22 Dec 2025 00:00:00 GMT</pubDate>
+      <category>Policy &amp; Acquisition</category>
+      <description>The Pentagon is building an app store for counter-drone solutions. JIATF 401 replaces the Joint Counter-small UAS Office with a streamlined approach — including an online marketplace for vetted systems and a common C2 framework targeted within 90 days.</description>
+    </item>
+    <item>
+      <title>9 Months Under Fire: Combat Lessons from the USS Eisenhower</title>
+      <link>https://mergecombinator.com/blog/uss-eisenhower-lessons</link>
+      <guid isPermaLink="true">https://mergecombinator.com/blog/uss-eisenhower-lessons</guid>
+      <pubDate>Mon, 22 Dec 2025 00:00:00 GMT</pubDate>
+      <category>Combat Lessons</category>
+      <description>770+ weapons expended, multiple combat firsts, and critical insights for defense tech companies from the most intense carrier deployment since WWII.</description>
+    </item>
+    <item>
+      <title>FY26 NDAA Decoded: What the SPEED Act Means for Your Defense Startup</title>
+      <link>https://mergecombinator.com/blog/ndaa-speed-act</link>
+      <guid isPermaLink="true">https://mergecombinator.com/blog/ndaa-speed-act</guid>
+      <pubDate>Mon, 22 Dec 2025 00:00:00 GMT</pubDate>
+      <category>Policy &amp; Acquisition</category>
+      <description>The SPEED Act promises faster procurement. What is actually changing, implementation challenges ahead, and what defense tech companies should do now.</description>
+    </item>
+  </channel>
+</rss>
