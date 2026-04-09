@@ -69,7 +69,7 @@ function toStringArray(value: unknown): string[] | undefined {
 }
 
 function normalizeSource(value: unknown): Opportunity["source"] {
-  if (value === "sam" || value === "grants" || value === "diu" || value === "afwerx") {
+  if (value === "sam" || value === "grants" || value === "diu" || value === "afwerx" || value === "darpa" || value === "colosseum" || value === "ratio") {
     return value;
   }
   return "sbir";

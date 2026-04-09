@@ -9,6 +9,7 @@ Implement the smallest viable workflow for granting and maintaining internal doc
 ## Acceptance Criteria
 - [ ] Approved internal users are explicitly identified and allowlisted
 - [ ] Internal docs access uses the same canonical admin authorization rule as Guild `/admin`
+- [ ] Docs OIDC provider uses current VIA host (`via.mergecombinator.com`) instead of deprecated `auth.sigmablox.com`
 - [ ] Approved internal user can access and edit docs
 - [ ] Non-approved user cannot access internal docs
 - [ ] Expected behavior is documented:
@@ -34,6 +35,7 @@ Implement the smallest viable workflow for granting and maintaining internal doc
 ### Phase 3: Session / SSO
 
 - Best outcome: internal admin authenticates once and can move from MC to docs without a second login
+- Move docs auth off deprecated `auth.sigmablox.com`; use current VIA (`via.mergecombinator.com`) so docs shares the same identity system as MC/Guild
 - Temporary acceptable outcome while docs is still internal:
   - access is correct and narrow
   - remaining double-login behavior is documented as a known gap under `REQ-BUG-015`
@@ -70,4 +72,5 @@ Implement the smallest viable workflow for granting and maintaining internal doc
 - Docs is not yet ready for broad Guild exposure.
 - The immediate need is narrow internal access for approved `@mergecombinator.com` users.
 - Best simplification path is one canonical admin rule shared with Guild `/admin`.
-- Remaining product/auth gap is session continuity between MC and docs.
+- Testing confirmed SigmaBlox-to-MC session reuse works for admin/owner.
+- Remaining product/auth gap is docs session continuity; docs appears to still use deprecated `auth.sigmablox.com` and should move to `via.mergecombinator.com`.

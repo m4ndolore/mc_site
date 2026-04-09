@@ -10,6 +10,7 @@ The docs host previously redirected back to the base site instead of loading Out
 - [x] Main-site Docs link navigates to `docs.mergecombinator.com`
 - [x] Docs host loads without redirecting back to MC
 - [ ] Accessed/internal user does not need a second login when moving from MC to docs
+- [ ] Docs OIDC/auth flow uses `via.mergecombinator.com`, not deprecated `auth.sigmablox.com`
 - [ ] Docs exposure model is explicit: either hidden from Guild or intentionally linked with correct auth behavior
 
 ## Implementation
@@ -18,7 +19,7 @@ The docs host previously redirected back to the base site instead of loading Out
 - **Priority**: MEDIUM
 - **Effort**: 0.5w
 - **Dependencies**: REQ-DOCS-001
-- **Notes**: Routing appears fixed as of 2026-04-06 from the main-site navbar. Remaining gap is session/auth alignment: MC and docs still require separate logins. There is also no current Guild-facing docs entry point in this codebase, which is acceptable for now if docs remains intentionally internal.
+- **Notes**: Routing appears fixed as of 2026-04-06 from the main-site navbar. Remaining gap is session/auth alignment: MC and docs still require separate logins. 2026-04-06 testing showed docs auth primarily using deprecated `auth.sigmablox.com`; docs should be moved to `via.mergecombinator.com` to align with MC/Guild auth. There is also no current Guild-facing docs entry point in this codebase, which is acceptable for now if docs remains intentionally internal.
 
 ---
 
@@ -67,9 +68,12 @@ The mc-router CF Worker is bound to `*mergecombinator.com/*` routes in Cloudflar
 - The original redirect-back-to-MC failure mode is no longer the primary issue.
 - There is not currently a distinct Guild docs link visible in this codebase.
 - Docs and MC still appear to require separate logins, so cross-app session sharing / SSO continuity is not yet working from a user perspective.
+- Admin/owner testing showed SigmaBlox-to-MC session reuse works as desired, but docs still requires login again.
+- Docs auth flow appears to primarily use deprecated `auth.sigmablox.com`; current MC config in this repo uses `via.mergecombinator.com`, so the likely fix is in the external Outline/docs OIDC provider configuration.
 - Docs is still intended as an internal tool in development, so lack of broad Guild exposure is not itself a bug if kept intentional.
 
 ### Remaining
 - Verify whether docs should remain hidden from Guild surfaces for now.
+- Move docs/Outline OIDC configuration off `auth.sigmablox.com` and onto the current VIA issuer/provider.
 - Fix session continuity so an already-accessed internal user does not need to log in again on docs.
 - Update navigation/product docs so expected docs access behavior is explicit.

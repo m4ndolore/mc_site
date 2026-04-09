@@ -17,7 +17,7 @@ export interface Opportunity {
   technologyAreas?: string[];
   focusAreas?: string[];
   keywords?: string[];
-  source: "sbir" | "sam" | "grants" | "diu" | "afwerx";
+  source: "sbir" | "sam" | "grants" | "diu" | "afwerx" | "darpa" | "colosseum" | "ratio";
   url?: string;
   postedDate: string;
   responseDeadline?: string;

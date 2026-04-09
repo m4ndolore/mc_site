@@ -90,6 +90,7 @@ const TTL = {
           darpa: 60 * 60,
           diu: 60 * 60,
           colosseum: 30 * 60,
+          ratio: 60 * 60,
           sam: 60 * 60,
           intel: 30 * 60,
 };
@@ -122,6 +123,94 @@ async function cachedFetch(
           } catch {
                       return null;
           }
+}
+
+// ─── Cached POST helper (for form-data endpoints like Ratio Exchange) ────────
+// CF Cache API keys on the Request (URL + method), so we use a synthetic GET
+// cache key derived from the URL + body hash to avoid collisions.
+async function cachedPost(
+          url: string,
+          body: Record<string, string>,
+          ttl: number
+        ): Promise<string | null> {
+          const cache = caches.default;
+          const bodyStr = new URLSearchParams(body).toString();
+          const cacheKey = new Request(`${url}?_post=${encodeURIComponent(bodyStr)}`, {
+                      method: "GET",
+          });
+          const cached = await cache.match(cacheKey);
+          if (cached) return cached.text();
+          try {
+                      const originRes = await fetch(url, {
+                                    method: "POST",
+                                    headers: {
+                                                    "User-Agent": "MergeCombinator-OpportunitiesAPI/0.1",
+                                                    "Content-Type": "application/x-www-form-urlencoded",
+                                    },
+                                    body: bodyStr,
+                      });
+                      if (!originRes.ok) return null;
+                      const text = await originRes.text();
+                      await cache.put(
+                                    cacheKey,
+                                    new Response(text, {
+                                                    headers: {
+                                                                      "Content-Type":
+                                                                                        originRes.headers.get("Content-Type") ?? "text/plain",
+                                                                      "Cache-Control": `s-maxage=${ttl}, max-age=${ttl}`,
+                                                    },
+                                    })
+                                  );
+                      return text;
+          } catch {
+                      return null;
+          }
+}
+
+// ─── Ratio Exchange HTML parser ──────────────────────────────────────────────
+// Parses HTML fragments returned by the Ratio CFC challenge endpoint.
+// Each challenge card contains: link with ChallengeID, h4 hub name, h3 title,
+// p description, and an "Open Opportunity" / "Closed" status badge.
+function parseRatioHtml(html: string): unknown[] {
+          const items: unknown[] = [];
+          const seen = new Set<string>();
+          const linkRegex = /ChallengeID=([A-F0-9-]{36})/gi;
+          let m;
+          while ((m = linkRegex.exec(html)) !== null) {
+                      const id = m[1].toUpperCase();
+                      if (seen.has(id)) continue;
+                      seen.add(id);
+                      // Grab a window around the match to extract card fields
+                      const start = Math.max(0, m.index - 500);
+                      const block = html.slice(start, m.index + 3000);
+                      const title =
+                                    block
+                          .match(/<h3[^>]*>([\s\S]*?)<\/h3>/)?.[1]
+                          ?.replace(/<[^>]+>/g, "")
+                          .trim() ?? "";
+                      if (!title) continue;
+                      const hub =
+                                    block
+                          .match(/<h4[^>]*>([\s\S]*?)<\/h4>/)?.[1]
+                          ?.replace(/<[^>]+>/g, "")
+                          .trim() ?? "";
+                      const desc =
+                                    block
+                          .match(/<p[^>]*>([\s\S]*?)<\/p>/)?.[1]
+                          ?.replace(/<[^>]+>/g, "")
+                          .trim() ?? "";
+                      const isOpen = /Open\s*Opportunity/i.test(block);
+                      items.push({
+                                    source: "ratio",
+                                    topicCode: id,
+                                    topicTitle: title,
+                                    topicStatus: isOpen ? "Open" : "Closed",
+                                    description: desc,
+                                    url: `https://www.ratio.exchange/challenges/view-challenge.cfm?ChallengeID=${id}`,
+                                    component: hub || "Ratio Exchange",
+                      });
+          }
+          return items;
 }
 
 // ─── DARPA RSS parser ─────────────────────────────────────────────────────────
@@ -357,7 +446,7 @@ function buildSbirDetailUrl(topicId: string): string {
 // ─── Main opportunities endpoint ──────────────────────────────────────────────
 // Query params:
 //   page, size, status, component, keyword, sort — same as before
-//   sources — comma-separated: "sbir,darpa,diu,colosseum,sam" (default: all)
+//   sources — comma-separated: "sbir,darpa,diu,colosseum,ratio,sam" (default: all)
 app.get("/api/opportunities", async (c) => {
           const page = Number(c.req.query("page") ?? "0");
           const size = Number(c.req.query("size") ?? "25");
@@ -369,17 +458,18 @@ app.get("/api/opportunities", async (c) => {
 
           const sources =
                       sourceFilter === "all"
-              ? ["sbir", "darpa", "diu", "colosseum", "sam"]
+              ? ["sbir", "darpa", "diu", "colosseum", "ratio", "sam"]
                         : sourceFilter.split(",").map((s) => s.trim());
 
           // Each source accumulates into this single array. Cross-source dedup is
           // applied at the end, keyed on normalised title. Sources listed earlier
-          // (sbir → darpa → diu → colosseum → sam) take priority when titles match.
+          // (sbir → darpa → diu → colosseum → ratio → sam) take priority when titles match.
           const allResults: unknown[] = [];
           let sbirTotal = 0;
           let darpaTotal = 0;
           let diuTotal = 0;
           let colosseumTotal = 0;
+          let ratioTotal = 0;
           let samTotal = 0;
 
           // ── SBIR ──────────────────────────────────────────────────────────────────
@@ -485,11 +575,34 @@ app.get("/api/opportunities", async (c) => {
                       }
           }
 
+          // ── Ratio Exchange (cached 1 hour) ─────────────────────────────────────────
+          // Defense innovation hub challenges (DEFENSEWERX, SOFWERX, ERDCWERX, etc.)
+          // via direct POST to the ColdFusion backend. Only fetches open opportunities.
+          if (sources.includes("ratio")) {
+                      const ratioHtml = await cachedPost(
+                                    "https://www.ratio.exchange/controller/challenge.cfc",
+                                    {
+                                                    method: "DisplayChallenges",
+                                                    From: "0",
+                                                    To: "200",
+                                                    Type: "1",
+                                                    searchText: keyword,
+                                                    searchVal: keyword ? "1" : "0",
+                                    },
+                                    TTL.ratio
+                                  );
+                      if (ratioHtml) {
+                                    const ratioItems = parseRatioHtml(ratioHtml);
+                                    ratioTotal = ratioItems.length;
+                                    allResults.push(...ratioItems);
+                      }
+          }
+
           // ── SAM.gov (cached 1 hour) ───────────────────────────────────────────────
           // Two targeted DoD-scoped title searches. Post-filtered by title keyword.
-          // SAM.gov is added LAST so that if a more specific source (DARPA, DIU, SBIR)
-          // already has the same opportunity, the SAM.gov entry is dropped by the
-          // cross-source dedup below.
+          // SAM.gov is added LAST so that if a more specific source (DARPA, DIU, SBIR,
+          // Ratio) already has the same opportunity, the SAM.gov entry is dropped by
+          // the cross-source dedup below.
           if (sources.includes("sam")) {
                       const samApiKey = c.env.SAM_GOV_API_KEY;
                       if (samApiKey) {
@@ -530,9 +643,9 @@ app.get("/api/opportunities", async (c) => {
           // earlier source. This catches cases where DARPA, DIU, or SBIR opportunities
           // are also listed on SAM.gov (or any other cross-posting).
           // Note: per-source totals are counted BEFORE dedup so they reflect raw
-          // source volume; the pagination.total reflects the deduplicated count.
+          // source volume; pagination.total is the sum of raw totals (not deduplicated).
           const pageResults = deduplicateAcrossSources(allResults);
-          const total = sbirTotal + darpaTotal + diuTotal + colosseumTotal + samTotal;
+          const total = sbirTotal + darpaTotal + diuTotal + colosseumTotal + ratioTotal + samTotal;
 
           return c.json({
                       success: true,
@@ -546,6 +659,7 @@ app.get("/api/opportunities", async (c) => {
                                                     darpa: darpaTotal,
                                                     diu: diuTotal,
                                                     colosseum: colosseumTotal,
+                                                    ratio: ratioTotal,
                                                     sam: samTotal,
                                     },
                       },
