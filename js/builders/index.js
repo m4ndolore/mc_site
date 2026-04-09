@@ -3,7 +3,6 @@
 
 import {
     fetchCompanies,
-    fetchFilterOptions,
     extractCompanies,
     extractFilterOptions,
     upvoteCompany
@@ -24,7 +23,7 @@ import {
     updateStats,
     updateResultsCount
 } from './filters.js';
-import { checkAuth } from './auth.js';
+import { checkAuth, getLoginUrl } from './auth.js';
 
 // State
 let allCompanies = [];
@@ -68,9 +67,14 @@ function formatTime(date) {
  */
 function updateRailAuth(state) {
     if (!railAuthState) return;
-    const label = state.authenticated ? 'Authenticated' : 'Anonymous';
-    const actor = state.user?.email || state.user?.name || 'operator';
-    railAuthState.textContent = `${label} (${actor})`;
+    if (state.authenticated) {
+        const actor = state.user?.email || state.user?.name || 'account';
+        railAuthState.textContent = `Authenticated (${actor})`;
+        return;
+    }
+
+    const loginUrl = getLoginUrl(window.location.pathname);
+    railAuthState.innerHTML = `Anonymous · <a href="${loginUrl}">Log in</a> · <a href="/access">Create account</a>`;
 }
 
 /**
@@ -188,14 +192,9 @@ async function init() {
         // Extract and normalize all companies (alumni + applicants)
         allCompanies = extractCompanies(data, { filterAttended: false });
 
-        // Try to get filter options from API, fall back to extracting from data
-        let filterOptions;
-        try {
-            filterOptions = await fetchFilterOptions();
-        } catch (filterError) {
-            console.warn('[Builders] Filter API unavailable, extracting from data');
-            filterOptions = extractFilterOptions(allCompanies);
-        }
+        // Keep the public builders view fully aligned to the seeded public dataset.
+        // Do not replace static counts with broader API filter metadata on hydration.
+        const filterOptions = extractFilterOptions(allCompanies);
 
         // Update stats
         totalBuildersCount = data.total || allCompanies.length;
