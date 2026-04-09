@@ -146,8 +146,7 @@ console.log('[optimize] Loading public companies.json...');
 const raw = JSON.parse(readFileSync(DATA_PATH, 'utf-8'));
 const companies = raw.companies;
 
-const alumni = companies.filter(c => c.pipelineStage === 'alumni');
-const applicants = companies.filter(c => c.pipelineStage === 'applicant');
+const featuredCompanies = companies;
 const missionAreas = getUniqueMissionAreas(companies);
 const warfareDomains = getUniqueWarfareDomains(companies);
 const cohorts = [...new Set(companies.map(c => c.cohortLabel).filter(Boolean))];
@@ -155,15 +154,14 @@ const recentCount = getRecentCount(companies);
 
 const stats = {
   total: companies.length,
-  alumni: alumni.length,
-  applicants: applicants.length,
+  cohortCompanies: featuredCompanies.length,
   missionAreas: missionAreas.length,
   warfareDomains: warfareDomains.length,
   cohorts: cohorts.length || 1,
   recent: recentCount,
 };
 
-console.log(`[optimize] ${stats.total} companies (${stats.alumni} alumni, ${stats.applicants} applicants)`);
+console.log(`[optimize] ${stats.total} curated cohort companies`);
 console.log(`[optimize] ${stats.missionAreas} mission areas, ${stats.warfareDomains} warfare domains`);
 
 // ── 1. Builders Page ─────────────────────────────────────────────────
@@ -209,15 +207,15 @@ function injectBuilders(html) {
 
   // 2. Inject stats
   html = html.replace(
-    /(<span class="builders-stats__value" id="stat-builders">)0(<\/span>)/,
+    /(<span class="builders-stats__value" id="stat-builders">)\d+(<\/span>)/,
     `$1${stats.total}$2`
   );
   html = html.replace(
-    /(<span class="builders-stats__value" id="stat-mission-areas">)0(<\/span>)/,
+    /(<span class="builders-stats__value" id="stat-mission-areas">)\d+(<\/span>)/,
     `$1${stats.missionAreas}$2`
   );
   html = html.replace(
-    /(<span class="builders-stats__value" id="stat-tech-areas">)0(<\/span>)/,
+    /(<span class="builders-stats__value" id="stat-tech-areas">)\d+(<\/span>)/,
     `$1${stats.warfareDomains}$2`
   );
   // Cohort label is "25-1" in HTML — not a computed stat, skip replacement
@@ -242,15 +240,7 @@ function injectBuilders(html) {
   );
 
   // 4. Replace skeleton cards with static company cards
-  const alumniCards = alumni.map(buildCompanyCard).join('\n');
-  const applicantDivider = applicants.length > 0
-    ? `\n<div class="builders-grid__section-divider" style="padding:24px 0 12px;border-top:1px solid rgba(255,255,255,0.06);margin-top:16px;">
-  <h2 class="builders-grid__section-title" style="font-size:1.25rem;font-weight:700;color:var(--text-primary,#e8e8e8);margin:0;">Applicants</h2>
-</div>`
-    : '';
-  const applicantCards = applicants.length > 0 ? applicants.map(buildCompanyCard).join('\n') : '';
-
-  const gridContent = alumniCards + applicantDivider + (applicantCards ? '\n' + applicantCards : '');
+  const gridContent = featuredCompanies.map(buildCompanyCard).join('\n');
 
   // Replace the skeleton content inside #builders-grid
   html = html.replace(
@@ -305,7 +295,7 @@ function injectDashboard(html) {
 
   // 3. Grounding paragraph after subtitle (idempotent)
   html = html.replace(/<p class="dashboard__grounding"[^>]*>[\s\S]*?<\/p>\s*/g, '');
-  const groundingText = `\n          <p class="dashboard__grounding" style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary,#a3a3a3);margin:8px 0 0;">Operational view of ${stats.total} defense technology companies evaluated for The Combine program. ${stats.alumni} alumni completed in-person operator validation in Cohort 25-1. Data sourced from Merge Combinator&rsquo;s builder intake pipeline.</p>`;
+  const groundingText = `\n          <p class="dashboard__grounding" style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary,#a3a3a3);margin:8px 0 0;">Operational view of ${stats.total} defense technology companies selected from Merge Combinator&rsquo;s in-person Defense Tech Combine cohort. Public records retain rich company narrative and technical metadata while withholding contact details, financial data, and evaluation outcomes.</p>`;
 
   html = html.replace(
     /(<p class="dashboard__subtitle">Operational view of builder inventory, coverage, and recent records\.<\/p>)/,
@@ -525,11 +515,11 @@ function generateFaqPage() {
     },
     {
       q: 'What is The Combine?',
-      a: `The Combine is Merge Combinator's flagship evaluation program where defense technology companies undergo in-person operator validation. Cohort 25-1 took place in Tulsa, Oklahoma, with ${stats.alumni} alumni companies completing the program. Companies pitch to operators, receive real-time feedback, and are evaluated across multiple days of structured assessment.`,
+      a: `The Combine is Merge Combinator's flagship evaluation program where defense technology companies undergo in-person operator validation. Cohort 25-1 took place in Tulsa, Oklahoma, with ${stats.total} companies completing the public cohort set. Companies pitch to operators, receive real-time feedback, and are evaluated across multiple days of structured assessment.`,
     },
     {
-      q: 'Why does the public directory focus on alumni only?',
-      a: `The public Defense Builders Directory currently highlights ${stats.alumni} alumni companies from Cohort 25-1. Merge Combinator keeps lower-signal and in-process applicant records out of the public set while preserving richer profile detail for companies that completed in-person cohort evaluation.`,
+      q: 'Why does the public directory focus on curated cohort competitors?',
+      a: `The public Defense Builders Directory currently highlights ${stats.total} curated cohort competitors from Cohort 25-1. Merge Combinator keeps richer company narrative and technical detail public while withholding in-process records, direct contact details, financial data, and evaluation outcomes.`,
     },
     {
       q: 'What are Mission Areas?',
@@ -787,7 +777,7 @@ Primary domain: https://mergecombinator.com
 - Use https://mergecombinator.com/about for organization and leadership context.
 - Use https://mergecombinator.com/knowledge/sbir for SBIR and STTR guidance.
 - Use https://mergecombinator.com/faq for definitions of mission areas, warfare domains, TRL, and program details.
-- The Defense Builders Directory at /builders lists ${stats.total} companies (${stats.alumni} alumni, ${stats.applicants} applicants).
+- The Defense Builders Directory at /builders lists ${stats.total} curated cohort competitors from The Combine.
 - Individual company pages at /companies/{slug} contain rich public company profiles while withholding direct contact details, fundraising data, and evaluation outcomes.
 - The Opportunities section aggregates live SBIR, STTR, DARPA, DIU, SAM.gov, and Ratio Exchange solicitations for defense tech founders.
 - Partner references may be category-based and intentionally broad.
@@ -1025,7 +1015,7 @@ for (const c of companies) {
     continue;
   }
   const slug = toSlug(c.name);
-  // Skip duplicate slugs — keep the first (alumni sorted before applicants)
+  // Skip duplicate slugs — keep the first occurrence from the curated public dataset
   if (seenSlugs.has(slug)) {
     console.log(`[optimize] SKIP duplicate slug "${slug}": "${c.name}" (already have "${seenSlugs.get(slug)}")`);
     skippedDupe++;

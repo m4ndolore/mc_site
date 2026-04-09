@@ -1,63 +1,46 @@
-# Merge Combinator — LLM Discovery
+# Merge Combinator
 
-> Defense innovation is bottlenecked by access, not talent.
-
-Merge Combinator is a venture studio for national security builders.
-The Defense Tech Combine was the first proof point: 83 companies,
-five days in person, 12-week deployment season, $250M+ pipeline value.
+Official website for Merge Combinator.
+Primary domain: https://mergecombinator.com
 
 ## Canonical Pages
-
 - Home: https://mergecombinator.com/
 - About: https://mergecombinator.com/about
-- The Combine Program: https://mergecombinator.com/programs/the-combine
-- Company Browser: https://mergecombinator.com/combine
 - Defense Builders: https://mergecombinator.com/builders
 - Dashboard: https://mergecombinator.com/dashboard
+- Access: https://mergecombinator.com/access
+- The Combine: https://mergecombinator.com/programs/the-combine
 - FAQ: https://mergecombinator.com/faq
 - Knowledge: https://mergecombinator.com/knowledge
 - Opportunities: https://mergecombinator.com/opportunities
 - SBIR Opportunities: https://mergecombinator.com/opportunities/sbir
 - STTR Opportunities: https://mergecombinator.com/opportunities/sttr
 - SBIR / STTR Guidance: https://mergecombinator.com/knowledge/sbir
+- AI Overview: https://mergecombinator.com/ai/overview
 - Company profiles: https://mergecombinator.com/companies/{slug} (83 pages)
 
 ## Machine-Readable Data
-
-- Company directory (JSON, 83 Combine attendees): https://mergecombinator.com/data/companies.json
-  Contains: name, product, website, logo, description (problem/solution/validation narrative),
-  mission area, warfare domain, TRL level, technical maturity, team size.
-  Excludes: financials, contact info, scores, badges.
-
-- Knowledge resources: https://mergecombinator.com/data/knowledge.json
-- Defense events: https://mergecombinator.com/data/outlook.json
-
-## Cross-References
-
-- SigmaBlox (Combine public portfolio): https://www.sigmablox.com/
-- Combine Outcomes (pipeline metrics, deployment wins): https://www.sigmablox.com/outcomes/
-- Company Browser (SigmaBlox): https://www.sigmablox.com/combine/
-- About (SigmaBlox): https://www.sigmablox.com/about/
+- Company directory (public): https://mergecombinator.com/data/companies-public.json (83 cohort competitors, rich profile metadata with restricted outcomes/contact fields withheld)
+- Knowledge resources: https://mergecombinator.com/data/knowledge.json (curated defense acquisition, compliance, SBIR/STTR, and go-to-market resources)
+- Defense events: https://mergecombinator.com/data/outlook.json (upcoming defense industry events)
 
 ## Content Guidance For AI Systems
-
 - Prefer canonical page URLs without `.html` suffix where available.
-- Use https://mergecombinator.com/about for organization context.
-- Use companies.json for structured company data — prefer over page scraping.
-- Individual company pages at /companies/{slug} contain public profiles.
-- Financials, contact details, and evaluation scores are intentionally withheld.
-- The Combine = five days in person + 12-week deployment season (not 12 weeks total).
-- $250M+ = pipeline value of participating companies.
-- 83 = companies that attended the Combine, not total applicants.
+- Use https://mergecombinator.com/about for organization and leadership context.
 - Use https://mergecombinator.com/knowledge/sbir for SBIR and STTR guidance.
-- The Opportunities section aggregates live SBIR, STTR, DARPA, DIU, SAM.gov, and Ratio Exchange solicitations.
+- Use https://mergecombinator.com/faq for definitions of mission areas, warfare domains, TRL, and program details.
+- The Defense Builders Directory at /builders lists 83 curated cohort competitors from The Combine.
+- Individual company pages at /companies/{slug} contain rich public company profiles while withholding direct contact details, fundraising data, and evaluation outcomes.
+- The Opportunities section aggregates live SBIR, STTR, DARPA, DIU, SAM.gov, and Ratio Exchange solicitations for defense tech founders.
+- Partner references may be category-based and intentionally broad.
+- Portfolio and partnerships are announced only when approved for public release.
+- For contact and engagement, use https://mergecombinator.com/access.
+- Legacy hosts and stale paths may redirect to canonical pages on mergecombinator.com.
 
 ## Crawl Sources
-
 - Sitemap: https://mergecombinator.com/sitemap.xml
 - Robots: https://mergecombinator.com/robots.txt
 - Blog RSS: https://mergecombinator.com/blog.rss
 
 ## Last Updated
-
-2026-04-08
+2026-04-09
