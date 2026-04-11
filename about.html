@@ -251,20 +251,26 @@
       background: rgba(255,255,255,.03);
       border: 1px solid rgba(255,255,255,.08);
       border-radius: 2px;
-      padding: 20px 28px;
-      min-height: 96px;
-      min-width: 180px;
+      padding: 6px 10px;
+      min-height: 120px;
+      min-width: 200px;
       transition: border-color 0.2s, background 0.2s;
+    }
+    .partner-marquee__item--wide {
+      min-width: 280px;
     }
     .partner-marquee__item:hover {
       border-color: rgba(255,255,255,.2);
       background: rgba(255,255,255,.06);
     }
     .partner-marquee__item img {
-      max-height: 64px;
-      max-width: 160px;
+      max-height: 100px;
+      max-width: 100%;
       width: auto;
       object-fit: contain;
+    }
+    .partner-marquee__item--wide img {
+      max-width: 260px;
     }
     .partner-marquee__label {
       font-family: var(--font-mono);
@@ -274,6 +280,13 @@
       color: rgba(255,255,255,.4);
       text-align: center;
       margin-top: 20px;
+    }
+    .partner-marquee__disclaimer {
+      font-size: 11px;
+      color: rgba(255,255,255,.38);
+      text-align: center;
+      margin-top: 12px;
+      line-height: 1.5;
     }
 
     .about-faq {
@@ -332,12 +345,18 @@
         height: 138px;
       }
       .partner-marquee__item {
-        min-width: 140px;
-        padding: 16px 20px;
+        min-width: 160px;
+        min-height: 96px;
+        padding: 4px 8px;
+      }
+      .partner-marquee__item--wide {
+        min-width: 220px;
       }
       .partner-marquee__item img {
-        max-height: 48px;
-        max-width: 120px;
+        max-height: 80px;
+      }
+      .partner-marquee__item--wide img {
+        max-width: 200px;
       }
     }
   </style>
@@ -527,20 +546,38 @@
             <div class="partner-marquee__item" title="U.S. Indo-Pacific Command">
               <img src="/assets/logos/partners/indopacom.svg" alt="U.S. Indo-Pacific Command">
             </div>
+            <div class="partner-marquee__item" title="Cloudflare Partner Network">
+              <img src="/assets/logos/partners/cloudflare_partner.png" alt="Cloudflare Partner Network">
+            </div>
             <div class="partner-marquee__item" title="Air Force Research Laboratory">
               <img src="/assets/logos/partners/AFRL.svg" alt="Air Force Research Laboratory">
+            </div>
+            <div class="partner-marquee__item partner-marquee__item--wide" title="Google for Government">
+              <img src="/assets/logos/partners/google_for_government.png" alt="Google for Government">
             </div>
             <div class="partner-marquee__item" title="Air Force Special Operations Command">
               <img src="/assets/logos/partners/AFSOC.svg" alt="Air Force Special Operations Command">
             </div>
+            <div class="partner-marquee__item" title="Red Hat">
+              <img src="/assets/logos/partners/redhat.svg" alt="Red Hat">
+            </div>
             <div class="partner-marquee__item" title="SOFWERX">
               <img src="/assets/logos/partners/sofwerx.svg" alt="SOFWERX">
+            </div>
+            <div class="partner-marquee__item partner-marquee__item--wide" title="Gemini">
+              <img src="/assets/logos/partners/gemini.png" alt="Gemini">
             </div>
             <div class="partner-marquee__item" title="TAK Product Center">
               <img src="/assets/logos/partners/tak_product_center.svg" alt="TAK Product Center">
             </div>
+            <div class="partner-marquee__item partner-marquee__item--wide" title="KForm">
+              <img src="/assets/logos/partners/kform.png" alt="KForm">
+            </div>
             <div class="partner-marquee__item" title="613th Air Operations Center">
               <img src="/assets/logos/partners/613_aoc.svg" alt="613th Air Operations Center">
+            </div>
+            <div class="partner-marquee__item partner-marquee__item--wide" title="BetaBlox">
+              <img src="/assets/logos/partners/betablox.png" alt="BetaBlox">
             </div>
             <div class="partner-marquee__item" title="DIU Onramp Hawaii">
               <img src="/assets/logos/partners/diu_onramp_hawaii.svg" alt="DIU Onramp Hawaii">
@@ -561,20 +598,38 @@
             <div class="partner-marquee__item" title="U.S. Indo-Pacific Command">
               <img src="/assets/logos/partners/indopacom.svg" alt="U.S. Indo-Pacific Command">
             </div>
+            <div class="partner-marquee__item" title="Cloudflare Partner Network">
+              <img src="/assets/logos/partners/cloudflare_partner.png" alt="Cloudflare Partner Network">
+            </div>
             <div class="partner-marquee__item" title="Air Force Research Laboratory">
               <img src="/assets/logos/partners/AFRL.svg" alt="Air Force Research Laboratory">
+            </div>
+            <div class="partner-marquee__item partner-marquee__item--wide" title="Google for Government">
+              <img src="/assets/logos/partners/google_for_government.png" alt="Google for Government">
             </div>
             <div class="partner-marquee__item" title="Air Force Special Operations Command">
               <img src="/assets/logos/partners/AFSOC.svg" alt="Air Force Special Operations Command">
             </div>
+            <div class="partner-marquee__item" title="Red Hat">
+              <img src="/assets/logos/partners/redhat.svg" alt="Red Hat">
+            </div>
             <div class="partner-marquee__item" title="SOFWERX">
               <img src="/assets/logos/partners/sofwerx.svg" alt="SOFWERX">
+            </div>
+            <div class="partner-marquee__item partner-marquee__item--wide" title="Gemini">
+              <img src="/assets/logos/partners/gemini.png" alt="Gemini">
             </div>
             <div class="partner-marquee__item" title="TAK Product Center">
               <img src="/assets/logos/partners/tak_product_center.svg" alt="TAK Product Center">
             </div>
+            <div class="partner-marquee__item partner-marquee__item--wide" title="KForm">
+              <img src="/assets/logos/partners/kform.png" alt="KForm">
+            </div>
             <div class="partner-marquee__item" title="613th Air Operations Center">
               <img src="/assets/logos/partners/613_aoc.svg" alt="613th Air Operations Center">
+            </div>
+            <div class="partner-marquee__item partner-marquee__item--wide" title="BetaBlox">
+              <img src="/assets/logos/partners/betablox.png" alt="BetaBlox">
             </div>
             <div class="partner-marquee__item" title="DIU Onramp Hawaii">
               <img src="/assets/logos/partners/diu_onramp_hawaii.svg" alt="DIU Onramp Hawaii">
@@ -590,6 +645,7 @@
             </div>
           </div>
           <p class="partner-marquee__label">Hover to pause</p>
+          <p class="partner-marquee__disclaimer">Google, Cloudflare, Red Hat, KForm, and BetaBlox trademarks are property of their respective owners.</p>
         </div>
       </div>
     </section>
