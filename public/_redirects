@@ -7,8 +7,6 @@
 
 # Legacy path redirects
 /marketplace /access 301
-/guild /access 301
-/guild/ /access 301
 /combine /programs/the-combine 301
 /combine/cohort25-1.html /combine/cohort25-1 301
 /sbir /knowledge/sbir 301
@@ -24,7 +22,7 @@
 /builders.html /builders 301
 /contribute.html /contribute 301
 /dashboard.html /dashboard 301
-/guild.html /access 301
+/guild.html /guild 301
 /knowledge.html /knowledge 301
 /learn.html /learn 301
 /merch.html /merch 301

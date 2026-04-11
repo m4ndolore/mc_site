@@ -7,7 +7,7 @@ const DEFAULT_NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/builders', label: 'Defense Builders' },
   { href: '/wingman', label: 'Wingman' },
-  { href: '/access', label: 'Get Started' },
+  { href: '/guild', label: 'Guild' },
   { href: '/programs/the-combine', label: 'The Combine' },
 ];
 
@@ -19,6 +19,8 @@ const DEFAULT_PLATFORM_LINKS = [
   { href: '/learn', label: 'Learn' },
   { href: 'https://docs.mergecombinator.com', label: 'Docs' },
 ];
+
+const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v1';
 
 function getActivePath() {
   const path = window.location.pathname;
@@ -101,13 +103,48 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
 }
 
 async function loadNavConfig() {
+  const cached = readCachedNavConfig();
+  if (cached) {
+    void refreshNavConfigInBackground();
+    return cached;
+  }
+
+  return refreshNavConfigInBackground();
+}
+
+function readCachedNavConfig() {
   try {
-    const response = await fetch('/data/navigation.json', { cache: 'no-store' });
+    const raw = window.sessionStorage.getItem(NAV_CONFIG_CACHE_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (!Array.isArray(data?.navLinks) || !Array.isArray(data?.platformLinks)) {
+      return null;
+    }
+    return data;
+  } catch (error) {
+    console.warn('[Navbar] Failed to read cached nav config:', error);
+    return null;
+  }
+}
+
+function writeCachedNavConfig(data) {
+  try {
+    window.sessionStorage.setItem(NAV_CONFIG_CACHE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.warn('[Navbar] Failed to cache nav config:', error);
+  }
+}
+
+async function refreshNavConfigInBackground() {
+  try {
+    const response = await fetch('/data/navigation.json', { cache: 'force-cache' });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     const navLinks = Array.isArray(data?.navLinks) ? data.navLinks : DEFAULT_NAV_LINKS;
     const platformLinks = Array.isArray(data?.platformLinks) ? data.platformLinks : DEFAULT_PLATFORM_LINKS;
-    return { navLinks, platformLinks };
+    const resolved = { navLinks, platformLinks };
+    writeCachedNavConfig(resolved);
+    return resolved;
   } catch (error) {
     console.warn('[Navbar] Failed to load shared nav config, using defaults:', error);
     return { navLinks: DEFAULT_NAV_LINKS, platformLinks: DEFAULT_PLATFORM_LINKS };
@@ -242,16 +279,30 @@ export default async function initNavbar() {
   mount.dataset.initialized = 'true';
 
   const activePath = getActivePath();
+  const fallbackConfig = { navLinks: DEFAULT_NAV_LINKS, platformLinks: DEFAULT_PLATFORM_LINKS };
+  const cachedConfig = readCachedNavConfig();
+  let renderedConfig = cachedConfig || fallbackConfig;
 
-  // Load config first, render once
-  const { navLinks, platformLinks } = await loadNavConfig();
-  mount.innerHTML = renderNavHTML(activePath, navLinks, platformLinks);
+  mount.innerHTML = renderNavHTML(activePath, renderedConfig.navLinks, renderedConfig.platformLinks);
 
-  initScrollBehavior();
-  initMobileMenu();
-  initDropdown();
-  initThemeToggle();
-  initAuth();
+  const initRenderedNavbar = () => {
+    initScrollBehavior();
+    initMobileMenu();
+    initDropdown();
+    initThemeToggle();
+    initAuth();
+  };
+
+  initRenderedNavbar();
+
+  const resolvedConfig = await loadNavConfig();
+  const renderedSignature = JSON.stringify(renderedConfig);
+  const resolvedSignature = JSON.stringify(resolvedConfig);
+  if (resolvedSignature !== renderedSignature) {
+    renderedConfig = resolvedConfig;
+    mount.innerHTML = renderNavHTML(activePath, renderedConfig.navLinks, renderedConfig.platformLinks);
+    initRenderedNavbar();
+  }
 }
 
 // ── Theme toggle ──
