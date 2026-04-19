@@ -382,14 +382,14 @@ function generateEntityPage(c) {
   <meta property="og:description" content="${escapeHtml(descTrunc)}">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mergecombinator.com/companies/${slug}">
-  <meta property="og:image" content="${getLogoUrl(c) || `${CF_IMAGES_BASE}/logo-arrows-2/public`}">
+  <meta property="og:image" content="${getLogoUrl(c) || '/assets/logowhite.png'}">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="${escapeHtml(c.name)} — Merge Combinator">
   <meta name="twitter:description" content="${escapeHtml(descTrunc)}">
-  <meta name="twitter:image" content="${getLogoUrl(c) || `${CF_IMAGES_BASE}/logo-arrows-2/public`}">
+  <meta name="twitter:image" content="${getLogoUrl(c) || '/assets/logowhite.png'}">
   <title>${escapeHtml(c.name)} — Merge Combinator</title>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logowhite.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -446,11 +446,7 @@ function generateEntityPage(c) {
       <div class="footer__grid">
         <div class="footer__brand">
           <a href="/" class="footer__logo">
-            <span class="footer__logo-text">
-              <span class="footer__logo-merge">Merge</span>
-              <span class="footer__logo-combinator">Combinator</span>
-            </span>
-            <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="Merge arrows" class="footer__logo-icon">
+            <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
           </a>
           <p class="footer__tagline">The builder-led venture studio for national security.</p>
         </div>
@@ -581,13 +577,13 @@ function generateFaqPage() {
   <meta property="og:description" content="Frequently asked questions about Merge Combinator, The Combine, and the Defense Builders Directory.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mergecombinator.com/faq">
-  <meta property="og:image" content="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <meta property="og:image" content="/assets/logowhite.png">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="FAQ — Merge Combinator">
   <meta name="twitter:description" content="Frequently asked questions about Merge Combinator, The Combine, and the Defense Builders Directory.">
   <title>FAQ — Merge Combinator</title>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/logowhite.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -622,11 +618,7 @@ ${faqItemsHtml}
       <div class="footer__grid">
         <div class="footer__brand">
           <a href="/" class="footer__logo">
-            <span class="footer__logo-text">
-              <span class="footer__logo-merge">Merge</span>
-              <span class="footer__logo-combinator">Combinator</span>
-            </span>
-            <img src="https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public" alt="Merge arrows" class="footer__logo-icon">
+            <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
           </a>
           <p class="footer__tagline">The builder-led venture studio for national security.</p>
         </div>
@@ -927,7 +919,7 @@ function generateBlogRss() {
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="https://mergecombinator.com/blog.rss" rel="self" type="application/rss+xml"/>
     <image>
-      <url>https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw/logo-arrows-2/public</url>
+      <url>/assets/logowhite.png</url>
       <title>Merge Combinator</title>
       <link>https://mergecombinator.com</link>
     </image>
