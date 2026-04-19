@@ -126,6 +126,7 @@ Company data includes name, product, mission area, warfare domain, TRL level, fu
 - LLMs (concise): https://mergecombinator.com/llms.txt
 - LLMs (full): https://mergecombinator.com/llms-full.txt
 - Blog RSS: https://mergecombinator.com/blog.rss
+- Intel RSS: https://api.mergecombinator.com/api/intel.rss (defense OSINT, curated by IrregularChat)
 - AI Overview: https://mergecombinator.com/ai/overview
 
 ## Last Updated

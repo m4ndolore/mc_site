@@ -5,6 +5,7 @@ type Bindings = {
           SBIR_API_URL: string;
           SAM_GOV_API_KEY: string;
           STAGEHAND_URL?: string;
+          IRREGULARS_API_TOKEN?: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -29,6 +30,16 @@ app.use(
 app.get("/health", (c) => {
           return c.json({ status: "ok", timestamp: new Date().toISOString() });
 });
+
+// ─── XML escape helper ──────────────────────────────────────────────────────
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
 
 // ─── SBIR release status codes ───────────────────────────────────────────────
 const RELEASE_STATUS_CODES: Record<string, number[]> = {
@@ -761,24 +772,154 @@ app.get("/api/outlook", async (c) => {
   }
 });
 
-// ─── Intel feed endpoint (multi-source RSS aggregation) ─────────────────────
+// ─── Irregulars HTML parser (public browse page, no auth required) ──────────
+function parseIrregularsBrowseHtml(html: string): IntelArticle[] {
+  const articles: IntelArticle[] = [];
+  // Each link card has: title (h3/a), summary (p), domain, timestamp
+  // Match card blocks — look for link-card boundaries
+  const cardRegex = /<a[^>]*href="(https?:\/\/[^"]+)"[^>]*class="[^"]*card[^"]*"[^>]*>([\s\S]*?)<\/a>/gi;
+  let match;
+  while ((match = cardRegex.exec(html)) !== null && articles.length < 50) {
+    const url = match[1];
+    const block = match[2];
+    const titleMatch = block.match(/<(?:h3|h4|strong)[^>]*>([\s\S]*?)<\/(?:h3|h4|strong)>/i);
+    const title = titleMatch?.[1]?.replace(/<[^>]+>/g, "").trim() ?? "";
+    const descMatch = block.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
+    const excerpt = descMatch?.[1]?.replace(/<[^>]+>/g, "").trim().slice(0, 300) ?? "";
+    if (!title || title.length < 5) continue;
+    // Skip social media posts without meaningful titles
+    if (/^(Instagram|Facebook|Tweet|X post)/i.test(title)) continue;
+    articles.push({
+      id: `irr-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}`,
+      source: "irregulars",
+      title,
+      excerpt,
+      url,
+      date: new Date().toISOString().split("T")[0],
+      tags: [],
+      attribution: "IrregularChat",
+      attributionUrl: "https://irregulars.io",
+    });
+  }
+  return articles;
+}
+
+// ─── Irregulars API parser (authenticated, richer data) ─────────────────────
+function parseIrregularsApiHtml(html: string): IntelArticle[] {
+  // The /api/links endpoint returns HTML fragments with link cards
+  // Similar structure to browse page but potentially different markup
+  const articles = parseIrregularsBrowseHtml(html);
+  return articles;
+}
+
+type IntelArticle = {
+  id: string;
+  source: string;
+  title: string;
+  excerpt: string;
+  url: string;
+  date: string;
+  tags: string[];
+  attribution?: string;
+  attributionUrl?: string;
+};
+
+// ─── Intel feed endpoint (multi-source aggregation) ─────────────────────────
 app.get("/api/intel/feed", async (c) => {
-          const [egXml, hnXml, irXml] = await Promise.all([
-                      cachedFetch("https://executivegov.com/feed/", TTL.intel),
-                      cachedFetch("https://news.ycombinator.com/rss", TTL.intel),
-                      cachedFetch("https://rss.irregulars.io", TTL.intel),
-          ]);
-          const articles = [
-                      ...(egXml ? parseRssFeed(egXml, "executivegov") : []),
-                      ...(hnXml ? parseRssFeed(hnXml, "hackernews") : []),
-                      ...(irXml ? parseRssFeed(irXml, "irregulars") : []),
-          ];
-          articles.sort((a, b) => {
-                      const da = (a as Record<string, unknown>).date as string;
-                      const db = (b as Record<string, unknown>).date as string;
-                      return db.localeCompare(da);
-          });
-          return c.json({ articles });
+  const limit = Math.min(parseInt(c.req.query("limit") ?? "50", 10), 100);
+  const keyword = c.req.query("q") ?? "defense";
+
+  // Fetch all sources in parallel
+  const irregularsToken = c.env.IRREGULARS_API_TOKEN;
+  const irregularsUrl = irregularsToken
+    ? `https://rss.irregulars.io/api/links?offset=0&ajax=1&q=${encodeURIComponent(keyword)}`
+    : `https://rss.irregulars.io/browse?q=${encodeURIComponent(keyword)}`;
+
+  const irregularsHeaders: Record<string, string> = {
+    "User-Agent": "MergeCombinator-IntelAPI/0.1",
+  };
+  if (irregularsToken) {
+    irregularsHeaders["Authorization"] = `Bearer ${irregularsToken}`;
+  }
+
+  const [egXml, hnXml, irHtml] = await Promise.all([
+    cachedFetch("https://executivegov.com/feed/", TTL.intel),
+    cachedFetch("https://news.ycombinator.com/rss", TTL.intel),
+    cachedFetch(irregularsUrl, TTL.intel, irregularsHeaders),
+  ]);
+
+  const articles: IntelArticle[] = [
+    ...(irHtml
+      ? (irregularsToken ? parseIrregularsApiHtml(irHtml) : parseIrregularsBrowseHtml(irHtml))
+      : []),
+    ...(egXml ? parseRssFeed(egXml, "executivegov") as IntelArticle[] : []),
+    ...(hnXml ? parseRssFeed(hnXml, "hackernews") as IntelArticle[] : []),
+  ];
+
+  // Deduplicate by normalized title
+  const seen = new Set<string>();
+  const deduped = articles.filter((a) => {
+    const key = a.title.toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 80);
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+
+  // Sort by date (newest first)
+  deduped.sort((a, b) => b.date.localeCompare(a.date));
+
+  return c.json({
+    articles: deduped.slice(0, limit),
+    total: deduped.length,
+    sources: {
+      irregulars: irHtml ? articles.filter((a) => a.source === "irregulars").length : 0,
+      executivegov: egXml ? articles.filter((a) => a.source === "executivegov").length : 0,
+      hackernews: hnXml ? articles.filter((a) => a.source === "hackernews").length : 0,
+    },
+    attribution: "Defense intel curated by IrregularChat (https://irregulars.io)",
+  });
+});
+
+// ─── Intel RSS feed endpoint ────────────────────────────────────────────────
+app.get("/api/intel.rss", async (c) => {
+  // Reuse the intel feed logic by fetching our own JSON endpoint
+  const feedUrl = new URL("/api/intel/feed?limit=30", c.req.url);
+  const feedRes = await app.fetch(new Request(feedUrl.toString()), c.env);
+  const data = await feedRes.json() as { articles: IntelArticle[] };
+
+  const items = data.articles.map((a) => `    <item>
+      <title>${escapeXml(a.title)}</title>
+      <link>${escapeXml(a.url)}</link>
+      <guid isPermaLink="true">${escapeXml(a.url)}</guid>
+      <pubDate>${new Date(a.date).toUTCString()}</pubDate>
+      <description>${escapeXml(a.excerpt)}</description>
+      <source url="https://irregulars.io">IrregularChat</source>
+    </item>`).join("\n");
+
+  const rss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Defense Intel — Merge Combinator</title>
+    <link>https://mergecombinator.com/knowledge</link>
+    <description>Defense and national security OSINT for builders. Curated by IrregularChat, published by Merge Combinator.</description>
+    <language>en-us</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <atom:link href="https://api.mergecombinator.com/api/intel.rss" rel="self" type="application/rss+xml"/>
+    <image>
+      <url>https://mergecombinator.com/assets/logowhite.png</url>
+      <title>Merge Combinator</title>
+      <link>https://mergecombinator.com</link>
+    </image>
+${items}
+  </channel>
+</rss>`;
+
+  return new Response(rss, {
+    headers: {
+      "Content-Type": "application/rss+xml; charset=utf-8",
+      "Cache-Control": "s-maxage=1800, max-age=1800",
+    },
+  });
 });
 
 // ─── GovBase "Today in Washington" briefing endpoint ────────────────────────

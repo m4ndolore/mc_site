@@ -781,6 +781,7 @@ Primary domain: https://mergecombinator.com
 - Sitemap: https://mergecombinator.com/sitemap.xml
 - Robots: https://mergecombinator.com/robots.txt
 - Blog RSS: https://mergecombinator.com/blog.rss
+- Intel RSS: https://api.mergecombinator.com/api/intel.rss (defense OSINT, curated by IrregularChat)
 
 ## Last Updated
 ${BUILD_DATE}
@@ -791,28 +792,21 @@ ${BUILD_DATE}
 
 function generatePublicCompaniesJson(companies) {
   const publicCompanies = companies
-    .filter(c => c.name)
+    .filter(c => c.name && (c.description || '').trim().length >= MIN_DESCRIPTION_LENGTH)
     .map(c => ({
-      id: c.id || null,
       name: c.name,
       productName: c.productName || null,
       website: c.website || null,
-      cfImageId: c.cfImageId || null,
-      location: c.location || null,
       missionArea: c.missionArea || null,
       warfareDomain: c.warfareDomain || null,
       trlLevel: c.trlLevel || null,
       technicalMaturity: c.technicalMaturity || null,
+      fundingStage: c.fundingStage || null,
       teamSize: c.teamSize || null,
       productType: c.productType || null,
       technologyArea: c.technologyArea || null,
       pipelineStage: c.pipelineStage || null,
-      cohort: c.cohort || null,
-      cohortId: c.cohortId || null,
       cohortLabel: c.cohortLabel || null,
-      problemStatement: c.problemStatement || null,
-      synopsisRaw: c.synopsisRaw || null,
-      synopsisSections: c.synopsisSections || null,
       description: c.description || null,
     }));
 
@@ -821,7 +815,7 @@ function generatePublicCompaniesJson(companies) {
       description: "Public directory of defense technology companies evaluated by Merge Combinator. Machine-readable export — see https://mergecombinator.com/builders for the full directory.",
       exported: BUILD_DATE,
       count: publicCompanies.length,
-      fields: "Rich public company metadata. Contact information, fundraising data, scores, badges, and internal evaluation outcomes are excluded.",
+      fields: "Public classification data only. Contact information, financials, scores, badges, and internal IDs are excluded.",
       license: "This data is provided for informational purposes. See https://mergecombinator.com/terms for usage terms."
     },
     companies: publicCompanies

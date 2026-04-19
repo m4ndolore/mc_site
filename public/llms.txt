@@ -41,6 +41,7 @@ Primary domain: https://mergecombinator.com
 - Sitemap: https://mergecombinator.com/sitemap.xml
 - Robots: https://mergecombinator.com/robots.txt
 - Blog RSS: https://mergecombinator.com/blog.rss
+- Intel RSS: https://api.mergecombinator.com/api/intel.rss (defense OSINT, curated by IrregularChat)
 
 ## Last Updated
-2026-04-09
+2026-04-19
