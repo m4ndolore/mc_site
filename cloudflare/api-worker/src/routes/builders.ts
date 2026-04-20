@@ -2,10 +2,6 @@ import { Hono } from 'hono'
 import type { Env, AppVars } from '../types'
 import { ok, err } from '../lib/envelope'
 import { verifyOidc } from '../middleware/verify-oidc'
-import { getDb } from '../lib/db'
-import { parsePagination } from '../lib/pagination'
-import { listCoaches, getCoach } from '../repos/sigmablox/coaches'
-import { coachToDto } from '../lib/mappers'
 import { consoleSwitch, consoleRoleGate } from '../middleware/console-gate'
 import { proxyToLegacy } from '../lib/strangler'
 
@@ -14,16 +10,6 @@ const builders = new Hono<{ Bindings: Env; Variables: AppVars }>()
 builders.use('*', consoleSwitch)
 builders.use('*', verifyOidc)
 builders.use('*', consoleRoleGate)
-
-function shouldFallbackToLegacy(e: unknown): boolean {
-  if (!(e instanceof Error)) return false
-  const message = e.message.toLowerCase()
-  return (
-    message.includes('relation "company" does not exist') ||
-    message.includes('relation "coach" does not exist') ||
-    message.includes('relation "cohort" does not exist')
-  )
-}
 
 builders.get('/companies', async (c) => {
   // Keep Guild company browse aligned with the SigmaBlox catalog until the
@@ -36,65 +22,13 @@ builders.get('/companies/:id', async (c) => {
 })
 
 builders.get('/coaches', async (c) => {
-  const requestId = c.get('requestId')
-  const query = c.req.query()
-
-  const paginationResult = parsePagination(query)
-  if ('error' in paginationResult) {
-    return c.json(paginationResult.error, paginationResult.status as 400)
-  }
-  const { pagination } = paginationResult
-
-  const filters = {
-    search: query.search?.trim().slice(0, 100) || undefined,
-    domain: query.domain || undefined,
-  }
-
-  try {
-    const { pool } = getDb(c.env.HYPERDRIVE)
-    const { rows, total } = await listCoaches(pool, filters, pagination)
-
-    return c.json(ok(
-      { coaches: rows.map(coachToDto) },
-      { request_id: requestId, total, limit: pagination.limit, offset: pagination.offset }
-    ), 200)
-  } catch (e) {
-    if (shouldFallbackToLegacy(e)) {
-      return proxyToLegacy(c)
-    }
-    const message = e instanceof Error ? e.message : 'Unknown error'
-    return c.json(err('DB_ERROR', `Failed to query coaches: ${message}`, {
-      request_id: requestId,
-    }), 503)
-  }
+  // The native coach schema is still on the older raw-SQL path. Proxy list
+  // reads to the legacy catalog until the worker-side schema is converged.
+  return proxyToLegacy(c)
 })
 
 builders.get('/coaches/:id', async (c) => {
-  const requestId = c.get('requestId')
-  const id = c.req.param('id')
-
-  try {
-    const { pool } = getDb(c.env.HYPERDRIVE)
-    const row = await getCoach(pool, id)
-
-    if (!row) {
-      // Native table can be incomplete during migration; fall back to legacy source.
-      return proxyToLegacy(c)
-    }
-
-    return c.json(ok(
-      { coach: coachToDto(row) },
-      { request_id: requestId }
-    ), 200)
-  } catch (e) {
-    if (shouldFallbackToLegacy(e)) {
-      return proxyToLegacy(c)
-    }
-    const message = e instanceof Error ? e.message : 'Unknown error'
-    return c.json(err('DB_ERROR', `Failed to query coach: ${message}`, {
-      request_id: requestId,
-    }), 503)
-  }
+  return proxyToLegacy(c)
 })
 
 export { builders as buildersRouter }

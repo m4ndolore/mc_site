@@ -40,6 +40,7 @@ export async function proxyToLegacy(
     legacyPath + incomingUrl.search,
     legacyOrigin
   )
+  applyLegacyQueryDefaults(incomingUrl.pathname, target)
 
   // Build forwarded headers
   const headers = new Headers()
@@ -121,6 +122,17 @@ function mapLegacyPath(pathname: string): string {
     return pathname.replace('/builders/coaches/', '/api/public/coaches/')
   }
   return pathname
+}
+
+function applyLegacyQueryDefaults(pathname: string, target: URL) {
+  // Guild expects the full list for client-side filtering, but the legacy
+  // SigmaBlox public API paginates list responses by default.
+  if (
+    (pathname === '/builders/companies' || pathname === '/builders/coaches') &&
+    !target.searchParams.has('limit')
+  ) {
+    target.searchParams.set('limit', '200')
+  }
 }
 
 function normalizeLegacyBodyForPath(pathname: string, body: Record<string, unknown>): Record<string, unknown> {
