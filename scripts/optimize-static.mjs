@@ -389,7 +389,7 @@ function generateEntityPage(c) {
   <meta name="twitter:image" content="${getLogoUrl(c) || '/assets/logowhite.png'}">
   <title>${escapeHtml(c.name)} — Merge Combinator</title>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-new.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -583,7 +583,7 @@ function generateFaqPage() {
   <meta name="twitter:description" content="Frequently asked questions about Merge Combinator, The Combine, and the Defense Builders Directory.">
   <title>FAQ — Merge Combinator</title>
 
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/arrows-new.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

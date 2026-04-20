@@ -271,7 +271,7 @@ h4, .h4 {
 }
 
 .nav__logo-img {
-  height: calc(var(--nav-height) - 12px);
+  height: 96px;
   width: auto;
   display: block;
 }
