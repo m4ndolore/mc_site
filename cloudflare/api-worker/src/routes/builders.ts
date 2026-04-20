@@ -4,9 +4,8 @@ import { ok, err } from '../lib/envelope'
 import { verifyOidc } from '../middleware/verify-oidc'
 import { getDb } from '../lib/db'
 import { parsePagination } from '../lib/pagination'
-import { listCompanies, getCompany } from '../repos/sigmablox/companies'
 import { listCoaches, getCoach } from '../repos/sigmablox/coaches'
-import { companyToDto, coachToDto } from '../lib/mappers'
+import { coachToDto } from '../lib/mappers'
 import { consoleSwitch, consoleRoleGate } from '../middleware/console-gate'
 import { proxyToLegacy } from '../lib/strangler'
 
@@ -27,67 +26,13 @@ function shouldFallbackToLegacy(e: unknown): boolean {
 }
 
 builders.get('/companies', async (c) => {
-  const requestId = c.get('requestId')
-  const query = c.req.query()
-
-  const paginationResult = parsePagination(query)
-  if ('error' in paginationResult) {
-    return c.json(paginationResult.error, paginationResult.status as 400)
-  }
-  const { pagination } = paginationResult
-
-  const filters = {
-    search: query.search?.trim().slice(0, 100) || undefined,
-    missionArea: query.missionArea || undefined,
-    warfareDomain: query.warfareDomain || undefined,
-    fundingStage: query.fundingStage || undefined,
-  }
-
-  try {
-    const { pool } = getDb(c.env.HYPERDRIVE)
-    const { rows, total } = await listCompanies(pool, filters, pagination)
-
-    return c.json(ok(
-      { companies: rows.map(companyToDto) },
-      { request_id: requestId, total, limit: pagination.limit, offset: pagination.offset }
-    ), 200)
-  } catch (e) {
-    if (shouldFallbackToLegacy(e)) {
-      return proxyToLegacy(c)
-    }
-    const message = e instanceof Error ? e.message : 'Unknown error'
-    return c.json(err('DB_ERROR', `Failed to query companies: ${message}`, {
-      request_id: requestId,
-    }), 503)
-  }
+  // Keep Guild company browse aligned with the SigmaBlox catalog until the
+  // native company schema is fully converged and backfilled.
+  return proxyToLegacy(c)
 })
 
 builders.get('/companies/:id', async (c) => {
-  const requestId = c.get('requestId')
-  const id = c.req.param('id')
-
-  try {
-    const { pool } = getDb(c.env.HYPERDRIVE)
-    const row = await getCompany(pool, id)
-
-    if (!row) {
-      // Native table can be incomplete during migration; fall back to legacy source.
-      return proxyToLegacy(c)
-    }
-
-    return c.json(ok(
-      { company: companyToDto(row) },
-      { request_id: requestId }
-    ), 200)
-  } catch (e) {
-    if (shouldFallbackToLegacy(e)) {
-      return proxyToLegacy(c)
-    }
-    const message = e instanceof Error ? e.message : 'Unknown error'
-    return c.json(err('DB_ERROR', `Failed to query company: ${message}`, {
-      request_id: requestId,
-    }), 503)
-  }
+  return proxyToLegacy(c)
 })
 
 builders.get('/coaches', async (c) => {
