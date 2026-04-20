@@ -57,7 +57,7 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
   return `<header class="nav" id="nav">
     <div class="nav__container">
       <a href="/" class="nav__logo">
-        <img src="/assets/logowhite.png" alt="Merge Combinator" class="nav__logo-img">
+        <img src="/assets/logowhite2.png" alt="Merge Combinator" class="nav__logo-img">
       </a>
 
       <nav class="nav__menu" aria-label="Primary navigation">
