@@ -136,12 +136,46 @@ function applyLegacyQueryDefaults(pathname: string, target: URL) {
 }
 
 function normalizeLegacyBodyForPath(pathname: string, body: Record<string, unknown>): Record<string, unknown> {
+  if (pathname === '/builders/companies' && Array.isArray(body.companies)) {
+    return {
+      ...body,
+      companies: body.companies.map(normalizeLegacyCompanyRecord),
+    }
+  }
+
   // Keep expected singular DTO shape for Guild detail pages.
   if (pathname.startsWith('/builders/companies/') && !('company' in body)) {
-    return { company: body }
+    return { company: normalizeLegacyCompanyRecord(body) }
   }
   if (pathname.startsWith('/builders/coaches/') && !('coach' in body)) {
     return { coach: body }
   }
   return body
+}
+
+function normalizeLegacyCompanyRecord(input: Record<string, unknown>): Record<string, unknown> {
+  const company = { ...input }
+  const name = typeof company.name === 'string' ? company.name.trim() : 'Unknown company'
+  const productName = typeof company.productName === 'string' ? company.productName.trim() : ''
+
+  company.name = name
+  if (productName) company.productName = productName
+
+  // The guild client expects browseable catalog rows to have non-null
+  // classification fields. Legacy SigmaBlox still has a few attended alumni
+  // rows with sparse metadata; backfill them so they render instead of being
+  // dropped client-side.
+  if (company.missionArea == null || company.missionArea === '') {
+    company.missionArea = 'Unspecified'
+  }
+  if (company.warfareDomain == null || company.warfareDomain === '') {
+    company.warfareDomain = 'Unspecified'
+  }
+  if (company.description == null || company.description === '') {
+    company.description = productName
+      ? `${name} builds ${productName}, a technology capability for national security missions.`
+      : `${name} builds a technology capability for national security missions.`
+  }
+
+  return company
 }
