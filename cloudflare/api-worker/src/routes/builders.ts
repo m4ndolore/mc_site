@@ -17,6 +17,22 @@ builders.get('/companies', async (c) => {
   return proxyToLegacy(c)
 })
 
+builders.get('/companies/:id/details', async (c) => {
+  return proxyToLegacy(c)
+})
+
+builders.get('/companies/:id/share-links', async (c) => {
+  return proxyToLegacy(c)
+})
+
+builders.post('/companies/:id/share-links', async (c) => {
+  return proxyToLegacy(c)
+})
+
+builders.post('/companies/:id/interest', async (c) => {
+  return proxyToLegacy(c)
+})
+
 builders.get('/companies/:id', async (c) => {
   return proxyToLegacy(c)
 })
@@ -28,6 +44,10 @@ builders.get('/coaches', async (c) => {
 })
 
 builders.get('/coaches/:id', async (c) => {
+  return proxyToLegacy(c)
+})
+
+builders.post('/share-links/:id/revoke', async (c) => {
   return proxyToLegacy(c)
 })
 

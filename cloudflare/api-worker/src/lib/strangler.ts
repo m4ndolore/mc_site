@@ -8,9 +8,14 @@ const NATIVE_ROUTES: Array<{ method: string; pattern: RegExp }> = [
   { method: 'GET', pattern: /^\/health$/ },
   { method: 'GET', pattern: /^\/guild\/me$/ },
   { method: 'GET', pattern: /^\/builders\/companies$/ },
+  { method: 'GET', pattern: /^\/builders\/companies\/[^/]+\/details$/ },
+  { method: 'GET', pattern: /^\/builders\/companies\/[^/]+\/share-links$/ },
+  { method: 'POST', pattern: /^\/builders\/companies\/[^/]+\/share-links$/ },
+  { method: 'POST', pattern: /^\/builders\/companies\/[^/]+\/interest$/ },
   { method: 'GET', pattern: /^\/builders\/companies\/[^/]+$/ },
   { method: 'GET', pattern: /^\/builders\/coaches$/ },
   { method: 'GET', pattern: /^\/builders\/coaches\/[^/]+$/ },
+  { method: 'POST', pattern: /^\/builders\/share-links\/[^/]+\/revoke$/ },
   { method: 'POST', pattern: /^\/access\/provision$/ },
   { method: 'GET', pattern: /^\/problems$/ },
   { method: 'GET', pattern: /^\/problems\/[^/]+$/ },
@@ -51,6 +56,11 @@ export async function proxyToLegacy(
   // Forward safe headers
   const authHeader = c.req.header('Authorization')
   if (authHeader) headers.set('Authorization', authHeader)
+
+  const user = c.var.user
+  if (user?.email) {
+    headers.set('x-member-email', user.email)
+  }
 
   const contentType = c.req.header('Content-Type')
   if (contentType) headers.set('Content-Type', contentType)
@@ -112,8 +122,17 @@ export async function proxyToLegacy(
   }
 }
 
-function mapLegacyPath(pathname: string): string {
+export function mapLegacyPath(pathname: string): string {
   if (pathname === '/builders/companies') return '/api/public/companies'
+  if (/^\/builders\/companies\/[^/]+\/details$/.test(pathname)) {
+    return '/api/company/details'
+  }
+  if (/^\/builders\/companies\/[^/]+\/share-links$/.test(pathname)) {
+    return '/api/company/share-links'
+  }
+  if (/^\/builders\/companies\/[^/]+\/interest$/.test(pathname)) {
+    return '/api/interest'
+  }
   if (pathname.startsWith('/builders/companies/')) {
     return pathname.replace('/builders/companies/', '/api/public/companies/')
   }
@@ -121,10 +140,19 @@ function mapLegacyPath(pathname: string): string {
   if (pathname.startsWith('/builders/coaches/')) {
     return pathname.replace('/builders/coaches/', '/api/public/coaches/')
   }
+  if (/^\/builders\/share-links\/[^/]+\/revoke$/.test(pathname)) {
+    return pathname.replace('/builders/share-links/', '/api/company/share-links/')
+  }
+  if (pathname.startsWith('/public/company-share/')) {
+    return pathname.replace('/public/company-share/', '/api/public/company-share/')
+  }
+  if (pathname === '/public/share-lead') {
+    return '/api/public/share-lead'
+  }
   return pathname
 }
 
-function applyLegacyQueryDefaults(pathname: string, target: URL) {
+export function applyLegacyQueryDefaults(pathname: string, target: URL) {
   // Guild expects the full list for client-side filtering, but the legacy
   // SigmaBlox public API paginates list responses by default.
   if (
@@ -133,9 +161,19 @@ function applyLegacyQueryDefaults(pathname: string, target: URL) {
   ) {
     target.searchParams.set('limit', '200')
   }
+
+  const detailsMatch = pathname.match(/^\/builders\/companies\/([^/]+)\/details$/)
+  if (detailsMatch && !target.searchParams.has('companyId')) {
+    target.searchParams.set('companyId', detailsMatch[1]!)
+  }
+
+  const shareLinksMatch = pathname.match(/^\/builders\/companies\/([^/]+)\/share-links$/)
+  if (shareLinksMatch && !target.searchParams.has('companyId')) {
+    target.searchParams.set('companyId', shareLinksMatch[1]!)
+  }
 }
 
-function normalizeLegacyBodyForPath(pathname: string, body: Record<string, unknown>): Record<string, unknown> {
+export function normalizeLegacyBodyForPath(pathname: string, body: Record<string, unknown>): Record<string, unknown> {
   if (pathname === '/builders/companies' && Array.isArray(body.companies)) {
     return {
       ...body,
@@ -147,13 +185,25 @@ function normalizeLegacyBodyForPath(pathname: string, body: Record<string, unkno
   if (pathname.startsWith('/builders/companies/') && !('company' in body)) {
     return { company: normalizeLegacyCompanyRecord(body) }
   }
+  if (/^\/builders\/companies\/[^/]+\/details$/.test(pathname) && body.company && typeof body.company === 'object') {
+    return {
+      ...body,
+      company: normalizeLegacyCompanyRecord(body.company as Record<string, unknown>),
+    }
+  }
+  if (pathname.startsWith('/public/company-share/') && body.company && typeof body.company === 'object') {
+    return {
+      ...body,
+      company: normalizeLegacyCompanyRecord(body.company as Record<string, unknown>),
+    }
+  }
   if (pathname.startsWith('/builders/coaches/') && !('coach' in body)) {
     return { coach: body }
   }
   return body
 }
 
-function normalizeLegacyCompanyRecord(input: Record<string, unknown>): Record<string, unknown> {
+export function normalizeLegacyCompanyRecord(input: Record<string, unknown>): Record<string, unknown> {
   const company = { ...input }
   const name = typeof company.name === 'string' ? company.name.trim() : 'Unknown company'
   const productName = typeof company.productName === 'string' ? company.productName.trim() : ''
