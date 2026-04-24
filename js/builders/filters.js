@@ -25,10 +25,13 @@ export function filterCompanies(companies, filters) {
             }
         }
 
-        // CTA (Critical Technology Area) filter — OR logic
-        if (filters.ctas && filters.ctas.length > 0) {
-            const companyCtas = company.ctas || [];
-            if (!companyCtas.some(c => filters.ctas.includes(c))) {
+        // Technology area filter — OR logic
+        if (filters.technologyAreas && filters.technologyAreas.length > 0) {
+            const companyAreas = (company.technologyArea || '')
+                .split(',')
+                .map(a => a.trim())
+                .filter(Boolean);
+            if (!companyAreas.some(a => filters.technologyAreas.includes(a))) {
                 return false;
             }
         }
@@ -86,10 +89,12 @@ export function populateFilters(options) {
     const missionSelect = document.getElementById('filter-mission');
     const fundingSelect = document.getElementById('filter-funding');
     const domainsContainer = document.getElementById('filter-domains-multi');
+    const techContainer = document.getElementById('filter-cta-chips');
 
     const missionAreas = options?.missionAreas || [];
     const warfareDomains = options?.warfareDomains || [];
     const fundingStages = options?.fundingStages || [];
+    const technologyAreas = options?.technologyAreas || [];
 
     // Normalize warfare domains — extract individual domains from comma-separated values
     const uniqueDomains = new Set();
@@ -115,6 +120,13 @@ export function populateFilters(options) {
         ).join('');
     }
 
+    // Technology area chips (multi-select)
+    if (techContainer && technologyAreas.length > 0) {
+        techContainer.innerHTML = technologyAreas.map(a =>
+            `<button type="button" class="builders-filters__chip" data-area="${escapeAttr(a)}">${escapeHtml(a)}</button>`
+        ).join('');
+    }
+
     // Funding stages
     if (fundingSelect && fundingStages.length > 0) {
         fundingSelect.innerHTML = '<option value="">All Funding Stages</option>' +
@@ -131,14 +143,14 @@ export function getFilterState() {
     const domainChips = document.querySelectorAll('#filter-domains-multi .domain-chip.active');
     const warfareDomains = Array.from(domainChips).map(c => c.dataset.domain);
 
-    // Collect selected CTA chips
-    const ctaChips = document.querySelectorAll('#filter-cta-chips .builders-filters__chip.active');
-    const ctas = Array.from(ctaChips).map(c => c.dataset.cta);
+    // Collect selected technology area chips
+    const techChips = document.querySelectorAll('#filter-cta-chips .builders-filters__chip.active');
+    const technologyAreas = Array.from(techChips).map(c => c.dataset.area);
 
     return {
         search: document.getElementById('search-input')?.value || '',
         missionArea: document.getElementById('filter-mission')?.value || '',
-        ctas,
+        technologyAreas,
         warfareDomains,
         warfareDomain: '', // Legacy — chips replace the select
         fundingStage: document.getElementById('filter-funding')?.value || '',
@@ -162,7 +174,7 @@ export function updateStats(stats) {
     if (elements.builders) elements.builders.textContent = stats.builders;
     if (elements.missionAreas) elements.missionAreas.textContent = stats.missionAreas;
     if (elements.domains) elements.domains.textContent = stats.warfareDomains || stats.ctas;
-    if (elements.techAreas) elements.techAreas.textContent = stats.warfareDomains || stats.ctas;
+    if (elements.techAreas) elements.techAreas.textContent = stats.ctas;
     if (elements.fundingStages) elements.fundingStages.textContent = stats.fundingStages;
     // Don't overwrite cohort label — it's "25-1" not a count
 }

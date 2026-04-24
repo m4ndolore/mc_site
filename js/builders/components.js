@@ -354,13 +354,10 @@ export function isAdmin(user) {
  * @returns {string} - HTML string
  */
 export function renderBuilderEditForm(company) {
-    const CTA_OPTIONS = ['AAI', 'BIO', 'LOG', 'Q-BID', 'SCADE', 'SHY'];
-    const companyCtas = company.ctas || [];
-
-    const ctaChips = CTA_OPTIONS.map(cta => {
-        const active = companyCtas.includes(cta) ? ' active' : '';
-        return `<button type="button" class="edit-cta-chip${active}" data-cta="${cta}">${cta}</button>`;
-    }).join('');
+    const companyAreas = (company.technologyArea || '').split(',').map(a => a.trim()).filter(Boolean);
+    const ctaChips = companyAreas.map(area =>
+        `<span class="edit-cta-chip active">${escapeHtml(area)}</span>`
+    ).join('') || '<span style="color:rgba(255,255,255,.4)">No technology areas assigned</span>';
 
     const PIPELINE_OPTIONS = ['alumni', 'applicant'];
     const pipelineSelect = PIPELINE_OPTIONS.map(p =>
@@ -399,7 +396,7 @@ export function renderBuilderEditForm(company) {
             <div class="edit-form__group">
                 <label class="edit-form__label">Critical Technology Areas</label>
                 <div class="edit-form__cta-chips" id="edit-cta-chips">${ctaChips}</div>
-                <input type="hidden" name="ctas" id="edit-ctas-value" value="${escapeAttr(JSON.stringify(companyCtas))}">
+                <input type="hidden" name="technologyArea" id="edit-ctas-value" value="${escapeAttr(company.technologyArea || '')}">
             </div>
             <div class="edit-form__row">
                 <div class="edit-form__group">

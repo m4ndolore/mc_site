@@ -524,6 +524,7 @@ export function extractFilterOptions(companies) {
     const warfareDomains = new Set();
     const fundingStages = new Set();
     const cohorts = new Set();
+    const technologyAreas = new Set();
 
     for (const company of companies) {
         if (company.missionAreas) {
@@ -541,6 +542,12 @@ export function extractFilterOptions(companies) {
         if (company.cohort) {
             cohorts.add(company.cohort);
         }
+        if (company.technologyArea) {
+            company.technologyArea.split(',').forEach(a => {
+                const trimmed = a.trim();
+                if (trimmed) technologyAreas.add(trimmed);
+            });
+        }
     }
 
     return {
@@ -548,8 +555,7 @@ export function extractFilterOptions(companies) {
         warfareDomains: Array.from(warfareDomains).sort(),
         fundingStages: Array.from(fundingStages).sort(),
         cohorts: Array.from(cohorts).sort(),
-        // Legacy alias
-        ctas: Array.from(warfareDomains).sort()
+        technologyAreas: Array.from(technologyAreas).sort(),
     };
 }
 

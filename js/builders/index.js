@@ -204,8 +204,7 @@ async function init() {
             warfareDomains: filterOptions.warfareDomains?.length || 0,
             fundingStages: filterOptions.fundingStages?.length || 0,
             cohorts: filterOptions.cohorts?.length || 0,
-            // Legacy support
-            ctas: filterOptions.warfareDomains?.length || filterOptions.ctas?.length || 0
+            ctas: filterOptions.technologyAreas?.length || 0
         });
         updateRailTotal(totalBuildersCount);
         updateRailRefresh();
