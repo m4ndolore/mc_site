@@ -106,31 +106,10 @@
 }
 
 .onboarding__wordmark-logo {
-  width: 36px;
-  height: 36px;
+  height: 96px;
+  width: auto;
   object-fit: contain;
   flex-shrink: 0;
-}
-
-.onboarding__wordmark-text {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  color: var(--ob-off-white);
-}
-
-.onboarding__wordmark-merge {
-  font-style: italic;
-  font-weight: 300;
-  font-size: 13px;
-  letter-spacing: 0.02em;
-}
-
-.onboarding__wordmark-combinator {
-  font-weight: 700;
-  font-size: 16px;
-  letter-spacing: -0.01em;
 }
 
 /* Hero animated content */

@@ -659,8 +659,7 @@ function HeroPanel({ heroKey }) {
 
       <div class="onboarding__hero-top">
         <a href="/" class="onboarding__wordmark">
-          <img src="/content/arrows.png" alt="" class="onboarding__wordmark-logo" />
-          <span class="onboarding__wordmark-text"><span class="onboarding__wordmark-merge">Merge</span><span class="onboarding__wordmark-combinator">Combinator</span></span>
+          <img src="/assets/logowhite.png" alt="Merge Combinator" class="onboarding__wordmark-logo" />
         </a>
 
         <div class={`onboarding__hero-content${visible ? "" : " onboarding__hero-content--hidden"}`}>

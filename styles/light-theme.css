@@ -737,14 +737,6 @@ html.light-theme.no-transitions *::after {
   background: #0b0f14;
 }
 
-.light-theme .access-hero__logo-merge {
-  color: rgba(242, 245, 247, 0.7);
-}
-
-.light-theme .access-hero__logo-combinator {
-  color: #e5e5e5;
-}
-
 .light-theme .access-hero__title {
   color: #e5e5e5;
 }
