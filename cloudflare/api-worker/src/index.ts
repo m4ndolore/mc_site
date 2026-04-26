@@ -9,7 +9,7 @@ import { buildersRouter } from './routes/builders'
 import { accessRouter } from './routes/access'
 import { analyticsRouter } from './routes/analytics'
 import { problemsRouter } from './routes/problems'
-import { resolveRoute, proxyToLegacy } from './lib/strangler'
+import { resolveRoute, proxyToLegacy, proxyToOpportunities } from './lib/strangler'
 
 const app = new Hono<{ Bindings: Env; Variables: AppVars }>()
 
@@ -26,6 +26,9 @@ app.route('/problems', problemsRouter)
 // Catch-all: strangler proxy or 404
 app.all('*', async (c) => {
   const target = resolveRoute(c.req.method, c.req.path)
+  if (target === 'proxy_opportunities') {
+    return proxyToOpportunities(c)
+  }
   if (target === 'proxy_legacy') {
     return proxyToLegacy(c)
   }
