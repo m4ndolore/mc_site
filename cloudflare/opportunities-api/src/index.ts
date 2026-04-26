@@ -721,7 +721,11 @@ function parseRssFeed(xml: string, sourceId: string): unknown[] {
           while ((match = itemRegex.exec(xml)) !== null) {
                       const block = match[1];
                       const titleMatch = block.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/);
-                      const title = titleMatch?.[1]?.trim() ?? "";
+                      const title = (titleMatch?.[1] ?? "")
+                        .replace(/<[^>]+>/g, "")
+                        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+                        .replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&#\d+;/g, "")
+                        .trim();
                       const descMatch = block.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/);
                       const rawDesc = descMatch?.[1] ?? "";
                       const excerpt = rawDesc
