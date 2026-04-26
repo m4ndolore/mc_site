@@ -96,6 +96,21 @@ function deduplicateAcrossSources(items: unknown[]): unknown[] {
           });
 }
 
+// ─── Status normalisation ────────────────────────────────────────────────────
+type CanonicalStatus = "open" | "closing-soon" | "pre-release" | "closed";
+
+function normalizeStatus(rawStatus: string | undefined, endDateTs: number | undefined): CanonicalStatus {
+          const status = (rawStatus ?? "").toLowerCase().trim();
+          if (status.includes("closed") || status.includes("archived") || status === "no") return "closed";
+          if (status.includes("pre-release") || status.includes("upcoming") || status.includes("forecast")) return "pre-release";
+          if (endDateTs) {
+                      const endMs = endDateTs > 1_000_000_000_000 ? endDateTs : endDateTs * 1000;
+                      if (endMs < Date.now()) return "closed";
+                      if (endMs - Date.now() < 14 * 24 * 60 * 60 * 1000) return "closing-soon";
+          }
+          return "open";
+}
+
 // ─── Cache helper ────────────────────────────────────────────────────────────
 const TTL = {
           darpa: 60 * 60,
@@ -210,12 +225,12 @@ function parseRatioHtml(html: string): unknown[] {
                           .match(/<p[^>]*>([\s\S]*?)<\/p>/)?.[1]
                           ?.replace(/<[^>]+>/g, "")
                           .trim() ?? "";
-                      const isOpen = /Open\s*Opportunity/i.test(block);
+                      const badgeText = /Open\s*Opportunity/i.test(block) ? "Open" : "Closed";
                       items.push({
                                     source: "ratio",
                                     topicCode: id,
                                     topicTitle: title,
-                                    topicStatus: isOpen ? "Open" : "Closed",
+                                    topicStatus: normalizeStatus(badgeText, undefined),
                                     description: desc,
                                     url: `https://www.ratio.exchange/challenges/view-challenge.cfm?ChallengeID=${id}`,
                                     component: hub || "Ratio Exchange",
@@ -246,7 +261,7 @@ function parseDarpaRss(xml: string): unknown[] {
                                     source: "darpa",
                                     topicCode: guid,
                                     topicTitle: title,
-                                    topicStatus: "Open",
+                                    topicStatus: normalizeStatus(undefined, undefined),
                                     description,
                                     topicStartDate: pubDate ? Math.floor(new Date(pubDate).getTime() / 1000) : null,
                                     url: deepLink,
@@ -278,17 +293,17 @@ function parseDiuHtml(html: string): unknown[] {
                                     deadlineIdx >= 0
                           ? plain.slice(deadlineIdx + deadline.length).trim().slice(0, 500)
                                       : plain.trim().slice(0, 500);
+                      const diuEndTs = deadline
+                        ? Math.floor(new Date(deadline).getTime() / 1000)
+                                    : undefined;
                       items.push({
                                     source: "diu",
                                     topicCode:
                                                     submitLink.split("/").pop() ??
                                                     title.replace(/\s+/g, "-").toLowerCase(),
                                     topicTitle: title,
-                                    topicStatus:
-                                                    deadline && new Date(deadline) > new Date() ? "Open" : "Closed",
-                                    topicEndDate: deadline
-                                      ? Math.floor(new Date(deadline).getTime() / 1000)
-                                                    : null,
+                                    topicStatus: normalizeStatus(undefined, diuEndTs),
+                                    topicEndDate: diuEndTs ?? null,
                                     description: desc,
                                     url: submitLink,
                                     component: "DIU",
@@ -403,17 +418,22 @@ function parseSamGovResponse(json: string): unknown[] {
           }
 
   const opportunities = data.opportunitiesData ?? [];
-          return opportunities.map((opp) => ({
+          return opportunities.map((opp) => {
+                      const samEndTs = opp.responseDeadLine
+                        ? Math.floor(new Date(opp.responseDeadLine).getTime() / 1000)
+                                    : undefined;
+                      return {
                       source: "sam",
                       topicCode: opp.noticeId,
                       topicTitle: opp.title,
-                      topicStatus: opp.active === "Yes" ? "Open" : "Closed",
+                      topicStatus: normalizeStatus(
+                        opp.active === "Yes" ? "open" : "closed",
+                        samEndTs
+                      ),
                       topicStartDate: opp.postedDate
                         ? Math.floor(new Date(opp.postedDate).getTime() / 1000)
                                     : null,
-                      topicEndDate: opp.responseDeadLine
-                        ? Math.floor(new Date(opp.responseDeadLine).getTime() / 1000)
-                                    : null,
+                      topicEndDate: samEndTs ?? null,
                       description: opp.solicitationNumber
                         ? `Solicitation: ${opp.solicitationNumber}. ${opp.fullParentPathName ?? ""}`
                                     : opp.fullParentPathName ?? "",
@@ -422,7 +442,8 @@ function parseSamGovResponse(json: string): unknown[] {
                       tags: [opp.type, opp.typeOfSetAsideDescription, opp.naicsCode]
                         .filter(Boolean)
                         .join(", "),
-          }));
+          };
+          });
 }
 
 // ─── SBIR fetch helper ────────────────────────────────────────────────────────
@@ -527,6 +548,10 @@ app.get("/api/opportunities", async (c) => {
                                                                                                           }
                                                                                         }
                                                                       }
+                                                                      record.topicStatus = normalizeStatus(
+                                                                                        String(record.topicStatus ?? record.topicQAStatusDisplay ?? ""),
+                                                                                        Number(record.topicEndDate) || undefined
+                                                                      );
                                                     });
                                                     allResults.push(...content);
                                                     // Only trust the count if the data fetch also succeeded,
@@ -588,7 +613,7 @@ app.get("/api/opportunities", async (c) => {
                                                                       source: "colosseum",
                                                                       topicCode: ch.id,
                                                                       topicTitle: ch.title,
-                                                                      topicStatus: "Open",
+                                                                      topicStatus: normalizeStatus(undefined, undefined),
                                                                       description: ch.desc,
                                                                       url: `https://marketplace.gocolosseum.org/public/challenges/${ch.id}`,
                                                                       component: "GoColosseum / ONI",
