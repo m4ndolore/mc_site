@@ -718,7 +718,8 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
       },
     );
     return () => { cancelled = true; };
-  }, [needsAllOpps, allOpportunities.length, allOppsLoading]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [needsAllOpps]);
 
   // Bridge: resolve savedIds to full Opportunity objects for SavedPanel
   const savedCount = profile?.savedIds.length ?? 0;
