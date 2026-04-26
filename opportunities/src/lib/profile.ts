@@ -51,7 +51,29 @@ function removeProfile(): void {
 }
 
 export function useProfile() {
-  const [profile, setProfile] = useState<OpportunityProfile | null>(() => loadProfile());
+  const [profile, setProfile] = useState<OpportunityProfile | null>(() => {
+    const existing = loadProfile();
+    if (existing) return existing;
+
+    // Eagerly migrate saved IDs from the old key so they are visible
+    // before intake completes. Creates a bare profile to hold them.
+    const migratedIds = migrateSavedIds();
+    if (migratedIds.length > 0) {
+      const now = new Date().toISOString();
+      const bare: OpportunityProfile = {
+        techAreas: [],
+        problemAreas: [],
+        viewMode: "opportunity",
+        savedIds: migratedIds,
+        createdAt: now,
+        updatedAt: now,
+      };
+      persistProfile(bare);
+      return bare;
+    }
+
+    return null;
+  });
 
   useEffect(() => {
     const onStorage = (event: StorageEvent): void => {
@@ -66,13 +88,15 @@ export function useProfile() {
   const createProfile = useCallback(
     (techAreas: string[], problemAreas: string[], viewMode: ViewMode): void => {
       const migratedIds = migrateSavedIds();
+      const existingProfile = loadProfile();
+      const existingSaved = existingProfile?.savedIds ?? [];
       const now = new Date().toISOString();
       const next: OpportunityProfile = {
         techAreas,
         problemAreas,
         viewMode,
-        savedIds: migratedIds,
-        createdAt: now,
+        savedIds: [...new Set([...existingSaved, ...migratedIds])],
+        createdAt: existingProfile?.createdAt ?? now,
         updatedAt: now,
       };
       persistProfile(next);
