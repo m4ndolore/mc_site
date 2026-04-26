@@ -452,7 +452,7 @@ function Layout(): React.JSX.Element {
               <span className="nav__logo-combinator">Combinator</span>
             </span>
             <img
-              src="/opportunities/arrows-2.png"
+              src="/opportunities/arrows-new.png"
               alt="Merge arrows"
               className="nav__logo-icon"
             />
@@ -548,7 +548,7 @@ function Layout(): React.JSX.Element {
                   <span className="footer__logo-combinator">Combinator</span>
                 </span>
                 <img
-                  src="/opportunities/arrows-2.png"
+                  src="/opportunities/arrows-new.png"
                   alt="Merge arrows"
                   className="footer__logo-icon"
                 />

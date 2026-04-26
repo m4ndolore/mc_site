@@ -253,7 +253,7 @@ const gfeedStyles = `
     color: var(--gray-light);
   }
   .gfeed-header__chevron {
-    font-size: 0.875rem;
+    font-size: 1.25rem;
     color: var(--gray-light);
     transition: transform 150ms ease;
     display: inline-block;

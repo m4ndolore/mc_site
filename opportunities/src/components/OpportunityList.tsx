@@ -73,11 +73,11 @@ function OpportunityList({
   const [error, setError] = useState<string | null>(null);
 
   // Filters
-  const [statusFilter, setStatusFilter] = useState("active");
+  const [statusFilter, setStatusFilter] = useState("open");
   const [componentFilter, setComponentFilter] = useState("");
   const [keyword, setKeyword] = useState(initialKeyword);
   const [pendingKeyword, setPendingKeyword] = useState(initialKeyword);
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("deadline");
 
   const pageSize = 25;
 
