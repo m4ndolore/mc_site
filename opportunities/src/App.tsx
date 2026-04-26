@@ -575,13 +575,19 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
   // Profile hook replaces old useSavedOpportunities
   const { profile, hasProfile, createProfile, updateProfile, clearProfile, toggleSavedId, isSaved } = useProfile();
 
-  // Intake/skip state
-  const [skippedIntake, setSkippedIntake] = useState(false);
+  // Intake/skip state (persisted so migrated users don't see intake every page load)
+  const [skippedIntake, setSkippedIntake] = useState(() => {
+    try { return localStorage.getItem("mc-opportunity-skip-intake") === "1"; } catch { return false; }
+  });
+  const persistSkip = (): void => {
+    setSkippedIntake(true);
+    try { localStorage.setItem("mc-opportunity-skip-intake", "1"); } catch { /* ignore */ }
+  };
 
   // Auto-skip intake for /sbir and /sttr routes
   useEffect(() => {
     if (mode === "sbir" || mode === "sttr") {
-      setSkippedIntake(true);
+      persistSkip();
     }
   }, [mode]);
 
@@ -720,7 +726,7 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
         </div>
         <IntakeFlow
           onComplete={createProfile}
-          onSkip={() => setSkippedIntake(true)}
+          onSkip={persistSkip}
         />
       </div>
     );
@@ -750,8 +756,8 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
       {isFullProfile && (
         <ProfileBar
           profile={profile!}
-          onEditPreferences={clearProfile}
-          onClearProfile={clearProfile}
+          onEditPreferences={() => updateProfile({ techAreas: [], problemAreas: [] })}
+          onClearProfile={() => { clearProfile(); setSkippedIntake(false); try { localStorage.removeItem("mc-opportunity-skip-intake"); } catch { /* ignore */ } }}
           onChangeViewMode={(m) => updateProfile({ viewMode: m })}
         />
       )}
