@@ -791,10 +791,11 @@ type IntelArticle = {
 app.get("/api/intel/feed", async (c) => {
   const limit = Math.min(parseInt(c.req.query("limit") ?? "50", 10), 100);
 
-  // Build Irregulars RSS feed URL with token
+  // Build Irregulars RSS feed URL with token — use /feed/news (curated articles)
+  // instead of /feed/all (includes social media, videos, repos)
   const irToken = c.env.IRREGULARS_FEED_TOKEN;
   const irregularsUrl = irToken
-    ? `https://rss.irregulars.io/feed/all?token=${encodeURIComponent(irToken)}`
+    ? `https://rss.irregulars.io/feed/news?token=${encodeURIComponent(irToken)}`
     : null;
 
   const [egXml, hnXml, irXml] = await Promise.all([
@@ -803,10 +804,36 @@ app.get("/api/intel/feed", async (c) => {
     irregularsUrl ? cachedFetch(irregularsUrl, TTL.intel) : Promise.resolve(null),
   ]);
 
+  // ExecutiveGov is already defense-only; HN and Irregulars need filtering
+  const DEFENSE_KEYWORDS = [
+    "defense", "defence", "military", "pentagon", "dod", "department of defense",
+    "national security", "nato", "indo-pacific", "pacom", "indopacom",
+    "drone", "uas", "c-uas", "cuas", "counter-drone", "unmanned",
+    "cyber", "infosec", "sigint", "osint", "intelligence",
+    "sbir", "sttr", "darpa", "diu", "afrl", "afwerx", "socom", "sofwerx",
+    "acquisition", "contracting", "far ", "dfars", "ota ",
+    "missile", "munition", "weapon", "warfighter", "warfighting",
+    "ai ", "artificial intelligence", "autonomy", "autonomous",
+    "satellite", "space force", "ussf", "space command",
+    "navy", "army", "air force", "marine", "coast guard",
+    "ukraine", "china", "russia", "taiwan", "iran",
+    "veterans", "clearance", "classified", "itar", "cmmc",
+    "electronic warfare", " ew ", "radar", "rf ", "spectrum",
+    "logistics", "supply chain", "readiness",
+  ];
+
+  function isDefenseRelevant(title: string, excerpt: string): boolean {
+    const text = `${title} ${excerpt}`.toLowerCase();
+    return DEFENSE_KEYWORDS.some((kw) => text.includes(kw));
+  }
+
+  const irArticles = irXml ? (parseRssFeed(irXml, "irregulars") as IntelArticle[]) : [];
+  const hnArticles = hnXml ? (parseRssFeed(hnXml, "hackernews") as IntelArticle[]) : [];
+
   const articles: IntelArticle[] = [
-    ...(irXml ? (parseRssFeed(irXml, "irregulars") as IntelArticle[]) : []),
+    ...irArticles.filter((a) => isDefenseRelevant(a.title, a.excerpt)),
     ...(egXml ? (parseRssFeed(egXml, "executivegov") as IntelArticle[]) : []),
-    ...(hnXml ? (parseRssFeed(hnXml, "hackernews") as IntelArticle[]) : []),
+    ...hnArticles.filter((a) => isDefenseRelevant(a.title, a.excerpt)),
   ];
 
   // Deduplicate by normalized title
@@ -825,9 +852,9 @@ app.get("/api/intel/feed", async (c) => {
     articles: deduped.slice(0, limit),
     total: deduped.length,
     sources: {
-      irregulars: articles.filter((a) => a.source === "irregulars").length,
-      executivegov: articles.filter((a) => a.source === "executivegov").length,
-      hackernews: articles.filter((a) => a.source === "hackernews").length,
+      irregulars: { total: irArticles.length, relevant: articles.filter((a) => a.source === "irregulars").length },
+      executivegov: { total: articles.filter((a) => a.source === "executivegov").length },
+      hackernews: { total: hnArticles.length, relevant: articles.filter((a) => a.source === "hackernews").length },
     },
     attribution: "Defense intel curated by IrregularChat (https://irregulars.io)",
   });
