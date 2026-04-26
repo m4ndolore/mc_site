@@ -4,9 +4,13 @@ import Layout from "./components/Layout";
 import OpportunityList from "./components/OpportunityList";
 import TabBar from "./components/TabBar";
 import SavedPanel from "./components/SavedPanel";
+import IntakeFlow from "./components/IntakeFlow";
+import ProfileBar from "./components/ProfileBar";
+import GroupedFeed from "./components/GroupedFeed";
 import type { Opportunity } from "./types/opportunity";
-import { fetchOpportunity } from "./lib/api";
-import { useSavedOpportunities } from "./lib/saved-opportunities";
+import type { ViewMode } from "./types/profile";
+import { fetchOpportunity, fetchOpportunities } from "./lib/api";
+import { useProfile } from "./lib/profile";
 
 function formatDate(dateString: string | undefined): string {
   if (!dateString) return "N/A";
@@ -567,8 +571,68 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
   const [activeTab, setActiveTab] = useState("solicitations");
   const [selectedOpportunity, setSelectedOpportunity] =
     useState<Opportunity | null>(null);
-  const { saved, savedCount, isSaved, toggleSaved, clearSaved } = useSavedOpportunities();
-  const savedEmailHref = useMemo(() => buildSavedOpportunitiesEmailHref(saved), [saved]);
+
+  // Profile hook replaces old useSavedOpportunities
+  const { profile, hasProfile, createProfile, updateProfile, clearProfile, toggleSavedId, isSaved } = useProfile();
+
+  // Intake/skip state
+  const [skippedIntake, setSkippedIntake] = useState(false);
+
+  // Auto-skip intake for /sbir and /sttr routes
+  useEffect(() => {
+    if (mode === "sbir" || mode === "sttr") {
+      setSkippedIntake(true);
+    }
+  }, [mode]);
+
+  const isFullProfile = hasProfile && (profile!.techAreas.length > 0 || profile!.problemAreas.length > 0);
+  const showIntake = !isFullProfile && !skippedIntake;
+
+  // All-opportunities cache for grouped views and saved-tab resolution
+  const [allOpportunities, setAllOpportunities] = useState<Opportunity[]>([]);
+  const [allOppsLoading, setAllOppsLoading] = useState(false);
+
+  const needsAllOpps =
+    (isFullProfile && profile!.viewMode !== "opportunity") ||
+    activeTab === "saved";
+
+  useEffect(() => {
+    if (!needsAllOpps || allOpportunities.length > 0 || allOppsLoading) return;
+    let cancelled = false;
+    setAllOppsLoading(true);
+    void fetchOpportunities({ size: 200, status: "active" }).then(
+      (res) => {
+        if (!cancelled) {
+          setAllOpportunities(res.data);
+          setAllOppsLoading(false);
+        }
+      },
+      () => {
+        if (!cancelled) setAllOppsLoading(false);
+      },
+    );
+    return () => { cancelled = true; };
+  }, [needsAllOpps, allOpportunities.length, allOppsLoading]);
+
+  // Bridge: resolve savedIds to full Opportunity objects for SavedPanel
+  const savedCount = profile?.savedIds.length ?? 0;
+  const savedOpportunities = useMemo(() => {
+    if (!profile || profile.savedIds.length === 0) return [];
+    const idSet = new Set(profile.savedIds);
+    return allOpportunities.filter((opp) => idSet.has(opp.id) || idSet.has(opp.topicId));
+  }, [profile, allOpportunities]);
+  const savedEmailHref = useMemo(() => buildSavedOpportunitiesEmailHref(savedOpportunities), [savedOpportunities]);
+
+  // Bridge functions for components that expect (opportunity: Opportunity) signatures
+  const handleToggleSave = (opp: Opportunity): void => toggleSavedId(opp.id || opp.topicId);
+  const handleIsSaved = (opp: Opportunity): boolean => isSaved(opp.id) || isSaved(opp.topicId);
+  const handleClearSaved = (): void => {
+    if (!profile) return;
+    // Clear all saved IDs by toggling each one off
+    for (const id of [...profile.savedIds]) {
+      toggleSavedId(id);
+    }
+  };
 
   useEffect(() => {
     if (!selectedOpportunity) return;
@@ -635,6 +699,36 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
     upsertCanonical(seo.canonical);
   }, [seo]);
 
+  // Intake flow — first-time visitors without a full profile
+  if (showIntake) {
+    return (
+      <div>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <h1
+            style={{
+              fontSize: "2rem",
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              marginBottom: "0.375rem",
+            }}
+          >
+            {seo.heading}
+          </h1>
+          <p style={{ color: "var(--mc-text-muted)", maxWidth: "36rem", fontSize: "0.875rem" }}>
+            {seo.subtitle}
+          </p>
+        </div>
+        <IntakeFlow
+          onComplete={createProfile}
+          onSkip={() => setSkippedIntake(true)}
+        />
+      </div>
+    );
+  }
+
+  // Determine active view mode for personalized feed
+  const viewMode: ViewMode = isFullProfile ? profile!.viewMode : "opportunity";
+
   return (
     <div>
       <div style={{ marginBottom: "1.5rem" }}>
@@ -653,23 +747,66 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
         </p>
       </div>
 
+      {isFullProfile && (
+        <ProfileBar
+          profile={profile!}
+          onEditPreferences={clearProfile}
+          onClearProfile={clearProfile}
+          onChangeViewMode={(m) => updateProfile({ viewMode: m })}
+        />
+      )}
+
       <TabBar tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {activeTab === "solicitations" && (
+      {activeTab === "solicitations" && viewMode === "opportunity" && (
         <OpportunityList
           onSelect={setSelectedOpportunity}
           initialKeyword={seo.keyword}
-          onToggleSave={toggleSaved}
-          isSaved={isSaved}
+          onToggleSave={handleToggleSave}
+          isSaved={handleIsSaved}
         />
+      )}
+
+      {activeTab === "solicitations" && viewMode === "stakeholder" && (
+        allOppsLoading ? (
+          <div style={{ textAlign: "center", padding: "4rem 1rem", color: "var(--mc-text-muted)" }}>
+            Loading opportunities...
+          </div>
+        ) : (
+          <GroupedFeed
+            opportunities={allOpportunities}
+            groupBy="component"
+            profile={profile!}
+            onSelectOpportunity={setSelectedOpportunity}
+            onToggleSave={handleToggleSave}
+            isSaved={isSaved}
+          />
+        )
+      )}
+
+      {activeTab === "solicitations" && viewMode === "mission" && (
+        allOppsLoading ? (
+          <div style={{ textAlign: "center", padding: "4rem 1rem", color: "var(--mc-text-muted)" }}>
+            Loading opportunities...
+          </div>
+        ) : (
+          <GroupedFeed
+            opportunities={allOpportunities}
+            groupBy="problemArea"
+            profile={profile!}
+            onSelectOpportunity={setSelectedOpportunity}
+            onToggleSave={handleToggleSave}
+            isSaved={isSaved}
+          />
+        )
       )}
 
       {activeTab === "saved" && (
         <SavedPanel
-          saved={saved}
+          saved={savedOpportunities}
           onSelect={setSelectedOpportunity}
-          onToggleSave={toggleSaved}
-          onClearSaved={clearSaved}
+          onToggleSave={handleToggleSave}
+          onClearSaved={handleClearSaved}
           emailSavedHref={savedEmailHref}
         />
       )}
@@ -678,8 +815,8 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
         <OpportunityModal
           opportunity={selectedOpportunity}
           onClose={() => setSelectedOpportunity(null)}
-          onToggleSave={toggleSaved}
-          isSaved={isSaved(selectedOpportunity)}
+          onToggleSave={handleToggleSave}
+          isSaved={handleIsSaved(selectedOpportunity)}
         />
       )}
 
@@ -710,7 +847,7 @@ function OpportunityDetailPage(): React.JSX.Element {
   const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { isSaved, toggleSaved } = useSavedOpportunities();
+  const { isSaved, toggleSavedId } = useProfile();
 
   useEffect(() => {
     let isMounted = true;
@@ -818,7 +955,7 @@ function OpportunityDetailPage(): React.JSX.Element {
     : "Open opportunity summary";
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
-  const saved = isSaved(opportunity);
+  const saved = isSaved(opportunity.id) || isSaved(opportunity.topicId);
   const summarySections = [
     { title: "Objective", body: opportunity.objective },
     { title: "Description", body: opportunity.description },
@@ -897,7 +1034,7 @@ function OpportunityDetailPage(): React.JSX.Element {
         </a>
         <button
           type="button"
-          onClick={() => toggleSaved(opportunity)}
+          onClick={() => toggleSavedId(opportunity.id || opportunity.topicId)}
           style={{
             color: "var(--mc-accent)",
             background: "none",
