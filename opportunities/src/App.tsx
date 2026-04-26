@@ -106,6 +106,39 @@ function normalizeTopicCode(topicCode: string | undefined): string {
   return code;
 }
 
+function getStatusColor(status: string): string {
+  const s = status.toLowerCase();
+  if (s === "closing-soon" || s.includes("closing")) return "var(--mc-warning)";
+  if (s === "pre-release" || s.includes("pre")) return "var(--mc-accent)";
+  if (s === "closed") return "var(--gray-medium, #737373)";
+  return "var(--mc-success)"; // open, active, default
+}
+
+function getStatusLabel(status: string): string {
+  const s = status.toLowerCase();
+  if (s === "closing-soon") return "Closing Soon";
+  if (s === "pre-release") return "Pre-Release";
+  if (s === "closed") return "Closed";
+  return "Open";
+}
+
+function getDeadlineDisplay(deadline: string | undefined): { text: string; urgent: boolean } {
+  if (!deadline) return { text: "No deadline listed", urgent: false };
+  const days = Math.ceil((new Date(deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+  if (days < 0) return { text: "Past due", urgent: true };
+  if (days < 30) return { text: `${days} days left`, urgent: true };
+  return { text: formatDate(deadline), urgent: false };
+}
+
+function formatEstimatedValue(val: { min?: number; max?: number } | undefined): string | null {
+  if (!val) return null;
+  const fmt = (n: number) => n >= 1_000_000 ? `$${(n / 1_000_000).toFixed(1)}M` : `$${Math.round(n / 1000)}K`;
+  if (val.min && val.max) return `${fmt(val.min)}\u2013${fmt(val.max)}`;
+  if (val.max) return `Up to ${fmt(val.max)}`;
+  if (val.min) return `From ${fmt(val.min)}`;
+  return null;
+}
+
 function isHumanReadableSourceUrl(url: string | undefined): boolean {
   if (!url) return false;
   return !/\/topics\/api\/public\/topics\/.+\/details$/i.test(url);
@@ -282,34 +315,53 @@ function OpportunityModal({
           flex-direction: column;
           gap: 1.25rem;
         }
-        .modal-meta-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 0.75rem;
-        }
-        .modal-meta-item {
+        .modal-status-strip {
           display: flex;
-          flex-direction: column;
-          gap: 0.125rem;
+          align-items: center;
+          gap: 1rem;
+          padding: 0.75rem 1rem;
+          background: var(--mc-bg-tertiary);
+          border-radius: 2px;
+          font-size: 0.8125rem;
+          flex-wrap: wrap;
         }
-        .modal-meta-label {
-          font-size: 0.6875rem;
-          font-weight: 500;
+        .modal-status-strip__badge {
+          font-weight: 600;
+          font-size: 0.75rem;
+          padding: 0.125rem 0.5rem;
+          border-radius: 2px;
+        }
+        .modal-status-strip__separator {
+          width: 1px;
+          height: 1rem;
+          background: var(--mc-border);
+        }
+        .modal-status-strip__item {
           color: var(--mc-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
         }
-        .modal-meta-value {
-          font-size: 0.875rem;
-          color: var(--mc-text);
-        }
-        .modal-meta-value--success {
-          color: var(--mc-success);
-          font-weight: 500;
-        }
-        .modal-meta-value--warning {
+        .modal-status-strip__item--urgent {
           color: var(--mc-warning);
-          font-weight: 500;
+          font-weight: 600;
+        }
+        .modal-phase-details {
+          border: 1px solid var(--mc-border);
+          border-radius: 2px;
+          margin-bottom: 0.5rem;
+        }
+        .modal-phase-details summary {
+          padding: 0.625rem 1rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: var(--mc-text);
+          cursor: pointer;
+          list-style: none;
+        }
+        .modal-phase-details summary::-webkit-details-marker { display: none; }
+        .modal-phase-details[open] summary {
+          border-bottom: 1px solid var(--mc-border);
+        }
+        .modal-phase-details .modal-description {
+          padding: 0.75rem 1rem;
         }
         .modal-section-label {
           font-size: 0.6875rem;
@@ -378,11 +430,14 @@ function OpportunityModal({
         <div className="modal-content">
           <div className="modal-header">
             <div>
-              <div className="modal-topic-code">
-                {normalizeTopicCode(opportunity.topicCode) ||
-                  `${opportunity.source.toUpperCase()} • ${opportunity.component}`}
-              </div>
               <h2 className="modal-title">{opportunity.topicTitle}</h2>
+              <div className="modal-topic-code" style={{ marginTop: "0.25rem", marginBottom: 0 }}>
+                {opportunity.source.toUpperCase()}
+                {normalizeTopicCode(opportunity.topicCode) ? ` • ${normalizeTopicCode(opportunity.topicCode)}` : ""}
+              </div>
+              <div style={{ fontSize: "0.8125rem", color: "var(--mc-text-muted)", marginTop: "0.125rem" }}>
+                {opportunity.component}{opportunity.program ? ` / ${opportunity.program}` : ""}
+              </div>
             </div>
             <button
               className="modal-close-btn"
@@ -395,60 +450,105 @@ function OpportunityModal({
           </div>
 
           <div className="modal-body">
-            <div className="modal-meta-grid">
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Component</span>
-                <span className="modal-meta-value">
-                  {opportunity.component}
-                </span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Program</span>
-                <span className="modal-meta-value">{opportunity.program}</span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Status</span>
-                <span className="modal-meta-value modal-meta-value--success">
-                  {opportunity.topicStatus}
-                </span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Deadline</span>
-                <span className="modal-meta-value modal-meta-value--warning">
-                  {formatDate(
-                    opportunity.responseDeadline ?? opportunity.closeDate,
+            {(() => {
+              const statusColor = getStatusColor(opportunity.topicStatus);
+              const statusLabel = getStatusLabel(opportunity.topicStatus);
+              const deadline = getDeadlineDisplay(opportunity.responseDeadline ?? opportunity.closeDate);
+              const estValue = formatEstimatedValue(opportunity.estimatedValue);
+              return (
+                <div className="modal-status-strip" style={{ borderLeft: `3px solid ${statusColor}` }}>
+                  <span
+                    className="modal-status-strip__badge"
+                    style={{ color: statusColor, background: `color-mix(in srgb, ${statusColor} 15%, transparent)` }}
+                  >
+                    {statusLabel}
+                  </span>
+                  <span className="modal-status-strip__separator" />
+                  <span className={deadline.urgent ? "modal-status-strip__item--urgent" : "modal-status-strip__item"}>
+                    {deadline.text}
+                  </span>
+                  <span className="modal-status-strip__separator" />
+                  <span className="modal-status-strip__item">
+                    Posted {formatDate(opportunity.postedDate)}
+                  </span>
+                  {estValue && (
+                    <>
+                      <span className="modal-status-strip__separator" />
+                      <span className="modal-status-strip__item" style={{ fontWeight: 500, color: "var(--mc-text)" }}>
+                        {estValue}
+                      </span>
+                    </>
                   )}
-                </span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Open Date</span>
-                <span className="modal-meta-value">
-                  {formatDate(opportunity.openDate)}
-                </span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Posted</span>
-                <span className="modal-meta-value">
-                  {formatDate(opportunity.postedDate)}
-                </span>
-              </div>
-            </div>
+                </div>
+              );
+            })()}
 
             {opportunity.objective && (
               <div>
                 <div className="modal-section-label">Objective</div>
-                <p className="modal-description">
-                  {sanitizeText(opportunity.objective)}
-                </p>
+                <RichTextBlock text={opportunity.objective} />
+                {!htmlToParagraphs(opportunity.objective).length && (
+                  <p className="modal-description">
+                    {sanitizeText(opportunity.objective)}
+                  </p>
+                )}
               </div>
             )}
 
             <div>
               <div className="modal-section-label">Description</div>
-              <p className="modal-description">
-                {sanitizeText(opportunity.description)}
-              </p>
+              <RichTextBlock text={opportunity.description} />
+              {!htmlToParagraphs(opportunity.description).length && (
+                <p className="modal-description">
+                  {sanitizeText(opportunity.description)}
+                </p>
+              )}
             </div>
+
+            {(opportunity.phase1Description || opportunity.phase2Description || opportunity.phase3Description) && (
+              <div>
+                <div className="modal-section-label">Phase Breakdown</div>
+                {opportunity.phase1Description && (
+                  <details className="modal-phase-details">
+                    <summary>Phase I</summary>
+                    <div className="modal-description">
+                      <RichTextBlock text={opportunity.phase1Description} />
+                      {!htmlToParagraphs(opportunity.phase1Description).length && (
+                        <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.75, whiteSpace: "pre-wrap" }}>
+                          {sanitizeText(opportunity.phase1Description)}
+                        </p>
+                      )}
+                    </div>
+                  </details>
+                )}
+                {opportunity.phase2Description && (
+                  <details className="modal-phase-details">
+                    <summary>Phase II</summary>
+                    <div className="modal-description">
+                      <RichTextBlock text={opportunity.phase2Description} />
+                      {!htmlToParagraphs(opportunity.phase2Description).length && (
+                        <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.75, whiteSpace: "pre-wrap" }}>
+                          {sanitizeText(opportunity.phase2Description)}
+                        </p>
+                      )}
+                    </div>
+                  </details>
+                )}
+                {opportunity.phase3Description && (
+                  <details className="modal-phase-details">
+                    <summary>Phase III</summary>
+                    <div className="modal-description">
+                      <RichTextBlock text={opportunity.phase3Description} />
+                      {!htmlToParagraphs(opportunity.phase3Description).length && (
+                        <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.75, whiteSpace: "pre-wrap" }}>
+                          {sanitizeText(opportunity.phase3Description)}
+                        </p>
+                      )}
+                    </div>
+                  </details>
+                )}
+              </div>
+            )}
 
             {opportunity.technologyAreas &&
               opportunity.technologyAreas.length > 0 && (
@@ -962,13 +1062,7 @@ function OpportunityDetailPage(): React.JSX.Element {
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
   const saved = isSaved(opportunity.id) || isSaved(opportunity.topicId);
-  const summarySections = [
-    { title: "Objective", body: opportunity.objective },
-    { title: "Description", body: opportunity.description },
-    { title: "Phase I", body: opportunity.phase1Description },
-    { title: "Phase II", body: opportunity.phase2Description },
-    { title: "Phase III", body: opportunity.phase3Description },
-  ].filter((section) => section.body);
+  const hasPhases = opportunity.phase1Description || opportunity.phase2Description || opportunity.phase3Description;
 
   return (
     <article style={{ maxWidth: "860px", margin: "0 auto" }}>
@@ -981,7 +1075,10 @@ function OpportunityDetailPage(): React.JSX.Element {
         {opportunity.topicTitle}
       </h1>
       <p style={{ color: "var(--mc-text-muted)", marginBottom: "1.25rem" }}>
-        {opportunity.topicCode} • {opportunity.component} • {opportunity.program}
+        {opportunity.source.toUpperCase()}
+        {normalizeTopicCode(opportunity.topicCode) ? ` • ${normalizeTopicCode(opportunity.topicCode)}` : ""}
+        {" • "}{opportunity.component}
+        {opportunity.program ? ` • ${opportunity.program}` : ""}
       </p>
       {opportunity.solicitationTitle && (
         <p style={{ color: "var(--mc-text-muted)", marginTop: "-0.5rem", marginBottom: "1.25rem" }}>
@@ -989,31 +1086,57 @@ function OpportunityDetailPage(): React.JSX.Element {
         </p>
       )}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: "0.75rem",
-          marginBottom: "1.25rem",
-        }}
-      >
-        <div>
-          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Status</div>
-          <div>{opportunity.topicStatus}</div>
-        </div>
-        <div>
-          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Posted</div>
-          <div>{formatDate(opportunity.postedDate)}</div>
-        </div>
-        <div>
-          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Deadline</div>
-          <div>{formatDate(dueDate)}</div>
-        </div>
-        <div>
-          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Open</div>
-          <div>{formatDate(opportunity.openDate)}</div>
-        </div>
-      </div>
+      {(() => {
+        const statusColor = getStatusColor(opportunity.topicStatus);
+        const statusLabel = getStatusLabel(opportunity.topicStatus);
+        const deadlineInfo = getDeadlineDisplay(dueDate);
+        const estValue = formatEstimatedValue(opportunity.estimatedValue);
+        return (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              padding: "0.75rem 1rem",
+              background: "var(--mc-bg-tertiary)",
+              borderRadius: "2px",
+              borderLeft: `3px solid ${statusColor}`,
+              fontSize: "0.8125rem",
+              flexWrap: "wrap",
+              marginBottom: "1.25rem",
+            }}
+          >
+            <span
+              style={{
+                fontWeight: 600,
+                fontSize: "0.75rem",
+                padding: "0.125rem 0.5rem",
+                borderRadius: "2px",
+                color: statusColor,
+                background: `color-mix(in srgb, ${statusColor} 15%, transparent)`,
+              }}
+            >
+              {statusLabel}
+            </span>
+            <span style={{ width: "1px", height: "1rem", background: "var(--mc-border)" }} />
+            <span style={deadlineInfo.urgent ? { color: "var(--mc-warning)", fontWeight: 600 } : { color: "var(--mc-text-muted)" }}>
+              {deadlineInfo.text}
+            </span>
+            <span style={{ width: "1px", height: "1rem", background: "var(--mc-border)" }} />
+            <span style={{ color: "var(--mc-text-muted)" }}>
+              Posted {formatDate(opportunity.postedDate)}
+            </span>
+            {estValue && (
+              <>
+                <span style={{ width: "1px", height: "1rem", background: "var(--mc-border)" }} />
+                <span style={{ fontWeight: 500, color: "var(--mc-text)" }}>
+                  {estValue}
+                </span>
+              </>
+            )}
+          </div>
+        );
+      })()}
 
       <p style={{ marginBottom: "0.75rem" }}>
         <a
@@ -1054,12 +1177,98 @@ function OpportunityDetailPage(): React.JSX.Element {
         </button>
       </p>
 
-      {summarySections.map((section) => (
-        <section key={section.title} style={{ marginBottom: "1.5rem" }}>
-          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>{section.title}</h2>
-          <RichTextBlock text={section.body} />
+      {opportunity.objective && (
+        <section style={{ marginBottom: "1.5rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>Objective</h2>
+          <RichTextBlock text={opportunity.objective} />
         </section>
-      ))}
+      )}
+
+      <section style={{ marginBottom: "1.5rem" }}>
+        <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>Description</h2>
+        <RichTextBlock text={opportunity.description} />
+      </section>
+
+      {hasPhases && (
+        <section style={{ marginBottom: "1.5rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>Phase Breakdown</h2>
+          {opportunity.phase1Description && (
+            <details
+              style={{
+                border: "1px solid var(--mc-border)",
+                borderRadius: "2px",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <summary
+                style={{
+                  padding: "0.625rem 1rem",
+                  fontSize: "0.8125rem",
+                  fontWeight: 600,
+                  color: "var(--mc-text)",
+                  cursor: "pointer",
+                  listStyle: "none",
+                }}
+              >
+                Phase I
+              </summary>
+              <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid var(--mc-border)" }}>
+                <RichTextBlock text={opportunity.phase1Description} />
+              </div>
+            </details>
+          )}
+          {opportunity.phase2Description && (
+            <details
+              style={{
+                border: "1px solid var(--mc-border)",
+                borderRadius: "2px",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <summary
+                style={{
+                  padding: "0.625rem 1rem",
+                  fontSize: "0.8125rem",
+                  fontWeight: 600,
+                  color: "var(--mc-text)",
+                  cursor: "pointer",
+                  listStyle: "none",
+                }}
+              >
+                Phase II
+              </summary>
+              <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid var(--mc-border)" }}>
+                <RichTextBlock text={opportunity.phase2Description} />
+              </div>
+            </details>
+          )}
+          {opportunity.phase3Description && (
+            <details
+              style={{
+                border: "1px solid var(--mc-border)",
+                borderRadius: "2px",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <summary
+                style={{
+                  padding: "0.625rem 1rem",
+                  fontSize: "0.8125rem",
+                  fontWeight: 600,
+                  color: "var(--mc-text)",
+                  cursor: "pointer",
+                  listStyle: "none",
+                }}
+              >
+                Phase III
+              </summary>
+              <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid var(--mc-border)" }}>
+                <RichTextBlock text={opportunity.phase3Description} />
+              </div>
+            </details>
+          )}
+        </section>
+      )}
 
       {opportunity.technologyAreas && opportunity.technologyAreas.length > 0 && (
         <section style={{ marginBottom: "1.25rem" }}>
