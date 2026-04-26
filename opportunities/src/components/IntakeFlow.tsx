@@ -341,7 +341,7 @@ function IntakeFlow({ onComplete, onSkip }: IntakeFlowProps): React.JSX.Element 
             <p className="intake-step-subtitle">
               Choose how opportunities are organized for you.
             </p>
-            <div className="intake-card-grid">
+            <div className="intake-card-grid" role="radiogroup" aria-label="Exploration mode">
               {VIEW_MODE_OPTIONS.map((option) => (
                 <div
                   key={option.id}
