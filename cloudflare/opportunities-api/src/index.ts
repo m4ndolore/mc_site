@@ -515,6 +515,18 @@ app.get("/api/opportunities", async (c) => {
                                                                       if (!record.url && topicId) {
                                                                                         record.url = buildSbirDetailUrl(topicId);
                                                                       }
+                                                                      // Infer estimated value for SBIR/STTR based on phase
+                                                                      if (!record.estimatedValue) {
+                                                                                        const programStr = String(record.program ?? record.solicitationType ?? "").toUpperCase();
+                                                                                        const phaseStr = String(record.phase ?? record.topicPhase ?? record.currentPhase ?? "");
+                                                                                        if (programStr.includes("SBIR") || programStr.includes("STTR")) {
+                                                                                                          if (/1|^I$/i.test(phaseStr)) {
+                                                                                                                            record.estimatedValue = { min: 50000, max: 275000 };
+                                                                                                          } else if (/2|^II$/i.test(phaseStr)) {
+                                                                                                                            record.estimatedValue = { min: 750000, max: 1750000 };
+                                                                                                          }
+                                                                                        }
+                                                                      }
                                                     });
                                                     allResults.push(...content);
                                                     // Only trust the count if the data fetch also succeeded,
