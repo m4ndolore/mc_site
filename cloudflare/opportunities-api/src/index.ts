@@ -5,7 +5,7 @@ type Bindings = {
           SBIR_API_URL: string;
           SAM_GOV_API_KEY: string;
           STAGEHAND_URL?: string;
-          IRREGULARS_API_TOKEN?: string;
+          IRREGULARS_FEED_TOKEN?: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -772,46 +772,6 @@ app.get("/api/outlook", async (c) => {
   }
 });
 
-// ─── Irregulars HTML parser (public browse page, no auth required) ──────────
-function parseIrregularsBrowseHtml(html: string): IntelArticle[] {
-  const articles: IntelArticle[] = [];
-  // Each link card has: title (h3/a), summary (p), domain, timestamp
-  // Match card blocks — look for link-card boundaries
-  const cardRegex = /<a[^>]*href="(https?:\/\/[^"]+)"[^>]*class="[^"]*card[^"]*"[^>]*>([\s\S]*?)<\/a>/gi;
-  let match;
-  while ((match = cardRegex.exec(html)) !== null && articles.length < 50) {
-    const url = match[1];
-    const block = match[2];
-    const titleMatch = block.match(/<(?:h3|h4|strong)[^>]*>([\s\S]*?)<\/(?:h3|h4|strong)>/i);
-    const title = titleMatch?.[1]?.replace(/<[^>]+>/g, "").trim() ?? "";
-    const descMatch = block.match(/<p[^>]*>([\s\S]*?)<\/p>/i);
-    const excerpt = descMatch?.[1]?.replace(/<[^>]+>/g, "").trim().slice(0, 300) ?? "";
-    if (!title || title.length < 5) continue;
-    // Skip social media posts without meaningful titles
-    if (/^(Instagram|Facebook|Tweet|X post)/i.test(title)) continue;
-    articles.push({
-      id: `irr-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 60)}`,
-      source: "irregulars",
-      title,
-      excerpt,
-      url,
-      date: new Date().toISOString().split("T")[0],
-      tags: [],
-      attribution: "IrregularChat",
-      attributionUrl: "https://irregulars.io",
-    });
-  }
-  return articles;
-}
-
-// ─── Irregulars API parser (authenticated, richer data) ─────────────────────
-function parseIrregularsApiHtml(html: string): IntelArticle[] {
-  // The /api/links endpoint returns HTML fragments with link cards
-  // Similar structure to browse page but potentially different markup
-  const articles = parseIrregularsBrowseHtml(html);
-  return articles;
-}
-
 type IntelArticle = {
   id: string;
   source: string;
@@ -824,36 +784,29 @@ type IntelArticle = {
   attributionUrl?: string;
 };
 
-// ─── Intel feed endpoint (multi-source aggregation) ─────────────────────────
+// ─── Intel feed endpoint (multi-source RSS aggregation) ─────────────────────
+// IrregularChat feeds require a per-user token passed as ?token=<base64url>.
+// Set IRREGULARS_FEED_TOKEN via `wrangler secret put IRREGULARS_FEED_TOKEN`.
+// Without a token, the Irregulars source is silently skipped.
 app.get("/api/intel/feed", async (c) => {
   const limit = Math.min(parseInt(c.req.query("limit") ?? "50", 10), 100);
-  const keyword = c.req.query("q") ?? "defense";
 
-  // Fetch all sources in parallel
-  const irregularsToken = c.env.IRREGULARS_API_TOKEN;
-  const irregularsUrl = irregularsToken
-    ? `https://rss.irregulars.io/api/links?offset=0&ajax=1&q=${encodeURIComponent(keyword)}`
-    : `https://rss.irregulars.io/browse?q=${encodeURIComponent(keyword)}`;
+  // Build Irregulars RSS feed URL with token
+  const irToken = c.env.IRREGULARS_FEED_TOKEN;
+  const irregularsUrl = irToken
+    ? `https://rss.irregulars.io/feed/all?token=${encodeURIComponent(irToken)}`
+    : null;
 
-  const irregularsHeaders: Record<string, string> = {
-    "User-Agent": "MergeCombinator-IntelAPI/0.1",
-  };
-  if (irregularsToken) {
-    irregularsHeaders["Authorization"] = `Bearer ${irregularsToken}`;
-  }
-
-  const [egXml, hnXml, irHtml] = await Promise.all([
+  const [egXml, hnXml, irXml] = await Promise.all([
     cachedFetch("https://executivegov.com/feed/", TTL.intel),
     cachedFetch("https://news.ycombinator.com/rss", TTL.intel),
-    cachedFetch(irregularsUrl, TTL.intel, irregularsHeaders),
+    irregularsUrl ? cachedFetch(irregularsUrl, TTL.intel) : Promise.resolve(null),
   ]);
 
   const articles: IntelArticle[] = [
-    ...(irHtml
-      ? (irregularsToken ? parseIrregularsApiHtml(irHtml) : parseIrregularsBrowseHtml(irHtml))
-      : []),
-    ...(egXml ? parseRssFeed(egXml, "executivegov") as IntelArticle[] : []),
-    ...(hnXml ? parseRssFeed(hnXml, "hackernews") as IntelArticle[] : []),
+    ...(irXml ? (parseRssFeed(irXml, "irregulars") as IntelArticle[]) : []),
+    ...(egXml ? (parseRssFeed(egXml, "executivegov") as IntelArticle[]) : []),
+    ...(hnXml ? (parseRssFeed(hnXml, "hackernews") as IntelArticle[]) : []),
   ];
 
   // Deduplicate by normalized title
@@ -872,9 +825,9 @@ app.get("/api/intel/feed", async (c) => {
     articles: deduped.slice(0, limit),
     total: deduped.length,
     sources: {
-      irregulars: irHtml ? articles.filter((a) => a.source === "irregulars").length : 0,
-      executivegov: egXml ? articles.filter((a) => a.source === "executivegov").length : 0,
-      hackernews: hnXml ? articles.filter((a) => a.source === "hackernews").length : 0,
+      irregulars: articles.filter((a) => a.source === "irregulars").length,
+      executivegov: articles.filter((a) => a.source === "executivegov").length,
+      hackernews: articles.filter((a) => a.source === "hackernews").length,
     },
     attribution: "Defense intel curated by IrregularChat (https://irregulars.io)",
   });
