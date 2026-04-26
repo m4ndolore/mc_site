@@ -24,6 +24,8 @@ function renderArticleCard(article, sources) {
   card.rel = 'noopener';
   card.className = 'intel-card';
   card.dataset.tags = (article.tags || []).join(',').toLowerCase();
+  card.dataset.title = article.title.toLowerCase();
+  card.dataset.excerpt = (article.excerpt || '').toLowerCase();
 
   const tags = (article.tags || [])
     .map(t => `<span class="intel-tag">${t}</span>`)
@@ -42,33 +44,44 @@ function renderArticleCard(article, sources) {
   return card;
 }
 
-function collectTags(articles) {
-  const tagSet = new Set();
-  articles.forEach(a => (a.tags || []).forEach(t => tagSet.add(t.toLowerCase())));
-  return Array.from(tagSet).sort();
+// Grouped filter categories — maps display label to matching keywords
+const FILTER_GROUPS = [
+  { label: 'Latest',     match: null }, // null = show all, sorted by date
+  { label: 'AI & Autonomy', keywords: ['ai', 'artificial intelligence', 'machine learning', 'autonomy', 'autonomous'] },
+  { label: 'Drones & C-UAS', keywords: ['drone', 'uas', 'c-uas', 'cuas', 'counter-drone', 'unmanned', 'suas'] },
+  { label: 'Cyber',      keywords: ['cyber', 'infosec', 'malware', 'vulnerability', 'ransomware', 'zero-day'] },
+  { label: 'Policy',     keywords: ['ndaa', 'legislation', 'congress', 'policy', 'regulation', 'executive order', 'sbir', 'sttr'] },
+  { label: 'Acquisition', keywords: ['acquisition', 'procurement', 'contracting', 'ota', 'far', 'dfars', 'rfp', 'solicitation'] },
+  { label: 'Space',      keywords: ['space', 'satellite', 'orbit', 'launch', 'ussf'] },
+  { label: 'Indo-Pacific', keywords: ['china', 'taiwan', 'indo-pacific', 'pacom', 'indopacom', 'pacific', 'japan', 'korea', 'australia'] },
+];
+
+function articleMatchesFilter(article, keywords) {
+  const text = `${article.title} ${article.excerpt} ${(article.tags || []).join(' ')}`.toLowerCase();
+  return keywords.some(kw => text.includes(kw));
 }
 
-function renderTagFilters(tags, container, grid) {
-  const allBtn = document.createElement('button');
-  allBtn.className = 'intel-filter intel-filter--active';
-  allBtn.textContent = 'All';
-  allBtn.addEventListener('click', () => {
-    container.querySelectorAll('.intel-filter').forEach(b => b.classList.remove('intel-filter--active'));
-    allBtn.classList.add('intel-filter--active');
-    grid.querySelectorAll('.intel-card').forEach(c => c.style.display = '');
-  });
-  container.appendChild(allBtn);
+function renderTagFilters(articles, container, grid) {
+  FILTER_GROUPS.forEach((group, i) => {
+    // Only show groups that have matching articles (except Latest)
+    if (group.keywords) {
+      const count = articles.filter(a => articleMatchesFilter(a, group.keywords)).length;
+      if (count === 0) return;
+    }
 
-  tags.forEach(tag => {
     const btn = document.createElement('button');
-    btn.className = 'intel-filter';
-    btn.textContent = tag;
+    btn.className = 'intel-filter' + (i === 0 ? ' intel-filter--active' : '');
+    btn.textContent = group.label;
     btn.addEventListener('click', () => {
       container.querySelectorAll('.intel-filter').forEach(b => b.classList.remove('intel-filter--active'));
       btn.classList.add('intel-filter--active');
       grid.querySelectorAll('.intel-card').forEach(card => {
-        const cardTags = card.dataset.tags || '';
-        card.style.display = cardTags.includes(tag.toLowerCase()) ? '' : 'none';
+        if (!group.keywords) {
+          card.style.display = '';
+          return;
+        }
+        const text = `${card.dataset.title || ''} ${card.dataset.excerpt || ''} ${card.dataset.tags || ''}`.toLowerCase();
+        card.style.display = group.keywords.some(kw => text.includes(kw)) ? '' : 'none';
       });
     });
     container.appendChild(btn);
@@ -169,10 +182,9 @@ export async function initIntel() {
       return;
     }
 
-    // Render tag filters
+    // Render grouped filters
     if (filtersContainer) {
-      const tags = collectTags(allArticles);
-      renderTagFilters(tags, filtersContainer, grid);
+      renderTagFilters(allArticles, filtersContainer, grid);
     }
 
     // Render cards
