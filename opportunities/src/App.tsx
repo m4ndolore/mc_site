@@ -144,13 +144,21 @@ function isHumanReadableSourceUrl(url: string | undefined): boolean {
   return !/\/topics\/api\/public\/topics\/.+\/details$/i.test(url);
 }
 
-function getOpportunityHref(opportunity: Opportunity): string {
+function getSourceUrl(opportunity: Opportunity): string | null {
   if (isHumanReadableSourceUrl(opportunity.url)) return opportunity.url as string;
-  return `/opportunities/${opportunity.id || opportunity.topicId}`;
+  // For SBIR topics, link to the public website instead of the API endpoint
+  if (opportunity.source === "sbir" && (opportunity.topicId || opportunity.id)) {
+    return `https://www.dodsbirsttr.mil/topics-app/#/topics/${opportunity.topicId || opportunity.id}`;
+  }
+  return null;
+}
+
+function getOpportunityHref(opportunity: Opportunity): string {
+  return getSourceUrl(opportunity) ?? `/opportunities/${opportunity.id || opportunity.topicId}`;
 }
 
 function getOpportunityLinkLabel(opportunity: Opportunity): string {
-  return isHumanReadableSourceUrl(opportunity.url) ? "View source" : "Open detail page";
+  return getSourceUrl(opportunity) ? "View source" : "Details";
 }
 
 function getOpportunityReturnPath(opportunity: Opportunity): string {
@@ -1055,11 +1063,8 @@ function OpportunityDetailPage(): React.JSX.Element {
   }
 
   const dueDate = opportunity.responseDeadline ?? opportunity.closeDate;
-  const sourceUrl = getOpportunityHref(opportunity);
-  const isExternalSource = isHumanReadableSourceUrl(opportunity.url);
-  const sourceLabel = isHumanReadableSourceUrl(opportunity.url)
-    ? "View primary source"
-    : "Open opportunity summary";
+  const externalSourceUrl = getSourceUrl(opportunity);
+  const sourceLabel = "View primary source";
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
   const saved = isSaved(opportunity.id) || isSaved(opportunity.topicId);
@@ -1139,15 +1144,18 @@ function OpportunityDetailPage(): React.JSX.Element {
         );
       })()}
 
-      <p style={{ marginBottom: "0.75rem" }}>
-        <a
-          href={sourceUrl}
-          {...(isExternalSource ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          style={{ color: "var(--mc-accent)" }}
-        >
-          {sourceLabel}
-        </a>
-      </p>
+      {externalSourceUrl && (
+        <p style={{ marginBottom: "0.75rem" }}>
+          <a
+            href={externalSourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "var(--mc-accent)" }}
+          >
+            {sourceLabel}
+          </a>
+        </p>
+      )}
       <p
         style={{
           marginBottom: "1.25rem",

@@ -447,14 +447,11 @@ function Layout(): React.JSX.Element {
       <header className="nav" id="nav">
         <div className="nav__container">
           <a href="/" className="nav__logo">
-            <span className="nav__logo-text">
-              <span className="nav__logo-merge">Merge</span>
-              <span className="nav__logo-combinator">Combinator</span>
-            </span>
             <img
-              src="/opportunities/arrows-new.png"
-              alt="Merge arrows"
-              className="nav__logo-icon"
+              src="/opportunities/logowhite2.png"
+              alt="Merge Combinator"
+              className="nav__logo-img"
+              style={{ height: "28px", width: "auto" }}
             />
           </a>
 
@@ -543,14 +540,10 @@ function Layout(): React.JSX.Element {
           <div className="footer__grid">
             <div className="footer__brand">
               <a href="/" className="footer__logo">
-                <span className="footer__logo-text">
-                  <span className="footer__logo-merge">Merge</span>
-                  <span className="footer__logo-combinator">Combinator</span>
-                </span>
                 <img
-                  src="/opportunities/arrows-new.png"
-                  alt="Merge arrows"
-                  className="footer__logo-icon"
+                  src="/opportunities/logowhite2.png"
+                  alt="Merge Combinator"
+                  style={{ height: "28px", width: "auto" }}
                 />
               </a>
               <p className="footer__tagline">
