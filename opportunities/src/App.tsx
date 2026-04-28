@@ -157,10 +157,6 @@ function getOpportunityHref(opportunity: Opportunity): string {
   return getSourceUrl(opportunity) ?? `/opportunities/${opportunity.id || opportunity.topicId}`;
 }
 
-function getOpportunityLinkLabel(opportunity: Opportunity): string {
-  return getSourceUrl(opportunity) ? "View source" : "Details";
-}
-
 function getOpportunityReturnPath(opportunity: Opportunity): string {
   return `/opportunities/${opportunity.id || opportunity.topicId}`;
 }
@@ -239,8 +235,8 @@ function OpportunityModal({
   onToggleSave: (opportunity: Opportunity) => void;
   isSaved: boolean;
 }): React.JSX.Element {
-  const linkHref = getOpportunityHref(opportunity);
-  const isExternalLink = isHumanReadableSourceUrl(opportunity.url);
+  const detailPageHref = `/opportunities/${opportunity.id || opportunity.topicId}`;
+  const externalUrl = getSourceUrl(opportunity);
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
   return (
@@ -601,15 +597,19 @@ function OpportunityModal({
 
           <div className="modal-footer">
             <div className="modal-footer-actions">
-              <a
-                className="modal-footer-link"
-                href={linkHref}
-                {...(isExternalLink
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-              >
-                {getOpportunityLinkLabel(opportunity)}
+              <a className="modal-footer-link" href={detailPageHref}>
+                Open detail page
               </a>
+              {externalUrl && (
+                <a
+                  className="modal-footer-link"
+                  href={externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View source
+                </a>
+              )}
               <a className="modal-footer-link" href={emailHref}>
                 Email this
               </a>
