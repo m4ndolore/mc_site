@@ -183,7 +183,18 @@ export async function fetchOpportunities(
     `${API_BASE}/api/opportunities?${params.toString()}`,
   );
   if (!response.ok) throw new Error("Failed to fetch opportunities");
-  return response.json();
+  const payload = (await response.json()) as {
+    data: RawOpportunity[];
+    pagination: OpportunityListResponse["pagination"];
+    success: boolean;
+    source: string;
+  };
+  return {
+    success: payload.success,
+    data: payload.data.map(normalizeOpportunity),
+    pagination: payload.pagination,
+    source: payload.source,
+  };
 }
 
 export async function fetchOpportunity(

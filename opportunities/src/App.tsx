@@ -185,6 +185,66 @@ function buildSavedOpportunitiesEmailHref(saved: Opportunity[]): string {
   return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
 
+function getStatusColor(status: string): string {
+  const s = status.toLowerCase();
+  if (s === "closed") return "var(--mc-text-muted)";
+  if (s === "closing-soon" || s === "closing soon") return "#f59e0b";
+  if (s === "pre-release" || s === "pre release") return "var(--mc-accent)";
+  return "#22c55e"; // open / active
+}
+
+function getDaysRemaining(deadline: string | undefined): number | null {
+  if (!deadline) return null;
+  const diff = new Date(deadline).getTime() - Date.now();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function formatDeadlineLabel(deadline: string | undefined): string {
+  const days = getDaysRemaining(deadline);
+  if (days === null) return "No deadline listed";
+  if (days < 0) return "Closed";
+  if (days === 0) return "Due today";
+  if (days === 1) return "1 day left";
+  if (days <= 30) return `${days} days left`;
+  return formatDate(deadline);
+}
+
+function getDeadlineColor(deadline: string | undefined): string {
+  const days = getDaysRemaining(deadline);
+  if (days === null) return "var(--mc-text-muted)";
+  if (days < 0) return "var(--mc-text-muted)";
+  if (days <= 7) return "#ef4444";
+  if (days <= 14) return "#f59e0b";
+  return "var(--mc-text)";
+}
+
+const MAX_VISIBLE_TAGS = 6;
+
+function TagGroup({
+  label,
+  tags,
+}: {
+  label: string;
+  tags: string[];
+}): React.JSX.Element | null {
+  if (!tags || tags.length === 0) return null;
+  const visible = tags.slice(0, MAX_VISIBLE_TAGS);
+  const overflow = tags.length - MAX_VISIBLE_TAGS;
+  return (
+    <div>
+      <div className="modal-section-label">{label}</div>
+      <div className="modal-tags">
+        {visible.map((tag) => (
+          <span key={tag} className="modal-tag">{tag}</span>
+        ))}
+        {overflow > 0 && (
+          <span className="modal-tag modal-tag--overflow">+{overflow} more</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function OpportunityModal({
   opportunity,
   onClose,
@@ -200,6 +260,10 @@ function OpportunityModal({
   const isExternalLink = isHumanReadableSourceUrl(opportunity.url);
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
+  const deadline = opportunity.responseDeadline ?? opportunity.closeDate;
+  const statusColor = getStatusColor(opportunity.topicStatus);
+  const deadlineColor = getDeadlineColor(deadline);
+
   return (
     <>
       <style>{`
@@ -266,48 +330,58 @@ function OpportunityModal({
           border-radius: 2px;
           color: var(--mc-text-muted);
           cursor: pointer;
-          font-size: 1.125rem;
-          line-height: 1;
           transition: border-color 0.2s ease, color 0.2s ease;
         }
         .modal-close-btn:hover {
           border-color: var(--mc-accent);
           color: var(--mc-text);
         }
+
+        /* ── Status strip ── */
+        .modal-status-strip {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 0.75rem 1.5rem;
+          border-top: 1px solid var(--mc-border);
+          border-bottom: 1px solid var(--mc-border);
+          background: rgba(255, 255, 255, 0.02);
+          flex-wrap: wrap;
+        }
+        .modal-status-strip__item {
+          display: flex;
+          align-items: center;
+          gap: 0.375rem;
+          font-size: 0.8125rem;
+        }
+        .modal-status-strip__badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          padding: 0.2rem 0.55rem;
+          border-radius: 2px;
+          letter-spacing: 0.02em;
+        }
+        .modal-status-strip__sep {
+          color: var(--mc-border);
+          font-size: 0.75rem;
+          user-select: none;
+        }
+        .modal-status-strip__label {
+          font-size: 0.6875rem;
+          font-weight: 500;
+          color: var(--mc-text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+        }
+
         .modal-body {
           padding: 1.25rem 1.5rem;
           display: flex;
           flex-direction: column;
           gap: 1.25rem;
-        }
-        .modal-meta-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 0.75rem;
-        }
-        .modal-meta-item {
-          display: flex;
-          flex-direction: column;
-          gap: 0.125rem;
-        }
-        .modal-meta-label {
-          font-size: 0.6875rem;
-          font-weight: 500;
-          color: var(--mc-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-        }
-        .modal-meta-value {
-          font-size: 0.875rem;
-          color: var(--mc-text);
-        }
-        .modal-meta-value--success {
-          color: var(--mc-success);
-          font-weight: 500;
-        }
-        .modal-meta-value--warning {
-          color: var(--mc-warning);
-          font-weight: 500;
         }
         .modal-section-label {
           font-size: 0.6875rem;
@@ -316,12 +390,6 @@ function OpportunityModal({
           text-transform: uppercase;
           letter-spacing: 0.05em;
           margin-bottom: 0.25rem;
-        }
-        .modal-description {
-          font-size: 0.875rem;
-          color: var(--mc-text);
-          line-height: 1.7;
-          white-space: pre-wrap;
         }
         .modal-tags {
           display: flex;
@@ -336,32 +404,84 @@ function OpportunityModal({
           border-radius: 2px;
           border: 1px solid var(--mc-border);
         }
+        .modal-tag--overflow {
+          font-style: italic;
+          color: var(--mc-accent);
+          border-color: transparent;
+          background: none;
+        }
+
+        /* ── Footer ── */
         .modal-footer {
           padding: 1rem 1.5rem 1.5rem;
           border-top: 1px solid var(--mc-border);
           display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 1rem;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+        .modal-footer-ctas {
+          display: flex;
+          gap: 0.5rem;
           flex-wrap: wrap;
         }
-        .modal-footer-actions {
+        .modal-cta-primary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.55rem 1.1rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          font-family: var(--font-primary);
+          color: var(--white);
+          background: var(--blue);
+          border: 1px solid var(--blue);
+          border-radius: 2px;
+          cursor: pointer;
+          transition: background 0.15s ease;
+          text-decoration: none;
+        }
+        .modal-cta-primary:hover {
+          background: var(--blue-dark);
+          border-color: var(--blue-dark);
+        }
+        .modal-cta-secondary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.55rem 1.1rem;
+          font-size: 0.8125rem;
+          font-weight: 500;
+          font-family: var(--font-primary);
+          color: var(--offwhite);
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          border-radius: 2px;
+          cursor: pointer;
+          transition: border-color 0.15s ease, background 0.15s ease;
+          text-decoration: none;
+        }
+        .modal-cta-secondary:hover {
+          border-color: rgba(255, 255, 255, 0.4);
+          background: rgba(255, 255, 255, 0.06);
+        }
+        .modal-footer-links {
           display: flex;
           align-items: center;
           gap: 0.75rem;
           flex-wrap: wrap;
-        }
-        .modal-footer-source {
-          font-size: 0.75rem;
-          color: var(--mc-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
         }
         .modal-footer-link {
           font-size: 0.75rem;
           color: var(--mc-accent);
           text-decoration: underline;
           text-underline-offset: 2px;
+        }
+        .modal-footer-source {
+          font-size: 0.75rem;
+          color: var(--mc-text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-left: auto;
         }
       `}</style>
       <div
@@ -374,11 +494,12 @@ function OpportunityModal({
         aria-label={opportunity.topicTitle}
       >
         <div className="modal-content">
+          {/* ── Header ── */}
           <div className="modal-header">
             <div>
               <div className="modal-topic-code">
                 {normalizeTopicCode(opportunity.topicCode) ||
-                  `${opportunity.source.toUpperCase()} • ${opportunity.component}`}
+                  `${opportunity.source.toUpperCase()} \u2022 ${opportunity.component}`}
               </div>
               <h2 className="modal-title">{opportunity.topicTitle}</h2>
             </div>
@@ -388,109 +509,84 @@ function OpportunityModal({
               type="button"
               aria-label="Close"
             >
-              x
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
             </button>
           </div>
 
-          <div className="modal-body">
-            <div className="modal-meta-grid">
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Component</span>
-                <span className="modal-meta-value">
-                  {opportunity.component}
-                </span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Program</span>
-                <span className="modal-meta-value">{opportunity.program}</span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Status</span>
-                <span className="modal-meta-value modal-meta-value--success">
-                  {opportunity.topicStatus}
-                </span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Deadline</span>
-                <span className="modal-meta-value modal-meta-value--warning">
-                  {formatDate(
-                    opportunity.responseDeadline ?? opportunity.closeDate,
-                  )}
-                </span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Open Date</span>
-                <span className="modal-meta-value">
-                  {formatDate(opportunity.openDate)}
-                </span>
-              </div>
-              <div className="modal-meta-item">
-                <span className="modal-meta-label">Posted</span>
-                <span className="modal-meta-value">
-                  {formatDate(opportunity.postedDate)}
-                </span>
-              </div>
+          {/* ── Status strip ── */}
+          <div className="modal-status-strip">
+            <div className="modal-status-strip__item">
+              <span
+                className="modal-status-strip__badge"
+                style={{ color: statusColor, background: `color-mix(in srgb, ${statusColor} 12%, transparent)` }}
+              >
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: statusColor, display: "inline-block" }} />
+                {opportunity.topicStatus}
+              </span>
             </div>
+            <span className="modal-status-strip__sep">/</span>
+            <div className="modal-status-strip__item">
+              <span className="modal-status-strip__label">Deadline</span>
+              <span style={{ color: deadlineColor, fontWeight: 600, fontSize: "0.8125rem" }}>
+                {formatDeadlineLabel(deadline)}
+              </span>
+            </div>
+            <span className="modal-status-strip__sep">/</span>
+            <div className="modal-status-strip__item">
+              <span
+                className="modal-status-strip__badge"
+                style={{ color: "var(--mc-text-muted)", background: "var(--mc-bg-tertiary)", fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase" }}
+              >
+                {opportunity.source}
+              </span>
+            </div>
+            {opportunity.component && (
+              <>
+                <span className="modal-status-strip__sep">/</span>
+                <div className="modal-status-strip__item">
+                  <span style={{ color: "var(--mc-text-muted)", fontSize: "0.8125rem" }}>
+                    {opportunity.component}
+                  </span>
+                </div>
+              </>
+            )}
+          </div>
 
+          {/* ── Body ── */}
+          <div className="modal-body">
             {opportunity.objective && (
               <div>
                 <div className="modal-section-label">Objective</div>
-                <p className="modal-description">
-                  {sanitizeText(opportunity.objective)}
-                </p>
+                <RichTextBlock text={opportunity.objective} />
               </div>
             )}
 
             <div>
               <div className="modal-section-label">Description</div>
-              <p className="modal-description">
-                {sanitizeText(opportunity.description)}
-              </p>
+              <RichTextBlock text={opportunity.description} />
             </div>
 
-            {opportunity.technologyAreas &&
-              opportunity.technologyAreas.length > 0 && (
-                <div>
-                  <div className="modal-section-label">Technology Areas</div>
-                  <div className="modal-tags">
-                    {opportunity.technologyAreas.map((area) => (
-                      <span key={area} className="modal-tag">
-                        {area}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-            {opportunity.focusAreas && opportunity.focusAreas.length > 0 && (
-              <div>
-                <div className="modal-section-label">Focus Areas</div>
-                <div className="modal-tags">
-                  {opportunity.focusAreas.map((area) => (
-                    <span key={area} className="modal-tag">
-                      {area}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {opportunity.keywords && opportunity.keywords.length > 0 && (
-              <div>
-                <div className="modal-section-label">Keywords</div>
-                <div className="modal-tags">
-                  {opportunity.keywords.map((keyword) => (
-                    <span key={keyword} className="modal-tag">
-                      {keyword}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+            <TagGroup label="Technology Areas" tags={opportunity.technologyAreas || []} />
+            <TagGroup label="Focus Areas" tags={opportunity.focusAreas || []} />
+            <TagGroup label="Keywords" tags={opportunity.keywords || []} />
           </div>
 
+          {/* ── Footer ── */}
           <div className="modal-footer">
-            <div className="modal-footer-actions">
+            <div className="modal-footer-ctas">
+              <a className="modal-cta-primary" href={accessHref}>
+                Get matched
+              </a>
+              <a
+                className="modal-cta-secondary"
+                href={`/access?context=opportunities&source=opportunity-updates&returnTo=${encodeURIComponent(getOpportunityReturnPath(opportunity))}`}
+              >
+                Get updates in your inbox
+              </a>
+            </div>
+            <div className="modal-footer-links">
               <a
                 className="modal-footer-link"
                 href={linkHref}
@@ -507,17 +603,14 @@ function OpportunityModal({
                 className="modal-footer-link"
                 type="button"
                 onClick={() => onToggleSave(opportunity)}
-                style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit" }}
               >
                 {isSaved ? "Remove saved" : "Save"}
               </button>
-              <a className="modal-footer-link" href={accessHref}>
-                Get matched
-              </a>
+              <span className="modal-footer-source">
+                {opportunity.source}
+              </span>
             </div>
-            <span className="modal-footer-source">
-              Source: {opportunity.source}
-            </span>
           </div>
         </div>
       </div>
