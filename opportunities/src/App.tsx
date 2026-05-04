@@ -1,14 +1,16 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import Layout from "./components/Layout";
 import OpportunityList from "./components/OpportunityList";
 import TabBar from "./components/TabBar";
-import EventsPanel from "./components/EventsPanel";
-import RadarPanel from "./components/RadarPanel";
 import SavedPanel from "./components/SavedPanel";
-import type { Opportunity, OutlookEvent } from "./types/opportunity";
-import { fetchOutlookEvents, fetchOpportunity } from "./lib/api";
-import { useSavedOpportunities } from "./lib/saved-opportunities";
+import IntakeFlow from "./components/IntakeFlow";
+import ProfileBar from "./components/ProfileBar";
+import GroupedFeed from "./components/GroupedFeed";
+import type { Opportunity } from "./types/opportunity";
+import type { ViewMode } from "./types/profile";
+import { fetchOpportunity, fetchOpportunities } from "./lib/api";
+import { useProfile } from "./lib/profile";
 
 function formatDate(dateString: string | undefined): string {
   if (!dateString) return "N/A";
@@ -109,13 +111,17 @@ function isHumanReadableSourceUrl(url: string | undefined): boolean {
   return !/\/topics\/api\/public\/topics\/.+\/details$/i.test(url);
 }
 
-function getOpportunityHref(opportunity: Opportunity): string {
+function getSourceUrl(opportunity: Opportunity): string | null {
   if (isHumanReadableSourceUrl(opportunity.url)) return opportunity.url as string;
-  return `/opportunities/${opportunity.id || opportunity.topicId}`;
+  // For SBIR topics, link to the public website instead of the API endpoint
+  if (opportunity.source === "sbir" && (opportunity.topicId || opportunity.id)) {
+    return `https://www.dodsbirsttr.mil/topics-app/#/topics/${opportunity.topicId || opportunity.id}`;
+  }
+  return null;
 }
 
-function getOpportunityLinkLabel(opportunity: Opportunity): string {
-  return isHumanReadableSourceUrl(opportunity.url) ? "View source" : "Open detail page";
+function getOpportunityHref(opportunity: Opportunity): string {
+  return getSourceUrl(opportunity) ?? `/opportunities/${opportunity.id || opportunity.topicId}`;
 }
 
 function getOpportunityReturnPath(opportunity: Opportunity): string {
@@ -256,8 +262,8 @@ function OpportunityModal({
   onToggleSave: (opportunity: Opportunity) => void;
   isSaved: boolean;
 }): React.JSX.Element {
-  const linkHref = getOpportunityHref(opportunity);
-  const isExternalLink = isHumanReadableSourceUrl(opportunity.url);
+  const detailPageHref = `/opportunities/${opportunity.id || opportunity.topicId}`;
+  const externalUrl = getSourceUrl(opportunity);
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
   const deadline = opportunity.responseDeadline ?? opportunity.closeDate;
@@ -383,6 +389,26 @@ function OpportunityModal({
           flex-direction: column;
           gap: 1.25rem;
         }
+        .modal-phase-details {
+          border: 1px solid var(--mc-border);
+          border-radius: 2px;
+          margin-bottom: 0.5rem;
+        }
+        .modal-phase-details summary {
+          padding: 0.625rem 1rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: var(--mc-text);
+          cursor: pointer;
+          list-style: none;
+        }
+        .modal-phase-details summary::-webkit-details-marker { display: none; }
+        .modal-phase-details[open] summary {
+          border-bottom: 1px solid var(--mc-border);
+        }
+        .modal-phase-details .modal-description {
+          padding: 0.75rem 1rem;
+        }
         .modal-section-label {
           font-size: 0.6875rem;
           font-weight: 500;
@@ -497,11 +523,14 @@ function OpportunityModal({
           {/* ── Header ── */}
           <div className="modal-header">
             <div>
-              <div className="modal-topic-code">
-                {normalizeTopicCode(opportunity.topicCode) ||
-                  `${opportunity.source.toUpperCase()} \u2022 ${opportunity.component}`}
-              </div>
               <h2 className="modal-title">{opportunity.topicTitle}</h2>
+              <div className="modal-topic-code" style={{ marginTop: "0.25rem", marginBottom: 0 }}>
+                {opportunity.source.toUpperCase()}
+                {normalizeTopicCode(opportunity.topicCode) ? ` • ${normalizeTopicCode(opportunity.topicCode)}` : ""}
+              </div>
+              <div style={{ fontSize: "0.8125rem", color: "var(--mc-text-muted)", marginTop: "0.125rem" }}>
+                {opportunity.component}{opportunity.program ? ` / ${opportunity.program}` : ""}
+              </div>
             </div>
             <button
               className="modal-close-btn"
@@ -568,6 +597,36 @@ function OpportunityModal({
               <RichTextBlock text={opportunity.description} />
             </div>
 
+            {(opportunity.phase1Description || opportunity.phase2Description || opportunity.phase3Description) && (
+              <div>
+                <div className="modal-section-label">Phase Breakdown</div>
+                {opportunity.phase1Description && (
+                  <details className="modal-phase-details">
+                    <summary>Phase I</summary>
+                    <div className="modal-description">
+                      <RichTextBlock text={opportunity.phase1Description} />
+                    </div>
+                  </details>
+                )}
+                {opportunity.phase2Description && (
+                  <details className="modal-phase-details">
+                    <summary>Phase II</summary>
+                    <div className="modal-description">
+                      <RichTextBlock text={opportunity.phase2Description} />
+                    </div>
+                  </details>
+                )}
+                {opportunity.phase3Description && (
+                  <details className="modal-phase-details">
+                    <summary>Phase III</summary>
+                    <div className="modal-description">
+                      <RichTextBlock text={opportunity.phase3Description} />
+                    </div>
+                  </details>
+                )}
+              </div>
+            )}
+
             <TagGroup label="Technology Areas" tags={opportunity.technologyAreas || []} />
             <TagGroup label="Focus Areas" tags={opportunity.focusAreas || []} />
             <TagGroup label="Keywords" tags={opportunity.keywords || []} />
@@ -587,15 +646,19 @@ function OpportunityModal({
               </a>
             </div>
             <div className="modal-footer-links">
-              <a
-                className="modal-footer-link"
-                href={linkHref}
-                {...(isExternalLink
-                  ? { target: "_blank", rel: "noopener noreferrer" }
-                  : {})}
-              >
-                {getOpportunityLinkLabel(opportunity)}
+              <a className="modal-footer-link" href={detailPageHref}>
+                Open detail page
               </a>
+              {externalUrl && (
+                <a
+                  className="modal-footer-link"
+                  href={externalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View source
+                </a>
+              )}
               <a className="modal-footer-link" href={emailHref}>
                 Email this
               </a>
@@ -662,26 +725,75 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
   const [activeTab, setActiveTab] = useState("solicitations");
   const [selectedOpportunity, setSelectedOpportunity] =
     useState<Opportunity | null>(null);
-  const [events, setEvents] = useState<OutlookEvent[]>([]);
-  const [eventsLoading, setEventsLoading] = useState(false);
-  const { saved, savedCount, isSaved, toggleSaved, clearSaved } = useSavedOpportunities();
-  const savedEmailHref = useMemo(() => buildSavedOpportunitiesEmailHref(saved), [saved]);
 
-  const loadEvents = useCallback(async () => {
-    setEventsLoading(true);
-    try {
-      const data = await fetchOutlookEvents();
-      setEvents(data.events);
-    } catch {
-      // Events are supplementary — fail silently
-    } finally {
-      setEventsLoading(false);
+  // Profile hook replaces old useSavedOpportunities
+  const { profile, hasProfile, createProfile, updateProfile, clearProfile, toggleSavedId, isSaved } = useProfile();
+
+  // Intake/skip state (persisted so migrated users don't see intake every page load)
+  const [skippedIntake, setSkippedIntake] = useState(() => {
+    try { return localStorage.getItem("mc-opportunity-skip-intake") === "1"; } catch { return false; }
+  });
+  const persistSkip = (): void => {
+    setSkippedIntake(true);
+    try { localStorage.setItem("mc-opportunity-skip-intake", "1"); } catch { /* ignore */ }
+  };
+
+  // Auto-skip intake for /sbir and /sttr routes
+  useEffect(() => {
+    if (mode === "sbir" || mode === "sttr") {
+      persistSkip();
     }
-  }, []);
+  }, [mode]);
+
+  const isFullProfile = hasProfile && (profile!.techAreas.length > 0 || profile!.problemAreas.length > 0);
+  const showIntake = !isFullProfile && !skippedIntake;
+
+  // All-opportunities cache for grouped views and saved-tab resolution
+  const [allOpportunities, setAllOpportunities] = useState<Opportunity[]>([]);
+  const [allOppsLoading, setAllOppsLoading] = useState(false);
+
+  const needsAllOpps =
+    (isFullProfile && profile!.viewMode !== "opportunity") ||
+    activeTab === "saved";
 
   useEffect(() => {
-    void loadEvents();
-  }, [loadEvents]);
+    if (!needsAllOpps || allOpportunities.length > 0 || allOppsLoading) return;
+    let cancelled = false;
+    setAllOppsLoading(true);
+    void fetchOpportunities({ size: 200, status: "active" }).then(
+      (res) => {
+        if (!cancelled) {
+          setAllOpportunities(res.data);
+          setAllOppsLoading(false);
+        }
+      },
+      () => {
+        if (!cancelled) setAllOppsLoading(false);
+      },
+    );
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [needsAllOpps]);
+
+  // Bridge: resolve savedIds to full Opportunity objects for SavedPanel
+  const savedCount = profile?.savedIds.length ?? 0;
+  const savedOpportunities = useMemo(() => {
+    if (!profile || profile.savedIds.length === 0) return [];
+    const idSet = new Set(profile.savedIds);
+    return allOpportunities.filter((opp) => idSet.has(opp.id) || idSet.has(opp.topicId));
+  }, [profile, allOpportunities]);
+  const savedEmailHref = useMemo(() => buildSavedOpportunitiesEmailHref(savedOpportunities), [savedOpportunities]);
+
+  // Bridge functions for components that expect (opportunity: Opportunity) signatures
+  const handleToggleSave = (opp: Opportunity): void => toggleSavedId(opp.id || opp.topicId);
+  const handleIsSaved = (opp: Opportunity): boolean => isSaved(opp.id) || isSaved(opp.topicId);
+  const handleClearSaved = (): void => {
+    if (!profile) return;
+    // Clear all saved IDs by toggling each one off
+    for (const id of [...profile.savedIds]) {
+      toggleSavedId(id);
+    }
+  };
 
   useEffect(() => {
     if (!selectedOpportunity) return;
@@ -699,8 +811,6 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
   const tabs = [
     { id: "solicitations", label: "Solicitations" },
     { id: "saved", label: "Saved", count: savedCount || undefined },
-    { id: "events", label: "Events", count: events.length || undefined },
-    { id: "radar", label: "Radar" },
   ];
 
   const seo = useMemo(() => {
@@ -750,6 +860,36 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
     upsertCanonical(seo.canonical);
   }, [seo]);
 
+  // Intake flow — first-time visitors without a full profile
+  if (showIntake) {
+    return (
+      <div>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <h1
+            style={{
+              fontSize: "2rem",
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              marginBottom: "0.375rem",
+            }}
+          >
+            {seo.heading}
+          </h1>
+          <p style={{ color: "var(--mc-text-muted)", maxWidth: "36rem", fontSize: "0.875rem" }}>
+            {seo.subtitle}
+          </p>
+        </div>
+        <IntakeFlow
+          onComplete={createProfile}
+          onSkip={persistSkip}
+        />
+      </div>
+    );
+  }
+
+  // Determine active view mode for personalized feed
+  const viewMode: ViewMode = isFullProfile ? profile!.viewMode : "opportunity";
+
   return (
     <div>
       <div style={{ marginBottom: "1.5rem" }}>
@@ -768,35 +908,67 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
         </p>
       </div>
 
+      {isFullProfile && (
+        <ProfileBar
+          profile={profile!}
+          onEditPreferences={() => updateProfile({ techAreas: [], problemAreas: [] })}
+          onClearProfile={() => { clearProfile(); setSkippedIntake(false); try { localStorage.removeItem("mc-opportunity-skip-intake"); } catch { /* ignore */ } }}
+          onChangeViewMode={(m) => updateProfile({ viewMode: m })}
+        />
+      )}
+
       <TabBar tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
 
-      {activeTab === "solicitations" && (
+      {activeTab === "solicitations" && viewMode === "opportunity" && (
         <OpportunityList
           onSelect={setSelectedOpportunity}
           initialKeyword={seo.keyword}
-          onToggleSave={toggleSaved}
-          isSaved={isSaved}
+          onToggleSave={handleToggleSave}
+          isSaved={handleIsSaved}
         />
+      )}
+
+      {activeTab === "solicitations" && viewMode === "stakeholder" && (
+        allOppsLoading ? (
+          <div style={{ textAlign: "center", padding: "4rem 1rem", color: "var(--mc-text-muted)" }}>
+            Loading opportunities...
+          </div>
+        ) : (
+          <GroupedFeed
+            opportunities={allOpportunities}
+            groupBy="component"
+            profile={profile!}
+            onSelectOpportunity={setSelectedOpportunity}
+            onToggleSave={handleToggleSave}
+            isSaved={isSaved}
+          />
+        )
+      )}
+
+      {activeTab === "solicitations" && viewMode === "mission" && (
+        allOppsLoading ? (
+          <div style={{ textAlign: "center", padding: "4rem 1rem", color: "var(--mc-text-muted)" }}>
+            Loading opportunities...
+          </div>
+        ) : (
+          <GroupedFeed
+            opportunities={allOpportunities}
+            groupBy="problemArea"
+            profile={profile!}
+            onSelectOpportunity={setSelectedOpportunity}
+            onToggleSave={handleToggleSave}
+            isSaved={isSaved}
+          />
+        )
       )}
 
       {activeTab === "saved" && (
         <SavedPanel
-          saved={saved}
+          saved={savedOpportunities}
           onSelect={setSelectedOpportunity}
-          onToggleSave={toggleSaved}
-          onClearSaved={clearSaved}
+          onToggleSave={handleToggleSave}
+          onClearSaved={handleClearSaved}
           emailSavedHref={savedEmailHref}
-        />
-      )}
-
-      {activeTab === "events" && (
-        <EventsPanel events={events} loading={eventsLoading} />
-      )}
-
-      {activeTab === "radar" && (
-        <RadarPanel
-          events={events}
-          onSelectOpportunity={setSelectedOpportunity}
         />
       )}
 
@@ -804,8 +976,8 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
         <OpportunityModal
           opportunity={selectedOpportunity}
           onClose={() => setSelectedOpportunity(null)}
-          onToggleSave={toggleSaved}
-          isSaved={isSaved(selectedOpportunity)}
+          onToggleSave={handleToggleSave}
+          isSaved={handleIsSaved(selectedOpportunity)}
         />
       )}
 
@@ -836,7 +1008,7 @@ function OpportunityDetailPage(): React.JSX.Element {
   const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { isSaved, toggleSaved } = useSavedOpportunities();
+  const { isSaved, toggleSavedId } = useProfile();
 
   useEffect(() => {
     let isMounted = true;
@@ -937,21 +1109,12 @@ function OpportunityDetailPage(): React.JSX.Element {
   }
 
   const dueDate = opportunity.responseDeadline ?? opportunity.closeDate;
-  const sourceUrl = getOpportunityHref(opportunity);
-  const isExternalSource = isHumanReadableSourceUrl(opportunity.url);
-  const sourceLabel = isHumanReadableSourceUrl(opportunity.url)
-    ? "View primary source"
-    : "Open opportunity summary";
+  const externalSourceUrl = getSourceUrl(opportunity);
+  const sourceLabel = "View primary source";
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
-  const saved = isSaved(opportunity);
-  const summarySections = [
-    { title: "Objective", body: opportunity.objective },
-    { title: "Description", body: opportunity.description },
-    { title: "Phase I", body: opportunity.phase1Description },
-    { title: "Phase II", body: opportunity.phase2Description },
-    { title: "Phase III", body: opportunity.phase3Description },
-  ].filter((section) => section.body);
+  const saved = isSaved(opportunity.id) || isSaved(opportunity.topicId);
+  const hasPhases = opportunity.phase1Description || opportunity.phase2Description || opportunity.phase3Description;
 
   return (
     <article style={{ maxWidth: "860px", margin: "0 auto" }}>
@@ -964,7 +1127,10 @@ function OpportunityDetailPage(): React.JSX.Element {
         {opportunity.topicTitle}
       </h1>
       <p style={{ color: "var(--mc-text-muted)", marginBottom: "1.25rem" }}>
-        {opportunity.topicCode} • {opportunity.component} • {opportunity.program}
+        {opportunity.source.toUpperCase()}
+        {normalizeTopicCode(opportunity.topicCode) ? ` • ${normalizeTopicCode(opportunity.topicCode)}` : ""}
+        {" • "}{opportunity.component}
+        {opportunity.program ? ` • ${opportunity.program}` : ""}
       </p>
       {opportunity.solicitationTitle && (
         <p style={{ color: "var(--mc-text-muted)", marginTop: "-0.5rem", marginBottom: "1.25rem" }}>
@@ -972,41 +1138,60 @@ function OpportunityDetailPage(): React.JSX.Element {
         </p>
       )}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: "0.75rem",
-          marginBottom: "1.25rem",
-        }}
-      >
-        <div>
-          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Status</div>
-          <div>{opportunity.topicStatus}</div>
-        </div>
-        <div>
-          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Posted</div>
-          <div>{formatDate(opportunity.postedDate)}</div>
-        </div>
-        <div>
-          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Deadline</div>
-          <div>{formatDate(dueDate)}</div>
-        </div>
-        <div>
-          <div style={{ color: "var(--mc-text-muted)", fontSize: "0.75rem" }}>Open</div>
-          <div>{formatDate(opportunity.openDate)}</div>
-        </div>
-      </div>
+      {(() => {
+        const statusColor = getStatusColor(opportunity.topicStatus);
+        const deadlineColor = getDeadlineColor(dueDate);
+        return (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "1rem",
+              padding: "0.75rem 1rem",
+              background: "var(--mc-bg-tertiary)",
+              borderRadius: "2px",
+              borderLeft: `3px solid ${statusColor}`,
+              fontSize: "0.8125rem",
+              flexWrap: "wrap",
+              marginBottom: "1.25rem",
+            }}
+          >
+            <span
+              style={{
+                fontWeight: 600,
+                fontSize: "0.75rem",
+                padding: "0.125rem 0.5rem",
+                borderRadius: "2px",
+                color: statusColor,
+                background: `color-mix(in srgb, ${statusColor} 15%, transparent)`,
+              }}
+            >
+              {opportunity.topicStatus}
+            </span>
+            <span style={{ width: "1px", height: "1rem", background: "var(--mc-border)" }} />
+            <span style={{ color: deadlineColor, fontWeight: 600 }}>
+              {formatDeadlineLabel(dueDate)}
+            </span>
+            <span style={{ width: "1px", height: "1rem", background: "var(--mc-border)" }} />
+            <span style={{ color: "var(--mc-text-muted)" }}>
+              Posted {formatDate(opportunity.postedDate)}
+            </span>
+          </div>
+        );
+      })()}
 
-      <p style={{ marginBottom: "0.75rem" }}>
-        <a
-          href={sourceUrl}
-          {...(isExternalSource ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-          style={{ color: "var(--mc-accent)" }}
-        >
-          {sourceLabel}
-        </a>
-      </p>
+      {externalSourceUrl && (
+        <p style={{ marginBottom: "0.75rem" }}>
+          <a
+            href={externalSourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "var(--mc-accent)" }}
+          >
+            {sourceLabel}
+          </a>
+        </p>
+      )}
       <p
         style={{
           marginBottom: "1.25rem",
@@ -1023,7 +1208,7 @@ function OpportunityDetailPage(): React.JSX.Element {
         </a>
         <button
           type="button"
-          onClick={() => toggleSaved(opportunity)}
+          onClick={() => toggleSavedId(opportunity.id || opportunity.topicId)}
           style={{
             color: "var(--mc-accent)",
             background: "none",
@@ -1037,12 +1222,98 @@ function OpportunityDetailPage(): React.JSX.Element {
         </button>
       </p>
 
-      {summarySections.map((section) => (
-        <section key={section.title} style={{ marginBottom: "1.5rem" }}>
-          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>{section.title}</h2>
-          <RichTextBlock text={section.body} />
+      {opportunity.objective && (
+        <section style={{ marginBottom: "1.5rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>Objective</h2>
+          <RichTextBlock text={opportunity.objective} />
         </section>
-      ))}
+      )}
+
+      <section style={{ marginBottom: "1.5rem" }}>
+        <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>Description</h2>
+        <RichTextBlock text={opportunity.description} />
+      </section>
+
+      {hasPhases && (
+        <section style={{ marginBottom: "1.5rem" }}>
+          <h2 style={{ fontSize: "1rem", marginBottom: "0.65rem" }}>Phase Breakdown</h2>
+          {opportunity.phase1Description && (
+            <details
+              style={{
+                border: "1px solid var(--mc-border)",
+                borderRadius: "2px",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <summary
+                style={{
+                  padding: "0.625rem 1rem",
+                  fontSize: "0.8125rem",
+                  fontWeight: 600,
+                  color: "var(--mc-text)",
+                  cursor: "pointer",
+                  listStyle: "none",
+                }}
+              >
+                Phase I
+              </summary>
+              <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid var(--mc-border)" }}>
+                <RichTextBlock text={opportunity.phase1Description} />
+              </div>
+            </details>
+          )}
+          {opportunity.phase2Description && (
+            <details
+              style={{
+                border: "1px solid var(--mc-border)",
+                borderRadius: "2px",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <summary
+                style={{
+                  padding: "0.625rem 1rem",
+                  fontSize: "0.8125rem",
+                  fontWeight: 600,
+                  color: "var(--mc-text)",
+                  cursor: "pointer",
+                  listStyle: "none",
+                }}
+              >
+                Phase II
+              </summary>
+              <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid var(--mc-border)" }}>
+                <RichTextBlock text={opportunity.phase2Description} />
+              </div>
+            </details>
+          )}
+          {opportunity.phase3Description && (
+            <details
+              style={{
+                border: "1px solid var(--mc-border)",
+                borderRadius: "2px",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <summary
+                style={{
+                  padding: "0.625rem 1rem",
+                  fontSize: "0.8125rem",
+                  fontWeight: 600,
+                  color: "var(--mc-text)",
+                  cursor: "pointer",
+                  listStyle: "none",
+                }}
+              >
+                Phase III
+              </summary>
+              <div style={{ padding: "0.75rem 1rem", borderTop: "1px solid var(--mc-border)" }}>
+                <RichTextBlock text={opportunity.phase3Description} />
+              </div>
+            </details>
+          )}
+        </section>
+      )}
 
       {opportunity.technologyAreas && opportunity.technologyAreas.length > 0 && (
         <section style={{ marginBottom: "1.25rem" }}>

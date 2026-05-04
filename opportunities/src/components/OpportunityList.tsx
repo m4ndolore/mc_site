@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import type { Opportunity } from "../types/opportunity";
+import type { OpportunityProfile } from "../types/profile";
 import { fetchOpportunities } from "../lib/api";
 import OpportunityCard from "./OpportunityCard";
 
@@ -8,6 +9,27 @@ interface OpportunityListProps {
   initialKeyword?: string;
   onToggleSave?: (opportunity: Opportunity) => void;
   isSaved?: (opportunity: Opportunity) => boolean;
+  profile?: OpportunityProfile | null;
+}
+
+function computeMatchCount(
+  opp: Opportunity,
+  profile: OpportunityProfile,
+): number {
+  if (!profile.techAreas.length && !profile.problemAreas.length) return 0;
+  const oppTerms = [
+    ...(opp.technologyAreas ?? []),
+    ...(opp.focusAreas ?? []),
+    ...(opp.keywords ?? []),
+  ].map((t) => t.toLowerCase());
+  const profileTerms = [...profile.techAreas, ...profile.problemAreas].map(
+    (t) => t.toLowerCase(),
+  );
+  let count = 0;
+  for (const pt of profileTerms) {
+    if (oppTerms.some((ot) => ot.includes(pt) || pt.includes(ot))) count++;
+  }
+  return count;
 }
 
 const STATUS_OPTIONS = [
@@ -41,25 +63,31 @@ function OpportunityList({
   initialKeyword = "",
   onToggleSave,
   isSaved,
+  profile,
 }: OpportunityListProps): React.JSX.Element {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Filters
-  const [statusFilter, setStatusFilter] = useState("active");
+  const [statusFilter, setStatusFilter] = useState("open");
   const [componentFilter, setComponentFilter] = useState("");
   const [keyword, setKeyword] = useState(initialKeyword);
   const [pendingKeyword, setPendingKeyword] = useState(initialKeyword);
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("deadline");
 
   const pageSize = 25;
 
   const loadOpportunities = useCallback(
-    async (currentPage: number) => {
-      setLoading(true);
+    async (currentPage: number, append: boolean) => {
+      if (append) {
+        setLoadingMore(true);
+      } else {
+        setLoading(true);
+      }
       setError(null);
       try {
         const response = await fetchOpportunities({
@@ -70,7 +98,9 @@ function OpportunityList({
           keyword: keyword,
           sort: sortBy,
         });
-        setOpportunities(response.data);
+        setOpportunities((prev) =>
+          append ? [...prev, ...response.data] : response.data,
+        );
         setTotal(response.pagination.total);
       } catch (err) {
         const message =
@@ -78,17 +108,19 @@ function OpportunityList({
         setError(message);
       } finally {
         setLoading(false);
+        setLoadingMore(false);
       }
     },
     [statusFilter, componentFilter, keyword, sortBy],
   );
 
   useEffect(() => {
-    void loadOpportunities(page);
+    void loadOpportunities(page, page > 0);
   }, [page, loadOpportunities]);
 
-  // Reset page when filters change
+  // Reset page and list when filters change
   useEffect(() => {
+    setOpportunities([]);
     setPage(0);
   }, [statusFilter, componentFilter, keyword, sortBy]);
 
@@ -97,10 +129,6 @@ function OpportunityList({
     setPendingKeyword(initialKeyword);
     setPage(0);
   }, [initialKeyword]);
-
-  const totalPages = Math.ceil(total / pageSize);
-  const hasPrev = page > 0;
-  const hasNext = page < totalPages - 1;
 
   const handleKeywordSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
@@ -359,7 +387,7 @@ function OpportunityList({
           <span className="opp-list__error-message">{error}</span>
           <button
             className="opp-list__retry-btn"
-            onClick={() => void loadOpportunities(page)}
+            onClick={() => void loadOpportunities(page, page > 0)}
             type="button"
           >
             Retry
@@ -373,7 +401,8 @@ function OpportunityList({
         <div>
           <div className="opp-list__header">
             <span className="opp-list__count">
-              {total.toLocaleString()} total &middot; Showing {opportunities.length} on this page
+              Showing {opportunities.length.toLocaleString()} of{" "}
+              {total.toLocaleString()}
             </span>
           </div>
           <div className="opp-list__grid">
@@ -384,29 +413,23 @@ function OpportunityList({
                 onClick={onSelect}
                 onToggleSave={onToggleSave}
                 isSaved={isSaved?.(opp)}
+                matchCount={
+                  profile ? computeMatchCount(opp, profile) : undefined
+                }
               />
             ))}
           </div>
-          {totalPages > 1 && (
-            <div className="opp-list__pagination">
+          {opportunities.length < total && (
+            <div style={{ textAlign: "center", marginTop: "2rem" }}>
               <button
                 className="opp-list__page-btn"
-                onClick={() => setPage((p) => p - 1)}
-                disabled={!hasPrev}
+                onClick={() => {
+                  setPage((p) => p + 1);
+                }}
+                disabled={loadingMore}
                 type="button"
               >
-                Previous
-              </button>
-              <span className="opp-list__page-info">
-                Page {page + 1} of {totalPages.toLocaleString()}
-              </span>
-              <button
-                className="opp-list__page-btn"
-                onClick={() => setPage((p) => p + 1)}
-                disabled={!hasNext}
-                type="button"
-              >
-                Next
+                {loadingMore ? "Loading..." : "Load more"}
               </button>
             </div>
           )}

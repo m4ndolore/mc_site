@@ -96,6 +96,21 @@ function deduplicateAcrossSources(items: unknown[]): unknown[] {
           });
 }
 
+// ─── Status normalisation ────────────────────────────────────────────────────
+type CanonicalStatus = "open" | "closing-soon" | "pre-release" | "closed";
+
+function normalizeStatus(rawStatus: string | undefined, endDateTs: number | undefined): CanonicalStatus {
+          const status = (rawStatus ?? "").toLowerCase().trim();
+          if (status.includes("closed") || status.includes("archived") || status === "no") return "closed";
+          if (status.includes("pre-release") || status.includes("upcoming") || status.includes("forecast")) return "pre-release";
+          if (endDateTs) {
+                      const endMs = endDateTs > 1_000_000_000_000 ? endDateTs : endDateTs * 1000;
+                      if (endMs < Date.now()) return "closed";
+                      if (endMs - Date.now() < 14 * 24 * 60 * 60 * 1000) return "closing-soon";
+          }
+          return "open";
+}
+
 // ─── Cache helper ────────────────────────────────────────────────────────────
 const TTL = {
           darpa: 60 * 60,
@@ -210,12 +225,12 @@ function parseRatioHtml(html: string): unknown[] {
                           .match(/<p[^>]*>([\s\S]*?)<\/p>/)?.[1]
                           ?.replace(/<[^>]+>/g, "")
                           .trim() ?? "";
-                      const isOpen = /Open\s*Opportunity/i.test(block);
+                      const badgeText = /Open\s*Opportunity/i.test(block) ? "Open" : "Closed";
                       items.push({
                                     source: "ratio",
                                     topicCode: id,
                                     topicTitle: title,
-                                    topicStatus: isOpen ? "Open" : "Closed",
+                                    topicStatus: normalizeStatus(badgeText, undefined),
                                     description: desc,
                                     url: `https://www.ratio.exchange/challenges/view-challenge.cfm?ChallengeID=${id}`,
                                     component: hub || "Ratio Exchange",
@@ -246,7 +261,7 @@ function parseDarpaRss(xml: string): unknown[] {
                                     source: "darpa",
                                     topicCode: guid,
                                     topicTitle: title,
-                                    topicStatus: "Open",
+                                    topicStatus: normalizeStatus(undefined, undefined),
                                     description,
                                     topicStartDate: pubDate ? Math.floor(new Date(pubDate).getTime() / 1000) : null,
                                     url: deepLink,
@@ -278,17 +293,17 @@ function parseDiuHtml(html: string): unknown[] {
                                     deadlineIdx >= 0
                           ? plain.slice(deadlineIdx + deadline.length).trim().slice(0, 500)
                                       : plain.trim().slice(0, 500);
+                      const diuEndTs = deadline
+                        ? Math.floor(new Date(deadline).getTime() / 1000)
+                                    : undefined;
                       items.push({
                                     source: "diu",
                                     topicCode:
                                                     submitLink.split("/").pop() ??
                                                     title.replace(/\s+/g, "-").toLowerCase(),
                                     topicTitle: title,
-                                    topicStatus:
-                                                    deadline && new Date(deadline) > new Date() ? "Open" : "Closed",
-                                    topicEndDate: deadline
-                                      ? Math.floor(new Date(deadline).getTime() / 1000)
-                                                    : null,
+                                    topicStatus: normalizeStatus(undefined, diuEndTs),
+                                    topicEndDate: diuEndTs ?? null,
                                     description: desc,
                                     url: submitLink,
                                     component: "DIU",
@@ -403,17 +418,22 @@ function parseSamGovResponse(json: string): unknown[] {
           }
 
   const opportunities = data.opportunitiesData ?? [];
-          return opportunities.map((opp) => ({
+          return opportunities.map((opp) => {
+                      const samEndTs = opp.responseDeadLine
+                        ? Math.floor(new Date(opp.responseDeadLine).getTime() / 1000)
+                                    : undefined;
+                      return {
                       source: "sam",
                       topicCode: opp.noticeId,
                       topicTitle: opp.title,
-                      topicStatus: opp.active === "Yes" ? "Open" : "Closed",
+                      topicStatus: normalizeStatus(
+                        opp.active === "Yes" ? "open" : "closed",
+                        samEndTs
+                      ),
                       topicStartDate: opp.postedDate
                         ? Math.floor(new Date(opp.postedDate).getTime() / 1000)
                                     : null,
-                      topicEndDate: opp.responseDeadLine
-                        ? Math.floor(new Date(opp.responseDeadLine).getTime() / 1000)
-                                    : null,
+                      topicEndDate: samEndTs ?? null,
                       description: opp.solicitationNumber
                         ? `Solicitation: ${opp.solicitationNumber}. ${opp.fullParentPathName ?? ""}`
                                     : opp.fullParentPathName ?? "",
@@ -422,7 +442,8 @@ function parseSamGovResponse(json: string): unknown[] {
                       tags: [opp.type, opp.typeOfSetAsideDescription, opp.naicsCode]
                         .filter(Boolean)
                         .join(", "),
-          }));
+          };
+          });
 }
 
 // ─── SBIR fetch helper ────────────────────────────────────────────────────────
@@ -515,6 +536,22 @@ app.get("/api/opportunities", async (c) => {
                                                                       if (!record.url && topicId) {
                                                                                         record.url = buildSbirDetailUrl(topicId);
                                                                       }
+                                                                      // Infer estimated value for SBIR/STTR based on phase
+                                                                      if (!record.estimatedValue) {
+                                                                                        const programStr = String(record.program ?? record.solicitationType ?? "").toUpperCase();
+                                                                                        const phaseStr = String(record.phase ?? record.topicPhase ?? record.currentPhase ?? "");
+                                                                                        if (programStr.includes("SBIR") || programStr.includes("STTR")) {
+                                                                                                          if (/1|^I$/i.test(phaseStr)) {
+                                                                                                                            record.estimatedValue = { min: 50000, max: 275000 };
+                                                                                                          } else if (/2|^II$/i.test(phaseStr)) {
+                                                                                                                            record.estimatedValue = { min: 750000, max: 1750000 };
+                                                                                                          }
+                                                                                        }
+                                                                      }
+                                                                      record.topicStatus = normalizeStatus(
+                                                                                        String(record.topicStatus ?? record.topicQAStatusDisplay ?? ""),
+                                                                                        Number(record.topicEndDate) || undefined
+                                                                      );
                                                     });
                                                     allResults.push(...content);
                                                     // Only trust the count if the data fetch also succeeded,
@@ -576,7 +613,7 @@ app.get("/api/opportunities", async (c) => {
                                                                       source: "colosseum",
                                                                       topicCode: ch.id,
                                                                       topicTitle: ch.title,
-                                                                      topicStatus: "Open",
+                                                                      topicStatus: normalizeStatus(undefined, undefined),
                                                                       description: ch.desc,
                                                                       url: `https://marketplace.gocolosseum.org/public/challenges/${ch.id}`,
                                                                       component: "GoColosseum / ONI",
@@ -678,31 +715,46 @@ app.get("/api/opportunities", async (c) => {
           });
 });
 
-// ─── Single opportunity by ID (SBIR only) ────────────────────────────────────
+// ─── Single opportunity by ID (SBIR — uses search API, detail endpoint is 403) ─
 app.get("/api/opportunities/:id", async (c) => {
           const id = c.req.param("id");
-          const SBIR_DETAILS_URL = buildSbirDetailUrl(id);
           try {
-                      const response = await fetch(SBIR_DETAILS_URL, { headers: SBIR_HEADERS });
+                      // The SBIR detail endpoint (/topics/{id}/details) returns 403.
+                      // Instead, search all statuses and filter client-side by topicId.
+                      const searchParam = { topicStatuses: [583, 592, 593] };
+                      const params = new URLSearchParams();
+                      params.set("searchParam", JSON.stringify(searchParam));
+                      params.set("page", "0");
+                      params.set("size", "500");
+                      const response = await fetch(
+                                    `${SBIR_SEARCH_URL}?${params.toString()}`,
+                                    { headers: SBIR_HEADERS }
+                      );
                       if (!response.ok) {
-                                    const status = response.status === 404 ? 404 : 502;
                                     return c.json(
-                                            {
-                                                              success: false,
-                                                              error:
-                                                                                  status === 404
-                                                                  ? `Opportunity ${id} not found`
-                                                                                    : `SBIR API returned ${response.status}`,
-                                            },
-                                                    status
-                                                  );
+                                            { success: false, error: `SBIR API returned ${response.status}` },
+                                            502
+                                    );
                       }
-                      const data = await response.json() as Record<string, unknown>;
-                      data.source = "sbir";
-                      if (!data.url) {
-                                    data.url = SBIR_DETAILS_URL;
+                      const body = (await response.json()) as Record<string, unknown>;
+                      const content = Array.isArray(body.content) ? body.content
+                                    : Array.isArray(body.data) ? body.data as unknown[]
+                                    : [];
+                      const match = content.find((item: unknown) => {
+                                    const record = item as Record<string, unknown>;
+                                    return String(record.topicId ?? record.id ?? "") === id;
+                      }) as Record<string, unknown> | undefined;
+                      if (!match) {
+                                    return c.json(
+                                            { success: false, error: `Opportunity ${id} not found` },
+                                            404
+                                    );
                       }
-                      return c.json({ success: true, data });
+                      match.source = "sbir";
+                      if (!match.url) {
+                                    match.url = buildSbirDetailUrl(id);
+                      }
+                      return c.json({ success: true, data: match });
           } catch (error) {
                       const message = error instanceof Error ? error.message : "Unknown error";
                       return c.json(
