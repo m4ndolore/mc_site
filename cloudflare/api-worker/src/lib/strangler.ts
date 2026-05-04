@@ -2,7 +2,7 @@ import type { Context } from 'hono'
 import type { Env, AppVars } from '../types'
 import { err } from './envelope'
 
-type RouteTarget = 'native' | 'proxy_legacy'
+type RouteTarget = 'native' | 'proxy_legacy' | 'proxy_opportunities'
 
 const NATIVE_ROUTES: Array<{ method: string; pattern: RegExp }> = [
   { method: 'GET', pattern: /^\/health$/ },
@@ -26,9 +26,17 @@ const NATIVE_ROUTES: Array<{ method: string; pattern: RegExp }> = [
   { method: 'PATCH', pattern: /^\/guild\/users\/[^/]+\/role$/ },
 ]
 
+// Routes served by opportunities-api worker (intel, outlook, opportunities)
+const OPPORTUNITIES_ROUTES: RegExp[] = [
+  /^\/api\/intel/,
+  /^\/api\/outlook/,
+  /^\/api\/opportunities/,
+]
+
 export function resolveRoute(method: string, path: string): RouteTarget {
   const isNative = NATIVE_ROUTES.some(r => r.method === method && r.pattern.test(path))
   if (isNative) return 'native'
+  if (OPPORTUNITIES_ROUTES.some(re => re.test(path))) return 'proxy_opportunities'
   return 'proxy_legacy'
 }
 
@@ -115,6 +123,39 @@ export async function proxyToLegacy(
   } catch (e) {
     return c.json(
       err('PROXY_ERROR', 'Failed to reach legacy API', {
+        request_id: requestId,
+      }),
+      502
+    )
+  }
+}
+
+export async function proxyToOpportunities(
+  c: Context<{ Bindings: Env; Variables: AppVars }>
+): Promise<Response> {
+  const origin = c.env.OPPORTUNITIES_API_ORIGIN
+  const requestId = c.get('requestId')
+  const incomingUrl = new URL(c.req.url)
+
+  const target = new URL(incomingUrl.pathname + incomingUrl.search, origin)
+
+  try {
+    const upstream = await fetch(target.toString(), {
+      method: c.req.method,
+      headers: {
+        'User-Agent': 'MergeCombinator-API/1.0',
+        'X-Request-Id': requestId,
+      },
+    })
+
+    // Pass through the response as-is (opportunities-api handles its own content types)
+    const res = new Response(upstream.body, upstream)
+    res.headers.set('X-Request-Id', requestId)
+    res.headers.set('X-Proxied-To', 'opportunities-api')
+    return res
+  } catch (e) {
+    return c.json(
+      err('PROXY_ERROR', 'Failed to reach opportunities-api', {
         request_id: requestId,
       }),
       502

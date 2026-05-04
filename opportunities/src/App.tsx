@@ -106,39 +106,6 @@ function normalizeTopicCode(topicCode: string | undefined): string {
   return code;
 }
 
-function getStatusColor(status: string): string {
-  const s = status.toLowerCase();
-  if (s === "closing-soon" || s.includes("closing")) return "var(--mc-warning)";
-  if (s === "pre-release" || s.includes("pre")) return "var(--mc-accent)";
-  if (s === "closed") return "var(--gray-medium, #737373)";
-  return "var(--mc-success)"; // open, active, default
-}
-
-function getStatusLabel(status: string): string {
-  const s = status.toLowerCase();
-  if (s === "closing-soon") return "Closing Soon";
-  if (s === "pre-release") return "Pre-Release";
-  if (s === "closed") return "Closed";
-  return "Open";
-}
-
-function getDeadlineDisplay(deadline: string | undefined): { text: string; urgent: boolean } {
-  if (!deadline) return { text: "No deadline listed", urgent: false };
-  const days = Math.ceil((new Date(deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
-  if (days < 0) return { text: "Past due", urgent: true };
-  if (days < 30) return { text: `${days} days left`, urgent: true };
-  return { text: formatDate(deadline), urgent: false };
-}
-
-function formatEstimatedValue(val: { min?: number; max?: number } | undefined): string | null {
-  if (!val) return null;
-  const fmt = (n: number) => n >= 1_000_000 ? `$${(n / 1_000_000).toFixed(1)}M` : `$${Math.round(n / 1000)}K`;
-  if (val.min && val.max) return `${fmt(val.min)}\u2013${fmt(val.max)}`;
-  if (val.max) return `Up to ${fmt(val.max)}`;
-  if (val.min) return `From ${fmt(val.min)}`;
-  return null;
-}
-
 function isHumanReadableSourceUrl(url: string | undefined): boolean {
   if (!url) return false;
   return !/\/topics\/api\/public\/topics\/.+\/details$/i.test(url);
@@ -224,6 +191,66 @@ function buildSavedOpportunitiesEmailHref(saved: Opportunity[]): string {
   return `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join("\n"))}`;
 }
 
+function getStatusColor(status: string): string {
+  const s = status.toLowerCase();
+  if (s === "closed") return "var(--mc-text-muted)";
+  if (s === "closing-soon" || s === "closing soon") return "#f59e0b";
+  if (s === "pre-release" || s === "pre release") return "var(--mc-accent)";
+  return "#22c55e"; // open / active
+}
+
+function getDaysRemaining(deadline: string | undefined): number | null {
+  if (!deadline) return null;
+  const diff = new Date(deadline).getTime() - Date.now();
+  return Math.ceil(diff / (1000 * 60 * 60 * 24));
+}
+
+function formatDeadlineLabel(deadline: string | undefined): string {
+  const days = getDaysRemaining(deadline);
+  if (days === null) return "No deadline listed";
+  if (days < 0) return "Closed";
+  if (days === 0) return "Due today";
+  if (days === 1) return "1 day left";
+  if (days <= 30) return `${days} days left`;
+  return formatDate(deadline);
+}
+
+function getDeadlineColor(deadline: string | undefined): string {
+  const days = getDaysRemaining(deadline);
+  if (days === null) return "var(--mc-text-muted)";
+  if (days < 0) return "var(--mc-text-muted)";
+  if (days <= 7) return "#ef4444";
+  if (days <= 14) return "#f59e0b";
+  return "var(--mc-text)";
+}
+
+const MAX_VISIBLE_TAGS = 6;
+
+function TagGroup({
+  label,
+  tags,
+}: {
+  label: string;
+  tags: string[];
+}): React.JSX.Element | null {
+  if (!tags || tags.length === 0) return null;
+  const visible = tags.slice(0, MAX_VISIBLE_TAGS);
+  const overflow = tags.length - MAX_VISIBLE_TAGS;
+  return (
+    <div>
+      <div className="modal-section-label">{label}</div>
+      <div className="modal-tags">
+        {visible.map((tag) => (
+          <span key={tag} className="modal-tag">{tag}</span>
+        ))}
+        {overflow > 0 && (
+          <span className="modal-tag modal-tag--overflow">+{overflow} more</span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function OpportunityModal({
   opportunity,
   onClose,
@@ -239,6 +266,10 @@ function OpportunityModal({
   const externalUrl = getSourceUrl(opportunity);
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
+  const deadline = opportunity.responseDeadline ?? opportunity.closeDate;
+  const statusColor = getStatusColor(opportunity.topicStatus);
+  const deadlineColor = getDeadlineColor(deadline);
+
   return (
     <>
       <style>{`
@@ -305,47 +336,58 @@ function OpportunityModal({
           border-radius: 2px;
           color: var(--mc-text-muted);
           cursor: pointer;
-          font-size: 1.125rem;
-          line-height: 1;
           transition: border-color 0.2s ease, color 0.2s ease;
         }
         .modal-close-btn:hover {
           border-color: var(--mc-accent);
           color: var(--mc-text);
         }
+
+        /* ── Status strip ── */
+        .modal-status-strip {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 0.75rem 1.5rem;
+          border-top: 1px solid var(--mc-border);
+          border-bottom: 1px solid var(--mc-border);
+          background: rgba(255, 255, 255, 0.02);
+          flex-wrap: wrap;
+        }
+        .modal-status-strip__item {
+          display: flex;
+          align-items: center;
+          gap: 0.375rem;
+          font-size: 0.8125rem;
+        }
+        .modal-status-strip__badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          padding: 0.2rem 0.55rem;
+          border-radius: 2px;
+          letter-spacing: 0.02em;
+        }
+        .modal-status-strip__sep {
+          color: var(--mc-border);
+          font-size: 0.75rem;
+          user-select: none;
+        }
+        .modal-status-strip__label {
+          font-size: 0.6875rem;
+          font-weight: 500;
+          color: var(--mc-text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+        }
+
         .modal-body {
           padding: 1.25rem 1.5rem;
           display: flex;
           flex-direction: column;
           gap: 1.25rem;
-        }
-        .modal-status-strip {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          padding: 0.75rem 1rem;
-          background: var(--mc-bg-tertiary);
-          border-radius: 2px;
-          font-size: 0.8125rem;
-          flex-wrap: wrap;
-        }
-        .modal-status-strip__badge {
-          font-weight: 600;
-          font-size: 0.75rem;
-          padding: 0.125rem 0.5rem;
-          border-radius: 2px;
-        }
-        .modal-status-strip__separator {
-          width: 1px;
-          height: 1rem;
-          background: var(--mc-border);
-        }
-        .modal-status-strip__item {
-          color: var(--mc-text-muted);
-        }
-        .modal-status-strip__item--urgent {
-          color: var(--mc-warning);
-          font-weight: 600;
         }
         .modal-phase-details {
           border: 1px solid var(--mc-border);
@@ -375,12 +417,6 @@ function OpportunityModal({
           letter-spacing: 0.05em;
           margin-bottom: 0.25rem;
         }
-        .modal-description {
-          font-size: 0.875rem;
-          color: var(--mc-text);
-          line-height: 1.7;
-          white-space: pre-wrap;
-        }
         .modal-tags {
           display: flex;
           flex-wrap: wrap;
@@ -394,32 +430,84 @@ function OpportunityModal({
           border-radius: 2px;
           border: 1px solid var(--mc-border);
         }
+        .modal-tag--overflow {
+          font-style: italic;
+          color: var(--mc-accent);
+          border-color: transparent;
+          background: none;
+        }
+
+        /* ── Footer ── */
         .modal-footer {
           padding: 1rem 1.5rem 1.5rem;
           border-top: 1px solid var(--mc-border);
           display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 1rem;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+        .modal-footer-ctas {
+          display: flex;
+          gap: 0.5rem;
           flex-wrap: wrap;
         }
-        .modal-footer-actions {
+        .modal-cta-primary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.55rem 1.1rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          font-family: var(--font-primary);
+          color: var(--white);
+          background: var(--blue);
+          border: 1px solid var(--blue);
+          border-radius: 2px;
+          cursor: pointer;
+          transition: background 0.15s ease;
+          text-decoration: none;
+        }
+        .modal-cta-primary:hover {
+          background: var(--blue-dark);
+          border-color: var(--blue-dark);
+        }
+        .modal-cta-secondary {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.55rem 1.1rem;
+          font-size: 0.8125rem;
+          font-weight: 500;
+          font-family: var(--font-primary);
+          color: var(--offwhite);
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          border-radius: 2px;
+          cursor: pointer;
+          transition: border-color 0.15s ease, background 0.15s ease;
+          text-decoration: none;
+        }
+        .modal-cta-secondary:hover {
+          border-color: rgba(255, 255, 255, 0.4);
+          background: rgba(255, 255, 255, 0.06);
+        }
+        .modal-footer-links {
           display: flex;
           align-items: center;
           gap: 0.75rem;
           flex-wrap: wrap;
-        }
-        .modal-footer-source {
-          font-size: 0.75rem;
-          color: var(--mc-text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
         }
         .modal-footer-link {
           font-size: 0.75rem;
           color: var(--mc-accent);
           text-decoration: underline;
           text-underline-offset: 2px;
+        }
+        .modal-footer-source {
+          font-size: 0.75rem;
+          color: var(--mc-text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          margin-left: auto;
         }
       `}</style>
       <div
@@ -432,6 +520,7 @@ function OpportunityModal({
         aria-label={opportunity.topicTitle}
       >
         <div className="modal-content">
+          {/* ── Header ── */}
           <div className="modal-header">
             <div>
               <h2 className="modal-title">{opportunity.topicTitle}</h2>
@@ -449,64 +538,63 @@ function OpportunityModal({
               type="button"
               aria-label="Close"
             >
-              x
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
             </button>
           </div>
 
-          <div className="modal-body">
-            {(() => {
-              const statusColor = getStatusColor(opportunity.topicStatus);
-              const statusLabel = getStatusLabel(opportunity.topicStatus);
-              const deadline = getDeadlineDisplay(opportunity.responseDeadline ?? opportunity.closeDate);
-              const estValue = formatEstimatedValue(opportunity.estimatedValue);
-              return (
-                <div className="modal-status-strip" style={{ borderLeft: `3px solid ${statusColor}` }}>
-                  <span
-                    className="modal-status-strip__badge"
-                    style={{ color: statusColor, background: `color-mix(in srgb, ${statusColor} 15%, transparent)` }}
-                  >
-                    {statusLabel}
+          {/* ── Status strip ── */}
+          <div className="modal-status-strip">
+            <div className="modal-status-strip__item">
+              <span
+                className="modal-status-strip__badge"
+                style={{ color: statusColor, background: `color-mix(in srgb, ${statusColor} 12%, transparent)` }}
+              >
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: statusColor, display: "inline-block" }} />
+                {opportunity.topicStatus}
+              </span>
+            </div>
+            <span className="modal-status-strip__sep">/</span>
+            <div className="modal-status-strip__item">
+              <span className="modal-status-strip__label">Deadline</span>
+              <span style={{ color: deadlineColor, fontWeight: 600, fontSize: "0.8125rem" }}>
+                {formatDeadlineLabel(deadline)}
+              </span>
+            </div>
+            <span className="modal-status-strip__sep">/</span>
+            <div className="modal-status-strip__item">
+              <span
+                className="modal-status-strip__badge"
+                style={{ color: "var(--mc-text-muted)", background: "var(--mc-bg-tertiary)", fontWeight: 500, letterSpacing: "0.04em", textTransform: "uppercase" }}
+              >
+                {opportunity.source}
+              </span>
+            </div>
+            {opportunity.component && (
+              <>
+                <span className="modal-status-strip__sep">/</span>
+                <div className="modal-status-strip__item">
+                  <span style={{ color: "var(--mc-text-muted)", fontSize: "0.8125rem" }}>
+                    {opportunity.component}
                   </span>
-                  <span className="modal-status-strip__separator" />
-                  <span className={deadline.urgent ? "modal-status-strip__item--urgent" : "modal-status-strip__item"}>
-                    {deadline.text}
-                  </span>
-                  <span className="modal-status-strip__separator" />
-                  <span className="modal-status-strip__item">
-                    Posted {formatDate(opportunity.postedDate)}
-                  </span>
-                  {estValue && (
-                    <>
-                      <span className="modal-status-strip__separator" />
-                      <span className="modal-status-strip__item" style={{ fontWeight: 500, color: "var(--mc-text)" }}>
-                        {estValue}
-                      </span>
-                    </>
-                  )}
                 </div>
-              );
-            })()}
+              </>
+            )}
+          </div>
 
+          {/* ── Body ── */}
+          <div className="modal-body">
             {opportunity.objective && (
               <div>
                 <div className="modal-section-label">Objective</div>
                 <RichTextBlock text={opportunity.objective} />
-                {!htmlToParagraphs(opportunity.objective).length && (
-                  <p className="modal-description">
-                    {sanitizeText(opportunity.objective)}
-                  </p>
-                )}
               </div>
             )}
 
             <div>
               <div className="modal-section-label">Description</div>
               <RichTextBlock text={opportunity.description} />
-              {!htmlToParagraphs(opportunity.description).length && (
-                <p className="modal-description">
-                  {sanitizeText(opportunity.description)}
-                </p>
-              )}
             </div>
 
             {(opportunity.phase1Description || opportunity.phase2Description || opportunity.phase3Description) && (
@@ -517,11 +605,6 @@ function OpportunityModal({
                     <summary>Phase I</summary>
                     <div className="modal-description">
                       <RichTextBlock text={opportunity.phase1Description} />
-                      {!htmlToParagraphs(opportunity.phase1Description).length && (
-                        <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.75, whiteSpace: "pre-wrap" }}>
-                          {sanitizeText(opportunity.phase1Description)}
-                        </p>
-                      )}
                     </div>
                   </details>
                 )}
@@ -530,11 +613,6 @@ function OpportunityModal({
                     <summary>Phase II</summary>
                     <div className="modal-description">
                       <RichTextBlock text={opportunity.phase2Description} />
-                      {!htmlToParagraphs(opportunity.phase2Description).length && (
-                        <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.75, whiteSpace: "pre-wrap" }}>
-                          {sanitizeText(opportunity.phase2Description)}
-                        </p>
-                      )}
                     </div>
                   </details>
                 )}
@@ -543,60 +621,31 @@ function OpportunityModal({
                     <summary>Phase III</summary>
                     <div className="modal-description">
                       <RichTextBlock text={opportunity.phase3Description} />
-                      {!htmlToParagraphs(opportunity.phase3Description).length && (
-                        <p style={{ color: "var(--mc-text-muted)", lineHeight: 1.75, whiteSpace: "pre-wrap" }}>
-                          {sanitizeText(opportunity.phase3Description)}
-                        </p>
-                      )}
                     </div>
                   </details>
                 )}
               </div>
             )}
 
-            {opportunity.technologyAreas &&
-              opportunity.technologyAreas.length > 0 && (
-                <div>
-                  <div className="modal-section-label">Technology Areas</div>
-                  <div className="modal-tags">
-                    {opportunity.technologyAreas.map((area) => (
-                      <span key={area} className="modal-tag">
-                        {area}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-            {opportunity.focusAreas && opportunity.focusAreas.length > 0 && (
-              <div>
-                <div className="modal-section-label">Focus Areas</div>
-                <div className="modal-tags">
-                  {opportunity.focusAreas.map((area) => (
-                    <span key={area} className="modal-tag">
-                      {area}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {opportunity.keywords && opportunity.keywords.length > 0 && (
-              <div>
-                <div className="modal-section-label">Keywords</div>
-                <div className="modal-tags">
-                  {opportunity.keywords.map((keyword) => (
-                    <span key={keyword} className="modal-tag">
-                      {keyword}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+            <TagGroup label="Technology Areas" tags={opportunity.technologyAreas || []} />
+            <TagGroup label="Focus Areas" tags={opportunity.focusAreas || []} />
+            <TagGroup label="Keywords" tags={opportunity.keywords || []} />
           </div>
 
+          {/* ── Footer ── */}
           <div className="modal-footer">
-            <div className="modal-footer-actions">
+            <div className="modal-footer-ctas">
+              <a className="modal-cta-primary" href={accessHref}>
+                Get matched
+              </a>
+              <a
+                className="modal-cta-secondary"
+                href={`/access?context=opportunities&source=opportunity-updates&returnTo=${encodeURIComponent(getOpportunityReturnPath(opportunity))}`}
+              >
+                Get updates in your inbox
+              </a>
+            </div>
+            <div className="modal-footer-links">
               <a className="modal-footer-link" href={detailPageHref}>
                 Open detail page
               </a>
@@ -617,17 +666,14 @@ function OpportunityModal({
                 className="modal-footer-link"
                 type="button"
                 onClick={() => onToggleSave(opportunity)}
-                style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, font: "inherit" }}
               >
                 {isSaved ? "Remove saved" : "Save"}
               </button>
-              <a className="modal-footer-link" href={accessHref}>
-                Get matched
-              </a>
+              <span className="modal-footer-source">
+                {opportunity.source}
+              </span>
             </div>
-            <span className="modal-footer-source">
-              Source: {opportunity.source}
-            </span>
           </div>
         </div>
       </div>
@@ -1094,9 +1140,7 @@ function OpportunityDetailPage(): React.JSX.Element {
 
       {(() => {
         const statusColor = getStatusColor(opportunity.topicStatus);
-        const statusLabel = getStatusLabel(opportunity.topicStatus);
-        const deadlineInfo = getDeadlineDisplay(dueDate);
-        const estValue = formatEstimatedValue(opportunity.estimatedValue);
+        const deadlineColor = getDeadlineColor(dueDate);
         return (
           <div
             style={{
@@ -1122,24 +1166,16 @@ function OpportunityDetailPage(): React.JSX.Element {
                 background: `color-mix(in srgb, ${statusColor} 15%, transparent)`,
               }}
             >
-              {statusLabel}
+              {opportunity.topicStatus}
             </span>
             <span style={{ width: "1px", height: "1rem", background: "var(--mc-border)" }} />
-            <span style={deadlineInfo.urgent ? { color: "var(--mc-warning)", fontWeight: 600 } : { color: "var(--mc-text-muted)" }}>
-              {deadlineInfo.text}
+            <span style={{ color: deadlineColor, fontWeight: 600 }}>
+              {formatDeadlineLabel(dueDate)}
             </span>
             <span style={{ width: "1px", height: "1rem", background: "var(--mc-border)" }} />
             <span style={{ color: "var(--mc-text-muted)" }}>
               Posted {formatDate(opportunity.postedDate)}
             </span>
-            {estValue && (
-              <>
-                <span style={{ width: "1px", height: "1rem", background: "var(--mc-border)" }} />
-                <span style={{ fontWeight: 500, color: "var(--mc-text)" }}>
-                  {estValue}
-                </span>
-              </>
-            )}
           </div>
         );
       })()}

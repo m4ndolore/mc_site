@@ -448,7 +448,7 @@ function generateEntityPage(c) {
           <a href="/" class="footer__logo">
             <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
           </a>
-          <p class="footer__tagline">The builder-led venture studio for national security.</p>
+          <p class="footer__tagline">Venture studio for national security.</p>
         </div>
         <div class="footer__links">
           <div class="footer__column">
@@ -507,7 +507,7 @@ function generateFaqPage() {
   const faqs = [
     {
       q: 'What is Merge Combinator?',
-      a: 'Merge Combinator is a builder-led venture studio for national security. It co-founds defense ventures with operators who own the problem, connecting technology builders with defense operators, acquisition professionals, and investment partners. Based in Honolulu, with presence in Seattle and Las Vegas.',
+      a: 'Merge Combinator is a venture studio for national security. We co-found defense ventures with operators who own the problem, connecting technology builders with defense operators, acquisition professionals, and investment partners. Based in Honolulu, with presence in Seattle and Las Vegas.',
     },
     {
       q: 'What is The Combine?',
@@ -620,7 +620,7 @@ ${faqItemsHtml}
           <a href="/" class="footer__logo">
             <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
           </a>
-          <p class="footer__tagline">The builder-led venture studio for national security.</p>
+          <p class="footer__tagline">Venture studio for national security.</p>
         </div>
         <div class="footer__links">
           <div class="footer__column">

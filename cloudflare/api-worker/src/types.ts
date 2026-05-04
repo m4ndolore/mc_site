@@ -26,6 +26,7 @@ export interface Env {
   MC_PUBLIC_URL: string
   VIA_ISSUER_URL: string
   LEGACY_API_ORIGIN: string
+  OPPORTUNITIES_API_ORIGIN: string
   CORS_ALLOWED_ORIGINS: string
 }
 

@@ -184,15 +184,16 @@ export async function fetchOpportunities(
   );
   if (!response.ok) throw new Error("Failed to fetch opportunities");
   const payload = (await response.json()) as {
-    success: boolean;
     data: RawOpportunity[];
-    pagination: { page: number; size: number; total: number };
+    pagination: OpportunityListResponse["pagination"];
+    success: boolean;
+    source: string;
   };
   return {
     success: payload.success,
     data: payload.data.map(normalizeOpportunity),
     pagination: payload.pagination,
-    source: "aggregated",
+    source: payload.source,
   };
 }
 

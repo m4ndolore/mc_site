@@ -1,89 +1,52 @@
 import { useEffect, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 type NavLinkItem = { href: string; label: string };
 type FooterColumn = { heading: string; links: NavLinkItem[] };
-type SharedNavConfig = {
-  navLinks: NavLinkItem[];
-  platformLinks: NavLinkItem[];
-  footerColumns: FooterColumn[];
-};
+type FooterConfig = { footerColumns: FooterColumn[] };
 
-const DEFAULT_NAV_CONFIG: SharedNavConfig = {
-  navLinks: [
-    { href: "/about", label: "About" },
-    { href: "/builders", label: "Defense Builders" },
-    { href: "/wingman", label: "Wingman" },
-    { href: "/guild", label: "Guild" },
-    { href: "/programs/the-combine", label: "The Combine" },
-  ],
-  platformLinks: [
-    { href: "/opportunities", label: "Opportunities" },
-    { href: "/status", label: "Status" },
-    { href: "/briefs", label: "Briefs" },
-    { href: "/knowledge", label: "Knowledge" },
-    { href: "/learn", label: "Learn" },
-    { href: "https://docs.mergecombinator.com", label: "Docs" },
-  ],
-  footerColumns: [
-    {
-      heading: "Platform",
-      links: [
-        { href: "/builders", label: "Defense Builders" },
-        { href: "/wingman", label: "Wingman" },
-        { href: "/guild", label: "Guild" },
-        { href: "/programs/the-combine", label: "The Combine" },
-        { href: "/opportunities", label: "Opportunities" },
-        { href: "/briefs", label: "Briefs" },
-      ],
-    },
-    {
-      heading: "Company",
-      links: [
-        { href: "/#hero", label: "About" },
-        { href: "/access", label: "Contact" },
-        { href: "/builders", label: "Careers" },
-      ],
-    },
-    {
-      heading: "Resources",
-      links: [
-        { href: "/blog", label: "Blog" },
-        { href: "/portfolio", label: "Case Studies" },
-        { href: "/knowledge", label: "Knowledge" },
-        { href: "/learn", label: "Learn" },
-        { href: "https://docs.mergecombinator.com", label: "Docs" },
-      ],
-    },
-    {
-      heading: "Legal",
-      links: [
-        { href: "/privacy", label: "Privacy Policy" },
-        { href: "/terms", label: "Terms of Service" },
-        { href: "/security", label: "Security" },
-      ],
-    },
-  ],
-};
-
-function normalizePath(path: string): string {
-  return path.replace(/\/+$/, "") || "/";
-}
-
-function isActive(href: string, pathname: string): boolean {
-  if (!href.startsWith("/")) return false;
-  const normalizedHref = normalizePath(href);
-  const normalizedPath = normalizePath(pathname);
-  if (normalizedHref === "/") return normalizedPath === "/";
-  return (
-    normalizedPath === normalizedHref || normalizedPath.startsWith(`${normalizedHref}/`)
-  );
-}
+const DEFAULT_FOOTER_COLUMNS: FooterColumn[] = [
+  {
+    heading: "Platform",
+    links: [
+      { href: "/builders", label: "Defense Builders" },
+      { href: "/wingman", label: "Wingman" },
+      { href: "/guild", label: "Guild" },
+      { href: "/programs/the-combine", label: "The Combine" },
+      { href: "/opportunities", label: "Opportunities" },
+      { href: "/briefs", label: "Briefs" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { href: "/#hero", label: "About" },
+      { href: "/access", label: "Contact" },
+      { href: "/builders", label: "Careers" },
+    ],
+  },
+  {
+    heading: "Resources",
+    links: [
+      { href: "/blog", label: "Blog" },
+      { href: "/portfolio", label: "Case Studies" },
+      { href: "/knowledge", label: "Knowledge" },
+      { href: "/learn", label: "Learn" },
+      { href: "https://docs.mergecombinator.com", label: "Docs" },
+    ],
+  },
+  {
+    heading: "Legal",
+    links: [
+      { href: "/privacy", label: "Privacy Policy" },
+      { href: "/terms", label: "Terms of Service" },
+      { href: "/security", label: "Security" },
+    ],
+  },
+];
 
 function Layout(): React.JSX.Element {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [navConfig, setNavConfig] = useState<SharedNavConfig>(DEFAULT_NAV_CONFIG);
-  const location = useLocation();
+  const [footerColumns, setFooterColumns] = useState<FooterColumn[]>(DEFAULT_FOOTER_COLUMNS);
 
   useEffect(() => {
     let isMounted = true;
@@ -91,19 +54,13 @@ function Layout(): React.JSX.Element {
       try {
         const response = await fetch("/data/navigation.json", { cache: "no-store" });
         if (!response.ok) return;
-        const data = (await response.json()) as Partial<SharedNavConfig>;
+        const data = (await response.json()) as Partial<FooterConfig>;
         if (!isMounted) return;
-        setNavConfig({
-          navLinks: Array.isArray(data.navLinks) ? data.navLinks : DEFAULT_NAV_CONFIG.navLinks,
-          platformLinks: Array.isArray(data.platformLinks)
-            ? data.platformLinks
-            : DEFAULT_NAV_CONFIG.platformLinks,
-          footerColumns: Array.isArray(data.footerColumns)
-            ? data.footerColumns
-            : DEFAULT_NAV_CONFIG.footerColumns,
-        });
+        if (Array.isArray(data.footerColumns)) {
+          setFooterColumns(data.footerColumns);
+        }
       } catch {
-        // Keep fallback nav config when fetch fails.
+        // Keep fallback footer config when fetch fails.
       }
     };
     void load();
@@ -115,201 +72,6 @@ function Layout(): React.JSX.Element {
   return (
     <>
       <style>{`
-        /* ── NAV ── */
-        .nav {
-          position: sticky;
-          top: 0;
-          height: var(--nav-height);
-          z-index: 1000;
-          background: var(--black);
-          border-bottom: 1px solid transparent;
-          transition: background var(--transition-base), border-color var(--transition-base);
-        }
-        .nav--scrolled {
-          background: rgba(10, 10, 10, 0.85);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
-          border-bottom-color: rgba(255, 255, 255, 0.08);
-        }
-        .nav__container {
-          max-width: var(--max-width);
-          margin: 0 auto;
-          padding: 0 clamp(16px, 3vw, 40px);
-          height: 100%;
-          display: flex;
-          align-items: center;
-          gap: 32px;
-        }
-
-        /* Logo */
-        .nav__logo {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          text-decoration: none;
-          transition: opacity var(--transition-fast);
-        }
-        .nav__logo:hover { opacity: 0.85; }
-        .nav__logo-text {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          line-height: 1;
-        }
-        .nav__logo-merge {
-          font-family: var(--font-serif);
-          font-size: 14px;
-          font-weight: 400;
-          font-style: italic;
-          color: rgba(242, 245, 247, 0.85);
-          letter-spacing: 0.02em;
-          margin-bottom: -1px;
-          margin-left: 1px;
-        }
-        .nav__logo-combinator {
-          font-family: var(--font-primary);
-          font-size: 28px;
-          font-weight: 700;
-          letter-spacing: -0.02em;
-          color: var(--offwhite);
-          line-height: 1;
-        }
-        .nav__logo-icon {
-          height: 96px;
-          width: auto;
-          display: block;
-          margin-left: 10px;
-        }
-
-        /* Menu */
-        .nav__menu {
-          margin-left: auto;
-          display: flex;
-          align-items: center;
-          gap: 32px;
-        }
-        .nav__menu-links {
-          display: flex;
-          align-items: center;
-          gap: 24px;
-        }
-        .nav__menu-actions {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-
-        /* Links */
-        .nav__link {
-          position: relative;
-          color: rgba(242, 245, 247, 0.85);
-          font-size: 18px;
-          font-weight: 500;
-          font-family: var(--font-primary);
-          letter-spacing: -0.015em;
-          padding: 6px 0;
-          transition: color var(--transition-fast);
-          background: none;
-          border: none;
-          cursor: pointer;
-        }
-        .nav__link::after {
-          content: '';
-          position: absolute;
-          left: 0; right: 0; bottom: -6px;
-          height: 2px;
-          background: var(--blue);
-          opacity: 0;
-          transform: scaleX(0.5);
-          transform-origin: center;
-          transition: opacity var(--transition-fast), transform var(--transition-fast);
-        }
-        .nav__link:hover,
-        .nav__link:focus-visible { color: var(--white); }
-        .nav__link:hover::after,
-        .nav__link:focus-visible::after { opacity: 1; transform: scaleX(1); }
-        .nav__link--active { color: var(--white); }
-        .nav__link--active::after { opacity: 1; transform: scaleX(1); }
-
-        /* Dropdown */
-        .nav__dropdown { position: relative; }
-        .nav__dropdown-trigger {
-          display: inline-flex;
-          align-items: center;
-          gap: 6px;
-        }
-        .nav__dropdown-trigger::after { right: 20px; }
-        .nav__dropdown-icon { transition: transform var(--transition-fast); }
-        .nav__dropdown--open .nav__dropdown-icon { transform: rotate(180deg); }
-        .nav__dropdown-menu {
-          position: absolute;
-          top: 100%;
-          left: 50%;
-          transform: translateX(-50%) translateY(8px);
-          min-width: 180px;
-          background: rgba(13, 17, 23, 0.95);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 6px;
-          padding: 8px 0;
-          opacity: 0;
-          visibility: hidden;
-          transition: opacity var(--transition-fast), visibility var(--transition-fast), transform var(--transition-fast);
-          z-index: 100;
-        }
-        .nav__dropdown--open .nav__dropdown-menu {
-          opacity: 1;
-          visibility: visible;
-          transform: translateX(-50%) translateY(0);
-        }
-        .nav__dropdown-item {
-          display: block;
-          padding: 10px 20px;
-          color: rgba(242, 245, 247, 0.85);
-          font-size: 15px;
-          font-weight: 500;
-          font-family: var(--font-primary);
-          transition: background var(--transition-fast), color var(--transition-fast);
-        }
-        .nav__dropdown-item:hover {
-          background: rgba(255, 255, 255, 0.05);
-          color: var(--white);
-        }
-
-        /* Buttons */
-        .nav__btn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          font-family: var(--font-primary);
-          font-size: 14px;
-          font-weight: 500;
-          border-radius: 2px;
-          padding: 10px 18px;
-          transition: box-shadow var(--transition-fast), background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
-        }
-        .nav__btn--secondary {
-          background: transparent;
-          color: var(--offwhite);
-          border: 1px solid rgba(255, 255, 255, 0.25);
-        }
-        .nav__btn--secondary:hover {
-          background: rgba(255, 255, 255, 0.06);
-          border-color: rgba(255, 255, 255, 0.4);
-          color: var(--white);
-        }
-        .nav__btn--access {
-          background: var(--blue);
-          color: var(--white);
-          border: 1px solid var(--blue);
-        }
-        .nav__btn--access:hover {
-          background: var(--blue-dark);
-          border-color: var(--blue-dark);
-        }
-
-        /* ── MAIN ── */
         .site-main {
           flex: 1;
           width: 100%;
@@ -317,8 +79,6 @@ function Layout(): React.JSX.Element {
           margin: 0 auto;
           padding: 2rem clamp(16px, 3vw, 40px);
         }
-
-        /* ── FOOTER ── */
         .footer {
           background: var(--black);
           padding: 80px 0 40px;
@@ -342,34 +102,10 @@ function Layout(): React.JSX.Element {
           gap: 10px;
           margin-bottom: 16px;
         }
-        .footer__logo-text {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          line-height: 1;
-        }
-        .footer__logo-merge {
-          font-family: var(--font-serif);
-          font-size: 12px;
-          font-weight: 400;
-          font-style: italic;
-          color: rgba(242, 245, 247, 0.7);
-          letter-spacing: 0.02em;
-          margin-bottom: -1px;
-        }
-        .footer__logo-combinator {
-          font-family: var(--font-primary);
-          font-size: 22px;
-          font-weight: 700;
-          letter-spacing: -0.02em;
-          color: var(--offwhite);
-          line-height: 1;
-        }
-        .footer__logo-icon {
-          height: 26px;
+        .footer__logo-img {
+          height: 36px;
           width: auto;
           display: block;
-          margin-left: 4px;
         }
         .footer__tagline {
           color: rgba(255, 255, 255, 0.5);
@@ -429,11 +165,7 @@ function Layout(): React.JSX.Element {
           font-size: 13px;
           color: rgba(255, 255, 255, 0.4);
         }
-
-        /* ── RESPONSIVE ── */
         @media (max-width: 1024px) {
-          .nav__menu-links { display: none; }
-          .nav__menu-actions { display: none; }
           .footer__grid {
             grid-template-columns: 1fr;
             gap: 40px;
@@ -443,93 +175,6 @@ function Layout(): React.JSX.Element {
           }
         }
       `}</style>
-
-      <header className="nav" id="nav">
-        <div className="nav__container">
-          <a href="/" className="nav__logo">
-            <img
-              src="/opportunities/logowhite2.png"
-              alt="Merge Combinator"
-              className="nav__logo-img"
-              style={{ height: "28px", width: "auto" }}
-            />
-          </a>
-
-          <nav className="nav__menu" aria-label="Primary navigation">
-            <div className="nav__menu-links">
-              {navConfig.navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className={`nav__link${isActive(link.href, location.pathname) ? " nav__link--active" : ""}`}
-                >
-                  {link.label}
-                </a>
-              ))}
-              <div
-                className={`nav__dropdown${dropdownOpen ? " nav__dropdown--open" : ""}`}
-                onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={() => setDropdownOpen(false)}
-              >
-                <button
-                  className={`nav__link nav__dropdown-trigger${
-                    navConfig.platformLinks.some((link) =>
-                      isActive(link.href, location.pathname),
-                    )
-                      ? " nav__link--active"
-                      : ""
-                  }`}
-                  aria-expanded={dropdownOpen}
-                  aria-haspopup="true"
-                  type="button"
-                >
-                  Platform
-                  <svg
-                    className="nav__dropdown-icon"
-                    width="10"
-                    height="6"
-                    viewBox="0 0 10 6"
-                    fill="none"
-                  >
-                    <path
-                      d="M1 1L5 5L9 1"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
-                <div className="nav__dropdown-menu">
-                  {navConfig.platformLinks.map((link) => (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      className={`nav__dropdown-item${isActive(link.href, location.pathname) ? " nav__link--active" : ""}`}
-                    >
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="nav__menu-actions">
-              <a
-                href="/auth/login"
-                className="nav__btn nav__btn--secondary"
-              >
-                Sign in
-              </a>
-              <a
-                href="/access"
-                className="nav__btn nav__btn--access"
-              >
-                Join
-              </a>
-            </div>
-          </nav>
-        </div>
-      </header>
 
       <main className="site-main">
         <Outlet />
@@ -541,9 +186,9 @@ function Layout(): React.JSX.Element {
             <div className="footer__brand">
               <a href="/" className="footer__logo">
                 <img
-                  src="/opportunities/logowhite2.png"
+                  src="/assets/logowhite2.png"
                   alt="Merge Combinator"
-                  style={{ height: "28px", width: "auto" }}
+                  className="footer__logo-img"
                 />
               </a>
               <p className="footer__tagline">
@@ -576,7 +221,7 @@ function Layout(): React.JSX.Element {
             </div>
 
             <div className="footer__links">
-              {navConfig.footerColumns.map((column) => (
+              {footerColumns.map((column) => (
                 <div key={column.heading}>
                   <h4 className="footer__heading">{column.heading}</h4>
                   <ul className="footer__list">
