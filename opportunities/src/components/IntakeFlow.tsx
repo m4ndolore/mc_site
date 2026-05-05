@@ -4,6 +4,9 @@ import type { ViewMode } from "../types/profile";
 interface IntakeFlowProps {
   onComplete: (techAreas: string[], problemAreas: string[], viewMode: ViewMode) => void;
   onSkip: () => void;
+  initialTechAreas?: string[];
+  initialProblemAreas?: string[];
+  initialViewMode?: ViewMode;
 }
 
 const TECH_AREAS = [
@@ -61,11 +64,11 @@ const VIEW_MODE_OPTIONS: { id: ViewMode; title: string; description: string }[] 
   },
 ];
 
-function IntakeFlow({ onComplete, onSkip }: IntakeFlowProps): React.JSX.Element {
+function IntakeFlow({ onComplete, onSkip, initialTechAreas, initialProblemAreas, initialViewMode }: IntakeFlowProps): React.JSX.Element {
   const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [selectedTechAreas, setSelectedTechAreas] = useState<string[]>([]);
-  const [selectedProblemAreas, setSelectedProblemAreas] = useState<string[]>([]);
-  const [selectedViewMode, setSelectedViewMode] = useState<ViewMode>("opportunity");
+  const [selectedTechAreas, setSelectedTechAreas] = useState<string[]>(initialTechAreas ?? []);
+  const [selectedProblemAreas, setSelectedProblemAreas] = useState<string[]>(initialProblemAreas ?? []);
+  const [selectedViewMode, setSelectedViewMode] = useState<ViewMode>(initialViewMode ?? "opportunity");
 
   function toggleTechArea(area: string): void {
     setSelectedTechAreas((prev) =>

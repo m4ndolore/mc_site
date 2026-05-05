@@ -868,6 +868,9 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
     }
   }, [mode]);
 
+  // Editing preferences state — shows IntakeFlow with pre-filled values
+  const [editingPreferences, setEditingPreferences] = useState(false);
+
   const isFullProfile = hasProfile && (profile!.techAreas.length > 0 || profile!.problemAreas.length > 0);
   const showIntake = !isFullProfile && !skippedIntake;
 
@@ -1032,6 +1035,39 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
     );
   }
 
+  // Editing preferences — show IntakeFlow pre-filled with current selections
+  if (editingPreferences) {
+    return (
+      <div>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <h1
+            style={{
+              fontSize: "2rem",
+              fontWeight: 700,
+              letterSpacing: "-0.02em",
+              marginBottom: "0.375rem",
+            }}
+          >
+            {seo.heading}
+          </h1>
+          <p style={{ color: "var(--mc-text-muted)", maxWidth: "36rem", fontSize: "0.875rem" }}>
+            {seo.subtitle}
+          </p>
+        </div>
+        <IntakeFlow
+          onComplete={(techAreas, problemAreas, viewMode) => {
+            createProfile(techAreas, problemAreas, viewMode);
+            setEditingPreferences(false);
+          }}
+          onSkip={() => setEditingPreferences(false)}
+          initialTechAreas={profile?.techAreas}
+          initialProblemAreas={profile?.problemAreas}
+          initialViewMode={profile?.viewMode}
+        />
+      </div>
+    );
+  }
+
   // Determine active view mode for personalized feed
   const viewMode: ViewMode = isFullProfile ? profile!.viewMode : "opportunity";
 
@@ -1056,7 +1092,7 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
       {isFullProfile && (
         <ProfileBar
           profile={profile!}
-          onEditPreferences={() => updateProfile({ techAreas: [], problemAreas: [] })}
+          onEditPreferences={() => setEditingPreferences(true)}
           onClearProfile={() => { clearProfile(); setSkippedIntake(false); try { localStorage.removeItem("mc-opportunity-skip-intake"); } catch { /* ignore */ } }}
           onChangeViewMode={(m) => updateProfile({ viewMode: m })}
         />
