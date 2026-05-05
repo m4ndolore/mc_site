@@ -1,15 +1,17 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { Routes, Route, Link, useParams } from "react-router-dom";
 import Layout from "./components/Layout";
 import OpportunityList from "./components/OpportunityList";
 import TabBar from "./components/TabBar";
 import SavedPanel from "./components/SavedPanel";
+import EventsPanel from "./components/EventsPanel";
+import RadarPanel from "./components/RadarPanel";
 import IntakeFlow from "./components/IntakeFlow";
 import ProfileBar from "./components/ProfileBar";
 import GroupedFeed from "./components/GroupedFeed";
-import type { Opportunity } from "./types/opportunity";
+import type { Opportunity, OutlookEvent } from "./types/opportunity";
 import type { ViewMode } from "./types/profile";
-import { fetchOpportunity, fetchOpportunities } from "./lib/api";
+import { fetchOpportunity, fetchOpportunities, fetchOutlookEvents } from "./lib/api";
 import { useProfile } from "./lib/profile";
 
 function formatDate(dateString: string | undefined): string {
@@ -795,6 +797,26 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
     }
   };
 
+  // Outlook events
+  const [events, setEvents] = useState<OutlookEvent[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
+
+  const loadEvents = useCallback(async () => {
+    setEventsLoading(true);
+    try {
+      const data = await fetchOutlookEvents();
+      setEvents(data.events);
+    } catch {
+      // Events are supplementary — fail silently
+    } finally {
+      setEventsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadEvents();
+  }, [loadEvents]);
+
   useEffect(() => {
     if (!selectedOpportunity) return;
     const onKeyDown = (event: KeyboardEvent): void => {
@@ -811,6 +833,8 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
   const tabs = [
     { id: "solicitations", label: "Solicitations" },
     { id: "saved", label: "Saved", count: savedCount || undefined },
+    { id: "events", label: "Events", count: events.length || undefined },
+    { id: "radar", label: "Radar" },
   ];
 
   const seo = useMemo(() => {
@@ -969,6 +993,17 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
           onToggleSave={handleToggleSave}
           onClearSaved={handleClearSaved}
           emailSavedHref={savedEmailHref}
+        />
+      )}
+
+      {activeTab === "events" && (
+        <EventsPanel events={events} loading={eventsLoading} />
+      )}
+
+      {activeTab === "radar" && (
+        <RadarPanel
+          events={events}
+          onSelectOpportunity={setSelectedOpportunity}
         />
       )}
 
