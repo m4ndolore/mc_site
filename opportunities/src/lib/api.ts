@@ -165,6 +165,16 @@ function normalizeOpportunity(raw: RawOpportunity): Opportunity {
       closeDate ??
       toIsoDate(raw.topicQAEndDate),
     referenceDocuments: normalizeReferenceDocuments(raw.referenceDocuments),
+    qaStatus: asString(raw.topicQAStatusDisplay) ?? undefined,
+    qaStartDate: toIsoDate(raw.topicQAStartDate),
+    qaEndDate: toIsoDate(raw.topicQAEndDate),
+    qaQuestionCount:
+      typeof raw.noOfPublishedQuestions === "number"
+        ? raw.noOfPublishedQuestions
+        : typeof raw.topicQuestionCount === "number"
+          ? raw.topicQuestionCount
+          : undefined,
+    qaOpen: typeof raw.topicQAOpen === "boolean" ? raw.topicQAOpen : undefined,
   };
 }
 
