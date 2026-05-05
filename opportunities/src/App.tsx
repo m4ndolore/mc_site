@@ -1038,6 +1038,179 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
   );
 }
 
+function computeRelatedScore(current: Opportunity, candidate: Opportunity): number {
+  const currentTerms = [
+    ...(current.technologyAreas ?? []),
+    ...(current.focusAreas ?? []),
+    ...(current.keywords ?? []),
+  ].map((t) => t.toLowerCase());
+
+  const candidateTerms = [
+    ...(candidate.technologyAreas ?? []),
+    ...(candidate.focusAreas ?? []),
+    ...(candidate.keywords ?? []),
+  ].map((t) => t.toLowerCase());
+
+  if (currentTerms.length === 0 || candidateTerms.length === 0) return 0;
+
+  let count = 0;
+  for (const ct of currentTerms) {
+    if (candidateTerms.some((cand) => cand.includes(ct) || ct.includes(cand))) {
+      count++;
+    }
+  }
+  return count;
+}
+
+function RelatedOpportunities({ opportunity }: { opportunity: Opportunity }): React.JSX.Element | null {
+  const [allOpps, setAllOpps] = useState<Opportunity[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void fetchOpportunities({ size: 200, status: "active" }).then(
+      (res) => { if (!cancelled) { setAllOpps(res.data); setLoaded(true); } },
+      () => { if (!cancelled) setLoaded(true); },
+    );
+    return () => { cancelled = true; };
+  }, []);
+
+  const related = useMemo(() => {
+    if (!loaded || allOpps.length === 0) return [];
+    const currentId = opportunity.id || opportunity.topicId;
+    const scored = allOpps
+      .filter((opp) => (opp.id || opp.topicId) !== currentId)
+      .map((opp) => ({ opp, score: computeRelatedScore(opportunity, opp) }))
+      .filter((entry) => entry.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6);
+    return scored;
+  }, [loaded, allOpps, opportunity]);
+
+  if (!loaded || related.length === 0) return null;
+
+  return (
+    <>
+      <style>{`
+        .related-section {
+          margin-top: 2.5rem;
+          padding-top: 1.5rem;
+          border-top: 1px solid var(--mc-border);
+        }
+        .related-section__label {
+          font-size: 0.6875rem;
+          font-weight: 500;
+          color: var(--mc-text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          font-family: var(--font-mono, monospace);
+          margin-bottom: 1rem;
+        }
+        .related-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+          gap: 0.75rem;
+        }
+        @media (max-width: 640px) {
+          .related-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 0.75rem;
+            padding-bottom: 0.5rem;
+            scroll-snap-type: x mandatory;
+          }
+          .related-card {
+            min-width: 260px;
+            flex-shrink: 0;
+            scroll-snap-align: start;
+          }
+        }
+        .related-card {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          padding: 0.875rem 1rem;
+          background: var(--mc-bg-tertiary);
+          border: 1px solid var(--mc-border);
+          border-radius: 2px;
+          text-decoration: none;
+          color: inherit;
+          transition: border-color 0.15s ease;
+        }
+        .related-card:hover {
+          border-color: var(--mc-accent);
+        }
+        .related-card__title {
+          font-size: 0.8125rem;
+          font-weight: 600;
+          color: var(--mc-text);
+          line-height: 1.4;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .related-card__meta {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+          font-size: 0.6875rem;
+        }
+        .related-card__source {
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          font-weight: 600;
+          color: var(--mc-text-muted);
+          background: var(--mc-bg-secondary);
+          padding: 0.1rem 0.4rem;
+          border-radius: 2px;
+        }
+        .related-card__match {
+          color: var(--mc-accent);
+          font-size: 0.6875rem;
+        }
+      `}</style>
+      <section className="related-section">
+        <div className="related-section__label">Related Solicitations</div>
+        <div className="related-grid">
+          {related.map(({ opp, score }) => {
+            const deadline = opp.responseDeadline ?? opp.closeDate;
+            const statusColor = getStatusColor(opp.topicStatus);
+            return (
+              <Link
+                key={opp.id || opp.topicId}
+                to={`/opportunities/${opp.id || opp.topicId}`}
+                className="related-card"
+              >
+                <div className="related-card__meta">
+                  <span className="related-card__source">{opp.source}</span>
+                  <span
+                    style={{
+                      color: statusColor,
+                      fontWeight: 600,
+                      fontSize: "0.6875rem",
+                    }}
+                  >
+                    {opp.topicStatus}
+                  </span>
+                </div>
+                <div className="related-card__title">{opp.topicTitle}</div>
+                <div className="related-card__meta">
+                  <span style={{ color: getDeadlineColor(deadline), fontWeight: 500 }}>
+                    {formatDeadlineLabel(deadline)}
+                  </span>
+                  <span className="related-card__match">{score} matching tag{score !== 1 ? "s" : ""}</span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+    </>
+  );
+}
+
 function OpportunityDetailPage(): React.JSX.Element {
   const { opportunityId = "" } = useParams();
   const [opportunity, setOpportunity] = useState<Opportunity | null>(null);
@@ -1427,6 +1600,8 @@ function OpportunityDetailPage(): React.JSX.Element {
           </div>
         </section>
       )}
+
+      <RelatedOpportunities opportunity={opportunity} />
     </article>
   );
 }
