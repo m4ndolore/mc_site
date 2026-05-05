@@ -8,3 +8,10 @@ STAGEHAND_URL = "https://mc-stagehand-tests.defensebuilders.workers.dev"
 # IRREGULARS_FEED_TOKEN — set via `wrangler secret put IRREGULARS_FEED_TOKEN`
 # Per-user RSS feed token from rss.irregulars.io/feeds (Copy Raw Token button)
 # Passed as ?token= query param to /feed/all endpoint. Without it, Irregulars source is skipped.
+
+# To enable email subscriptions:
+# 1. wrangler kv namespace create OPPORTUNITY_SUBS
+# 2. Add the binding below with the returned ID
+# [[kv_namespaces]]
+# binding = "OPPORTUNITY_SUBS"
+# id = "<namespace-id>"

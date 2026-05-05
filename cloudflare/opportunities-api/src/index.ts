@@ -6,6 +6,7 @@ type Bindings = {
           SAM_GOV_API_KEY: string;
           STAGEHAND_URL?: string;
           IRREGULARS_FEED_TOKEN?: string;
+          OPPORTUNITY_SUBS?: KVNamespace;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -21,7 +22,7 @@ app.use(
                                     "http://localhost:5174",
                                     "http://localhost:3000",
                                   ],
-                      allowMethods: ["GET", "OPTIONS"],
+                      allowMethods: ["GET", "POST", "OPTIONS"],
                       allowHeaders: ["Content-Type"],
           })
         );
@@ -1037,6 +1038,42 @@ app.get("/api/intel/briefing", async (c) => {
                                     url: "https://govbase.com",
                       },
           });
+});
+
+// ─── Email subscription endpoint ────────────────────────────────────────────
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+app.post("/api/subscribe", async (c) => {
+  const kv = c.env.OPPORTUNITY_SUBS;
+  if (!kv) {
+    return c.json(
+      { success: false, error: "Subscription service is not configured" },
+      503
+    );
+  }
+
+  let body: { email?: string; techAreas?: string[]; problemAreas?: string[]; viewMode?: string };
+  try {
+    body = await c.req.json();
+  } catch {
+    return c.json({ success: false, error: "Invalid JSON body" }, 400);
+  }
+
+  const email = (body.email ?? "").trim().toLowerCase();
+  if (!email || !EMAIL_REGEX.test(email)) {
+    return c.json({ success: false, error: "A valid email address is required" }, 400);
+  }
+
+  const record = {
+    email,
+    techAreas: body.techAreas ?? [],
+    problemAreas: body.problemAreas ?? [],
+    viewMode: body.viewMode ?? "opportunity",
+    subscribedAt: new Date().toISOString(),
+  };
+
+  await kv.put(`sub:${email}`, JSON.stringify(record));
+  return c.json({ success: true });
 });
 
 export default app;
