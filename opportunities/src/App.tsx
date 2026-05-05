@@ -253,6 +253,125 @@ function TagGroup({
   );
 }
 
+function QASection({ opportunity }: { opportunity: Opportunity }): React.JSX.Element | null {
+  const hasQA = opportunity.qaStatus || (opportunity.qaQuestionCount && opportunity.qaQuestionCount > 0);
+  if (!hasQA) return null;
+
+  const isOpen = opportunity.qaOpen === true;
+  const borderColor = isOpen ? "var(--mc-success, #22c55e)" : "var(--gray-medium, #6b7280)";
+  const badgeColor = isOpen ? "#22c55e" : "var(--gray-medium, #6b7280)";
+  const badgeLabel = opportunity.qaStatus || (isOpen ? "Q&A Open" : "Q&A Closed");
+  const sbirTopicUrl = opportunity.topicId || opportunity.id
+    ? `https://www.dodsbirsttr.mil/topics-app/#/topics/${opportunity.topicId || opportunity.id}`
+    : null;
+
+  return (
+    <>
+      <style>{`
+        .qa-section {
+          background: var(--mc-bg-tertiary);
+          border-left: 3px solid ${borderColor};
+          border-radius: 2px;
+          padding: 0.75rem 1rem;
+          transition: border-color 150ms ease;
+        }
+        .qa-section__header {
+          font-size: 0.6875rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          color: var(--mc-text-muted);
+          font-family: monospace;
+          margin-bottom: 0.5rem;
+        }
+        .qa-section__row {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          flex-wrap: wrap;
+          font-size: 0.8125rem;
+        }
+        .qa-section__badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          padding: 0.2rem 0.55rem;
+          border-radius: 2px;
+          color: ${badgeColor};
+          background: color-mix(in srgb, ${badgeColor} 12%, transparent);
+        }
+        .qa-section__dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: ${badgeColor};
+          display: inline-block;
+        }
+        .qa-section__sep {
+          color: var(--mc-border);
+          font-size: 0.75rem;
+          user-select: none;
+        }
+        .qa-section__text {
+          color: var(--mc-text-muted);
+        }
+        .qa-section__link {
+          color: var(--mc-accent);
+          font-size: 0.75rem;
+          text-decoration: underline;
+          text-underline-offset: 2px;
+          transition: color 150ms ease;
+        }
+        .qa-section__link:hover {
+          color: var(--mc-text);
+        }
+      `}</style>
+      <div className="qa-section">
+        <div className="qa-section__header">Q&amp;A Period</div>
+        <div className="qa-section__row">
+          <span className="qa-section__badge">
+            <span className="qa-section__dot" />
+            {badgeLabel}
+          </span>
+          {(opportunity.qaStartDate || opportunity.qaEndDate) && (
+            <>
+              <span className="qa-section__sep">/</span>
+              <span className="qa-section__text">
+                {opportunity.qaStartDate ? formatDate(opportunity.qaStartDate) : "—"}
+                {" — "}
+                {opportunity.qaEndDate ? formatDate(opportunity.qaEndDate) : "—"}
+              </span>
+            </>
+          )}
+          {opportunity.qaQuestionCount != null && opportunity.qaQuestionCount > 0 && (
+            <>
+              <span className="qa-section__sep">/</span>
+              <span className="qa-section__text">
+                {opportunity.qaQuestionCount} published question{opportunity.qaQuestionCount !== 1 ? "s" : ""}
+              </span>
+            </>
+          )}
+          {isOpen && sbirTopicUrl && (
+            <>
+              <span className="qa-section__sep">/</span>
+              <a
+                className="qa-section__link"
+                href={sbirTopicUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Submit questions on SBIR.gov
+              </a>
+            </>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
 function OpportunityModal({
   opportunity,
   onClose,
@@ -628,6 +747,8 @@ function OpportunityModal({
                 )}
               </div>
             )}
+
+            <QASection opportunity={opportunity} />
 
             <TagGroup label="Technology Areas" tags={opportunity.technologyAreas || []} />
             <TagGroup label="Focus Areas" tags={opportunity.focusAreas || []} />
@@ -1387,6 +1508,10 @@ function OpportunityDetailPage(): React.JSX.Element {
           </div>
         );
       })()}
+
+      <div style={{ marginBottom: "1.25rem" }}>
+        <QASection opportunity={opportunity} />
+      </div>
 
       {externalSourceUrl && (
         <p style={{ marginBottom: "0.75rem" }}>

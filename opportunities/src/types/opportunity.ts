@@ -29,6 +29,11 @@ export interface Opportunity {
     min?: number;
     max?: number;
   };
+  qaStatus?: string;
+  qaStartDate?: string;
+  qaEndDate?: string;
+  qaQuestionCount?: number;
+  qaOpen?: boolean;
 }
 
 export interface OpportunityListResponse {
