@@ -8,3 +8,9 @@ STAGEHAND_URL = "https://mc-stagehand-tests.defensebuilders.workers.dev"
 # IRREGULARS_FEED_TOKEN — set via `wrangler secret put IRREGULARS_FEED_TOKEN`
 # Per-user RSS feed token from rss.irregulars.io/feeds (Copy Raw Token button)
 # Passed as ?token= query param to /feed/all endpoint. Without it, Irregulars source is skipped.
+
+# KV cache for opportunity detail lookups (avoids searching 500 topics per request)
+# wrangler kv namespace create OPPORTUNITY_CACHE
+# [[kv_namespaces]]
+# binding = "OPPORTUNITY_CACHE"
+# id = "<namespace-id>"
