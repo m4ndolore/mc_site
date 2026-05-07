@@ -6,6 +6,7 @@ type Bindings = {
           SAM_GOV_API_KEY: string;
           STAGEHAND_URL?: string;
           IRREGULARS_FEED_TOKEN?: string;
+          OPPORTUNITY_CACHE?: KVNamespace;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -760,8 +761,18 @@ app.get("/api/opportunities", async (c) => {
 });
 
 // ─── Single opportunity by ID (SBIR — uses search API, detail endpoint is 403) ─
+// Uses KV cache (OPPORTUNITY_CACHE) to avoid searching 500 topics per request.
+// If the KV binding is not configured, falls back to the full search every time.
 app.get("/api/opportunities/:id", async (c) => {
           const id = c.req.param("id");
+          const cacheKey = `opp:${id}`;
+
+          // Check KV cache first
+          const cached = await c.env.OPPORTUNITY_CACHE?.get(cacheKey, "json");
+          if (cached) {
+                      return c.json({ success: true, data: cached });
+          }
+
           try {
                       // The SBIR detail endpoint (/topics/{id}/details) returns 403.
                       // Instead, search all statuses and filter client-side by topicId.
@@ -798,6 +809,10 @@ app.get("/api/opportunities/:id", async (c) => {
                       if (!match.url) {
                                     match.url = buildSbirDetailUrl(id);
                       }
+
+                      // Cache in KV for 1 hour (3600s) to avoid repeating the full search
+                      await c.env.OPPORTUNITY_CACHE?.put(cacheKey, JSON.stringify(match), { expirationTtl: 3600 });
+
                       return c.json({ success: true, data: match });
           } catch (error) {
                       const message = error instanceof Error ? error.message : "Unknown error";
