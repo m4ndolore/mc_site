@@ -377,11 +377,13 @@ function OpportunityModal({
   onClose,
   onToggleSave,
   isSaved,
+  allOpportunities,
 }: {
   opportunity: Opportunity;
   onClose: () => void;
   onToggleSave: (opportunity: Opportunity) => void;
   isSaved: boolean;
+  allOpportunities?: Opportunity[];
 }): React.JSX.Element {
   const detailPageHref = `/opportunities/${opportunity.id || opportunity.topicId}`;
   const externalUrl = getSourceUrl(opportunity);
@@ -390,6 +392,17 @@ function OpportunityModal({
   const deadline = opportunity.responseDeadline ?? opportunity.closeDate;
   const statusColor = getStatusColor(opportunity.topicStatus);
   const deadlineColor = getDeadlineColor(deadline);
+
+  const relatedItems = useMemo(() => {
+    if (!allOpportunities || allOpportunities.length === 0) return [];
+    const currentId = opportunity.id || opportunity.topicId;
+    return allOpportunities
+      .filter((opp) => (opp.id || opp.topicId) !== currentId)
+      .map((opp) => ({ opp, score: computeRelatedScore(opportunity, opp) }))
+      .filter((entry) => entry.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3);
+  }, [allOpportunities, opportunity]);
 
   return (
     <>
@@ -753,6 +766,91 @@ function OpportunityModal({
             <TagGroup label="Technology Areas" tags={opportunity.technologyAreas || []} />
             <TagGroup label="Focus Areas" tags={opportunity.focusAreas || []} />
             <TagGroup label="Keywords" tags={opportunity.keywords || []} />
+
+            {relatedItems.length > 0 && (
+              <>
+                <style>{`
+                  .modal-related__label {
+                    font-size: 0.6875rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.06em;
+                    color: var(--mc-text-muted);
+                    font-family: var(--font-mono, monospace);
+                    margin-bottom: 0.5rem;
+                  }
+                  .modal-related__list {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0;
+                  }
+                  .modal-related__item {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.5rem 0;
+                    border-bottom: 1px solid var(--mc-border);
+                    text-decoration: none;
+                    color: inherit;
+                    transition: background 0.12s ease;
+                  }
+                  .modal-related__item:last-child {
+                    border-bottom: none;
+                  }
+                  .modal-related__item:hover .modal-related__title {
+                    color: var(--mc-accent);
+                  }
+                  .modal-related__source {
+                    flex-shrink: 0;
+                    font-size: 0.6875rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.04em;
+                    color: var(--mc-text-muted);
+                    background: var(--mc-bg-tertiary);
+                    padding: 0.1rem 0.4rem;
+                    border-radius: 2px;
+                  }
+                  .modal-related__title {
+                    flex: 1;
+                    min-width: 0;
+                    font-size: 0.8125rem;
+                    color: var(--mc-text);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    transition: color 0.12s ease;
+                  }
+                  .modal-related__arrow {
+                    flex-shrink: 0;
+                    color: var(--mc-text-muted);
+                    font-size: 0.75rem;
+                    line-height: 1;
+                  }
+                `}</style>
+                <div>
+                  <div className="modal-related__label">Related</div>
+                  <div className="modal-related__list">
+                    {relatedItems.map(({ opp }) => (
+                      <a
+                        key={opp.id || opp.topicId}
+                        className="modal-related__item"
+                        href={`/opportunities/${opp.id || opp.topicId}`}
+                        onClick={onClose}
+                      >
+                        <span className="modal-related__source">{opp.source}</span>
+                        <span className="modal-related__title">{opp.topicTitle}</span>
+                        <span className="modal-related__arrow">
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M4.5 2.5L8 6L4.5 9.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* ── Footer ── */}
@@ -880,7 +978,8 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
 
   const needsAllOpps =
     (isFullProfile && profile!.viewMode !== "opportunity") ||
-    activeTab === "saved";
+    activeTab === "saved" ||
+    selectedOpportunity !== null;
 
   useEffect(() => {
     if (!needsAllOpps || allOpportunities.length > 0 || allOppsLoading) return;
@@ -1170,6 +1269,7 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
           onClose={() => setSelectedOpportunity(null)}
           onToggleSave={handleToggleSave}
           isSaved={handleIsSaved(selectedOpportunity)}
+          allOpportunities={allOpportunities}
         />
       )}
 
