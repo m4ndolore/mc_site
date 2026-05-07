@@ -372,6 +372,200 @@ function QASection({ opportunity }: { opportunity: Opportunity }): React.JSX.Ele
   );
 }
 
+function EmailCapture({
+  techAreas,
+  problemAreas,
+  viewMode,
+}: {
+  techAreas?: string[];
+  problemAreas?: string[];
+  viewMode?: string;
+}): React.JSX.Element | null {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  // Check localStorage — don't render if already subscribed
+  const [subscribed, setSubscribed] = useState(() => {
+    try { return localStorage.getItem("mc-opportunity-subscribed") === "1"; } catch { return false; }
+  });
+
+  if (subscribed) return null;
+
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
+    const trimmed = email.trim();
+    if (!trimmed) return;
+
+    setStatus("submitting");
+    setErrorMsg("");
+
+    try {
+      const API_BASE = import.meta.env.DEV
+        ? ""
+        : "https://opportunities-api.defensebuilders.workers.dev";
+      const res = await fetch(`${API_BASE}/api/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: trimmed,
+          techAreas: techAreas ?? [],
+          problemAreas: problemAreas ?? [],
+          viewMode: viewMode ?? "opportunity",
+        }),
+      });
+      const data = await res.json() as { success: boolean; error?: string };
+      if (data.success) {
+        setStatus("success");
+        try { localStorage.setItem("mc-opportunity-subscribed", "1"); } catch { /* ignore */ }
+        setSubscribed(true);
+      } else {
+        setStatus("error");
+        setErrorMsg(data.error ?? "Subscription failed. Please try again.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMsg("Network error. Please try again.");
+    }
+  };
+
+  if (status === "success") {
+    return (
+      <>
+        <style>{`
+          .email-capture {
+            background: var(--mc-bg-tertiary);
+            border-left: 3px solid var(--blue);
+            border-radius: 2px;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            transition: opacity 150ms ease;
+          }
+          .email-capture__success {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #22c55e;
+          }
+        `}</style>
+        <div className="email-capture">
+          <div className="email-capture__success">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8.5L6.5 12L13 4" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            You're in! We'll send your first digest soon.
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <style>{`
+        .email-capture {
+          background: var(--mc-bg-tertiary);
+          border-left: 3px solid var(--blue);
+          border-radius: 2px;
+          padding: 1.25rem 1.5rem;
+          margin: 1.5rem 0;
+          transition: opacity 150ms ease;
+        }
+        .email-capture__headline {
+          font-size: 1rem;
+          font-weight: 600;
+          color: var(--offwhite);
+          margin: 0 0 0.25rem;
+        }
+        .email-capture__subtitle {
+          font-size: 0.875rem;
+          color: var(--gray-light);
+          margin: 0 0 0.875rem;
+        }
+        .email-capture__form {
+          display: flex;
+          gap: 0.5rem;
+          flex-wrap: wrap;
+        }
+        .email-capture__input {
+          flex: 1 1 220px;
+          min-width: 180px;
+          padding: 0.5rem 0.75rem;
+          font-size: 0.8125rem;
+          font-family: var(--font-primary, Inter, sans-serif);
+          color: var(--offwhite);
+          background: var(--black, #000);
+          border: 1px solid var(--mc-border);
+          border-radius: 2px;
+          outline: none;
+          transition: border-color 150ms ease;
+        }
+        .email-capture__input:focus {
+          border-color: var(--blue);
+        }
+        .email-capture__input::placeholder {
+          color: var(--gray-medium);
+        }
+        .email-capture__btn {
+          padding: 0.5rem 1.1rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          font-family: var(--font-primary, Inter, sans-serif);
+          color: #fff;
+          background: var(--blue);
+          border: none;
+          border-radius: 2px;
+          cursor: pointer;
+          transition: background 150ms ease;
+          white-space: nowrap;
+        }
+        .email-capture__btn:hover {
+          background: var(--blue-dark, #2563eb);
+        }
+        .email-capture__btn:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+        .email-capture__error {
+          font-size: 0.8125rem;
+          color: #ef4444;
+          margin-top: 0.5rem;
+        }
+      `}</style>
+      <div className="email-capture">
+        <h3 className="email-capture__headline">Get matched opportunities in your inbox</h3>
+        <p className="email-capture__subtitle">
+          We'll send a weekly digest based on your profile preferences.
+        </p>
+        <form className="email-capture__form" onSubmit={handleSubmit}>
+          <input
+            className="email-capture__input"
+            type="email"
+            placeholder="you@company.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+            aria-label="Email address"
+          />
+          <button
+            className="email-capture__btn"
+            type="submit"
+            disabled={status === "submitting"}
+          >
+            {status === "submitting" ? "Subscribing..." : "Subscribe"}
+          </button>
+        </form>
+        {status === "error" && errorMsg && (
+          <div className="email-capture__error">{errorMsg}</div>
+        )}
+      </div>
+    </>
+  );
+}
+
 function OpportunityModal({
   opportunity,
   onClose,
@@ -1270,6 +1464,14 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
           onToggleSave={handleToggleSave}
           isSaved={handleIsSaved(selectedOpportunity)}
           allOpportunities={allOpportunities}
+        />
+      )}
+
+      {(isFullProfile || savedCount >= 2) && (
+        <EmailCapture
+          techAreas={profile?.techAreas}
+          problemAreas={profile?.problemAreas}
+          viewMode={profile?.viewMode}
         />
       )}
 
