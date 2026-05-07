@@ -2067,8 +2067,8 @@ h4, .h4 {
 
 .logo-marquee__item {
   flex-shrink: 0;
-  height: 88px;
-  padding: 12px 24px;
+  height: 140px;
+  padding: 20px 40px;
   background: var(--white);
   border-radius: var(--radius-md);
   display: flex;
@@ -2077,9 +2077,9 @@ h4, .h4 {
 }
 
 .logo-marquee__item img {
-  height: 64px;
+  height: 128px;
   width: auto;
-  max-width: 180px;
+  max-width: 280px;
   object-fit: contain;
   filter: grayscale(100%);
   opacity: 0.7;
@@ -5060,13 +5060,12 @@ h4, .h4 {
 }
 
 .logo-marquee__item img {
-  filter: grayscale(100%) brightness(1.5);
-  opacity: 0.5;
+  filter: grayscale(50%) brightness(1.2);
 }
 
 .logo-marquee__item:hover img {
   filter: grayscale(0%) brightness(1);
-  opacity: 0.9;
+  opacity: 1;
 }
 
 
