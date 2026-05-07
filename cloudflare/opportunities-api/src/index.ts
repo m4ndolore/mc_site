@@ -239,6 +239,29 @@ function parseRatioHtml(html: string): unknown[] {
           return items;
 }
 
+// ─── DARPA deadline extraction from program pages ───────────────────────────
+function extractDarpaDeadline(html: string): number | undefined {
+          // Pattern: Closes: June 3, 2026
+          const closesMatch = html.match(/Closes:\s*<\/strong>\s*([A-Z][a-z]+ \d{1,2},?\s*\d{4})/);
+          if (closesMatch) return Date.parse(closesMatch[1]) || undefined;
+
+          // Pattern: Deadline: May 20, 2026
+          const deadlineMatch = html.match(/Deadline:<\/strong>\s*([A-Z][a-z]+ \d{1,2},?\s*\d{4})/);
+          if (deadlineMatch) return Date.parse(deadlineMatch[1]) || undefined;
+
+          // Pattern: Deadlines: ... multiple <li> items, take last date
+          const deadlinesMatch = html.match(/Deadlines:<\/strong>[\s\S]*?<\/ul>/);
+          if (deadlinesMatch) {
+                      const dates = [...deadlinesMatch[0].matchAll(/([A-Z][a-z]+ \d{1,2},?\s*\d{4})/g)];
+                      if (dates.length > 0) {
+                                    const lastDate = dates[dates.length - 1][1];
+                                    return Date.parse(lastDate) || undefined;
+                      }
+          }
+
+          return undefined;
+}
+
 // ─── DARPA RSS parser ─────────────────────────────────────────────────────────
 function parseDarpaRss(xml: string): unknown[] {
           const items: unknown[] = [];
@@ -582,6 +605,27 @@ app.get("/api/opportunities", async (c) => {
                       if (xml) {
                                     const darpaItems = parseDarpaRss(xml);
                                     darpaTotal = darpaItems.length;
+
+                                    // Enrich DARPA items with deadlines scraped from program pages
+                                    await Promise.all(
+                                                    darpaItems.map(async (item) => {
+                                                                      const i = item as Record<string, unknown>;
+                                                                      const url = String(i.url ?? "");
+                                                                      if (!url.includes("darpa.mil")) return;
+                                                                      try {
+                                                                                        const pageHtml = await cachedFetch(url, TTL.darpa);
+                                                                                        if (!pageHtml) return;
+                                                                                        const deadlineMs = extractDarpaDeadline(pageHtml);
+                                                                                        if (deadlineMs) {
+                                                                                                          i.topicEndDate = Math.floor(deadlineMs / 1000);
+                                                                                                          i.topicStatus = normalizeStatus(undefined, i.topicEndDate as number);
+                                                                                        }
+                                                                      } catch {
+                                                                                        // Gracefully skip — leave item without a deadline
+                                                                      }
+                                                    })
+                                                  );
+
                                     allResults.push(...darpaItems);
                       }
           }
