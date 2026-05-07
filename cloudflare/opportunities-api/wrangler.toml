@@ -15,3 +15,9 @@ STAGEHAND_URL = "https://mc-stagehand-tests.defensebuilders.workers.dev"
 # [[kv_namespaces]]
 # binding = "OPPORTUNITY_SUBS"
 # id = "<namespace-id>"
+
+# KV cache for opportunity detail lookups (avoids searching 500 topics per request)
+# wrangler kv namespace create OPPORTUNITY_CACHE
+# [[kv_namespaces]]
+# binding = "OPPORTUNITY_CACHE"
+# id = "<namespace-id>"

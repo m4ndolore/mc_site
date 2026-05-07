@@ -7,6 +7,7 @@ type Bindings = {
           STAGEHAND_URL?: string;
           IRREGULARS_FEED_TOKEN?: string;
           OPPORTUNITY_SUBS?: KVNamespace;
+          OPPORTUNITY_CACHE?: KVNamespace;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -238,6 +239,29 @@ function parseRatioHtml(html: string): unknown[] {
                       });
           }
           return items;
+}
+
+// ─── DARPA deadline extraction from program pages ───────────────────────────
+function extractDarpaDeadline(html: string): number | undefined {
+          // Pattern: Closes: June 3, 2026
+          const closesMatch = html.match(/Closes:\s*<\/strong>\s*([A-Z][a-z]+ \d{1,2},?\s*\d{4})/);
+          if (closesMatch) return Date.parse(closesMatch[1]) || undefined;
+
+          // Pattern: Deadline: May 20, 2026
+          const deadlineMatch = html.match(/Deadline:<\/strong>\s*([A-Z][a-z]+ \d{1,2},?\s*\d{4})/);
+          if (deadlineMatch) return Date.parse(deadlineMatch[1]) || undefined;
+
+          // Pattern: Deadlines: ... multiple <li> items, take last date
+          const deadlinesMatch = html.match(/Deadlines:<\/strong>[\s\S]*?<\/ul>/);
+          if (deadlinesMatch) {
+                      const dates = [...deadlinesMatch[0].matchAll(/([A-Z][a-z]+ \d{1,2},?\s*\d{4})/g)];
+                      if (dates.length > 0) {
+                                    const lastDate = dates[dates.length - 1][1];
+                                    return Date.parse(lastDate) || undefined;
+                      }
+          }
+
+          return undefined;
 }
 
 // ─── DARPA RSS parser ─────────────────────────────────────────────────────────
@@ -583,6 +607,27 @@ app.get("/api/opportunities", async (c) => {
                       if (xml) {
                                     const darpaItems = parseDarpaRss(xml);
                                     darpaTotal = darpaItems.length;
+
+                                    // Enrich DARPA items with deadlines scraped from program pages
+                                    await Promise.all(
+                                                    darpaItems.map(async (item) => {
+                                                                      const i = item as Record<string, unknown>;
+                                                                      const url = String(i.url ?? "");
+                                                                      if (!url.includes("darpa.mil")) return;
+                                                                      try {
+                                                                                        const pageHtml = await cachedFetch(url, TTL.darpa);
+                                                                                        if (!pageHtml) return;
+                                                                                        const deadlineMs = extractDarpaDeadline(pageHtml);
+                                                                                        if (deadlineMs) {
+                                                                                                          i.topicEndDate = Math.floor(deadlineMs / 1000);
+                                                                                                          i.topicStatus = normalizeStatus(undefined, i.topicEndDate as number);
+                                                                                        }
+                                                                      } catch {
+                                                                                        // Gracefully skip — leave item without a deadline
+                                                                      }
+                                                    })
+                                                  );
+
                                     allResults.push(...darpaItems);
                       }
           }
@@ -717,8 +762,18 @@ app.get("/api/opportunities", async (c) => {
 });
 
 // ─── Single opportunity by ID (SBIR — uses search API, detail endpoint is 403) ─
+// Uses KV cache (OPPORTUNITY_CACHE) to avoid searching 500 topics per request.
+// If the KV binding is not configured, falls back to the full search every time.
 app.get("/api/opportunities/:id", async (c) => {
           const id = c.req.param("id");
+          const cacheKey = `opp:${id}`;
+
+          // Check KV cache first
+          const cached = await c.env.OPPORTUNITY_CACHE?.get(cacheKey, "json");
+          if (cached) {
+                      return c.json({ success: true, data: cached });
+          }
+
           try {
                       // The SBIR detail endpoint (/topics/{id}/details) returns 403.
                       // Instead, search all statuses and filter client-side by topicId.
@@ -755,6 +810,10 @@ app.get("/api/opportunities/:id", async (c) => {
                       if (!match.url) {
                                     match.url = buildSbirDetailUrl(id);
                       }
+
+                      // Cache in KV for 1 hour (3600s) to avoid repeating the full search
+                      await c.env.OPPORTUNITY_CACHE?.put(cacheKey, JSON.stringify(match), { expirationTtl: 3600 });
+
                       return c.json({ success: true, data: match });
           } catch (error) {
                       const message = error instanceof Error ? error.message : "Unknown error";

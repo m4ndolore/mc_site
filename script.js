@@ -200,7 +200,7 @@
   // ============================================
   function initHeroCanvas() {
     // Delegate to waveform signal animation module
-    import('./js/hero-waveform.js').then(m => m.initHeroWaveform()).catch(() => {});
+    import('./js/hero-waveform.js').then(m => m.initHeroWaveform()).catch(e => console.error('[hero-waveform] failed to load:', e));
   }
 
   // ============================================
@@ -527,11 +527,14 @@
 
     logos.forEach(logo => {
       logo.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
+        if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
+          e.preventDefault();
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
+        // On other pages, let the <a href="/"> navigate normally
       });
     });
   }

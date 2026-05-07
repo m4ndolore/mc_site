@@ -105,7 +105,7 @@ function IntakeFlow({ onComplete, onSkip, initialTechAreas, initialProblemAreas,
           padding: 40px 24px;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          align-items: stretch;
         }
         .intake-step-title {
           font-family: var(--font-primary);
@@ -128,7 +128,7 @@ function IntakeFlow({ onComplete, onSkip, initialTechAreas, initialProblemAreas,
           display: flex;
           flex-wrap: wrap;
           gap: 8px;
-          justify-content: center;
+          justify-content: flex-start;
           width: 100%;
           margin-bottom: 40px;
         }
@@ -192,7 +192,7 @@ function IntakeFlow({ onComplete, onSkip, initialTechAreas, initialProblemAreas,
         .intake-nav {
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
           gap: 12px;
           width: 100%;
           margin-bottom: 24px;
