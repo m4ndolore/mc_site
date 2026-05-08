@@ -470,7 +470,7 @@ function generateEntityPage(c) {
           <div class="footer__column">
             <h4 class="footer__heading">Resources</h4>
             <ul class="footer__list">
-              <li><a href="/blog">Blog</a></li>
+              <li><a href="/signals">Signals</a></li>
               <li><a href="/knowledge">Knowledge</a></li>
               <li><a href="https://docs.mergecombinator.com">Docs</a></li>
             </ul>
@@ -642,7 +642,7 @@ ${faqItemsHtml}
           <div class="footer__column">
             <h4 class="footer__heading">Resources</h4>
             <ul class="footer__list">
-              <li><a href="/blog">Blog</a></li>
+              <li><a href="/signals">Signals</a></li>
               <li><a href="/knowledge">Knowledge</a></li>
               <li><a href="https://docs.mergecombinator.com">Docs</a></li>
             </ul>
@@ -698,11 +698,11 @@ function generateSitemap(slugs) {
     { loc: '/merch', priority: '0.7', changefreq: 'weekly' },
     { loc: '/portfolio', priority: '0.7', changefreq: 'monthly' },
     { loc: '/ai/overview', priority: '0.7', changefreq: 'weekly' },
-    { loc: '/blog', priority: '0.8', changefreq: 'weekly' },
+    { loc: '/signals', priority: '0.8', changefreq: 'weekly' },
     { loc: '/archive', priority: '0.6', changefreq: 'weekly' },
-    { loc: '/blog/counter-drone-jiatf-401', priority: '0.7', changefreq: 'monthly' },
-    { loc: '/blog/uss-eisenhower-lessons', priority: '0.7', changefreq: 'monthly' },
-    { loc: '/blog/ndaa-speed-act', priority: '0.7', changefreq: 'monthly' },
+    { loc: '/signals/counter-drone-jiatf-401', priority: '0.7', changefreq: 'monthly' },
+    { loc: '/signals/uss-eisenhower-lessons', priority: '0.7', changefreq: 'monthly' },
+    { loc: '/signals/ndaa-speed-act', priority: '0.7', changefreq: 'monthly' },
     { loc: '/privacy', priority: '0.3', changefreq: 'yearly' },
     { loc: '/terms', priority: '0.3', changefreq: 'yearly' },
     { loc: '/security', priority: '0.3', changefreq: 'yearly' },
@@ -780,7 +780,7 @@ Primary domain: https://mergecombinator.com
 ## Crawl Sources
 - Sitemap: https://mergecombinator.com/sitemap.xml
 - Robots: https://mergecombinator.com/robots.txt
-- Blog RSS: https://mergecombinator.com/blog.rss
+- Signals RSS: https://mergecombinator.com/signals.rss
 - Intel RSS: https://api.mergecombinator.com/api/intel.rss (defense OSINT, curated by IrregularChat)
 
 ## Last Updated
@@ -867,9 +867,9 @@ function injectKnowledge(html) {
   return html;
 }
 
-// ── 9. Blog RSS feed ────────────────────────────────────────────────
+// ── 9. Signals RSS feed ────────────────────────────────────────────────
 
-function generateBlogRss() {
+function generateSignalsRss() {
   const articles = [
     {
       title: 'Inside JIATF 401: The Pentagon\'s New Counter-Drone Marketplace',
@@ -896,8 +896,8 @@ function generateBlogRss() {
 
   const items = articles.map(a => `    <item>
       <title>${escapeHtml(a.title)}</title>
-      <link>https://mergecombinator.com/blog/${a.slug}</link>
-      <guid isPermaLink="true">https://mergecombinator.com/blog/${a.slug}</guid>
+      <link>https://mergecombinator.com/signals/${a.slug}</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/${a.slug}</guid>
       <pubDate>${new Date(a.date).toUTCString()}</pubDate>
       <category>${a.category}</category>
       <description>${escapeHtml(a.description)}</description>
@@ -907,11 +907,11 @@ function generateBlogRss() {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Insights — Merge Combinator</title>
-    <link>https://mergecombinator.com/blog</link>
+    <link>https://mergecombinator.com/signals</link>
     <description>Perspectives on defense innovation, operator-driven development, and the future of national security technology.</description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-    <atom:link href="https://mergecombinator.com/blog.rss" rel="self" type="application/rss+xml"/>
+    <atom:link href="https://mergecombinator.com/signals.rss" rel="self" type="application/rss+xml"/>
     <image>
       <url>/assets/logowhite.png</url>
       <title>Merge Combinator</title>
@@ -1039,9 +1039,9 @@ writeFileSync(join(ROOT, 'public', 'data', 'companies-public.json'), generatePub
 console.log(`[optimize] companies-public.json: ${publicExportCount} companies exported`);
 
 // 8. Generate blog RSS feed
-console.log('[optimize] Generating blog.rss...');
-writeFileSync(join(ROOT, 'public', 'blog.rss'), generateBlogRss());
-console.log('[optimize] blog.rss generated');
+console.log('[optimize] Generating signals.rss...');
+writeFileSync(join(ROOT, 'public', 'signals.rss'), generateSignalsRss());
+console.log('[optimize] signals.rss generated');
 
 // 9. Inject opportunities static content
 const oppHtmlPath = join(ROOT, 'opportunities', 'index.html');
