@@ -175,7 +175,41 @@ function normalizeOpportunity(raw: RawOpportunity): Opportunity {
           ? raw.topicQuestionCount
           : undefined,
     qaOpen: typeof raw.topicQAOpen === "boolean" ? raw.topicQAOpen : undefined,
+    estimatedValue: normalizeEstimatedValue(raw),
   };
+}
+
+function normalizeEstimatedValue(
+  raw: RawOpportunity,
+): Opportunity["estimatedValue"] {
+  // Use API-provided value if present
+  if (raw.estimatedValue && typeof raw.estimatedValue === "object") {
+    const ev = raw.estimatedValue as Record<string, unknown>;
+    const min = typeof ev.min === "number" ? ev.min : undefined;
+    const max = typeof ev.max === "number" ? ev.max : undefined;
+    if (min || max) return { min, max };
+  }
+
+  // Fallback: infer from phaseHierarchy for SBIR/STTR
+  const program = String(raw.program ?? raw.solicitationType ?? "").toUpperCase();
+  if (!program.includes("SBIR") && !program.includes("STTR")) return undefined;
+
+  let phase = "";
+  if (typeof raw.phaseHierarchy === "string") {
+    try {
+      const ph = JSON.parse(raw.phaseHierarchy) as { config?: { phase?: string; displayValue?: string }[] };
+      const first = Array.isArray(ph?.config) ? ph.config?.[0] : undefined;
+      if (first) {
+        phase = String(first.phase ?? first.displayValue ?? "");
+      }
+    } catch { /* skip */ }
+  }
+  if (!phase) phase = String(raw.phase ?? raw.topicPhase ?? raw.currentPhase ?? "");
+  if (!phase) return undefined;
+
+  if (/^[1I]$|phase\s*i$/i.test(phase)) return { min: 50000, max: 275000 };
+  if (/^[2]$|^II$|^D2$|phase\s*ii$/i.test(phase)) return { min: 750000, max: 1750000 };
+  return undefined;
 }
 
 export async function fetchOpportunities(

@@ -564,11 +564,22 @@ app.get("/api/opportunities", async (c) => {
                                                                       // Infer estimated value for SBIR/STTR based on phase
                                                                       if (!record.estimatedValue) {
                                                                                         const programStr = String(record.program ?? record.solicitationType ?? "").toUpperCase();
-                                                                                        const phaseStr = String(record.phase ?? record.topicPhase ?? record.currentPhase ?? "");
+                                                                                        // Phase can be in dedicated fields or embedded in phaseHierarchy JSON
+                                                                                        let phaseStr = String(record.phase ?? record.topicPhase ?? record.currentPhase ?? "");
+                                                                                        if (!phaseStr && typeof record.phaseHierarchy === "string") {
+                                                                                                          try {
+                                                                                                                            const ph = JSON.parse(record.phaseHierarchy);
+                                                                                                                            const configs = Array.isArray(ph?.config) ? ph.config : [];
+                                                                                                                            // Pick the first phase entry (primary phase for this topic)
+                                                                                                                            if (configs.length > 0) {
+                                                                                                                                              phaseStr = String(configs[0].phase ?? configs[0].displayValue ?? "");
+                                                                                                                            }
+                                                                                                          } catch { /* malformed JSON — skip */ }
+                                                                                        }
                                                                                         if (programStr.includes("SBIR") || programStr.includes("STTR")) {
-                                                                                                          if (/1|^I$/i.test(phaseStr)) {
+                                                                                                          if (/^[1I]$|phase\s*i$/i.test(phaseStr)) {
                                                                                                                             record.estimatedValue = { min: 50000, max: 275000 };
-                                                                                                          } else if (/2|^II$/i.test(phaseStr)) {
+                                                                                                          } else if (/^[2]$|^II$|^D2$|phase\s*ii$/i.test(phaseStr)) {
                                                                                                                             record.estimatedValue = { min: 750000, max: 1750000 };
                                                                                                           }
                                                                                         }
