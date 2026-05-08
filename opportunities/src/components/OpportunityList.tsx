@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import type { Opportunity } from "../types/opportunity";
 import type { OpportunityProfile } from "../types/profile";
 import { fetchOpportunities } from "../lib/api";
@@ -10,6 +10,130 @@ interface OpportunityListProps {
   onToggleSave?: (opportunity: Opportunity) => void;
   isSaved?: (opportunity: Opportunity) => boolean;
   profile?: OpportunityProfile | null;
+  savedCount?: number;
+}
+
+const DIGEST_DISMISSED_KEY = "mc-opp-digest-dismissed";
+
+function EmailCaptureBanner({
+  savedCount,
+  cardCount,
+  profile,
+}: {
+  savedCount: number;
+  cardCount: number;
+  profile?: OpportunityProfile | null;
+}): React.JSX.Element | null {
+  const [dismissed, setDismissed] = useState(() => {
+    try { return sessionStorage.getItem(DIGEST_DISMISSED_KEY) === "1"; } catch { return false; }
+  });
+
+  const qualified = cardCount >= 10 || savedCount >= 2;
+  if (!qualified || dismissed) return null;
+
+  const params = new URLSearchParams({
+    context: "opportunities",
+    source: "opportunity-digest",
+    returnTo: "/opportunities",
+  });
+  if (profile?.techAreas.length) {
+    params.set("techAreas", profile.techAreas.join(","));
+  }
+  if (profile?.problemAreas.length) {
+    params.set("problemAreas", profile.problemAreas.join(","));
+  }
+
+  const handleDismiss = (): void => {
+    setDismissed(true);
+    try { sessionStorage.setItem(DIGEST_DISMISSED_KEY, "1"); } catch { /* ignore */ }
+  };
+
+  return (
+    <>
+      <style>{`
+        .digest-banner {
+          grid-column: 1 / -1;
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem 1.25rem;
+          background: var(--charcoal);
+          border: 1px solid var(--mc-border);
+          border-left: 3px solid var(--blue);
+          border-radius: 2px;
+        }
+        .digest-banner__text {
+          flex: 1;
+          min-width: 0;
+        }
+        .digest-banner__headline {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: var(--offwhite);
+          margin-bottom: 0.125rem;
+        }
+        .digest-banner__sub {
+          font-size: 0.75rem;
+          color: var(--gray-light);
+        }
+        .digest-banner__cta {
+          flex-shrink: 0;
+          display: inline-flex;
+          align-items: center;
+          padding: 0.5rem 1rem;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          font-family: var(--font-primary);
+          color: var(--white);
+          background: var(--blue);
+          border: 1px solid var(--blue);
+          border-radius: 2px;
+          text-decoration: none;
+          transition: background 150ms ease;
+        }
+        .digest-banner__cta:hover {
+          background: var(--blue-dark);
+          border-color: var(--blue-dark);
+        }
+        .digest-banner__dismiss {
+          flex-shrink: 0;
+          width: 1.5rem;
+          height: 1.5rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: none;
+          border: none;
+          color: var(--gray-medium);
+          cursor: pointer;
+          transition: color 150ms ease;
+          padding: 0;
+        }
+        .digest-banner__dismiss:hover {
+          color: var(--offwhite);
+        }
+      `}</style>
+      <div className="digest-banner">
+        <div className="digest-banner__text">
+          <div className="digest-banner__headline">Get weekly matches in your inbox</div>
+          <div className="digest-banner__sub">Opportunities matching your profile, delivered weekly. No spam.</div>
+        </div>
+        <a className="digest-banner__cta" href={`/access?${params.toString()}`}>
+          Subscribe
+        </a>
+        <button
+          className="digest-banner__dismiss"
+          type="button"
+          onClick={handleDismiss}
+          aria-label="Dismiss"
+        >
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+            <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </button>
+      </div>
+    </>
+  );
 }
 
 function computeMatchCount(
@@ -64,6 +188,7 @@ function OpportunityList({
   onToggleSave,
   isSaved,
   profile,
+  savedCount = 0,
 }: OpportunityListProps): React.JSX.Element {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
   const [page, setPage] = useState(0);
@@ -406,18 +531,33 @@ function OpportunityList({
             </span>
           </div>
           <div className="opp-list__grid">
-            {opportunities.map((opp) => (
-              <OpportunityCard
-                key={opp.id || opp.topicId}
-                opportunity={opp}
-                onClick={onSelect}
-                onToggleSave={onToggleSave}
-                isSaved={isSaved?.(opp)}
-                matchCount={
-                  profile ? computeMatchCount(opp, profile) : undefined
-                }
-              />
+            {opportunities.map((opp, index) => (
+              <React.Fragment key={opp.id || opp.topicId}>
+                <OpportunityCard
+                  opportunity={opp}
+                  onClick={onSelect}
+                  onToggleSave={onToggleSave}
+                  isSaved={isSaved?.(opp)}
+                  matchCount={
+                    profile ? computeMatchCount(opp, profile) : undefined
+                  }
+                />
+                {index === 9 && (
+                  <EmailCaptureBanner
+                    savedCount={savedCount}
+                    cardCount={opportunities.length}
+                    profile={profile}
+                  />
+                )}
+              </React.Fragment>
             ))}
+            {opportunities.length < 10 && savedCount >= 2 && (
+              <EmailCaptureBanner
+                savedCount={savedCount}
+                cardCount={opportunities.length}
+                profile={profile}
+              />
+            )}
           </div>
           {opportunities.length < total && (
             <div style={{ textAlign: "center", marginTop: "2rem" }}>

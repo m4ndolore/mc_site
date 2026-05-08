@@ -1399,6 +1399,7 @@ function HomePage({ mode = "all" }: { mode?: OpportunityRouteMode }): React.JSX.
           initialKeyword={seo.keyword}
           onToggleSave={handleToggleSave}
           isSaved={handleIsSaved}
+          savedCount={savedCount}
         />
       )}
 
