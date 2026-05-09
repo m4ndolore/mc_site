@@ -14,6 +14,7 @@
 # Blog → Signals redirects
 /blog /signals 301
 /blog/ /signals 301
+/blog.rss /signals.rss 301
 /blog/counter-drone-jiatf-401 /signals/counter-drone-jiatf-401 301
 /blog/ndaa-speed-act /signals/ndaa-speed-act 301
 /blog/uss-eisenhower-lessons /signals/uss-eisenhower-lessons 301
@@ -46,5 +47,6 @@
 /blog/counter-drone-jiatf-401.html /signals/counter-drone-jiatf-401 301
 /blog/ndaa-speed-act.html /signals/ndaa-speed-act 301
 /blog/uss-eisenhower-lessons.html /signals/uss-eisenhower-lessons 301
+/blog/ulysses-combine-to-series-a.html /signals/ulysses-combine-to-series-a 301
 /faq.html /faq 301
 /companies/*.html /companies/* 301

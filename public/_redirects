@@ -11,13 +11,13 @@
 /combine/cohort25-1.html /combine/cohort25-1 301
 /sbir /knowledge/sbir 301
 /contact /access 301
-/updates/ai-post-engagement-detector /blog 301
-/updates/* /blog 301
+/updates/ai-post-engagement-detector /signals 301
+/updates/* /signals 301
 
 # Normalize legacy .html URLs to clean canonical paths
 /about.html /about 301
 /archive.html /archive 301
-/blog.html /blog 301
+/blog.html /signals 301
 /briefs.html /briefs 301
 /builders.html /builders 301
 /contribute.html /contribute 301
@@ -40,8 +40,16 @@
 /knowledge/go-to-market.html /knowledge/go-to-market 301
 /knowledge/sbir.html /knowledge/sbir 301
 /knowledge/defense-venture-studio.html /knowledge/defense-venture-studio 301
-/blog/counter-drone-jiatf-401.html /blog/counter-drone-jiatf-401 301
-/blog/ndaa-speed-act.html /blog/ndaa-speed-act 301
-/blog/uss-eisenhower-lessons.html /blog/uss-eisenhower-lessons 301
+/blog /signals 301
+/blog/ /signals 301
+/blog.rss /signals.rss 301
+/blog/counter-drone-jiatf-401 /signals/counter-drone-jiatf-401 301
+/blog/ndaa-speed-act /signals/ndaa-speed-act 301
+/blog/uss-eisenhower-lessons /signals/uss-eisenhower-lessons 301
+/blog/ulysses-combine-to-series-a /signals/ulysses-combine-to-series-a 301
+/blog/counter-drone-jiatf-401.html /signals/counter-drone-jiatf-401 301
+/blog/ndaa-speed-act.html /signals/ndaa-speed-act 301
+/blog/uss-eisenhower-lessons.html /signals/uss-eisenhower-lessons 301
+/blog/ulysses-combine-to-series-a.html /signals/ulysses-combine-to-series-a 301
 /faq.html /faq 301
 /companies/*.html /companies/* 301

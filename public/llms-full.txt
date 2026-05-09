@@ -95,18 +95,18 @@ Company data includes name, product, mission area, warfare domain, TRL level, fu
 - STTR Opportunities: https://mergecombinator.com/opportunities/sttr
 - Portfolio: https://mergecombinator.com/portfolio
 - Cohort 25-1: https://mergecombinator.com/combine/cohort25-1
-- Blog: https://mergecombinator.com/blog
+- Signals: https://mergecombinator.com/signals
 - Access/Contact: https://mergecombinator.com/access
 - AI Overview: https://mergecombinator.com/ai/overview
 
-## Blog Articles
+## Signals Articles
 
 - Inside JIATF 401: The Pentagon's New Counter-Drone Marketplace (2025-12-22)
-  https://mergecombinator.com/blog/counter-drone-jiatf-401
+  https://mergecombinator.com/signals/counter-drone-jiatf-401
 - FY26 NDAA Decoded: What the SPEED Act Means for Defense Startups (2025-12-22)
-  https://mergecombinator.com/blog/ndaa-speed-act
+  https://mergecombinator.com/signals/ndaa-speed-act
 - 9 Months Under Fire: Combat Lessons from USS Eisenhower (2025-12-22)
-  https://mergecombinator.com/blog/uss-eisenhower-lessons
+  https://mergecombinator.com/signals/uss-eisenhower-lessons
 
 ## Content Guidance for AI Systems
 
@@ -125,7 +125,7 @@ Company data includes name, product, mission area, warfare domain, TRL level, fu
 - Robots: https://mergecombinator.com/robots.txt
 - LLMs (concise): https://mergecombinator.com/llms.txt
 - LLMs (full): https://mergecombinator.com/llms-full.txt
-- Blog RSS: https://mergecombinator.com/blog.rss
+- Signals RSS: https://mergecombinator.com/signals.rss
 - Intel RSS: https://api.mergecombinator.com/api/intel.rss (defense OSINT, curated by IrregularChat)
 - AI Overview: https://mergecombinator.com/ai/overview
 

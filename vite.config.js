@@ -40,7 +40,6 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'index.html'),
-        blog: resolve(__dirname, 'blog.html'),
         signals: resolve(__dirname, 'signals.html'),
         portfolio: resolve(__dirname, 'portfolio.html'),
         builders: resolve(__dirname, 'builders.html'),

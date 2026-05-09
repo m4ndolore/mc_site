@@ -37,11 +37,11 @@ test.describe('Subpages - Dark Theme', () => {
     await expect(page).toHaveScreenshot('builders-dark.png');
   });
 
-  test('blog page', async ({ page }) => {
+  test('signals page', async ({ page }) => {
     await setTheme(page, 'dark');
-    await page.goto('/blog.html');
+    await page.goto('/signals');
     await waitForStable(page);
-    await expect(page).toHaveScreenshot('blog-dark.png');
+    await expect(page).toHaveScreenshot('signals-dark.png');
   });
 
   test('the combine page', async ({ page }) => {

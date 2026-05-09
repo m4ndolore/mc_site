@@ -272,7 +272,7 @@ export default {
       return Response.redirect(`https://${CANONICAL_HOST}/programs/the-combine`, 301);
     }
     if (url.pathname.startsWith("/updates/")) {
-      return Response.redirect(`https://${CANONICAL_HOST}/blog`, 301);
+      return Response.redirect(`https://${CANONICAL_HOST}/signals`, 301);
     }
     if (url.pathname === "/admin-console" || url.pathname.startsWith("/admin-console/")) {
       return Response.redirect(`https://${GUILD_HOST}/admin`, 302);

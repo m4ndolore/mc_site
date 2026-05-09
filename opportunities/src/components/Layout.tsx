@@ -28,7 +28,7 @@ const DEFAULT_FOOTER_COLUMNS: FooterColumn[] = [
   {
     heading: "Resources",
     links: [
-      { href: "/blog", label: "Blog" },
+      { href: "/signals", label: "Signals" },
       { href: "/portfolio", label: "Case Studies" },
       { href: "/knowledge", label: "Knowledge" },
       { href: "/learn", label: "Learn" },

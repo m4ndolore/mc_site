@@ -30,8 +30,8 @@
       "destination": "/about.html"
     },
     {
-      "source": "/blog",
-      "destination": "/blog.html"
+      "source": "/signals",
+      "destination": "/signals.html"
     },
     {
       "source": "/portfolio",

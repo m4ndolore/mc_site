@@ -5,6 +5,7 @@ import { toggleTheme } from './theme.js';
 
 const DEFAULT_NAV_LINKS = [
   { href: '/about', label: 'About' },
+  { href: '/signals', label: 'Signals' },
   { href: '/builders', label: 'Defense Builders' },
   { href: '/wingman', label: 'Wingman' },
   { href: '/guild', label: 'Guild' },
@@ -20,7 +21,7 @@ const DEFAULT_PLATFORM_LINKS = [
   { href: 'https://docs.mergecombinator.com', label: 'Docs' },
 ];
 
-const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v1';
+const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v2';
 
 function getActivePath() {
   const path = window.location.pathname;
