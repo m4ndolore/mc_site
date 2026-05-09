@@ -201,6 +201,15 @@ function getStatusColor(status: string): string {
   return "#22c55e"; // open / active
 }
 
+function getStatusLabel(status: string): string {
+  const s = status.toLowerCase();
+  if (s === "closing-soon" || s === "closing soon") return "Closing Soon";
+  if (s === "pre-release" || s === "pre release") return "Pre-Release";
+  if (s === "closed") return "Closed";
+  if (s === "open" || s === "active") return "Open";
+  return status;
+}
+
 function getDaysRemaining(deadline: string | undefined): number | null {
   if (!deadline) return null;
   const diff = new Date(deadline).getTime() - Date.now();
@@ -880,7 +889,7 @@ function OpportunityModal({
                 style={{ color: statusColor, background: `color-mix(in srgb, ${statusColor} 12%, transparent)` }}
               >
                 <span style={{ width: 6, height: 6, borderRadius: "50%", background: statusColor, display: "inline-block" }} />
-                {opportunity.topicStatus}
+                {getStatusLabel(opportunity.topicStatus)}
               </span>
             </div>
             <span className="modal-status-strip__sep">/</span>
@@ -1834,7 +1843,7 @@ function OpportunityDetailPage(): React.JSX.Element {
                 background: `color-mix(in srgb, ${statusColor} 15%, transparent)`,
               }}
             >
-              {opportunity.topicStatus}
+              {getStatusLabel(opportunity.topicStatus)}
             </span>
             <span style={{ width: "1px", height: "1rem", background: "var(--mc-border)" }} />
             <span style={{ color: deadlineColor, fontWeight: 600 }}>

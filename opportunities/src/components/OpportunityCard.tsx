@@ -92,6 +92,7 @@ function deriveDisplayStatus(
     return "Closing Soon";
   }
 
+  if (normalized === "closing-soon" || normalized === "closing soon") return "Closing Soon";
   if (normalized === "open" || normalized === "active") return "Open";
   if (normalized === "pre-release" || normalized === "upcoming" || normalized === "forecasted")
     return "Pre-Release";
