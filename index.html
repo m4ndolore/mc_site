@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background:#0a0a0a">
 <head>
   <meta charset="UTF-8">
   <script>
@@ -40,6 +40,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Critical paint: prevent flash before stylesheet loads (Vite dev injects CSS via JS) -->
+  <style>body{opacity:0;background:#0a0a0a}body.page-ready{opacity:1;transition:opacity .15s ease-in}</style>
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
@@ -177,17 +180,7 @@
 
     <div class="container hero__content">
       <div class="hero__text reveal-stagger">
-        <div class="hero__badges reveal">
-          <div class="hero__badge">
-            <span class="hero__badge-dot"></span>
-            Venture Studio
-          </div>
-          <div class="hero__badge">
-            <span class="hero__badge-dot"></span>
-            Indo-Pacific
-          </div>
-        </div>
-        <h1 class="hero__title reveal">Build What<br>Warfighters Need.</h1>
+        <h1 class="hero__title reveal" style="font-size: clamp(3rem, 6vw, 5rem);">Build What<br>Warfighters Need.</h1>
         <p class="hero__subtitle reveal">
           Venture studio for national security.
           <br>

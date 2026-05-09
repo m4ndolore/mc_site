@@ -6,22 +6,13 @@ import { toggleTheme } from './theme.js';
 const DEFAULT_NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/signals', label: 'Signals' },
-  { href: '/builders', label: 'Defense Builders' },
-  { href: '/wingman', label: 'Wingman' },
-  { href: '/guild', label: 'Guild' },
   { href: '/programs/the-combine', label: 'The Combine' },
+  { href: '/builders', label: 'Defense Builders' },
 ];
 
-const DEFAULT_PLATFORM_LINKS = [
-  { href: '/opportunities', label: 'Opportunities' },
-  { href: '/status', label: 'Status' },
-  { href: '/briefs', label: 'Briefs' },
-  { href: '/knowledge', label: 'Knowledge' },
-  { href: '/learn', label: 'Learn' },
-  { href: 'https://docs.mergecombinator.com', label: 'Docs' },
-];
+const DEFAULT_PLATFORM_LINKS = [];
 
-const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v2';
+const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v3';
 
 function getActivePath() {
   const path = window.location.pathname;
@@ -64,7 +55,7 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
       <nav class="nav__menu" aria-label="Primary navigation">
         <div class="nav__menu-links">
           ${navLinksHTML}
-          <div class="nav__dropdown">
+          ${platformLinks.length ? `<div class="nav__dropdown">
             <button class="nav__link nav__dropdown-trigger${platformActive ? ' nav__link--active' : ''}" aria-expanded="false" aria-haspopup="true">
               Platform
               <svg class="nav__dropdown-icon" width="10" height="6" viewBox="0 0 10 6" fill="none">
@@ -74,7 +65,7 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
             <div class="nav__dropdown-menu">
               ${platformLinksHTML}
             </div>
-          </div>
+          </div>` : ''}
         </div>
         <div class="nav__menu-actions" id="auth-nav">
           <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
@@ -85,7 +76,6 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
           </button>
-          <a href="${signInHref}" class="nav__btn nav__btn--secondary">Sign in</a>
           <a href="/access" class="nav__btn nav__btn--access">Get Started</a>
         </div>
       </nav>
@@ -292,6 +282,9 @@ export default async function initNavbar() {
 
   initRenderedNavbar();
 
+  // Signal page ready — triggers fade-in via CSS
+  requestAnimationFrame(() => document.body.classList.add('page-ready'));
+
   const resolvedConfig = await loadNavConfig();
   const renderedSignature = JSON.stringify(renderedConfig);
   const resolvedSignature = JSON.stringify(resolvedConfig);
@@ -309,7 +302,28 @@ function initThemeToggle() {
   btn.addEventListener('click', toggleTheme);
 }
 
+// ── Smooth page transitions ──
+function initPageTransitions() {
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+
+    const href = link.getAttribute('href');
+    // Only intercept internal same-origin links
+    if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('mailto:') || link.target === '_blank') return;
+
+    e.preventDefault();
+    document.body.classList.remove('page-ready');
+
+    // Navigate after fade-out completes
+    setTimeout(() => {
+      window.location.href = href;
+    }, 150);
+  });
+}
+
 // Auto-init when loaded as a script tag (not just imported)
 if (document.getElementById('mc-navbar')) {
   initNavbar();
+  initPageTransitions();
 }

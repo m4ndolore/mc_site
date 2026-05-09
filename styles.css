@@ -114,6 +114,10 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  background-color: var(--black);
+}
+
 body {
   font-family: var(--font-primary);
   font-size: var(--text-body);
@@ -121,6 +125,12 @@ body {
   color: var(--offwhite);
   background-color: var(--black);
   overflow-x: hidden;
+  opacity: 0;
+  transition: opacity 0.15s ease-in;
+}
+
+body.page-ready {
+  opacity: 1;
 }
 
 /* Light theme handled by styles/light-theme.css (REQ-C2UX-008) */
@@ -3466,6 +3476,8 @@ h4, .h4 {
   border-radius: var(--radius-xl);
   overflow: hidden;
   transition: all var(--transition-base);
+  position: relative;
+  cursor: pointer;
 }
 
 .blog-card:hover {
@@ -3474,10 +3486,29 @@ h4, .h4 {
   border-color: var(--blue);
 }
 
+/* Make entire card clickable via the title link */
+.blog-card__title a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.blog-card__title a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .blog-card__image {
   width: 100%;
-  height: 240px;
+  height: 180px;
   overflow: hidden;
+}
+
+.blog-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .blog-card__image-placeholder {

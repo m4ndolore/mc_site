@@ -80,6 +80,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Styles -->
+  <style>body{opacity:0;background:#0a0a0a}body.page-ready{opacity:1;transition:opacity .15s ease-in}</style>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/light-theme.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -144,6 +145,7 @@
       <div class="blog-grid__posts">
         <!-- VC Alignment Problem — May 1 -->
         <article class="blog-card">
+          <div class="blog-card__image"><img src="/assets/signals/vc-alignment.jpg" alt="Defense venture capital alignment" loading="lazy"></div>
           <div class="blog-card__content">
             <div class="blog-card__meta">
               <span class="blog-card__category blog-card__category--policy">Analysis</span>
@@ -158,6 +160,7 @@
 
         <!-- DAWG — Apr 28 -->
         <article class="blog-card">
+          <div class="blog-card__image"><img src="/assets/signals/dawg.jpg" alt="DAWG budget increase" loading="lazy"></div>
           <div class="blog-card__content">
             <div class="blog-card__meta">
               <span class="blog-card__category blog-card__category--policy">Analysis</span>
@@ -186,6 +189,7 @@
 
         <!-- Interceptor Stockpile — Apr 21 -->
         <article class="blog-card">
+          <div class="blog-card__image"><img src="/assets/signals/interceptors.jpg" alt="Interceptor stockpile depletion" loading="lazy"></div>
           <div class="blog-card__content">
             <div class="blog-card__meta">
               <span class="blog-card__category blog-card__category--readiness">Analysis</span>
@@ -195,6 +199,21 @@
               <a href="/signals/interceptor-stockpile-crisis">The Interceptor Math Is Broken</a>
             </h3>
             <p class="blog-card__excerpt">25% of the stockpile, gone in 12 days. The Indo-Pacific math is worse.</p>
+          </div>
+        </article>
+
+        <!-- Residency — May 2 (shown lower since it's a program announcement) -->
+        <article class="blog-card">
+          <div class="blog-card__image"><img src="/assets/signals/residency.jpg" alt="Missionized Tech Residency" loading="lazy"></div>
+          <div class="blog-card__content">
+            <div class="blog-card__meta">
+              <span class="blog-card__category blog-card__category--policy">Programs</span>
+              <time class="blog-card__date">May 2, 2026</time>
+            </div>
+            <h3 class="blog-card__title">
+              <a href="/signals/missionized-tech-residency">Missionized Tech Residency</a>
+            </h3>
+            <p class="blog-card__excerpt">Embedding acquisition professionals inside industry for six months. In partnership with the US Army and DAU.</p>
           </div>
         </article>
 
