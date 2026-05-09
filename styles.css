@@ -4501,6 +4501,21 @@ h4, .h4 {
   padding-top: calc(var(--nav-height) + 40px);
 }
 
+.blog-article__hero-banner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+}
+
+.blog-article__hero-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-md);
+}
+
 .blog-article__header {
   padding: 60px 0 40px;
   border-bottom: 1px solid var(--border);
