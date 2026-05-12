@@ -3511,6 +3511,34 @@ h4, .h4 {
   object-fit: cover;
 }
 
+/* Default card visual when no image is provided */
+.blog-card__image--default {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(135deg, #0f1318 0%, #1a2030 50%, #0f1318 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-card__image--default::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(42, 127, 219, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.blog-card__image--default img {
+  height: 40px;
+  width: auto;
+  opacity: 0.25;
+  position: relative;
+  z-index: 1;
+}
+
 .blog-card__image-placeholder {
   width: 100%;
   height: 100%;
