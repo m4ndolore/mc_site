@@ -9,6 +9,8 @@
 /combine/cohort25-1.html /combine/cohort25-1 301
 /sbir /knowledge/sbir 301
 /contact /access 301
+/archive /signals 301
+/archive/ /signals 301
 /updates/ai-post-engagement-detector /signals 301
 /updates/* /signals 301
 # Blog → Signals redirects

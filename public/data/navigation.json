@@ -3,7 +3,8 @@
     { "href": "/about", "label": "About" },
     { "href": "/signals", "label": "Signals" },
     { "href": "/programs/the-combine", "label": "The Combine" },
-    { "href": "/builders", "label": "Defense Builders" }
+    { "href": "/builders", "label": "Defense Builders" },
+    { "href": "/opportunities", "label": "Opportunities" }
   ],
   "platformLinks": [],
   "footerColumns": [

@@ -8,11 +8,12 @@ const DEFAULT_NAV_LINKS = [
   { href: '/signals', label: 'Signals' },
   { href: '/programs/the-combine', label: 'The Combine' },
   { href: '/builders', label: 'Defense Builders' },
+  { href: '/opportunities', label: 'Opportunities' },
 ];
 
 const DEFAULT_PLATFORM_LINKS = [];
 
-const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v3';
+const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v4';
 
 function getActivePath() {
   const path = window.location.pathname;
