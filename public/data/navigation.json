@@ -13,6 +13,7 @@
       "links": [
         { "href": "/builders", "label": "Defense Builders" },
         { "href": "/programs/the-combine", "label": "The Combine" },
+        { "href": "/programs/residency", "label": "Residency" },
         { "href": "/opportunities", "label": "Opportunities" },
         { "href": "/knowledge", "label": "Knowledge" }
       ]

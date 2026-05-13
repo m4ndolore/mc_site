@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Missionized Tech Residency embeds Army acquisition professionals inside Merge Combinator for six months — building tighter feedback loops between builders, operators, and acquisition.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://mergecombinator.com/programs/residency">
+  <meta property="og:title" content="Missionized Tech Residency — Merge Combinator">
+  <meta property="og:description" content="Embedding acquisition professionals inside industry for six months. In partnership with the U.S. Army and Defense Acquisition University.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/signals/residency.jpg">
+  <meta property="og:url" content="https://mergecombinator.com/programs/residency">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Missionized Tech Residency — Merge Combinator">
+  <meta name="twitter:description" content="Embedding acquisition professionals inside industry for six months. In partnership with the U.S. Army and Defense Acquisition University.">
+  <meta name="twitter:image" content="/assets/signals/residency.jpg">
+  <title>Missionized Tech Residency — Merge Combinator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>body{opacity:0;background:#0a0a0a}body.page-ready{opacity:1;transition:opacity .15s ease-in}</style>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/subpage.css">
+  <link rel="stylesheet" href="/styles/light-theme.css">
+
+  <style>
+    .residency-program {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, 340px);
+      gap: 24px;
+      align-items: start;
+    }
+    .residency-program__lead {
+      font-family: var(--font-serif);
+      font-size: clamp(22px, 2.5vw, 32px);
+      color: var(--white);
+      line-height: 1.3;
+      margin: 0 0 16px;
+    }
+    .residency-program__body {
+      color: rgba(255,255,255,.76);
+      line-height: 1.72;
+      margin: 0 0 14px;
+    }
+    .residency-program__body:last-of-type {
+      margin-bottom: 0;
+    }
+    .residency-program__signals {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-xl);
+      padding: 22px;
+    }
+    .residency-program__signals-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.56);
+      margin-bottom: 14px;
+    }
+    .residency-program__signal-list {
+      display: grid;
+      gap: 10px;
+    }
+    .residency-program__signal {
+      padding: 12px 14px;
+      border-radius: 2px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.08);
+      color: rgba(255,255,255,.86);
+      line-height: 1.5;
+    }
+    .residency-program__signal strong {
+      display: block;
+      color: var(--white);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .residency-roster {
+      margin-top: 40px;
+    }
+    .residency-roster__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .residency-roster__title {
+      font-size: 22px;
+      color: var(--white);
+      margin: 0;
+    }
+    .residency-roster__grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .resident-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 164px minmax(0, 1fr);
+      min-height: 100%;
+    }
+    .resident-card__photo {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      background: rgba(255,255,255,.02);
+    }
+    .resident-card__body {
+      padding: 16px;
+    }
+    .resident-card__name {
+      font-size: 18px;
+      color: var(--white);
+      margin: 0 0 6px;
+    }
+    .resident-card__role {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin: 0 0 10px;
+    }
+    .resident-card__bio {
+      color: rgba(255,255,255,.72);
+      line-height: 1.62;
+      margin: 0;
+    }
+    .residency-roster__caption {
+      max-width: 920px;
+      margin: 16px 0 0;
+      color: rgba(255,255,255,.68);
+      line-height: 1.65;
+    }
+    .resident-signals {
+      margin-top: 48px;
+    }
+    .resident-signals__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .authority-block {
+      margin-top: 32px;
+      padding: 20px 24px;
+      background: rgba(255,255,255,.02);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius-xl);
+    }
+    .authority-block__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 10px;
+    }
+    .authority-block p {
+      color: rgba(255,255,255,.76);
+      line-height: 1.65;
+      margin: 0;
+    }
+    .authority-block a {
+      color: var(--blue);
+    }
+    @media (max-width: 900px) {
+      .residency-program {
+        grid-template-columns: 1fr;
+      }
+      .residency-roster__grid {
+        grid-template-columns: 1fr;
+      }
+      .resident-card {
+        grid-template-columns: 120px minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="mc-navbar"></div>
+
+  <!-- ── Hero Section ─────────────────────────────── -->
+  <section class="subpage-hero">
+    <div class="subpage-hero__bg"></div>
+    <div class="container">
+      <div class="subpage-hero__content">
+        <div class="subpage-hero__text">
+          <div class="subpage-hero__badge">Active</div>
+          <h1 class="subpage-hero__title">Missionized Tech Residency</h1>
+          <p class="subpage-hero__subtitle">
+            What if acquisition professionals had the chance to walk a mile in the shoes of industry?
+          </p>
+          <p class="subpage-hero__body">
+            In partnership with the U.S. Army and Defense Acquisition University, Merge Combinator is placing acquisition professionals at the point of capability creation &mdash; giving them the opportunity to step outside the system, learn firsthand, and sharpen how the Army buys defense technology.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Program Details ─────────────────────────── -->
+  <section class="content-section content-section--dark">
+    <div class="container" style="max-width: 1120px;">
+      <div class="residency-program fade-up">
+        <div>
+          <p class="residency-program__body">For six months, these acquisition professionals work inside Merge Combinator alongside 80+ companies building against real national security problems.</p>
+          <p class="residency-program__body">By embedding acquisition professionals in this environment, the Army is creating tighter feedback loops between builders, operators, and the acquisition system itself. That means better-informed decisions, earlier identification of real transition opportunities, and a clearer understanding of what's working.</p>
+          <p class="residency-program__body">This is both a professional development opportunity and a practical test of how the Army can deliver outcomes faster and reduce friction between program intent and mission need.</p>
+        </div>
+        <aside class="residency-program__signals" aria-label="Program notes">
+          <div class="residency-program__signals-label">Program Notes</div>
+          <div class="residency-program__signal-list">
+            <div class="residency-program__signal">
+              <strong>Embedded for six months</strong>
+              Residents work inside the environment where capability is being built.
+            </div>
+            <div class="residency-program__signal">
+              <strong>Not after the fact</strong>
+              The residency is structured around firsthand exposure rather than site visits or slide decks.
+            </div>
+            <div class="residency-program__signal">
+              <strong>Alongside 80+ companies</strong>
+              Residents see how builders respond to real demand signals across the defense market.
+            </div>
+            <div class="residency-program__signal">
+              <strong>Focused on transition</strong>
+              The goal is faster outcomes and clearer paths from emerging capability to mission use.
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Authority Block -->
+      <div class="authority-block fade-up">
+        <div class="authority-block__label">Enabling Authorities</div>
+        <p>The Missionized Tech Residency operates under the DoD <a href="https://asc.army.mil/web/career-development/programs/dod-ppte/" target="_blank" rel="noopener">Professional Practice and Training Exchange (PPTE)</a> program, which authorizes developmental assignments between DoD and private sector organizations. Supported by the U.S. Army and Defense Acquisition University.</p>
+      </div>
+
+      <!-- Resident Roster -->
+      <div class="residency-roster fade-up">
+        <div class="residency-roster__header">
+          <h3 class="residency-roster__title">Missionized Tech Residents</h3>
+        </div>
+        <div class="residency-roster__grid">
+          <article class="resident-card">
+            <img src="/assets/images/camillia.jpg" alt="Camillia King-Stanley" class="resident-card__photo" loading="lazy">
+            <div class="resident-card__body">
+              <h4 class="resident-card__name">Camillia King-Stanley</h4>
+              <p class="resident-card__role">Capability Decision Lead</p>
+              <p class="resident-card__bio">A contracting and program management leader with sixteen years in government service, Camillia currently serves as Business Lead for the Army's $2 billion Middle Tier Acquisition rapid fielding effort for Long Range Hypersonic capability. Her background spans M-SHORAD, next-generation interceptor development, congressional budget defense, and weapons-system contracting across high-priority Army programs.</p>
+            </div>
+          </article>
+          <article class="resident-card">
+            <img src="/assets/images/kristen.png" alt="Kristen Painter" class="resident-card__photo" loading="lazy">
+            <div class="resident-card__body">
+              <h4 class="resident-card__name">Kristen Painter</h4>
+              <p class="resident-card__role">Mission Portfolio Lead</p>
+              <p class="resident-card__bio">An Army finance veteran and acquisition professional, Kristen has spent nearly two decades across Army budgeting, resource planning, and program execution. At Merge she brings a fiscal lens to capability transition, helping teams understand color-of-money strategy, SBIR cadence, POM positioning, and the funding realities that determine whether a capability moves forward.</p>
+            </div>
+          </article>
+          <article class="resident-card">
+            <img src="/assets/images/pete.png" alt="Pete Harlan" class="resident-card__photo" loading="lazy">
+            <div class="resident-card__body">
+              <h4 class="resident-card__name">Pete Harlan</h4>
+              <p class="resident-card__role">Transition Acceleration Lead</p>
+              <p class="resident-card__bio">Pete works at the intersection of medical countermeasure development, acquisition program management, and market intelligence. His career spans biodefense, the Defense Threat Reduction Agency, Battelle, the Air Force Security Assistance and Cooperation Directorate, the Defense Logistics Agency, and federal acquisition roles focused on performance metrics, data analysis, and industry engagement.</p>
+            </div>
+          </article>
+          <article class="resident-card">
+            <img src="/assets/images/piyush.png" alt="Dr. Sharma" class="resident-card__photo" loading="lazy">
+            <div class="resident-card__body">
+              <h4 class="resident-card__name">Dr. Sharma</h4>
+              <p class="resident-card__role">AI Deployment Lead</p>
+              <p class="resident-card__bio">Dr. Sharma is an AI/ML professional with more than eight years of experience in applied research and deployment across multi-agent learning, reinforcement learning, generative AI, evaluation, Responsible AI, and scalable machine learning systems. He is currently on developmental assignment as an AI Strategist with Merge Combinator and holds a Ph.D. in Applied Mathematics.</p>
+            </div>
+          </article>
+        </div>
+        <p class="residency-roster__caption">The inaugural cohort includes acquisition professionals from CPE CBRND, CPE Ground, U.S. Army Contracting Command-Redstone Arsenal, and the U.S. Army Test and Evaluation Command.</p>
+      </div>
+
+      <!-- Resident Signals -->
+      <div class="resident-signals fade-up">
+        <h3 style="font-size: 22px; color: var(--white); margin: 0;">From the Residents</h3>
+        <div class="resident-signals__grid">
+          <article class="blog-card">
+            <div class="blog-card__image--default"><img src="/assets/logowhite.png" alt="Merge Combinator"></div>
+            <div class="blog-card__content">
+              <div class="blog-card__meta">
+                <span class="blog-card__category blog-card__category--policy">Acquisition</span>
+                <time class="blog-card__date">May 12, 2026</time>
+              </div>
+              <h3 class="blog-card__title">
+                <a href="/signals/army-rewriting-acquisition">The Army Is Rewriting How It Buys Technology</a>
+              </h3>
+              <p class="blog-card__excerpt">By Pete Harlan. The Army is restructuring acquisition around software velocity and operational feedback loops.</p>
+            </div>
+          </article>
+          <article class="blog-card">
+            <div class="blog-card__image"><img src="/assets/signals/residency.jpg" alt="Missionized Tech Residency" loading="lazy"></div>
+            <div class="blog-card__content">
+              <div class="blog-card__meta">
+                <span class="blog-card__category blog-card__category--policy">Programs</span>
+                <time class="blog-card__date">May 2, 2026</time>
+              </div>
+              <h3 class="blog-card__title">
+                <a href="/signals/missionized-tech-residency">Missionized Tech Residency: Acquisition Meets Industry</a>
+              </h3>
+              <p class="blog-card__excerpt">Embedding acquisition professionals inside industry for six months.</p>
+            </div>
+          </article>
+          <article class="blog-card">
+            <div class="blog-card__image"><img src="/assets/signals/african-lion-mchmr-1.jpg" alt="MCHMR at African Lion 26" loading="lazy"></div>
+            <div class="blog-card__content">
+              <div class="blog-card__meta">
+                <span class="blog-card__category blog-card__category--readiness">Field Notes</span>
+                <time class="blog-card__date">May 10, 2026</time>
+              </div>
+              <h3 class="blog-card__title">
+                <a href="/signals/mchmr-african-lion-26">MCHMR at African Lion 26</a>
+              </h3>
+              <p class="blog-card__excerpt">Real-time AI translation over tactical radios. Allied sensors feeding a shared COP.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ─────────────────────────────── -->
+  <section class="content-section content-section--dark" style="padding-top: 0;">
+    <div class="container" style="max-width: 720px; text-align: center;">
+      <div class="fade-up" style="padding: 48px 0;">
+        <h2 style="font-size: var(--text-h2); color: var(--white); margin-bottom: 12px;">Interested in the residency?</h2>
+        <p style="color: rgba(255,255,255,.68); margin-bottom: 24px; line-height: 1.65;">Whether you want to meet our residents, explore becoming one, or sponsor professionals from your organization into the program.</p>
+        <a href="/access?context=residency" class="btn btn--primary btn--large btn--glow">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────── -->
+  <footer class="subpage-footer">
+    <div class="container">
+      <div class="subpage-footer__inner">
+        <div class="subpage-footer__links">
+          <a href="/" class="subpage-footer__link">Home</a>
+          <a href="/signals" class="subpage-footer__link">Signals</a>
+          <a href="/programs/the-combine" class="subpage-footer__link">The Combine</a>
+          <a href="/builders" class="subpage-footer__link">Defense Builders</a>
+          <a href="/access" class="subpage-footer__link">Access</a>
+          <a href="/privacy" class="subpage-footer__link">Privacy</a>
+          <a href="/terms" class="subpage-footer__link">Terms</a>
+        </div>
+        <p class="subpage-footer__copy">&copy; 2026 Merge Combinator. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/navbar.js"></script>
+  <script type="module" src="/script.js"></script>
+</body>
+</html>

@@ -257,6 +257,13 @@ function getWelcomeCopy(context) {
       cta: "Sign in to Wingman \u2192",
     };
   }
+  if (context === "residency") {
+    return {
+      title: "Missionized Tech Residency",
+      subtitle: "Tell us about your interest \u2014 whether you'd like to meet our residents, explore becoming one, or sponsor professionals from your organization.",
+      cta: "Get in touch \u2192",
+    };
+  }
   return {
     title: "Sign in to continue.",
     subtitle: "Sign in to access your account, or request access if you're new.",
@@ -1194,6 +1201,7 @@ function getEntryShortcut() {
       wingman: "Wingman",
       combine: "The Combine",
       builders: "Defense Builders",
+      residency: "Missionized Tech Residency",
     };
     const product = SURFACE_TO_PRODUCT[key] || null;
     const hasOpp = params.has("opp_id") || params.has("opp_code");

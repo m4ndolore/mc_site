@@ -89,89 +89,91 @@
   <div id="mc-navbar"></div>
 
   <!-- ============================================
-       HERO SECTION
+       COMPACT HEADER + FEATURED STORIES
        ============================================ -->
-  <section class="blog-hero">
+  <section style="padding: calc(var(--nav-height) + 40px) 0 0; background: var(--black);">
+    <div class="container" style="margin-bottom: 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+      <span style="display: inline-block; padding: 8px 24px; background: rgba(255,255,255,.06); border-radius: 100px; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 600; color: var(--white); letter-spacing: -0.01em;">Signals</span>
+      <p style="color: rgba(255,255,255,.5); margin: 0; font-size: 15px; max-width: 420px;">Analysis, market reads, and operational ground truth from inside the defense ecosystem.</p>
+    </div>
     <div class="container">
-      <div class="blog-hero__content">
-        <h1 class="blog-hero__title">Signals</h1>
-        <p class="blog-hero__subtitle">
-          Analysis, market reads, and operational ground truth from inside the defense ecosystem.
-        </p>
-        <a href="#all-signals" class="blog-hero__archive-link">View all articles →</a>
+      <div style="display: grid; gap: 20px;">
+        <!-- Featured 1: Army Acquisition -->
+        <article class="featured-post">
+          <div class="featured-post__image" style="overflow: hidden;">
+            <div class="blog-card__image--default" style="height: 100%;"><img src="/assets/logowhite.png" alt="Merge Combinator"></div>
+          </div>
+          <div class="featured-post__content">
+            <div class="featured-post__meta">
+              <span class="featured-post__category">Acquisition</span>
+              <span class="featured-post__divider">&bull;</span>
+              <time class="featured-post__date">May 12, 2026</time>
+            </div>
+            <h2 class="featured-post__title">
+              <a href="/signals/army-rewriting-acquisition">The Army Is Rewriting How It Buys Technology</a>
+            </h2>
+            <p class="featured-post__excerpt">By Pete Harlan, Missionized Tech Resident. The Army is restructuring acquisition around software velocity and operational feedback loops.</p>
+            <a href="/signals/army-rewriting-acquisition" class="featured-post__cta">
+              Read Article
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Featured 2: MCHMR -->
+        <article class="featured-post">
+          <div class="featured-post__image" style="overflow: hidden;">
+            <img src="/assets/signals/african-lion-mchmr-1.jpg" alt="MCHMR at African Lion 26" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div class="featured-post__content">
+            <div class="featured-post__meta">
+              <span class="featured-post__category">Field Notes</span>
+              <span class="featured-post__divider">&bull;</span>
+              <time class="featured-post__date">May 10, 2026</time>
+            </div>
+            <h2 class="featured-post__title">
+              <a href="/signals/mchmr-african-lion-26">MCHMR Delivers Tactical Edge Dominance During African Lion 26</a>
+            </h2>
+            <p class="featured-post__excerpt">Real-time Arabic-to-English AI translation over MPU5 radios. Allied and partner sensors feeding a shared common operational picture.</p>
+            <a href="/signals/mchmr-african-lion-26" class="featured-post__cta">
+              Read Article
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Featured 3: VC Alignment -->
+        <article class="featured-post">
+          <div class="featured-post__image" style="overflow: hidden;">
+            <img src="/assets/signals/vc-alignment.jpg" alt="Defense VC alignment" style="width:100%;height:100%;object-fit:cover;">
+          </div>
+          <div class="featured-post__content">
+            <div class="featured-post__meta">
+              <span class="featured-post__category">Analysis</span>
+              <span class="featured-post__divider">&bull;</span>
+              <time class="featured-post__date">May 1, 2026</time>
+            </div>
+            <h2 class="featured-post__title">
+              <a href="/signals/vc-defense-alignment-problem">The $16B Alignment Problem</a>
+            </h2>
+            <p class="featured-post__excerpt">$16 billion in defense VC. The question isn't money. It's whether the system can absorb it.</p>
+            <a href="/signals/vc-defense-alignment-problem" class="featured-post__cta">
+              Read Article
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 
   <!-- ============================================
-       FEATURED POST
-       ============================================ -->
-  <section class="blog-featured section--sm">
-    <div class="container">
-      <article class="featured-post">
-        <div class="featured-post__image" style="overflow: hidden;">
-          <img src="/assets/signals/african-lion-mchmr-1.jpg" alt="MCHMR at African Lion 26" style="width:100%;height:100%;object-fit:cover;">
-          <span class="featured-post__badge">Featured</span>
-        </div>
-        <div class="featured-post__content">
-          <div class="featured-post__meta">
-            <span class="featured-post__category">Field Notes</span>
-            <span class="featured-post__divider">&bull;</span>
-            <time class="featured-post__date">May 10, 2026</time>
-          </div>
-          <h2 class="featured-post__title">
-            <a href="/signals/mchmr-african-lion-26">MCHMR Delivers Tactical Edge Dominance During African Lion 26</a>
-          </h2>
-          <p class="featured-post__excerpt">
-            Real-time Arabic-to-English AI translation over MPU5 radios integrated into the MCHMR system. Allied and partner sensors feeding a shared common operational picture. Validated during African Lion 26, Agadir, Morocco.
-          </p>
-          <a href="/signals/mchmr-african-lion-26" class="featured-post__cta">
-            Read Article
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </a>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============================================
-       BLOG GRID - Latest Articles
+       ALL SIGNALS GRID
        ============================================ -->
   <section class="blog-grid section--lg" id="all-signals">
     <div class="container">
       <h2 class="blog-grid__heading">All Signals</h2>
       <div class="blog-grid__posts">
-        <!-- MCHMR African Lion 26 — May 10 -->
-        <article class="blog-card">
-          <div class="blog-card__image"><img src="/assets/signals/african-lion-mchmr-1.jpg" alt="MCHMR at African Lion 26" loading="lazy"></div>
-          <div class="blog-card__content">
-            <div class="blog-card__meta">
-              <span class="blog-card__category blog-card__category--readiness">Field Notes</span>
-              <time class="blog-card__date">May 10, 2026</time>
-            </div>
-            <h3 class="blog-card__title">
-              <a href="/signals/mchmr-african-lion-26">MCHMR Delivers Tactical Edge Dominance During African Lion 26</a>
-            </h3>
-            <p class="blog-card__excerpt">Real-time Arabic-to-English AI translation over tactical radios. Allied sensors feeding a shared COP. Agadir, Morocco.</p>
-          </div>
-        </article>
-
-        <!-- VC Alignment Problem — May 1 -->
-        <article class="blog-card">
-          <div class="blog-card__image"><img src="/assets/signals/vc-alignment.jpg" alt="Defense venture capital alignment" loading="lazy"></div>
-          <div class="blog-card__content">
-            <div class="blog-card__meta">
-              <span class="blog-card__category blog-card__category--policy">Analysis</span>
-              <time class="blog-card__date">May 1, 2026</time>
-            </div>
-            <h3 class="blog-card__title">
-              <a href="/signals/vc-defense-alignment-problem">The $16B Alignment Problem</a>
-            </h3>
-            <p class="blog-card__excerpt">$16 billion in defense VC. The question isn't whether there's enough money. It's whether the system can absorb it.</p>
-          </div>
-        </article>
 
         <!-- DAWG — Apr 28 -->
         <article class="blog-card">
