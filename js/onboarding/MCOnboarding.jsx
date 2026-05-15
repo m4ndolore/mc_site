@@ -1062,11 +1062,6 @@ function DoneScreen({ products, loginUrl, role, referralContext }) {
       <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener" class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
         Schedule a call &rarr;
       </a>
-      {loginUrl && (
-        <a href={loginUrl} class="onboarding__btn onboarding__btn--text" style={{ display: "block", textAlign: "center", marginTop: 12 }}>
-          {ctaText} &rarr;
-        </a>
-      )}
     </div>
   );
 }
@@ -1301,11 +1296,9 @@ function SimplifiedForm({ loginHref, referralContext, opportunityContext }) {
             ? "Your account is live. Sign in to start exploring."
             : "Check your email to finish setup. We're configuring your access."}
         </p>
-        {loginHref && (
-          <a href={loginHref} class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
-            {ctaText} &rarr;
-          </a>
-        )}
+        <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener" class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
+          Schedule a call &rarr;
+        </a>
       </div>
     );
   }
