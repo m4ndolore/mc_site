@@ -141,11 +141,12 @@ async function fetchProducts() {
 
 async function initMerch() {
   const grid = document.getElementById('products-grid');
+  const loading = document.getElementById('loading-state');
   if (!grid) return;
 
   // If no token configured, show static fallback
   if (!FOURTHWALL_CONFIG.token) {
-    grid.innerHTML = renderFallbackGrid('Browse the full catalog in our store.');
+    if (loading) loading.outerHTML = renderFallbackGrid('Browse the full catalog in our store.');
     return;
   }
 
@@ -153,14 +154,14 @@ async function initMerch() {
     const products = await fetchProducts();
 
     if (products.length === 0) {
-      grid.innerHTML = renderError('No products available at the moment.');
+      if (loading) loading.outerHTML = renderError('No products available at the moment.');
       return;
     }
 
-    grid.innerHTML = products.map(renderProduct).join('');
+    if (loading) loading.outerHTML = products.map(renderProduct).join('');
   } catch (error) {
     console.error('Failed to fetch products:', error);
-    grid.innerHTML = renderFallbackGrid('Unable to load live products right now.');
+    if (loading) loading.outerHTML = renderFallbackGrid('Unable to load live products right now.');
   }
 }
 

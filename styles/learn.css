@@ -218,6 +218,17 @@
   height: 16px;
 }
 
+.book-card__buy-btn {
+  background: transparent;
+  color: var(--operator-green, #22c55e);
+  border: 1px solid var(--operator-green, #22c55e);
+}
+
+.book-card__buy-btn:hover {
+  background: var(--operator-green, #22c55e);
+  color: #fff;
+}
+
 .book-card__download-btn {
   display: inline-flex;
   align-items: center;
