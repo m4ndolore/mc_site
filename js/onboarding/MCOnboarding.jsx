@@ -1059,8 +1059,11 @@ function DoneScreen({ products, loginUrl, role, referralContext }) {
           : "Check your email to finish setup. Your sandbox is being configured based on your selections."}
         {products.length > 0 && " We've noted your starting points."}
       </p>
+      <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener" class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
+        Schedule a call &rarr;
+      </a>
       {loginUrl && (
-        <a href={loginUrl} class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
+        <a href={loginUrl} class="onboarding__btn onboarding__btn--text" style={{ display: "block", textAlign: "center", marginTop: 12 }}>
           {ctaText} &rarr;
         </a>
       )}
