@@ -6,6 +6,7 @@
 # DO NOT add rewrites like "/builders /builders.html 200" - this causes redirect loops
 
 # Legacy path redirects
+/founder-path /launch 301
 /marketplace /access 301
 /combine /programs/the-combine 301
 /combine/cohort25-1.html /combine/cohort25-1 301
