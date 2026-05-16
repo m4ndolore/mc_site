@@ -142,6 +142,15 @@
   object-fit: cover;
 }
 
+/* Placeholder: half width, 20% shorter */
+.feed-featured--placeholder {
+  grid-template-columns: 0.5fr 1fr;
+}
+
+.feed-featured__image--placeholder {
+  aspect-ratio: 1/1;
+}
+
 .feed-featured__content {
   padding: 32px;
   display: flex;

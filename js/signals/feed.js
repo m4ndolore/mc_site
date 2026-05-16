@@ -253,11 +253,12 @@ export async function initFeed() {
 
     if (featuredSlot && featured) {
       const featuredImage = featured.image || '/assets/arrows-new.png';
-      const placeholderStyle = !featured.image ? ' style="object-fit: contain; padding: 20%; background: var(--charcoal, #171717);"' : '';
-      const imageHtml = `<div class="feed-featured__image"><img src="${featuredImage}" alt=""${placeholderStyle} loading="lazy"></div>`;
+      const isPlaceholder = !featured.image;
+      const placeholderStyle = isPlaceholder ? ' style="object-fit: contain; padding: 20%; background: var(--charcoal, #171717);"' : '';
+      const imageHtml = `<div class="feed-featured__image${isPlaceholder ? ' feed-featured__image--placeholder' : ''}"><img src="${featuredImage}" alt=""${placeholderStyle} loading="lazy"></div>`;
 
       featuredSlot.innerHTML = `
-        <a href="${featured.url}" class="feed-featured">
+        <a href="${featured.url}" class="feed-featured${isPlaceholder ? ' feed-featured--placeholder' : ''}">
           ${imageHtml}
           <div class="feed-featured__content">
             <span class="feed-card__source feed-card__source--mc">Merge Combinator</span>
