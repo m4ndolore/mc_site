@@ -1,6 +1,6 @@
 {
   "navLinks": [
-    { "href": "/start", "label": "Founders" },
+    { "href": "/launch", "label": "Launch" },
     { "href": "/access?context=operator", "label": "Operators" },
     { "href": "/access?context=partner", "label": "Partners" },
     { "href": "/signals", "label": "Signals" },

@@ -4,7 +4,7 @@ import './sentry.js';
 import { toggleTheme } from './theme.js';
 
 const DEFAULT_NAV_LINKS = [
-  { href: '/start', label: 'Founders' },
+  { href: '/launch', label: 'Launch' },
   { href: '/access?context=operator', label: 'Operators' },
   { href: '/access?context=partner', label: 'Partners' },
   { href: '/signals', label: 'Signals' },
