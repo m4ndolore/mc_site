@@ -1305,7 +1305,7 @@ function SimplifiedForm({ loginHref, referralContext, opportunityContext }) {
 
   if (sent) {
     return (
-      <div class="onboarding__step">
+      <div class="onboarding__step onboarding__step--simple">
         <h2 class="onboarding__step-title">Check your email.</h2>
         <p class="onboarding__step-subtitle">
           We sent a 6-digit code to <strong>{email}</strong>.
@@ -1341,7 +1341,7 @@ function SimplifiedForm({ loginHref, referralContext, opportunityContext }) {
   }
 
   return (
-    <div class="onboarding__step">
+    <div class="onboarding__step onboarding__step--simple">
       <h2 class="onboarding__step-title">Get started.</h2>
       <p class="onboarding__step-subtitle">Create your account in seconds. No password needed.</p>
 

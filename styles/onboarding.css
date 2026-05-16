@@ -1075,10 +1075,10 @@
 
   /* Hide inline nav buttons on mobile — the bottom bar replaces them */
   .onboarding__nav,
-  .onboarding__step > .onboarding__btn--primary-full,
-  .onboarding__step > .onboarding__btn--text,
+  .onboarding__step:not(.onboarding__step--simple) > .onboarding__btn--primary-full,
+  .onboarding__step:not(.onboarding__step--simple) > .onboarding__btn--text,
   .onboarding__step-signin-hint,
-  .onboarding__otp-actions {
+  .onboarding__step:not(.onboarding__step--simple) > .onboarding__otp-actions {
     display: none;
   }
 
