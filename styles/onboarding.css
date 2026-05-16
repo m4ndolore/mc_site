@@ -969,6 +969,17 @@
   color: var(--ob-red);
 }
 
+.onboarding__error-fallback {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--ob-text-sub);
+}
+
+.onboarding__error-fallback a {
+  color: var(--ob-blue);
+  text-decoration: underline;
+}
+
 /* ─── Animations ──────────────────────────── */
 @keyframes ob-step-in {
   from { opacity: 0; transform: translateX(16px); }

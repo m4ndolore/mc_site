@@ -119,9 +119,9 @@ function forwardToPlausible(event, data) {
     return;
   }
 
-  if (event === "journey_select") {
-    safePlausible("access_journey_select", {
-      stage: data.stage || "unknown",
+  if (event === "intent_select") {
+    safePlausible("access_intent_select", {
+      intent: data.intent || "unknown",
     });
     return;
   }
@@ -147,6 +147,8 @@ function forwardToApi(event, data) {
     event === "access_entry" ||
     event === "access_step_view" ||
     event === "access_journey_select" ||
+    event === "access_intent_select" ||
+    event === "intent_select" ||
     event === "access_submit_success" ||
     event === "access_products_done"
   ) {
@@ -458,29 +460,19 @@ const HERO = {
 };
 
 // ─── DATA ─────────────────────────────────────────────────────────────────────
-const AREAS = [
-  "Problem Solving", "Program Transition", "Building",
-  "Deploying Capability", "Commercialization", "Mission Outcomes",
-  "National Security", "Allies & Partners",
+const INTENT_OPTIONS = [
+  { id: "exploring", icon: "\u25CE", label: "Exploring a problem", sub: "Looking for the right frame, people, or proof points" },
+  { id: "building", icon: "\u25C9", label: "Building or validating", sub: "Have a concept or prototype and need operators, talent, or infrastructure" },
+  { id: "scaling", icon: "\u2B21", label: "Scaling or transitioning", sub: "Working system and navigating the valley of death to production" },
+  { id: "operating", icon: "\u25C7", label: "Deployed, looking to expand", sub: "In the field and optimizing, growing, or connecting" },
 ];
 
-const OUTCOME_ITEMS = [
-  "We have a role to fill",
-  "Insights that validate assumptions",
-  "Field Development",
-  "Authority to Operate",
-  "Increase mission impact",
-  "Transition to a Program Office",
-  "Accelerate acquisition or investment",
-];
-
-const JOURNEY_STAGES = [
-  { id: "I have a problem to solve", icon: "\u25CE", label: "I have a problem to solve", sub: "Looking for the right frame, the right people, or the right proof points" },
-  { id: "I have a concept to validate", icon: "\u25C8", label: "I have a concept to validate", sub: "Built something \u2014 need to know if real operators will actually use it" },
-  { id: "I'm building a prototype", icon: "\u25C9", label: "I\u2019m building a prototype", sub: "Heads down on the build \u2014 need technical talent, partners, or infrastructure" },
-  { id: "I need to scale or transition", icon: "\u2B21", label: "I need to scale or transition", sub: "Have a working system \u2014 struggling with the valley of death" },
-  { id: "I'm deployed, optimizing", icon: "\u25C7", label: "I\u2019m deployed, optimizing", sub: "In the field, holding ground, looking to expand impact" },
-];
+const INTENT_TO_JOURNEY = {
+  exploring: "I have a problem to solve",
+  building: "I'm building a prototype",
+  scaling: "I need to scale or transition",
+  operating: "I'm deployed, optimizing",
+};
 
 const PRODUCTS = [
   { id: "The Combine", tag: "VALIDATION", label: "The Combine", desc: "Validate funded DoD tech directly with warfighters \u2014 before you build the wrong thing at scale.", icon: "\u2B21" },
@@ -488,13 +480,11 @@ const PRODUCTS = [
   { id: "Wingman", tag: "MOBILE INTEL", label: "Wingman", desc: "Turn your mobile device into a mission asset. Your data. Your device. Your edge.", icon: "\u25C9" },
 ];
 
-// Conditional product ordering based on journey stage
-const JOURNEY_PRODUCT_ORDER = {
-  "I have a problem to solve": ["The Combine", "Defense Builders", "Wingman"],
-  "I have a concept to validate": ["The Combine", "Defense Builders", "Wingman"],
-  "I'm building a prototype": ["Defense Builders", "The Combine", "Wingman"],
-  "I need to scale or transition": ["Defense Builders", "Wingman", "The Combine"],
-  "I'm deployed, optimizing": ["Wingman", "Defense Builders", "The Combine"],
+const INTENT_PRODUCT_ORDER = {
+  exploring: ["The Combine", "Defense Builders", "Wingman"],
+  building: ["Defense Builders", "The Combine", "Wingman"],
+  scaling: ["Defense Builders", "Wingman", "The Combine"],
+  operating: ["Wingman", "Defense Builders", "The Combine"],
 };
 
 // ─── VALIDATION ───────────────────────────────────────────────────────────────
@@ -511,9 +501,7 @@ function validateForm(formData) {
 // ─── REDUCER ──────────────────────────────────────────────────────────────────
 const initialState = {
   step: 1,
-  areas: [],
-  values: [],
-  journey: null,
+  intent: null,
   products: [],
   formData: { name: "", email: "", org: "" },
   errors: {},
@@ -534,18 +522,8 @@ const initialState = {
 
 function reducer(state, action) {
   switch (action.type) {
-    case "TOGGLE_AREA": {
-      const s = new Set(state.areas);
-      s.has(action.value) ? s.delete(action.value) : s.add(action.value);
-      return { ...state, areas: [...s] };
-    }
-    case "TOGGLE_VALUE": {
-      const s = new Set(state.values);
-      s.has(action.value) ? s.delete(action.value) : s.add(action.value);
-      return { ...state, values: [...s] };
-    }
-    case "SET_JOURNEY":
-      return { ...state, journey: action.value };
+    case "SET_INTENT":
+      return { ...state, intent: action.value };
     case "TOGGLE_PRODUCT": {
       const s = new Set(state.products);
       s.has(action.value) ? s.delete(action.value) : s.add(action.value);
@@ -565,7 +543,7 @@ function reducer(state, action) {
       return { ...state, submitting: true, submitError: null };
     case "SUBMIT_SUCCESS":
       return {
-        ...state, submitting: false, step: 5, reqId: action.reqId,
+        ...state, submitting: false, step: 3, reqId: action.reqId,
         provisioned: true, role: action.role, loginUrl: action.loginUrl,
       };
     case "SUBMIT_ERROR":
@@ -587,7 +565,7 @@ function reducer(state, action) {
     case "OTP_RESET":
       return { ...state, otpSent: false, otpCode: "", otpError: null, otpVerifying: false, otpSending: false };
     case "FINISH":
-      return { ...state, step: 6 };
+      return { ...state, step: 4 };
     case "RESTORE":
       return { ...state, ...action.state };
     default:
@@ -598,7 +576,7 @@ function reducer(state, action) {
 // ─── PERSISTENCE ──────────────────────────────────────────────────────────────
 function saveState(state) {
   try {
-    const { submitting, submitError, turnstileToken, otpSent, otpCode, otpVerifying, otpError, otpSending, ...saveable } = state;
+    const { submitting, submitError, turnstileToken, otpSent, otpCode, otpVerifying, otpError, otpSending, provisioned, reqId, role, loginUrl, ...saveable } = state;
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(saveable));
   } catch { /* quota exceeded, ignore */ }
 }
@@ -608,8 +586,7 @@ function loadState() {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const saved = JSON.parse(raw);
-    // Don't restore past step 4 (submission boundary)
-    if (saved.step > 4) return null;
+    if (saved.step > 2) return null;
     return saved;
   } catch { return null; }
 }
@@ -620,22 +597,16 @@ function clearState() {
 
 // ─── HERO KEY LOGIC ───────────────────────────────────────────────────────────
 function getHeroKey(state) {
-  const { step, areas, journey, products } = state;
+  const { step, intent, products } = state;
   if (step === "authenticated") return "authenticated";
   if (step === 0) return "returning_user";
-  if (step === 1) return "default";
-  if (step === 2) {
-    if (areas.length === 0) return "default";
-    if (areas.length === 1) return areas[0];
-    return "multi_areas";
+  if (step === 1) {
+    if (!intent) return "default";
+    return INTENT_TO_JOURNEY[intent] || "default";
   }
-  if (step === 3) return "journey_step";
+  if (step === 2) return intent ? (INTENT_TO_JOURNEY[intent] || "contact_step") : "contact_step";
+  if (step === 3) return "post_submit";
   if (step === 4) {
-    if (products.length === 1) return products[0];
-    return journey || "contact_step";
-  }
-  if (step === 5) return "post_submit";
-  if (step === 6) {
     if (products.length === 1) return products[0];
     if (products.length > 1) return "multi_products";
     return "done";
@@ -708,34 +679,42 @@ function HeroPanel({ heroKey }) {
 // ─── PROGRESS BAR ─────────────────────────────────────────────────────────────
 function ProgressBar({ step }) {
   return (
-    <div class="onboarding__progress" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={4} aria-label={`Step ${step} of 4`}>
-      {[1, 2, 3, 4].map(i => (
+    <div class="onboarding__progress" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={2} aria-label={`Step ${step} of 2`}>
+      {[1, 2].map(i => (
         <div key={i} class={`onboarding__progress-seg${i <= step ? " onboarding__progress-seg--active" : ""}`} />
       ))}
     </div>
   );
 }
 
-// ─── STEP 1 — Areas ───────────────────────────────────────────────────────────
-function Step1({ areas, dispatch, onNext, loginHref }) {
-  const canContinue = areas.length > 0;
+// ─── STEP 1 — Intent ──────────────────────────────────────────────────────────
+function Step1({ intent, dispatch, onNext, onSkip, loginHref }) {
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">CONFIGURE YOUR PLATFORM &middot; 1 OF 4</div>
-      <h2 class="onboarding__step-title">Where are you focused?</h2>
-      <p class="onboarding__step-subtitle">Select all that apply so we can save time by validating mutual fit.</p>
-      <div class="onboarding__chip-grid" role="group" aria-label="Areas of interest">
-        {AREAS.map(a => (
-          <button key={a} class="onboarding__chip" type="button"
-            aria-pressed={areas.includes(a)}
-            onClick={() => { dispatch({ type: "TOGGLE_AREA", value: a }); track("chip_toggle", { step: 1, chip: a }); }}>
-            {a}
-          </button>
-        ))}
+      <div class="onboarding__step-label">1 OF 2</div>
+      <h2 class="onboarding__step-title">What brings you here?</h2>
+      <p class="onboarding__step-subtitle">Optional. Pick one so we can route your access correctly.</p>
+      <div role="radiogroup" aria-label="What brings you here" style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 32 }}>
+        {INTENT_OPTIONS.map(opt => {
+          const sel = intent === opt.id;
+          return (
+            <button key={opt.id} type="button" role="radio" aria-checked={sel}
+              class={`onboarding__card${sel ? " onboarding__card--selected" : ""}`}
+              onClick={() => { dispatch({ type: "SET_INTENT", value: opt.id }); track("intent_select", { intent: opt.id }); }}>
+              <span class="onboarding__card-icon">{opt.icon}</span>
+              <div style={{ flex: 1 }}>
+                <div class="onboarding__card-label">{opt.label}</div>
+                <div class="onboarding__card-sub">{opt.sub}</div>
+              </div>
+              {sel && <div class="onboarding__card-check">{"\u2713"}</div>}
+            </button>
+          );
+        })}
       </div>
-      <button class="onboarding__btn onboarding__btn--primary-full" disabled={!canContinue} onClick={onNext}>
+      <button class="onboarding__btn onboarding__btn--primary-full" onClick={onNext}>
         Continue &rarr;
       </button>
+      <button class="onboarding__btn onboarding__btn--text" onClick={onSkip}>Skip &mdash; take me to sign up &rarr;</button>
       <div class="onboarding__step-signin-hint">
         Already have access? <a href={loginHref}>Sign in &rarr;</a>
       </div>
@@ -743,67 +722,8 @@ function Step1({ areas, dispatch, onNext, loginHref }) {
   );
 }
 
-// ─── STEP 2 — Outcomes ───────────────────────────────────────────────────────
-function Step2({ values, dispatch, onNext, onBack }) {
-  const canContinue = values.length > 0;
-
-  return (
-    <div class="onboarding__step">
-      <div class="onboarding__step-label">CONFIGURE YOUR PLATFORM &middot; 2 OF 4</div>
-      <h2 class="onboarding__step-title">What outcome are you looking for?</h2>
-      <p class="onboarding__step-subtitle">Select all that apply.</p>
-      <div class="onboarding__chip-grid" role="group" aria-label="Desired outcomes">
-        {OUTCOME_ITEMS.map(v => (
-          <button key={v} class="onboarding__chip" type="button"
-            aria-pressed={values.includes(v)}
-            onClick={() => { dispatch({ type: "TOGGLE_VALUE", value: v }); track("chip_toggle", { step: 2, chip: v }); }}>
-            {v}
-          </button>
-        ))}
-      </div>
-      <div class="onboarding__nav">
-        <button class="onboarding__btn onboarding__btn--ghost" onClick={onBack}>&larr; Back</button>
-        <button class="onboarding__btn onboarding__btn--primary" disabled={!canContinue} onClick={onNext}>Continue &rarr;</button>
-      </div>
-    </div>
-  );
-}
-
-// ─── STEP 3 — Journey Stage ───────────────────────────────────────────────────
-function Step3({ journey, dispatch, onNext, onBack }) {
-  const canContinue = !!journey;
-  return (
-    <div class="onboarding__step">
-      <div class="onboarding__step-label">CONFIGURE YOUR PLATFORM &middot; 3 OF 4</div>
-      <h2 class="onboarding__step-title">Where are you in the journey?</h2>
-      <p class="onboarding__step-subtitle">Pick the one that best fits where you are right now.</p>
-      <div role="radiogroup" aria-label="Journey stage" style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 32 }}>
-        {JOURNEY_STAGES.map(stage => {
-          const sel = journey === stage.id;
-          return (
-            <button key={stage.id} type="button" role="radio" aria-checked={sel}
-              class={`onboarding__card${sel ? " onboarding__card--selected" : ""}`}
-              onClick={() => { dispatch({ type: "SET_JOURNEY", value: stage.id }); track("journey_select", { stage: stage.id }); }}>
-              <span class="onboarding__card-icon">{stage.icon}</span>
-              <div style={{ flex: 1 }}>
-                <div class="onboarding__card-label">{stage.label}</div>
-                <div class="onboarding__card-sub">{stage.sub}</div>
-              </div>
-              {sel && <div class="onboarding__card-check">{"\u2713"}</div>}
-            </button>
-          );
-        })}
-      </div>
-      <div class="onboarding__nav">
-        <button class="onboarding__btn onboarding__btn--ghost" onClick={onBack}>&larr; Back</button>
-        <button class="onboarding__btn onboarding__btn--primary" disabled={!canContinue} onClick={onNext}>Continue &rarr;</button>
-      </div>
-    </div>
-  );
-}
-
-// ─── STEP 4 — Contact Form + OTP Verification ───────────────────────────────
-function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
+// ─── STEP 2 — Contact Form + OTP Verification ───────────────────────────────
+function Step2Contact({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
   const { formData, errors, otpSent, otpCode, otpSending, otpVerifying, otpError, submitError } = state;
   const otpInputRef = useRef(null);
   const canSendOtp = formData.name.trim() && formData.email.trim() && !otpSending;
@@ -852,13 +772,22 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
   if (otpSent) {
     return (
       <div class="onboarding__step">
-        <div class="onboarding__step-label">{fastTrackProduct ? "VERIFY" : "VERIFY \u00B7 4 OF 4"}</div>
+        <div class="onboarding__step-label">{fastTrackProduct ? "VERIFY" : "VERIFY \u00B7 2 OF 2"}</div>
         <h2 class="onboarding__step-title">Check your email.</h2>
         <p class="onboarding__step-subtitle">
           We sent a 6-digit code to <strong>{formData.email}</strong>. Enter it below to verify your account.
         </p>
 
-        {otpError && <div class="onboarding__error-banner">{otpError}</div>}
+        {otpError && (
+          <div class="onboarding__error-banner">
+            {otpError}
+            <div class="onboarding__error-fallback">
+              <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener">Schedule a call</a>
+              {" or "}
+              <a href="mailto:access@mergecombinator.com">email us</a>
+            </div>
+          </div>
+        )}
 
         <div class="onboarding__otp-input-wrap">
           <input
@@ -899,7 +828,7 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
   // ── Contact form phase ──
   return (
     <div class="onboarding__step">
-      <div class="onboarding__step-label">{fastTrackProduct ? "GET ACCESS" : "ALMOST INSIDE \u00B7 4 OF 4"}</div>
+      <div class="onboarding__step-label">{fastTrackProduct ? "GET ACCESS" : "ALMOST THERE \u00B7 2 OF 2"}</div>
       <h2 class="onboarding__step-title">Tell us where to reach you.</h2>
       <p class="onboarding__step-subtitle">We'll send a verification code to confirm your email &mdash; no password needed.</p>
 
@@ -907,7 +836,16 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
         <div class="onboarding__context-badge">Requesting access to <strong>{fastTrackProduct}</strong></div>
       )}
 
-      {(submitError || otpError) && <div class="onboarding__error-banner">{submitError || otpError}</div>}
+      {(submitError || otpError) && (
+        <div class="onboarding__error-banner">
+          {submitError || otpError}
+          <div class="onboarding__error-fallback">
+            <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener">Schedule a call</a>
+            {" or "}
+            <a href="mailto:access@mergecombinator.com">email us</a>
+          </div>
+        </div>
+      )}
 
       <div class="onboarding__fields">
         {fields.map(f => (
@@ -945,7 +883,7 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
       <button class="onboarding__btn onboarding__btn--primary-full" disabled={!canSendOtp} onClick={handleSendOtp}>
         {otpSending ? "Sending code\u2026" : "Send verification code \u2192"}
       </button>
-      <button class="onboarding__btn onboarding__btn--text" onClick={onBack}>&larr; Back</button>
+      {onBack && <button class="onboarding__btn onboarding__btn--text" onClick={onBack}>&larr; Back</button>}
 
       <div class="onboarding__signin">
         <p class="onboarding__signin-label">Already have access?</p>
@@ -957,15 +895,14 @@ function Step4({ state, dispatch, onBack, onSendOtp, onVerifyOtp, loginHref }) {
   );
 }
 
-// ─── STEP 5 — Account Created (post-submit, instant provisioning) ────────────
-function Step5({ products, journey, role, loginUrl, dispatch, onDone }) {
+// ─── STEP 3 — Account Created (post-submit, instant provisioning) ────────────
+function Step3PostSubmit({ products, intent, role, loginUrl, dispatch, onDone }) {
   const [revealed, setRevealed] = useState(false);
   useEffect(() => { const t = setTimeout(() => setRevealed(true), 100); return () => clearTimeout(t); }, []);
 
   const autoPromoted = role && role !== "restricted";
 
-  // Order products based on journey stage
-  const orderedProducts = getOrderedProducts(journey);
+  const orderedProducts = getOrderedProducts(intent);
 
   return (
     <div class={`onboarding__reveal${revealed ? " onboarding__reveal--visible" : ""}`}>
@@ -1022,9 +959,9 @@ function Step5({ products, journey, role, loginUrl, dispatch, onDone }) {
   );
 }
 
-function getOrderedProducts(journey) {
-  if (!journey || !JOURNEY_PRODUCT_ORDER[journey]) return PRODUCTS;
-  const order = JOURNEY_PRODUCT_ORDER[journey];
+function getOrderedProducts(intent) {
+  if (!intent || !INTENT_PRODUCT_ORDER[intent]) return PRODUCTS;
+  const order = INTENT_PRODUCT_ORDER[intent];
   return order.map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean);
 }
 
@@ -1127,30 +1064,26 @@ function WelcomeBack({ onNewUser, loginHref, referralContext }) {
 }
 
 // ─── MOBILE ACTION BAR ───────────────────────────────────────────────────────
-function MobileActionBar({ step, state, onAction, onBack }) {
-  // Only show for steps 1-4 (active form steps)
-  if (typeof step !== "number" || step < 1 || step > 4) return null;
+function MobileActionBar({ step, state, onAction, onBack, canGoBack = true }) {
+  if (typeof step !== "number" || step < 1 || step > 2) return null;
 
   let label, disabled, backLabel;
 
-  if (step === 4 && state.otpSent) {
+  if (step === 2 && state.otpSent) {
     label = state.otpVerifying ? "Verifying\u2026" : "Verify & Create Account";
     disabled = state.otpCode.length !== 6 || state.otpVerifying;
     backLabel = "Change email";
-  } else if (step === 4) {
+  } else if (step === 2) {
     label = state.otpSending ? "Sending code\u2026" : "Send verification code";
     disabled = !state.formData.name.trim() || !state.formData.email.trim() || state.otpSending;
-    backLabel = "Back";
+    backLabel = canGoBack ? "Back" : null;
   } else {
     label = "Continue";
-    disabled = step === 1 ? state.areas.length === 0
-      : step === 2 ? state.values.length === 0
-      : step === 3 ? !state.journey
-      : false;
-    backLabel = step > 1 ? "Back" : null;
+    disabled = false;
+    backLabel = null;
   }
 
-  const stepLabel = step <= 4 && !state.otpSent ? `Step ${step} of 4` : null;
+  const stepLabel = step <= 2 && !state.otpSent ? `Step ${step} of 2` : null;
 
   return (
     <div class="onboarding__mobile-bar">
@@ -1199,11 +1132,10 @@ function getEntryShortcut() {
       wingman: "Wingman",
       combine: "The Combine",
       builders: "Defense Builders",
-      residency: "Missionized Tech Residency",
     };
     const product = SURFACE_TO_PRODUCT[key] || null;
     const hasOpp = params.has("opp_id") || params.has("opp_code");
-    // Fast-track if we have a known product OR an opportunity link
+    // Fast-track to contact form when coming from a known product or opportunity
     if (!product && !hasOpp) return null;
     return { product, hasOpp };
   } catch { return null; }
@@ -1310,7 +1242,16 @@ function SimplifiedForm({ loginHref, referralContext, opportunityContext }) {
         <p class="onboarding__step-subtitle">
           We sent a 6-digit code to <strong>{email}</strong>.
         </p>
-        {error && <div class="onboarding__error-banner">{error}</div>}
+        {error && (
+          <div class="onboarding__error-banner">
+            {error}
+            <div class="onboarding__error-fallback">
+              <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener">Schedule a call</a>
+              {" or "}
+              <a href="mailto:access@mergecombinator.com">email us</a>
+            </div>
+          </div>
+        )}
         <div class="onboarding__otp-input-wrap">
           <input
             ref={otpRef}
@@ -1345,7 +1286,16 @@ function SimplifiedForm({ loginHref, referralContext, opportunityContext }) {
       <h2 class="onboarding__step-title">Get started.</h2>
       <p class="onboarding__step-subtitle">Create your account in seconds. No password needed.</p>
 
-      {error && <div class="onboarding__error-banner">{error}</div>}
+      {error && (
+        <div class="onboarding__error-banner">
+          {error}
+          <div class="onboarding__error-fallback">
+            <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener">Schedule a call</a>
+            {" or "}
+            <a href="mailto:access@mergecombinator.com">email us</a>
+          </div>
+        </div>
+      )}
 
       <div class="onboarding__fields">
         <div>
@@ -1403,14 +1353,14 @@ export default function MCOnboarding() {
     // Source-aware shortcut: skip discovery steps when coming from a known product or opportunity
     const shortcut = getEntryShortcut();
     if (shortcut && base.step <= 1) {
-      return { ...base, step: 4, products: shortcut.product ? [shortcut.product] : [] };
+      return { ...base, step: 2, products: shortcut.product ? [shortcut.product] : [] };
     }
     return base;
   });
 
   const [authUser, setAuthUser] = useState(null);
   const liveRef = useRef(null);
-  const wasShortcut = useRef(!!getEntryShortcut() && state.step === 4);
+  const wasShortcut = useRef(!!getEntryShortcut() && state.step === 2);
   // A/B test: simplified form for organic traffic
   const abVariant = useRef(isOrganicAccess() && !localStorage.getItem(COMPLETED_KEY) ? getAbVariant() : "A");
   const { step } = state;
@@ -1472,13 +1422,13 @@ export default function MCOnboarding() {
 
   // Persist state on every change (pre-submission only)
   useEffect(() => {
-    if (typeof step === "number" && step >= 1 && step <= 4) saveState(state);
+    if (typeof step === "number" && step >= 1 && step <= 2) saveState(state);
   }, [state]);
 
   // Announce step changes to screen readers
   useEffect(() => {
     if (liveRef.current) {
-      const labels = { "authenticated": "You are already signed in.", 0: "Welcome back. Sign in or request new access.", 1: "Step 1: Areas of interest", 2: "Step 2: Value preferences", 3: "Step 3: Journey stage", 4: "Step 4: Contact information", 5: "Request submitted. Optional: select starting products", 6: "Done. Your request is in the queue." };
+      const labels = { "authenticated": "You are already signed in.", 0: "Welcome back. Sign in or request new access.", 1: "Step 1: What brings you here", 2: "Step 2: Contact information", 3: "Account created. Select starting products", 4: "Done. Your account is ready." };
       liveRef.current.textContent = labels[step] || "";
     }
     track("step_view", { step });
@@ -1539,9 +1489,9 @@ export default function MCOnboarding() {
         body: JSON.stringify({
           email, name, code,
           organization: state.formData.org.trim() || undefined,
-          areas: state.areas,
-          outcomes: state.values,
-          journeyStage: state.journey,
+          areas: [],
+          outcomes: [],
+          journeyStage: state.intent ? INTENT_TO_JOURNEY[state.intent] : undefined,
           source: window.location.href,
         }),
       });
@@ -1578,7 +1528,7 @@ export default function MCOnboarding() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name, email,
-          interests: state.areas.slice(0, 3),
+          interests: state.intent ? [INTENT_TO_JOURNEY[state.intent]] : [],
           "cf-turnstile-response": "fallback-no-turnstile",
           source: window.location.href,
           requestedAt: new Date().toISOString(),
@@ -1601,18 +1551,14 @@ export default function MCOnboarding() {
 
   // Mobile action bar handler — dispatches the right action for the current step
   const handleMobileAction = useCallback(() => {
-    if (step === 1 && state.areas.length > 0) goTo(2);
-    else if (step === 2 && state.values.length > 0) goTo(3);
-    else if (step === 3 && state.journey) goTo(4);
-    else if (step === 4 && state.otpSent) handleVerifyOtp();
-    else if (step === 4) handleSendOtp();
+    if (step === 1) goTo(2);
+    else if (step === 2 && state.otpSent) handleVerifyOtp();
+    else if (step === 2) handleSendOtp();
   }, [step, state, goTo, handleSendOtp, handleVerifyOtp]);
 
   const handleMobileBack = useCallback(() => {
-    if (step === 4 && state.otpSent) dispatch({ type: "OTP_RESET" });
-    else if (step === 2) goTo(1);
-    else if (step === 3) goTo(2);
-    else if (step === 4) goTo(wasShortcut.current ? 1 : 3);
+    if (step === 2 && state.otpSent) dispatch({ type: "OTP_RESET" });
+    else if (step === 2 && !wasShortcut.current) goTo(1);
   }, [step, state, goTo, dispatch]);
 
   return (
@@ -1624,8 +1570,8 @@ export default function MCOnboarding() {
 
       <div class="onboarding__form">
         <div class="onboarding__form-inner">
-          {typeof step === "number" && step >= 1 && step <= 4 && abVariant.current !== "B" && <ProgressBar step={step} />}
-          {opportunityContext && typeof step === "number" && step >= 1 && step <= 5 && (
+          {typeof step === "number" && step >= 1 && step <= 2 && abVariant.current !== "B" && <ProgressBar step={step} />}
+          {opportunityContext && typeof step === "number" && step >= 1 && step <= 3 && (
             <div
               style={{
                 marginBottom: 18,
@@ -1656,7 +1602,7 @@ export default function MCOnboarding() {
               </div>
             </div>
           )}
-          {step === 5 && (
+          {step === 3 && (
             <div class="onboarding__divider">
               <div class="onboarding__divider-line" />
               <span class="onboarding__divider-text">Account created</span>
@@ -1668,25 +1614,21 @@ export default function MCOnboarding() {
             <AuthenticatedScreen user={authUser} referralContext={referralContext} />
           ) : step === 0 ? (
             <WelcomeBack onNewUser={() => goTo(1)} loginHref={loginHref} referralContext={referralContext} />
-          ) : step === 6 ? (
+          ) : step === 4 ? (
             <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} referralContext={referralContext} />
           ) : abVariant.current === "B" && step === 1 ? (
             <SimplifiedForm loginHref={loginHref} referralContext={referralContext} opportunityContext={opportunityContext} />
           ) : step === 1 ? (
-            <Step1 areas={state.areas} dispatch={dispatch} onNext={() => goTo(2)} loginHref={loginHref} />
+            <Step1 intent={state.intent} dispatch={dispatch} onNext={() => goTo(2)} onSkip={() => goTo(2)} loginHref={loginHref} />
           ) : step === 2 ? (
-            <Step2 values={state.values} dispatch={dispatch} onNext={() => goTo(3)} onBack={() => goTo(1)} />
-          ) : step === 3 ? (
-            <Step3 journey={state.journey} dispatch={dispatch} onNext={() => goTo(4)} onBack={() => goTo(2)} />
-          ) : step === 4 ? (
-            <Step4 state={state} dispatch={dispatch} onBack={() => goTo(wasShortcut.current ? 1 : 3)} onSendOtp={handleSendOtp} onVerifyOtp={handleVerifyOtp} loginHref={loginHref} />
+            <Step2Contact state={state} dispatch={dispatch} onBack={wasShortcut.current ? null : () => goTo(1)} onSendOtp={handleSendOtp} onVerifyOtp={handleVerifyOtp} loginHref={loginHref} />
           ) : (
-            <Step5 products={state.products} journey={state.journey} role={state.role} loginUrl={state.loginUrl} dispatch={dispatch} onDone={() => dispatch({ type: "FINISH" })} />
+            <Step3PostSubmit products={state.products} intent={state.intent} role={state.role} loginUrl={state.loginUrl} dispatch={dispatch} onDone={() => dispatch({ type: "FINISH" })} />
           )}
         </div>
       </div>
 
-      <MobileActionBar step={step} state={state} onAction={handleMobileAction} onBack={handleMobileBack} />
+      <MobileActionBar step={step} state={state} onAction={handleMobileAction} onBack={handleMobileBack} canGoBack={!wasShortcut.current} />
     </div>
   );
 }
