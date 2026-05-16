@@ -252,9 +252,8 @@ export async function initFeed() {
     const featured = sortedMC.find(a => a.featured) || sortedMC[0];
 
     if (featuredSlot && featured) {
-      const imageHtml = featured.image
-        ? `<div class="feed-featured__image"><img src="${featured.image}" alt="" loading="lazy"></div>`
-        : '';
+      const featuredImage = featured.image || '/assets/arrows-new.png';
+      const imageHtml = `<div class="feed-featured__image"><img src="${featuredImage}" alt="" loading="lazy"></div>`;
 
       featuredSlot.innerHTML = `
         <a href="${featured.url}" class="feed-featured">
