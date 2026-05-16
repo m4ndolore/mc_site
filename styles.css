@@ -3455,8 +3455,13 @@ h4, .h4 {
   flex: 1;
   min-width: 0;
   display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
   align-content: start;
+}
+
+.signals-layout__main > h2 {
+  grid-column: 1 / -1;
 }
 
 .signals-layout__sidebar {
@@ -3529,6 +3534,9 @@ h4, .h4 {
 @media (max-width: 900px) {
   .signals-layout {
     flex-direction: column;
+  }
+  .signals-layout__main {
+    grid-template-columns: 1fr;
   }
   .signals-layout__sidebar {
     width: 100%;

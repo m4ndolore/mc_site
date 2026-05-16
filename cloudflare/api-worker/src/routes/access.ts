@@ -44,7 +44,7 @@ access.post('/otp/send', async (c) => {
 
   const emailResult = await sendOtpEmail(
     {
-      from: c.env.OTP_FROM_EMAIL || 'noreply@mergecombinator.com',
+      from: c.env.OTP_FROM_EMAIL || 'access@naluops.com',
       apiKey: c.env.RESEND_API_KEY,
       provider: c.env.RESEND_API_KEY ? 'resend' : 'mailchannels',
     },
@@ -53,7 +53,7 @@ access.post('/otp/send', async (c) => {
 
   if (!emailResult.sent) {
     console.error('OTP email send failed:', emailResult.error)
-    return c.json(err('EMAIL_FAILED', 'Failed to send verification email. Please try again.', {
+    return c.json(err('EMAIL_FAILED', `Failed to send verification email. ${emailResult.error || ''}`.trim(), {
       request_id: requestId,
     }), 502)
   }
