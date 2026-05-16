@@ -49,7 +49,7 @@ function renderMCCard(article) {
     ${imageHtml}
     <div class="feed-card__content">
       <div class="feed-card__header">
-        <span class="feed-card__source feed-card__source--mc">MC Original</span>
+        <span class="feed-card__source feed-card__source--mc">Merge Combinator</span>
         <span class="feed-card__date">${formatDate(article.date)}</span>
       </div>
       <h3 class="feed-card__title">${article.title}</h3>
@@ -132,7 +132,7 @@ function renderFilters(articles, container, grid) {
   sourceToggle.className = 'feed-source-toggle';
   sourceToggle.innerHTML = `
     <button class="feed-source-btn feed-source-btn--active" data-source="all">All Sources</button>
-    <button class="feed-source-btn" data-source="mc">MC Original</button>
+    <button class="feed-source-btn" data-source="mc">Merge Combinator</button>
   `;
   container.appendChild(sourceToggle);
 
@@ -260,7 +260,7 @@ export async function initFeed() {
         <a href="${featured.url}" class="feed-featured">
           ${imageHtml}
           <div class="feed-featured__content">
-            <span class="feed-card__source feed-card__source--mc">MC Original</span>
+            <span class="feed-card__source feed-card__source--mc">Merge Combinator</span>
             <h2 class="feed-featured__title">${featured.title}</h2>
             <p class="feed-featured__excerpt">${featured.excerpt}</p>
             <span class="feed-featured__meta">${featured.author} \u00b7 ${formatDate(featured.date)}</span>
