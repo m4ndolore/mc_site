@@ -1,12 +1,15 @@
 {
   "navLinks": [
-    { "href": "/launch", "label": "Launch" },
-    { "href": "/access?context=operator", "label": "Operators" },
-    { "href": "/access?context=partner", "label": "Partners" },
+    { "href": "/builders", "label": "Builders" },
     { "href": "/signals", "label": "Signals" },
+    { "href": "/learn", "label": "Learn" },
     { "href": "/about", "label": "About" }
   ],
-  "platformLinks": [],
+  "platformLinks": [
+    { "href": "/programs/the-combine", "label": "The Combine" },
+    { "href": "/programs/residency", "label": "Missionized Tech Residency" },
+    { "href": "/launch", "label": "Defense Tech Toolkit" }
+  ],
   "footerColumns": [
     {
       "heading": "Platform",

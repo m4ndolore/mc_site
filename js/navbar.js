@@ -4,14 +4,17 @@ import './sentry.js';
 import { toggleTheme } from './theme.js';
 
 const DEFAULT_NAV_LINKS = [
-  { href: '/launch', label: 'Launch' },
-  { href: '/access?context=operator', label: 'Operators' },
-  { href: '/access?context=partner', label: 'Partners' },
+  { href: '/builders', label: 'Builders' },
   { href: '/signals', label: 'Signals' },
+  { href: '/learn', label: 'Learn' },
   { href: '/about', label: 'About' },
 ];
 
-const DEFAULT_PLATFORM_LINKS = [];
+const DEFAULT_PLATFORM_LINKS = [
+  { href: '/programs/the-combine', label: 'The Combine' },
+  { href: '/programs/residency', label: 'Missionized Tech Residency' },
+  { href: '/launch', label: 'Defense Tech Toolkit' },
+];
 
 const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v5';
 
@@ -77,7 +80,7 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
           </button>
-          <a href="/start" class="nav__btn nav__btn--access">Get Started</a>
+          <a href="/access" class="nav__btn nav__btn--access">Get Access</a>
         </div>
       </nav>
 
