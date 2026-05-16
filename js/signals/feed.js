@@ -253,7 +253,8 @@ export async function initFeed() {
 
     if (featuredSlot && featured) {
       const featuredImage = featured.image || '/assets/arrows-new.png';
-      const imageHtml = `<div class="feed-featured__image"><img src="${featuredImage}" alt="" loading="lazy"></div>`;
+      const placeholderStyle = !featured.image ? ' style="object-fit: contain; padding: 20%; background: var(--charcoal, #171717);"' : '';
+      const imageHtml = `<div class="feed-featured__image"><img src="${featuredImage}" alt=""${placeholderStyle} loading="lazy"></div>`;
 
       featuredSlot.innerHTML = `
         <a href="${featured.url}" class="feed-featured">
