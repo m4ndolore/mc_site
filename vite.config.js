@@ -43,6 +43,7 @@ export default defineConfig({
         signals: resolve(__dirname, 'signals.html'),
         portfolio: resolve(__dirname, 'portfolio.html'),
         builders: resolve(__dirname, 'builders.html'),
+        'founder-path': resolve(__dirname, 'founder-path.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),
         status: resolve(__dirname, 'status.html'),
         merch: resolve(__dirname, 'merch.html'),

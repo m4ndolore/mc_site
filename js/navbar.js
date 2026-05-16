@@ -7,6 +7,7 @@ const DEFAULT_NAV_LINKS = [
   { href: '/about', label: 'About' },
   { href: '/signals', label: 'Signals' },
   { href: '/programs/the-combine', label: 'The Combine' },
+  { href: '/founder-path', label: 'Founder Path' },
   { href: '/builders', label: 'Defense Builders' },
   { href: '/opportunities', label: 'Opportunities' },
 ];

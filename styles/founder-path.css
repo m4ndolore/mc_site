@@ -1,0 +1,610 @@
+/* ============================================
+   FOUNDER PATH — page-specific styles
+   Uses C2UX design tokens from styles.css.
+   Light theme works automatically because we
+   only reference --blue/--black/--white/etc.
+   ============================================ */
+
+/* ── Layout override for the founder-path page ── */
+/* signals-layout__main is a 2-col grid by default;
+   the form/result content needs a single column,
+   with inner sub-grids for recommendation cards. */
+body.founder-path-page .signals-layout__main {
+  grid-template-columns: 1fr;
+}
+
+/* ── Eyebrow pill (same vocabulary as Signals header) ── */
+.fp-pill {
+  display: inline-block;
+  padding: 10px 28px;
+  background: rgba(59, 130, 246, 0.10);
+  border: 1px solid rgba(59, 130, 246, 0.20);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.fp-lede {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 15px;
+  margin: 0;
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+.light-theme .fp-lede {
+  color: var(--gray-light);
+}
+
+/* ── Progress bar ───────────────────────────── */
+.fp-progress {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.fp-progress__seg {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: var(--radius-sm);
+  transition: background 0.25s ease;
+}
+
+.light-theme .fp-progress__seg {
+  background: var(--ghost-gray);
+}
+
+.fp-progress__seg.is-active {
+  background: var(--blue);
+}
+
+.fp-progress__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gray-medium);
+  margin-bottom: 24px;
+}
+
+/* ── Card panel (the form / result container) ── */
+.fp-card {
+  background: var(--charcoal);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 28px;
+}
+
+.light-theme .fp-card {
+  background: var(--charcoal);
+  border-color: var(--ghost-gray);
+}
+
+/* ── Step container ────────────────────────── */
+.fp-step {
+  display: none;
+}
+.fp-step.is-active {
+  display: block;
+}
+
+.fp-step__title {
+  font-size: var(--text-h3);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.fp-step__sub {
+  color: var(--gray-light);
+  margin-bottom: 24px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+/* ── Option rows (single-select) ───────────── */
+.fp-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.fp-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--slate);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  text-align: left;
+  width: 100%;
+  color: inherit;
+  font-family: inherit;
+}
+
+.fp-option:hover {
+  border-color: rgba(255, 255, 255, 0.20);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.light-theme .fp-option {
+  background: var(--white);
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .fp-option:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.fp-option.is-selected {
+  border-color: var(--blue);
+  background: rgba(59, 130, 246, 0.10);
+  box-shadow: 0 0 0 1px var(--blue), 0 0 24px rgba(59, 130, 246, 0.30);
+}
+
+.fp-option__icon {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--blue);
+  border: 1px solid rgba(59, 130, 246, 0.40);
+  border-radius: var(--radius-sm);
+  background: rgba(59, 130, 246, 0.06);
+  margin-top: 2px;
+}
+
+.fp-option__body {
+  flex: 1;
+}
+
+.fp-option__label {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--white);
+  margin-bottom: 2px;
+}
+
+.fp-option__sub {
+  font-size: 13px;
+  color: var(--gray-light);
+  line-height: 1.45;
+}
+
+/* ── Chips (multi-select) ──────────────────── */
+.fp-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.fp-chip {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  background: var(--slate);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  color: var(--gray-light);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.fp-chip:hover {
+  border-color: rgba(255, 255, 255, 0.20);
+  color: var(--white);
+}
+
+.light-theme .fp-chip {
+  background: var(--white);
+  border-color: var(--ghost-gray);
+}
+
+.fp-chip.is-selected {
+  border-color: var(--blue);
+  background: rgba(59, 130, 246, 0.10);
+  color: var(--white);
+}
+
+.fp-chips-hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--gray-medium);
+  margin: -4px 0 16px;
+}
+
+/* ── Form fields ───────────────────────────── */
+.fp-field {
+  margin-bottom: 16px;
+}
+
+.fp-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  margin-bottom: 6px;
+}
+
+.fp-field input,
+.fp-field textarea {
+  width: 100%;
+  background: var(--slate);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  color: var(--white);
+  font-family: inherit;
+  font-size: 15px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.light-theme .fp-field input,
+.light-theme .fp-field textarea {
+  background: var(--white);
+  border-color: var(--ghost-gray);
+  color: var(--offwhite);
+}
+
+.fp-field textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+.fp-field input:focus,
+.fp-field textarea:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue), 0 0 16px rgba(59, 130, 246, 0.30);
+}
+
+.fp-error-text {
+  color: var(--status-red);
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+/* ── Step nav ──────────────────────────────── */
+.fp-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.fp-btn {
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  padding: 11px 18px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s, color 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fp-btn--primary {
+  background: var(--blue);
+  color: var(--white);
+  border-color: var(--blue);
+}
+.fp-btn--primary:hover {
+  background: var(--blue-dark);
+  border-color: var(--blue-dark);
+  box-shadow: 0 0 28px rgba(59, 130, 246, 0.30);
+}
+.fp-btn--primary:disabled {
+  background: var(--ghost-gray);
+  border-color: var(--ghost-gray);
+  cursor: not-allowed;
+  box-shadow: none;
+  color: var(--gray-light);
+}
+
+.fp-btn--ghost {
+  background: transparent;
+  color: var(--gray-light);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+.fp-btn--ghost:hover {
+  border-color: rgba(255, 255, 255, 0.20);
+  color: var(--white);
+}
+.light-theme .fp-btn--ghost {
+  border-color: var(--ghost-gray);
+}
+
+.fp-btn--link {
+  background: transparent;
+  color: var(--gray-medium);
+  border: 0;
+  padding: 6px 0;
+  font-size: 13px;
+}
+.fp-btn--link:hover { color: var(--white); }
+
+/* ── Result page ───────────────────────────── */
+.fp-result-header {
+  border-left: 3px solid var(--blue);
+  padding: 4px 0 4px 16px;
+  margin-bottom: 24px;
+}
+
+.fp-result-stage {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 4px;
+}
+
+.fp-result-headline {
+  font-size: clamp(20px, 2.4vw, 24px);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+.fp-section-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gray-light);
+  margin: 28px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.light-theme .fp-section-title {
+  border-bottom-color: var(--ghost-gray);
+}
+
+.fp-section-title__count {
+  color: var(--gray-medium);
+  font-size: 10px;
+}
+
+.fp-unlocks {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.fp-unlock {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--slate);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+}
+
+.light-theme .fp-unlock {
+  background: var(--white);
+  border-color: var(--ghost-gray);
+}
+
+.fp-unlock__rank {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--blue);
+  color: var(--white);
+  border-radius: var(--radius-sm);
+}
+
+.fp-unlock__title {
+  font-weight: 600;
+  font-size: 15px;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.fp-unlock__why {
+  font-size: 13px;
+  color: var(--gray-light);
+  line-height: 1.5;
+}
+
+/* ── Recommendation cards grid ─────────────── */
+.fp-recs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 720px) {
+  .fp-recs {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.fp-rec {
+  padding: 16px;
+  background: var(--slate);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.light-theme .fp-rec {
+  background: var(--white);
+  border-color: var(--ghost-gray);
+}
+
+.fp-rec:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+  text-decoration: none;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+.fp-rec__tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue);
+  align-self: flex-start;
+  padding: 3px 6px;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: var(--radius-sm);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.fp-rec--external .fp-rec__tag {
+  color: var(--status-yellow);
+  border-color: rgba(234, 179, 8, 0.4);
+  background: rgba(234, 179, 8, 0.06);
+}
+
+.fp-rec--content .fp-rec__tag {
+  color: var(--operator-green);
+  border-color: rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.06);
+}
+
+.fp-rec__title {
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--white);
+}
+
+.fp-rec__desc {
+  font-size: 13px;
+  color: var(--gray-light);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.fp-rec__cta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fp-rec__cta::after {
+  content: "→";
+  transition: transform 0.15s;
+}
+
+.fp-rec:hover .fp-rec__cta::after {
+  transform: translateX(4px);
+}
+
+/* ── Footer CTA banner ─────────────────────── */
+.fp-footer-cta {
+  margin-top: 32px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.10), rgba(59, 130, 246, 0.02));
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 720px) {
+  .fp-footer-cta {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.fp-footer-cta__copy { flex: 1; }
+.fp-footer-cta__title {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--white);
+}
+.fp-footer-cta__sub {
+  font-size: 13px;
+  color: var(--gray-light);
+}
+
+/* ── Success state ─────────────────────────── */
+.fp-success {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.fp-success__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.16);
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  color: var(--operator-green);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  font-size: 28px;
+}
+
+.fp-success__title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--white);
+}
+
+.fp-success__sub {
+  color: var(--gray-light);
+  font-size: 14px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.fp-muted-note {
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--gray-medium);
+  font-family: var(--font-mono);
+  text-align: center;
+}

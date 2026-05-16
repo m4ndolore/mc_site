@@ -3,6 +3,7 @@
     { "href": "/about", "label": "About" },
     { "href": "/signals", "label": "Signals" },
     { "href": "/programs/the-combine", "label": "The Combine" },
+    { "href": "/founder-path", "label": "Founder Path" },
     { "href": "/builders", "label": "Defense Builders" },
     { "href": "/opportunities", "label": "Opportunities" }
   ],
@@ -12,6 +13,7 @@
       "heading": "Platform",
       "links": [
         { "href": "/builders", "label": "Defense Builders" },
+        { "href": "/founder-path", "label": "Founder Path" },
         { "href": "/programs/the-combine", "label": "The Combine" },
         { "href": "/programs/residency", "label": "Residency" },
         { "href": "/opportunities", "label": "Opportunities" },
