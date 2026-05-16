@@ -948,6 +948,14 @@ h4, .h4 {
   letter-spacing: 0.05em;
 }
 
+.hero__stat-note {
+  margin-top: 4px;
+  max-width: 170px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.42);
+}
+
 .hero__stat-divider {
   width: 1px;
   height: 40px;
@@ -3228,6 +3236,15 @@ h4, .h4 {
   .hero__stats {
     flex-direction: column;
     gap: 16px;
+  }
+
+  .hero__stat {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero__stat-note {
+    max-width: 260px;
   }
 
   .hero__stat-divider {
