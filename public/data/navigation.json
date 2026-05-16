@@ -11,9 +11,8 @@
     {
       "heading": "Platform",
       "links": [
-        { "href": "/start", "label": "Founder Toolkit" },
+        { "href": "/start", "label": "Founder Path" },
         { "href": "/launch", "label": "Launch" },
-        { "href": "/founder-path", "label": "Founder Path" },
         { "href": "/builders", "label": "Defense Builders" },
         { "href": "/programs/the-combine", "label": "The Combine" },
         { "href": "/programs/residency", "label": "Residency" },
