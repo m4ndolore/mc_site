@@ -1,19 +1,19 @@
 {
   "navLinks": [
-    { "href": "/about", "label": "About" },
+    { "href": "/start", "label": "Founders" },
+    { "href": "/access?context=operator", "label": "Operators" },
+    { "href": "/access?context=partner", "label": "Partners" },
     { "href": "/signals", "label": "Signals" },
-    { "href": "/programs/the-combine", "label": "The Combine" },
-    { "href": "/founder-path", "label": "Founder Path" },
-    { "href": "/builders", "label": "Defense Builders" },
-    { "href": "/opportunities", "label": "Opportunities" }
+    { "href": "/about", "label": "About" }
   ],
   "platformLinks": [],
   "footerColumns": [
     {
       "heading": "Platform",
       "links": [
-        { "href": "/builders", "label": "Defense Builders" },
+        { "href": "/start", "label": "Founder Toolkit" },
         { "href": "/founder-path", "label": "Founder Path" },
+        { "href": "/builders", "label": "Defense Builders" },
         { "href": "/programs/the-combine", "label": "The Combine" },
         { "href": "/programs/residency", "label": "Residency" },
         { "href": "/opportunities", "label": "Opportunities" },

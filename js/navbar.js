@@ -4,17 +4,16 @@ import './sentry.js';
 import { toggleTheme } from './theme.js';
 
 const DEFAULT_NAV_LINKS = [
-  { href: '/about', label: 'About' },
+  { href: '/start', label: 'Founders' },
+  { href: '/access?context=operator', label: 'Operators' },
+  { href: '/access?context=partner', label: 'Partners' },
   { href: '/signals', label: 'Signals' },
-  { href: '/programs/the-combine', label: 'The Combine' },
-  { href: '/founder-path', label: 'Founder Path' },
-  { href: '/builders', label: 'Defense Builders' },
-  { href: '/opportunities', label: 'Opportunities' },
+  { href: '/about', label: 'About' },
 ];
 
 const DEFAULT_PLATFORM_LINKS = [];
 
-const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v4';
+const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v5';
 
 function getActivePath() {
   const path = window.location.pathname;
@@ -78,7 +77,7 @@ function renderNavHTML(activePath, navLinks, platformLinks) {
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
             </svg>
           </button>
-          <a href="/access" class="nav__btn nav__btn--access">Get Started</a>
+          <a href="/start" class="nav__btn nav__btn--access">Get Started</a>
         </div>
       </nav>
 
