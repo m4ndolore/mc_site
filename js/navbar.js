@@ -323,6 +323,11 @@ function initPageTransitions() {
   });
 }
 
+// Restore visibility when page is served from BFCache (back/forward navigation)
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted) document.body.classList.add('page-ready');
+});
+
 // Auto-init when loaded as a script tag (not just imported)
 if (document.getElementById('mc-navbar')) {
   initNavbar();
