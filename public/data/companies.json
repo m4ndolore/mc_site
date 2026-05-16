@@ -2539,12 +2539,12 @@
     "buildAt": "2026-04-08T09:18:43.957Z",
     "source": "api",
     "apiBase": "https://api.sigmablox.com",
-    "enrichedAt": "2026-05-16T08:32:29.081Z",
+    "enrichedAt": "2026-05-16T15:51:57.471Z",
     "enrichmentSources": [
       "Cohort 25-1-Cohort 25-1.csv",
       "Prod List-Grid view.csv"
     ],
-    "publicSanitizedAt": "2026-05-16T08:32:29.083Z",
+    "publicSanitizedAt": "2026-05-16T15:51:57.474Z",
     "publicPrivacyModel": "rich-public-profile",
     "restrictedFieldCount": 19,
     "publicAudience": "cohort-competitors"
