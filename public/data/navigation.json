@@ -12,12 +12,12 @@
       "heading": "Platform",
       "links": [
         { "href": "/start", "label": "Founder Toolkit" },
+        { "href": "/launch", "label": "Launch" },
         { "href": "/founder-path", "label": "Founder Path" },
         { "href": "/builders", "label": "Defense Builders" },
         { "href": "/programs/the-combine", "label": "The Combine" },
         { "href": "/programs/residency", "label": "Residency" },
-        { "href": "/opportunities", "label": "Opportunities" },
-        { "href": "/knowledge", "label": "Knowledge" }
+        { "href": "/opportunities", "label": "Opportunities" }
       ]
     },
     {
@@ -32,7 +32,9 @@
       "heading": "Resources",
       "links": [
         { "href": "/signals", "label": "Signals" },
+        { "href": "/launch", "label": "Launch" },
         { "href": "/portfolio", "label": "Case Studies" },
+        { "href": "/knowledge", "label": "Knowledge" },
         { "href": "https://docs.mergecombinator.com", "label": "Docs" }
       ]
     },

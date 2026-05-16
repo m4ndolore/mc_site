@@ -1,0 +1,114 @@
+{
+  "articles": [
+    {
+      "id": "army-rewriting-acquisition",
+      "title": "The Army Is Rewriting How It Buys Technology",
+      "excerpt": "By Pete Harlan, Missionized Tech Resident. The Army is restructuring acquisition around software velocity and operational feedback loops.",
+      "url": "/signals/army-rewriting-acquisition",
+      "date": "2026-05-12",
+      "category": "Acquisition",
+      "author": "Pete Harlan",
+      "image": null,
+      "featured": true
+    },
+    {
+      "id": "mchmr-african-lion-26",
+      "title": "MCHMR Delivers Tactical Edge Dominance During African Lion 26",
+      "excerpt": "Real-time Arabic-to-English AI translation over MPU5 radios. Allied and partner sensors feeding a shared common operational picture.",
+      "url": "/signals/mchmr-african-lion-26",
+      "date": "2026-05-10",
+      "category": "Field Notes",
+      "author": "Merge Combinator",
+      "image": "/assets/signals/african-lion-mchmr-1.jpg",
+      "featured": true
+    },
+    {
+      "id": "vc-defense-alignment-problem",
+      "title": "The $16B Alignment Problem",
+      "excerpt": "$16 billion in defense VC. The question isn't money. It's whether the system can absorb it.",
+      "url": "/signals/vc-defense-alignment-problem",
+      "date": "2026-05-01",
+      "category": "Analysis",
+      "author": "Merge Combinator",
+      "image": "/assets/signals/vc-alignment.jpg",
+      "featured": false
+    },
+    {
+      "id": "missionized-tech-residency",
+      "title": "Missionized Tech Residency",
+      "excerpt": "Embedding acquisition professionals inside industry for six months. In partnership with the US Army and DAU.",
+      "url": "/signals/missionized-tech-residency",
+      "date": "2026-05-02",
+      "category": "Programs",
+      "author": "Merge Combinator",
+      "image": "/assets/signals/residency.jpg",
+      "featured": false
+    },
+    {
+      "id": "dawg-54-billion-problem",
+      "title": "DAWG's $54.6B Problem",
+      "excerpt": "A 24,000% budget increase doesn't fix a broken acquisition system. It amplifies it.",
+      "url": "/signals/dawg-54-billion-problem",
+      "date": "2026-04-28",
+      "category": "Analysis",
+      "author": "Merge Combinator",
+      "image": "/assets/signals/dawg.jpg",
+      "featured": false
+    },
+    {
+      "id": "ulysses-combine-to-series-a",
+      "title": "From Combine to Series A: Ulysses",
+      "excerpt": "29th of 83 companies. Then $46M from a16z. What operator-validated formation actually produces.",
+      "url": "/signals/ulysses-combine-to-series-a",
+      "date": "2026-04-24",
+      "category": "Case Study",
+      "author": "Merge Combinator",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": "interceptor-stockpile-crisis",
+      "title": "The Interceptor Math Is Broken",
+      "excerpt": "25% of the stockpile, gone in 12 days. The Indo-Pacific math is worse.",
+      "url": "/signals/interceptor-stockpile-crisis",
+      "date": "2026-04-21",
+      "category": "Analysis",
+      "author": "Merge Combinator",
+      "image": "/assets/signals/interceptors.jpg",
+      "featured": false
+    },
+    {
+      "id": "counter-drone-jiatf-401",
+      "title": "Inside JIATF 401: The Counter-Drone Marketplace",
+      "excerpt": "The Pentagon is building an \"app store\" for counter-drone solutions. Here's what it takes to get listed.",
+      "url": "/signals/counter-drone-jiatf-401",
+      "date": "2025-12-22",
+      "category": "Policy & Acquisition",
+      "author": "Merge Combinator",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": "uss-eisenhower-lessons",
+      "title": "9 Months Under Fire: USS Eisenhower",
+      "excerpt": "770+ weapons expended. The most intense carrier combat since WWII.",
+      "url": "/signals/uss-eisenhower-lessons",
+      "date": "2025-12-22",
+      "category": "Combat Lessons",
+      "author": "Merge Combinator",
+      "image": null,
+      "featured": false
+    },
+    {
+      "id": "ndaa-speed-act",
+      "title": "FY26 NDAA: What the SPEED Act Means",
+      "excerpt": "Faster procurement doesn't mean more money. Here's what actually changes.",
+      "url": "/signals/ndaa-speed-act",
+      "date": "2025-12-22",
+      "category": "Policy & Acquisition",
+      "author": "Merge Combinator",
+      "image": null,
+      "featured": false
+    }
+  ]
+}

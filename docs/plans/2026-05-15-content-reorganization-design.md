@@ -172,10 +172,10 @@ Structured 0→1→N progression for defense tech founders. Themed around the ai
 
 ---
 
-## Open questions
+## Decisions (resolved 2026-05-15)
 
-1. **`/launch` vs `/learn` URL** — `/launch` is stronger thematically; `/learn` has existing SEO. Redirect `/learn` to `/launch`?
-2. **Knowledge page fate** — redirect entirely to `/launch`, or keep as a lightweight index?
-3. **Feed data source** — build a `signals.json` manifest for MC articles, or render them server-side into the feed?
-4. **Gating UX** — what does "Available in Guild" look like? Blurred content? Lock icon? Separate page?
-5. **Triage integration** — does triage output link directly to a Launch stage, or to a personalized Guild onboarding?
+1. **URL**: `/launch` — the page lives here. `/learn` stays as-is for now, revisit later.
+2. **Knowledge page**: stays as lightweight index for now, spins down soon after `/launch` and `/signals` feed are live.
+3. **Feed data source**: `signals.json` manifest for MC original articles.
+4. **Gating UX**: Lock icon on gated resources.
+5. **Triage integration**: Build first, decide integration approach after.

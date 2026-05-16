@@ -59,6 +59,7 @@ export default defineConfig({
         contribute: resolve(__dirname, 'contribute.html'),
         // combine.html removed - redirects to /programs/the-combine
         wingman: resolve(__dirname, 'wingman.html'),
+        launch: resolve(__dirname, 'launch.html'),
         learn: resolve(__dirname, 'learn.html'),
         'learn-read': resolve(__dirname, 'learn/read.html'),
         guild: resolve(__dirname, 'guild.html'),

@@ -3,25 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <script>
-    // FOUC prevention: apply theme before first paint
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Signals from Merge Combinator on defense innovation, operator-driven development, and the future of national security technology.">
+  <meta name="description" content="Defense tech intelligence and analysis from Merge Combinator. Multi-source feed covering AI, drones, acquisition, policy, and national security innovation.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://mergecombinator.com/signals">
   <link rel="alternate" type="application/rss+xml" title="Signals — Merge Combinator" href="https://mergecombinator.com/signals.rss">
-  <meta name="keywords" content="defense tech, national security, venture studio, Indo-Pacific, warfighter, dual-use technology, signals, analysis">
+  <meta name="keywords" content="defense tech, national security, AI, drones, acquisition, policy, venture studio, signals, intel">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Signals — Merge Combinator">
-  <meta property="og:description" content="Perspectives on defense innovation, operator-driven development, and the future of national security technology.">
+  <meta property="og:description" content="Defense tech intelligence and analysis. Multi-source feed from industry leaders and MC original research.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="/assets/logowhite.png">
   <meta property="og:url" content="https://mergecombinator.com/signals">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Signals — Merge Combinator">
-  <meta name="twitter:description" content="Signals from Merge Combinator on defense innovation, operator-driven development, and the future of national security technology.">
+  <meta name="twitter:description" content="Defense tech intelligence and analysis. Multi-source feed from industry leaders and MC original research.">
   <meta name="twitter:image" content="/assets/logowhite.png">
 
   <script type="application/ld+json">
@@ -30,325 +29,55 @@
     "@type": "Blog",
     "name": "Signals — Merge Combinator",
     "url": "https://mergecombinator.com/signals",
-    "description": "Perspectives on defense innovation, operator-driven development, and the future of national security technology.",
+    "description": "Defense tech intelligence and analysis from Merge Combinator.",
     "publisher": {
       "@type": "Organization",
       "name": "Merge Combinator",
       "url": "https://mergecombinator.com"
-    },
-    "blogPost": [
-      {
-        "@type": "BlogPosting",
-        "headline": "From Combine to Series A: Ulysses and the Case for Operator Validation",
-        "url": "https://mergecombinator.com/signals/ulysses-combine-to-series-a",
-        "datePublished": "2026-04-24",
-        "description": "29th of 83 companies at The Combine. Then $46M from Andreessen Horowitz. What the Ulysses story says about operator-validated company formation.",
-        "author": { "@type": "Person", "name": "Paul Garcia" }
-      },
-      {
-        "@type": "BlogPosting",
-        "headline": "Inside JIATF 401: The Pentagon's New Counter-Drone Marketplace",
-        "url": "https://mergecombinator.com/signals/counter-drone-jiatf-401",
-        "datePublished": "2025-12-22",
-        "description": "The Pentagon is building an app store for counter-drone solutions. JIATF 401 replaces the Joint Counter-small UAS Office with a streamlined approach.",
-        "author": { "@type": "Organization", "name": "Merge Combinator" }
-      },
-      {
-        "@type": "BlogPosting",
-        "headline": "9 Months Under Fire: Combat Lessons from the USS Eisenhower",
-        "url": "https://mergecombinator.com/signals/uss-eisenhower-lessons",
-        "datePublished": "2025-12-22",
-        "description": "770+ weapons expended, multiple combat firsts, and critical insights for defense tech companies from the most intense carrier deployment since WWII.",
-        "author": { "@type": "Organization", "name": "Merge Combinator" }
-      },
-      {
-        "@type": "BlogPosting",
-        "headline": "FY26 NDAA Decoded: What the SPEED Act Means for Your Defense Startup",
-        "url": "https://mergecombinator.com/signals/ndaa-speed-act",
-        "datePublished": "2025-12-22",
-        "description": "The SPEED Act promises faster procurement. What is actually changing, implementation challenges ahead, and what defense tech companies should do now.",
-        "author": { "@type": "Organization", "name": "Merge Combinator" }
-      }
-    ]
+    }
   }
   </script>
+
   <title>Signals — Merge Combinator</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Styles -->
   <style>body{opacity:0;background:#0a0a0a}body.page-ready{opacity:1;transition:opacity .15s ease-in}</style>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/feed.css">
   <link rel="stylesheet" href="styles/light-theme.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
   <div id="mc-navbar"></div>
 
-  <!-- ============================================
-       COMPACT HEADER + FEATURED STORIES
-       ============================================ -->
-  <section style="padding: calc(var(--nav-height) + 40px) 0 0; background: var(--black);">
-    <div class="container" style="margin-bottom: 32px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
-      <span style="display: inline-block; padding: 10px 28px; background: rgba(42,127,219,.1); border: 1px solid rgba(42,127,219,.2); border-radius: 6px; font-family: var(--font-mono); font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 600; color: var(--blue); letter-spacing: 0.02em; text-transform: uppercase;">Signals</span>
-      <p style="color: rgba(255,255,255,.5); margin: 0; font-size: 15px; max-width: 420px;">Analysis, market reads, and operational ground truth from inside the defense ecosystem.</p>
-    </div>
+  <!-- Header -->
+  <section class="feed-hero">
     <div class="container">
-      <div style="display: grid; gap: 20px;">
-        <!-- Featured 1: Army Acquisition -->
-        <article class="featured-post">
-          <div class="featured-post__image" style="overflow: hidden;">
-            <div class="blog-card__image--default" style="height: 100%;"><img src="/assets/logowhite.png" alt="Merge Combinator"></div>
-          </div>
-          <div class="featured-post__content">
-            <div class="featured-post__meta">
-              <span class="featured-post__category">Acquisition</span>
-              <span class="featured-post__divider">&bull;</span>
-              <time class="featured-post__date">May 12, 2026</time>
-            </div>
-            <h2 class="featured-post__title">
-              <a href="/signals/army-rewriting-acquisition">The Army Is Rewriting How It Buys Technology</a>
-            </h2>
-            <p class="featured-post__excerpt">By Pete Harlan, Missionized Tech Resident. The Army is restructuring acquisition around software velocity and operational feedback loops.</p>
-            <a href="/signals/army-rewriting-acquisition" class="featured-post__cta">
-              Read Article
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Featured 2: MCHMR -->
-        <article class="featured-post">
-          <div class="featured-post__image" style="overflow: hidden;">
-            <img src="/assets/signals/african-lion-mchmr-1.jpg" alt="MCHMR at African Lion 26" style="width:100%;height:100%;object-fit:cover;">
-          </div>
-          <div class="featured-post__content">
-            <div class="featured-post__meta">
-              <span class="featured-post__category">Field Notes</span>
-              <span class="featured-post__divider">&bull;</span>
-              <time class="featured-post__date">May 10, 2026</time>
-            </div>
-            <h2 class="featured-post__title">
-              <a href="/signals/mchmr-african-lion-26">MCHMR Delivers Tactical Edge Dominance During African Lion 26</a>
-            </h2>
-            <p class="featured-post__excerpt">Real-time Arabic-to-English AI translation over MPU5 radios. Allied and partner sensors feeding a shared common operational picture.</p>
-            <a href="/signals/mchmr-african-lion-26" class="featured-post__cta">
-              Read Article
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </a>
-          </div>
-        </article>
-
-        <!-- Featured 3: VC Alignment -->
-        <article class="featured-post">
-          <div class="featured-post__image" style="overflow: hidden;">
-            <img src="/assets/signals/vc-alignment.jpg" alt="Defense VC alignment" style="width:100%;height:100%;object-fit:cover;">
-          </div>
-          <div class="featured-post__content">
-            <div class="featured-post__meta">
-              <span class="featured-post__category">Analysis</span>
-              <span class="featured-post__divider">&bull;</span>
-              <time class="featured-post__date">May 1, 2026</time>
-            </div>
-            <h2 class="featured-post__title">
-              <a href="/signals/vc-defense-alignment-problem">The $16B Alignment Problem</a>
-            </h2>
-            <p class="featured-post__excerpt">$16 billion in defense VC. The question isn't money. It's whether the system can absorb it.</p>
-            <a href="/signals/vc-defense-alignment-problem" class="featured-post__cta">
-              Read Article
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </a>
-          </div>
-        </article>
+      <div class="feed-hero__header">
+        <span class="feed-hero__badge">Signals</span>
+        <p class="feed-hero__subtitle">Analysis, market intelligence, and operational ground truth from inside the defense ecosystem.</p>
       </div>
+
+      <!-- Briefing slot -->
+      <div id="feed-briefing"></div>
+
+      <!-- Featured MC article -->
+      <div id="feed-featured"></div>
+
+      <!-- Filters -->
+      <div id="feed-filters" class="feed-filters"></div>
+
+      <!-- Feed grid -->
+      <div id="feed-grid" class="feed-grid"></div>
     </div>
   </section>
 
-  <!-- ============================================
-       ALL SIGNALS + SIDEBAR
-       ============================================ -->
-  <section class="section--lg" id="all-signals" style="background: var(--black);">
-    <div class="container">
-      <div class="signals-layout">
-        <!-- Main column -->
-        <div class="signals-layout__main">
-          <h2 style="font-size: 20px; color: var(--white); margin: 0 0 20px; font-weight: 600;">All Signals</h2>
-
-          <!-- DAWG — Apr 28 -->
-          <article class="blog-card">
-            <div class="blog-card__image"><img src="/assets/signals/dawg.jpg" alt="DAWG budget increase" loading="lazy"></div>
-            <div class="blog-card__content">
-              <div class="blog-card__meta">
-                <span class="blog-card__category blog-card__category--policy">Analysis</span>
-                <time class="blog-card__date">April 28, 2026</time>
-              </div>
-              <h3 class="blog-card__title">
-                <a href="/signals/dawg-54-billion-problem">DAWG's $54.6B Problem</a>
-              </h3>
-              <p class="blog-card__excerpt">A 24,000% budget increase doesn't fix a broken acquisition system. It amplifies it.</p>
-            </div>
-          </article>
-
-          <!-- Ulysses — Apr 24 -->
-          <article class="blog-card">
-            <div class="blog-card__image--default"><img src="/assets/logowhite.png" alt="Merge Combinator"></div>
-            <div class="blog-card__content">
-              <div class="blog-card__meta">
-                <span class="blog-card__category blog-card__category--readiness">Case Study</span>
-                <time class="blog-card__date">April 24, 2026</time>
-              </div>
-              <h3 class="blog-card__title">
-                <a href="/signals/ulysses-combine-to-series-a">From Combine to Series A: Ulysses</a>
-              </h3>
-              <p class="blog-card__excerpt">29th of 83 companies. Then $46M from a16z. What operator-validated formation actually produces.</p>
-            </div>
-          </article>
-
-          <!-- Interceptor Stockpile — Apr 21 -->
-          <article class="blog-card">
-            <div class="blog-card__image"><img src="/assets/signals/interceptors.jpg" alt="Interceptor stockpile depletion" loading="lazy"></div>
-            <div class="blog-card__content">
-              <div class="blog-card__meta">
-                <span class="blog-card__category blog-card__category--readiness">Analysis</span>
-                <time class="blog-card__date">April 21, 2026</time>
-              </div>
-              <h3 class="blog-card__title">
-                <a href="/signals/interceptor-stockpile-crisis">The Interceptor Math Is Broken</a>
-              </h3>
-              <p class="blog-card__excerpt">25% of the stockpile, gone in 12 days. The Indo-Pacific math is worse.</p>
-            </div>
-          </article>
-
-          <!-- Residency — May 2 -->
-          <article class="blog-card">
-            <div class="blog-card__image"><img src="/assets/signals/residency.jpg" alt="Missionized Tech Residency" loading="lazy"></div>
-            <div class="blog-card__content">
-              <div class="blog-card__meta">
-                <span class="blog-card__category blog-card__category--policy">Programs</span>
-                <time class="blog-card__date">May 2, 2026</time>
-              </div>
-              <h3 class="blog-card__title">
-                <a href="/signals/missionized-tech-residency">Missionized Tech Residency</a>
-              </h3>
-              <p class="blog-card__excerpt">Embedding acquisition professionals inside industry for six months. In partnership with the US Army and DAU.</p>
-            </div>
-          </article>
-
-          <!-- JIATF 401 — Dec 22 -->
-          <article class="blog-card">
-            <div class="blog-card__image--default"><img src="/assets/logowhite.png" alt="Merge Combinator"></div>
-            <div class="blog-card__content">
-              <div class="blog-card__meta">
-                <span class="blog-card__category blog-card__category--policy">Policy &amp; Acquisition</span>
-                <time class="blog-card__date">December 2025</time>
-              </div>
-              <h3 class="blog-card__title">
-                <a href="/signals/counter-drone-jiatf-401">Inside JIATF 401: The Counter-Drone Marketplace</a>
-              </h3>
-              <p class="blog-card__excerpt">The Pentagon is building an "app store" for counter-drone solutions. Here's what it takes to get listed.</p>
-            </div>
-          </article>
-
-          <!-- USS Eisenhower — Dec 22 -->
-          <article class="blog-card">
-            <div class="blog-card__image--default"><img src="/assets/logowhite.png" alt="Merge Combinator"></div>
-            <div class="blog-card__content">
-              <div class="blog-card__meta">
-                <span class="blog-card__category blog-card__category--readiness">Combat Lessons</span>
-                <time class="blog-card__date">December 2025</time>
-              </div>
-              <h3 class="blog-card__title">
-                <a href="/signals/uss-eisenhower-lessons">9 Months Under Fire: USS Eisenhower</a>
-              </h3>
-              <p class="blog-card__excerpt">770+ weapons expended. The most intense carrier combat since WWII.</p>
-            </div>
-          </article>
-
-          <!-- NDAA — Dec 22 -->
-          <article class="blog-card">
-            <div class="blog-card__image--default"><img src="/assets/logowhite.png" alt="Merge Combinator"></div>
-            <div class="blog-card__content">
-              <div class="blog-card__meta">
-                <span class="blog-card__category blog-card__category--policy">Policy &amp; Acquisition</span>
-                <time class="blog-card__date">December 2025</time>
-              </div>
-              <h3 class="blog-card__title">
-                <a href="/signals/ndaa-speed-act">FY26 NDAA: What the SPEED Act Means</a>
-              </h3>
-              <p class="blog-card__excerpt">Faster procurement doesn't mean more money. Here's what actually changes.</p>
-            </div>
-          </article>
-        </div>
-
-        <!-- Sticky sidebar -->
-        <aside class="signals-layout__sidebar">
-          <div class="signals-sidebar">
-            <!-- Categories -->
-            <div class="signals-sidebar__section">
-              <h3 class="signals-sidebar__heading">Categories</h3>
-              <ul class="signals-sidebar__links">
-                <li><a href="#all-signals" class="signals-sidebar__link signals-sidebar__link--active">All</a></li>
-                <li><a href="#all-signals" class="signals-sidebar__link">Analysis</a></li>
-                <li><a href="#all-signals" class="signals-sidebar__link">Field Notes</a></li>
-                <li><a href="#all-signals" class="signals-sidebar__link">Acquisition</a></li>
-                <li><a href="#all-signals" class="signals-sidebar__link">Case Study</a></li>
-                <li><a href="#all-signals" class="signals-sidebar__link">Programs</a></li>
-              </ul>
-            </div>
-
-            <!-- Resources -->
-            <div class="signals-sidebar__section">
-              <h3 class="signals-sidebar__heading">Resources</h3>
-              <ul class="signals-sidebar__links">
-                <li>
-                  <a href="/learn" class="signals-sidebar__link">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0">
-                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                    </svg>
-                    Valley of Death Survival Guide
-                  </a>
-                </li>
-                <li>
-                  <a href="/knowledge" class="signals-sidebar__link">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="M12 16v-4M12 8h.01"/>
-                    </svg>
-                    Knowledge Base
-                  </a>
-                </li>
-                <li>
-                  <a href="/programs/residency" class="signals-sidebar__link">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16" style="flex-shrink:0">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                      <circle cx="9" cy="7" r="4"/>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                    Missionized Tech Residency
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <!-- CTA -->
-            <div class="signals-sidebar__section signals-sidebar__cta">
-              <p class="signals-sidebar__cta-text">Building in defense? Get connected to operators, capital, and acquisition pathways.</p>
-              <a href="/access" class="btn btn--primary" style="width: 100%; text-align: center;">Get Started</a>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================
-       FOOTER (Same as index.html)
-       ============================================ -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer__grid">
@@ -368,70 +97,48 @@
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </a>
-            <a href="/programs/the-combine" class="footer__social-link" aria-label="Combine" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-              </svg>
-            </a>
-            <a href="/knowledge" class="footer__social-link" aria-label="Knowledge" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-              </svg>
-            </a>
           </div>
         </div>
-
         <div class="footer__links">
           <div class="footer__column">
             <h4 class="footer__heading">Platform</h4>
             <ul class="footer__list">
-              <li><a href="/programs/the-combine">Combine</a></li>
+              <li><a href="/programs/the-combine">The Combine</a></li>
               <li><a href="/builders">Defense Builders</a></li>
               <li><a href="/opportunities">Opportunities</a></li>
               <li><a href="/merch">Merch</a></li>
             </ul>
           </div>
-
           <div class="footer__column">
             <h4 class="footer__heading">Company</h4>
             <ul class="footer__list">
               <li><a href="/about">About</a></li>
-              <li><a href="/about.html#team">Team</a></li>
-              <li><a href="/about">Careers</a></li>
+              <li><a href="/about#faq">FAQ</a></li>
               <li><a href="/access">Contact</a></li>
+              <li><a href="/builders">Careers</a></li>
             </ul>
           </div>
-
           <div class="footer__column">
             <h4 class="footer__heading">Resources</h4>
             <ul class="footer__list">
               <li><a href="/signals">Signals</a></li>
-              <li><a href="/portfolio">Case Studies</a></li>
+              <li><a href="/launch">Launch</a></li>
               <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="/learn">Learn</a></li>
               <li><a href="https://docs.mergecombinator.com">Docs</a></li>
-            </ul>
-          </div>
-
-          <div class="footer__column">
-            <h4 class="footer__heading">Legal</h4>
-            <ul class="footer__list">
-              <li><a href="/privacy">Privacy Policy</a></li>
-              <li><a href="/terms">Terms of Service</a></li>
-              <li><a href="/security">Security</a></li>
             </ul>
           </div>
         </div>
       </div>
-
       <div class="footer__bottom">
         <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
-        <p class="footer__location">Honolulu • Seattle • Las Vegas</p>
+        <p class="footer__location">Honolulu &bull; Seattle &bull; Las Vegas</p>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script type="module" src="/js/navbar.js"></script>
-  <script type="module" src="/script.js"></script>
+  <script type="module" src="script.js"></script>
+  <script type="module" src="js/navbar.js"></script>
+  <script type="module" src="js/signals/feed.js"></script>
 </body>
 </html>
