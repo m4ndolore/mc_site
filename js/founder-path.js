@@ -154,7 +154,7 @@ const REC_INTERNAL = {
   wingman: { tag: "MC · Wingman", title: "Wingman", desc: "Turn your mobile device into a mission asset. Useful when your wedge needs an edge endpoint.", href: "/wingman" },
   missionized: { tag: "MC · Residency", title: "Missionized Tech Residency", desc: "Embedded technical residents who pair with operator-founders to ship the first real prototype. In partnership with the U.S. Army and Defense Acquisition University.", href: "/programs/residency" },
   rme: { tag: "MC · RME desk", title: "RME acquisition pros", desc: "Direct intros to acquisition professionals who can decode color-of-money, contract vehicles, and the ATO maze.", href: "/access?source=founder-path&intent=rme" },
-  triage: { tag: "MC · 1-on-1", title: "30-min triage call with a partner", desc: "If the report below is right but you want to argue it out with a human, book the call.", href: "https://book.mergecombinator.com/founder" },
+  triage: { tag: "MC · 1-on-1", title: "30-min triage call with a partner", desc: "If the report below is right but you want to argue it out with a human, book the call.", href: "https://calendar.app.google/caYkEhTngEyUEgDn7" },
   cohort: { tag: "MC · The Combine cohort", title: "Combine cohort program", desc: "Time-bounded cohort that pairs founders with operators and acquisition pros for 8 weeks.", href: "/combine/cohort25-1" },
   opportunities: { tag: "MC · Opportunities", title: "Opportunities radar", desc: "SBIR / STTR / OTA listings already filtered for what's actually winnable.", href: "/opportunities" },
 };
@@ -323,7 +323,7 @@ function buildResult() {
   // Book-call → Google Calendar appointment slots (custom domain).
   // Google's appointment URL supports limited prefill — we pass name/email
   // when available so the booker doesn't retype them.
-  const bookUrl = new URL("https://book.mergecombinator.com/founder");
+  const bookUrl = new URL("https://calendar.app.google/caYkEhTngEyUEgDn7");
   if (state.contact.name)  bookUrl.searchParams.set("name", state.contact.name);
   if (state.contact.email) bookUrl.searchParams.set("email", state.contact.email);
   document.getElementById("fpBookCallBtn").href = bookUrl.toString();
