@@ -934,6 +934,16 @@ h4, .h4 {
   flex-direction: column;
 }
 
+.hero__stat--link {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.15s;
+}
+
+.hero__stat--link:hover .hero__stat-number {
+  color: var(--blue);
+}
+
 .hero__stat-number {
   font-family: var(--font-mono);
   font-size: 28px;
