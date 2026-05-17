@@ -14,7 +14,6 @@
     {
       "heading": "Platform",
       "links": [
-        { "href": "/start", "label": "Founder Path" },
         { "href": "/launch", "label": "Launch" },
         { "href": "/builders", "label": "Defense Builders" },
         { "href": "/programs/the-combine", "label": "The Combine" },
@@ -34,9 +33,9 @@
       "heading": "Resources",
       "links": [
         { "href": "/signals", "label": "Signals" },
-        { "href": "/launch", "label": "Launch" },
         { "href": "/portfolio", "label": "Case Studies" },
         { "href": "/knowledge", "label": "Knowledge" },
+        { "href": "/learn", "label": "Learn" },
         { "href": "https://docs.mergecombinator.com", "label": "Docs" }
       ]
     },
