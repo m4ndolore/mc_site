@@ -4,7 +4,6 @@ import './sentry.js';
 import { toggleTheme } from './theme.js';
 
 const DEFAULT_NAV_LINKS = [
-  { href: '/builders', label: 'Builders' },
   { href: '/signals', label: 'Signals' },
   { href: '/learn', label: 'Learn' },
   { href: '/about', label: 'About' },
@@ -16,7 +15,7 @@ const DEFAULT_PLATFORM_LINKS = [
   { href: '/launch', label: 'Defense Tech Toolkit' },
 ];
 
-const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v5';
+const NAV_CONFIG_CACHE_KEY = 'mc.nav.config.v6';
 
 function getActivePath() {
   const path = window.location.pathname;

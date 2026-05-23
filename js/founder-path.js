@@ -32,6 +32,7 @@ const state = {
   constraints: new Set(),
   company: null,
   contact: { name: "", email: "", context: "" },
+  completedAt: null,
 };
 
 function persist() {
@@ -48,15 +49,38 @@ function persist() {
 function restore() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
+    if (!raw) return false;
     const s = JSON.parse(raw);
-    if (!s) return;
+    if (!s) return false;
+    state.step = normalizeStep(s.step);
     state.stage = s.stage || null;
     state.brings = new Set(s.brings || []);
     state.constraints = new Set(s.constraints || []);
     state.company = s.company || null;
     state.contact = s.contact || state.contact;
+    state.completedAt = s.completedAt || null;
+    return hasSavedProgress();
   } catch { /* ignore */ }
+  return false;
+}
+
+function normalizeStep(step) {
+  if (step === "result") return "result";
+  const n = Number(step);
+  return Number.isInteger(n) && n >= 1 && n <= 5 ? n : 1;
+}
+
+function hasSavedProgress() {
+  return Boolean(
+    state.stage ||
+    state.brings.size ||
+    state.constraints.size ||
+    state.company ||
+    state.contact.name ||
+    state.contact.email ||
+    state.contact.context ||
+    state.completedAt
+  );
 }
 
 // ─── analytics ──────────────────────────────────────────────────────────────
@@ -81,6 +105,7 @@ let stepEls, progressSegs, progressLabel, stepNavLinks;
 
 function showStep(s) {
   state.step = s;
+  persist();
   stepEls.forEach((el) => el.classList.toggle("is-active", el.dataset.step === String(s)));
   if (s === "result") {
     progressSegs.forEach((seg) => seg.classList.add("is-active"));
@@ -150,7 +175,7 @@ const UNLOCK_LIBRARY = {
 
 const REC_INTERNAL = {
   combine: { tag: "MC · The Combine", title: "The Combine", desc: "Validate funded DoD tech directly with warfighters — before you build the wrong thing at scale.", href: "/programs/the-combine" },
-  builders: { tag: "MC · Defense Builders", title: "Defense Builders", desc: "Connect problem solvers with problem owners. Build a working prototype in days, not months.", href: "/builders" },
+  builders: { tag: "MC · Defense Builders", title: "Defense Builders", desc: "Premium support for founder matching, opportunity briefs, office hours, and direct help navigating the defense market.", href: "/access?context=builders" },
   wingman: { tag: "MC · Wingman", title: "Wingman", desc: "Turn your mobile device into a mission asset. Useful when your wedge needs an edge endpoint.", href: "/wingman" },
   missionized: { tag: "MC · Residency", title: "Missionized Tech Residency", desc: "Embedded technical residents who pair with operator-founders to ship the first real prototype. In partnership with the U.S. Army and Defense Acquisition University.", href: "/programs/residency" },
   rme: { tag: "MC · RME desk", title: "RME acquisition pros", desc: "Direct intros to acquisition professionals who can decode color-of-money, contract vehicles, and the ATO maze.", href: "/access?source=founder-path&intent=rme" },
@@ -394,6 +419,7 @@ function boot() {
   progressSegs = document.querySelectorAll(".fp-progress__seg");
   progressLabel = document.getElementById("fpProgressLabel");
   stepNavLinks = document.querySelectorAll("#fpStepNav [data-step-target]");
+  const resumeNotice = document.getElementById("fpResumeNotice");
 
   // Single-select option groups
   document.querySelectorAll(".fp-options").forEach((group) => {
@@ -468,6 +494,7 @@ function boot() {
         state.contact.name = document.getElementById("fp-name").value.trim();
         state.contact.email = email;
         state.contact.context = document.getElementById("fp-context").value.trim();
+        state.completedAt = new Date().toISOString();
         persist();
         buildResult();
         showStep("result");
@@ -492,8 +519,7 @@ function boot() {
   });
 
   // Rehydrate from any persisted state
-  restore();
-  showStep(1);
+  const restored = restore();
 
   if (state.stage) {
     const opt = document.querySelector(`[data-key="stage"] .fp-option[data-value="${state.stage}"]`);
@@ -513,6 +539,13 @@ function boot() {
   if (state.contact.name) document.getElementById("fp-name").value = state.contact.name;
   if (state.contact.email) document.getElementById("fp-email").value = state.contact.email;
   if (state.contact.context) document.getElementById("fp-context").value = state.contact.context;
+  if (restored && resumeNotice) {
+    resumeNotice.hidden = false;
+  }
+  if (state.step === "result") {
+    buildResult();
+  }
+  showStep(state.step || 1);
 
   track("founder_path_entry", { path: window.location.pathname });
 }

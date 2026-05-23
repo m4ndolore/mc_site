@@ -1,6 +1,5 @@
 {
   "navLinks": [
-    { "href": "/builders", "label": "Builders" },
     { "href": "/signals", "label": "Signals" },
     { "href": "/learn", "label": "Learn" },
     { "href": "/about", "label": "About" }
@@ -15,7 +14,7 @@
       "heading": "Platform",
       "links": [
         { "href": "/launch", "label": "Launch" },
-        { "href": "/builders", "label": "Defense Builders" },
+        { "href": "/access?context=builders", "label": "Defense Builders" },
         { "href": "/programs/the-combine", "label": "The Combine" },
         { "href": "/programs/residency", "label": "Residency" },
         { "href": "/opportunities", "label": "Opportunities" }
@@ -34,6 +33,7 @@
       "links": [
         { "href": "/signals", "label": "Signals" },
         { "href": "/portfolio", "label": "Case Studies" },
+        { "href": "/builders", "label": "Builder Directory" },
         { "href": "/knowledge", "label": "Knowledge" },
         { "href": "/learn", "label": "Learn" },
         { "href": "https://docs.mergecombinator.com", "label": "Docs" }
