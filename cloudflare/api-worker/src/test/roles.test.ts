@@ -39,4 +39,15 @@ describe('extractRolesFromClaims', () => {
     expect(extractRolesFromClaims({ groups: ['admin', 42, null] }, 'groups'))
       .toEqual(['admin'])
   })
+
+  it('extracts from URL-namespaced claim (Auth0 format)', () => {
+    const payload = { 'https://mergecombinator.com/groups': ['mc-admins', 'platform:combine'] }
+    expect(extractRolesFromClaims(payload, 'https://mergecombinator.com/groups'))
+      .toEqual(['mc-admins', 'platform:combine'])
+  })
+
+  it('returns empty array for missing namespaced claim', () => {
+    expect(extractRolesFromClaims({}, 'https://mergecombinator.com/groups'))
+      .toEqual([])
+  })
 })

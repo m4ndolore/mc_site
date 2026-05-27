@@ -28,6 +28,15 @@ export function extractRolesFromClaims(
   payload: Record<string, unknown>,
   claimPath: string
 ): string[] {
+  // Direct key lookup for URL-namespaced claims (e.g. "https://mergecombinator.com/groups")
+  if (claimPath.includes('/')) {
+    const value = payload[claimPath]
+    if (Array.isArray(value)) {
+      return value.filter((v): v is string => typeof v === 'string')
+    }
+    return []
+  }
+  // Dot-path traversal for nested claims (e.g. "groups")
   const parts = claimPath.split('.')
   let current: unknown = payload
   for (const part of parts) {

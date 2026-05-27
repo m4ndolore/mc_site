@@ -28,6 +28,14 @@ function getOAuthUrls(env) {
   if (!issuer) {
     throw new Error("Missing required env var: OIDC_ISSUER_URL");
   }
+  // Auth0 uses root-level OAuth paths; Authentik uses /application/o/*
+  if (issuer.includes('.auth0.com')) {
+    return {
+      authorize: `${issuer}/authorize`,
+      token: `${issuer}/oauth/token`,
+      userinfo: `${issuer}/userinfo`,
+    };
+  }
   return {
     authorize: `${issuer}/application/o/authorize/`,
     token: `${issuer}/application/o/token/`,
@@ -324,7 +332,10 @@ async function handleLogin(request, env) {
   authUrl.searchParams.set("client_id", env.MC_OAUTH_CLIENT_ID);
   authUrl.searchParams.set("response_type", "code");
   authUrl.searchParams.set("redirect_uri", redirectUri);
-  authUrl.searchParams.set("scope", "openid email profile groups");
+  // Auth0 injects groups via post-login Action; Authentik uses a custom 'groups' scope
+  const issuer = env.OIDC_ISSUER_URL || '';
+  const scope = issuer.includes('.auth0.com') ? "openid email profile" : "openid email profile groups";
+  authUrl.searchParams.set("scope", scope);
   authUrl.searchParams.set("state", encryptedState);
   authUrl.searchParams.set("code_challenge", challenge);
   authUrl.searchParams.set("code_challenge_method", "S256");
@@ -345,7 +356,26 @@ async function handleCallback(request, env) {
     const error = url.searchParams.get("error");
 
     if (error) {
-      return new Response(`Authentication error: ${error}`, { status: 400 });
+      const desc = url.searchParams.get("error_description") || error;
+      return new Response(`<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sign In - VIA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#09111f;font-family:Inter,-apple-system,sans-serif;color:#f8fafc}
+.card{max-width:420px;padding:40px 32px;background:rgba(9,19,38,0.82);border:1px solid rgba(148,163,184,0.16);border-radius:16px;text-align:center}
+h1{font-size:20px;font-weight:600;margin:0 0 12px}
+p{color:#94a3b8;font-size:14px;line-height:1.6;margin:0 0 24px}
+a{display:inline-block;padding:10px 24px;background:#2563eb;color:#fff;border-radius:10px;text-decoration:none;font-weight:500;font-size:14px}
+a:hover{background:#3b82f6}
+.subtle{color:#64748b;font-size:12px;margin-top:16px}
+</style></head><body>
+<div class="card">
+<h1>Unable to sign in</h1>
+<p>${desc}</p>
+<a href="/auth/login">Try again</a>
+<div class="subtle">VIA Identity &middot; Merge Combinator</div>
+</div></body></html>`, { status: 400, headers: { "Content-Type": "text/html;charset=utf-8" } });
     }
 
     if (!code || !encryptedState) {
@@ -418,7 +448,7 @@ async function handleCallback(request, env) {
         sub: user.sub,
         email: user.email,
         name: user.name || user.preferred_username,
-        groups: user.groups || [],
+        groups: user.groups || user['https://mergecombinator.com/groups'] || [],
       },
       accessToken: tokens.access_token,
       expiresAt: Date.now() + (tokens.expires_in * 1000),
@@ -482,12 +512,17 @@ async function handleLogout(request, env) {
     )
   );
 
-  // Redirect to Authentik end-session to fully log out of SSO
-  // post_logout_redirect_uri brings user back to our site after SSO logout
+  // Redirect to IdP end-session to fully log out of SSO
+  // Auth0 uses 'returnTo' + 'client_id'; Authentik uses 'post_logout_redirect_uri'
   const logoutUrl = env.OAUTH_LOGOUT_URL;
   if (logoutUrl) {
     const endSessionUrl = new URL(logoutUrl);
-    endSessionUrl.searchParams.set("post_logout_redirect_uri", returnTo);
+    if (logoutUrl.includes('.auth0.com')) {
+      endSessionUrl.searchParams.set("returnTo", returnTo);
+      endSessionUrl.searchParams.set("client_id", env.MC_OAUTH_CLIENT_ID);
+    } else {
+      endSessionUrl.searchParams.set("post_logout_redirect_uri", returnTo);
+    }
     headers.set("Location", endSessionUrl.toString());
   } else {
     // Fallback if OAUTH_LOGOUT_URL not configured
