@@ -22,7 +22,8 @@
     "preview": "vite preview",
     "deploy": "npm run deploy:worker",
     "deploy:worker": "wrangler deploy",
-    "deploy:pages": "wrangler pages deploy dist --project-name mc-site",
+    "deploy:pages": "wrangler pages deploy dist --project-name mc-site && node scripts/smoke-test.mjs --retries 3 --delay 5000",
+    "smoke-test": "node scripts/smoke-test.mjs",
     "deploy:status": "wrangler pages deployment list --project-name mc-site | head -10",
     "test:visual": "npx playwright test",
     "test:visual:update": "npx playwright test --update-snapshots"
