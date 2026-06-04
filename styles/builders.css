@@ -349,6 +349,20 @@
 }
 
 /* ============================================
+   GROUNDING PARAGRAPH
+   ============================================ */
+.builders-grounding {
+    padding: 0 0 20px;
+}
+
+.builders-grounding p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-secondary, #a3a3a3);
+    margin: 0;
+}
+
+/* ============================================
    BUILDERS GRID
    ============================================ */
 .builders-grid {
@@ -387,6 +401,11 @@
 .builder-card:focus {
     outline: 2px solid var(--accent-purple);
     outline-offset: 2px;
+}
+
+a.builder-card {
+    text-decoration: none;
+    color: inherit;
 }
 
 /* Upvote Section */
@@ -443,13 +462,13 @@
 
 /* Logo Section */
 .builder-card__logo {
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
     border-radius: 2px;
     object-fit: contain;
     background: rgba(15, 23, 42, 0.85);
     border: 1px solid rgba(148, 163, 255, 0.12);
-    padding: 10px;
+    padding: 8px;
     flex-shrink: 0;
 }
 
@@ -470,6 +489,9 @@
 
 /* Content Section */
 .builder-card__content {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
     flex: 1;
     min-width: 0;
 }
@@ -484,11 +506,11 @@
 }
 
 .builder-card__tagline {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 400;
     color: var(--text-secondary);
     line-height: 1.6;
-    margin: 0 0 12px;
+    margin: 0 0 8px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;

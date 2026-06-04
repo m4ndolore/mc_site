@@ -184,13 +184,13 @@ function buildCompanyCard(c) {
 
   const logo = getLogoUrl(c);
   const logoHtml = logo
-    ? `<img src="${escapeHtml(logo)}" alt="${escapeHtml(c.name)} logo" class="builder-card__logo" loading="lazy" width="48" height="48" style="width:48px;height:48px;object-fit:contain;border-radius:2px;background:rgba(15,23,42,.85);border:1px solid rgba(148,163,255,.12);padding:8px;flex-shrink:0;">`
+    ? `<img src="${escapeHtml(logo)}" alt="${escapeHtml(c.name)} logo" class="builder-card__logo" loading="lazy" width="48" height="48">`
     : '';
 
-  return `<a href="/companies/${slug}" class="builder-card" data-company-id="${escapeHtml(c.id)}" style="text-decoration:none;color:inherit;">
-  <div class="builder-card__content" style="${logo ? 'display:flex;gap:14px;align-items:flex-start;' : ''}">
+  return `<a href="/companies/${slug}" class="builder-card" data-company-id="${escapeHtml(c.id)}">
+  <div class="builder-card__content">
     ${logoHtml}<div>
-    <h3 class="builder-card__name">${escapeHtml(c.name)}</h3>${c.productName ? `\n    <div class="builder-card__tagline" style="margin-bottom:8px;font-size:0.9rem;color:var(--text-secondary);">${escapeHtml(c.productName)}</div>` : ''}
+    <h3 class="builder-card__name">${escapeHtml(c.name)}</h3>${c.productName ? `\n    <div class="builder-card__tagline">${escapeHtml(c.productName)}</div>` : ''}
     <div class="builder-card__tags">${metaHtml}</div>
     <p class="builder-card__tagline">${desc}</p>
     </div>
@@ -228,8 +228,8 @@ function injectBuilders(html) {
 
   // 3. Grounding paragraph — insert before #builders-grid section (idempotent)
   const topMissions = missionAreas.slice(0, 4).join(', ');
-  const groundingText = `<div class="builders-grounding" style="padding:0 0 20px;">
-  <p style="font-size:0.95rem;line-height:1.6;color:var(--text-secondary,#a3a3a3);margin:0;">The Defense Builders Directory highlights ${stats.total} high-signal companies selected from Merge Combinator's in-person Defense Tech Combine cohort. Public profiles retain rich company narrative and technical metadata while withholding direct contact details, fundraising data, scores, badges, and internal evaluation outcomes.</p>
+  const groundingText = `<div class="builders-grounding">
+  <p>The Defense Builders Directory highlights ${stats.total} high-signal companies selected from Merge Combinator's in-person Defense Tech Combine cohort. Public profiles retain rich company narrative and technical metadata while withholding direct contact details, fundraising data, scores, badges, and internal evaluation outcomes.</p>
 </div>`;
 
   // Strip any existing grounding blocks before re-injecting
