@@ -20,7 +20,7 @@
       "date": "2026-05-12",
       "category": "Acquisition",
       "author": "Mission Resident - Merge Combinator",
-      "image": null,
+      "image": "/assets/signals/army-acquisition.jpg",
       "featured": false
     },
     {
@@ -75,7 +75,7 @@
       "date": "2026-04-24",
       "category": "Case Study",
       "author": "Merge Combinator",
-      "image": null,
+      "image": "/assets/signals/ulysses-usv.jpg",
       "featured": false
     },
     {
@@ -97,7 +97,7 @@
       "date": "2025-12-22",
       "category": "Policy & Acquisition",
       "author": "Merge Combinator",
-      "image": null,
+      "image": "/assets/signals/counter-drone.jpg",
       "featured": false
     },
     {
@@ -108,7 +108,7 @@
       "date": "2025-12-22",
       "category": "Combat Lessons",
       "author": "Merge Combinator",
-      "image": null,
+      "image": "/assets/signals/eisenhower.jpg",
       "featured": false
     },
     {
@@ -119,7 +119,7 @@
       "date": "2025-12-22",
       "category": "Policy & Acquisition",
       "author": "Merge Combinator",
-      "image": null,
+      "image": "/assets/signals/pentagon.jpg",
       "featured": false
     }
   ]
