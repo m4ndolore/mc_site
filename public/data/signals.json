@@ -1,6 +1,18 @@
 {
   "articles": [
     {
+      "id": "navy-airforce-acquisition-restructure",
+      "title": "Two Services Restructured Acquisition in Six Weeks. Most Builders Missed It.",
+      "excerpt": "By Pete Florio, Missionized Tech Resident. The Navy and Air Force both restructured major acquisition authorities in under two months. The signal is structural.",
+      "url": "/signals/navy-airforce-acquisition-restructure",
+      "date": "2026-05-15",
+      "category": "Acquisition",
+      "author": "Mission Resident - Merge Combinator",
+      "tags": ["acquisition", "navy", "air force", "indo-pacific"],
+      "image": null,
+      "featured": true
+    },
+    {
       "id": "army-rewriting-acquisition",
       "title": "The Army Is Rewriting How It Buys Technology",
       "excerpt": "By Pete Harlan, Missionized Tech Resident. The Army is restructuring acquisition around software velocity and operational feedback loops.",
@@ -9,7 +21,7 @@
       "category": "Acquisition",
       "author": "Mission Resident - Merge Combinator",
       "image": null,
-      "featured": true
+      "featured": false
     },
     {
       "id": "mchmr-african-lion-26",
