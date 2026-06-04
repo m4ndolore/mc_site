@@ -6398,3 +6398,65 @@ p {
     font-size: 15px;
   }
 }
+
+/* ── Team / Founder Cards ── */
+.founder-strip {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.founder-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.founder-chip__photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 2px;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.team-member {
+  text-align: center;
+}
+.team-member__photo {
+  width: 100px;
+  height: 124px;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid rgba(255,255,255,.12);
+  margin-bottom: 12px;
+}
+.team-member__name {
+  font-size: 16px;
+  color: var(--white);
+  margin: 0 0 4px;
+}
+.team-member__role {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--blue);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin: 0 0 8px;
+}
+.team-member__bio {
+  font-size: 13px;
+  color: rgba(255,255,255,.68);
+  line-height: 1.5;
+  margin: 0;
+}
+.team-member__social {
+  display: inline-block;
+  margin-top: 10px;
+  color: var(--gray-light);
+  transition: color .15s;
+}
