@@ -241,6 +241,17 @@ function parseRatioHtml(html: string): unknown[] {
           return items;
 }
 
+// ─── Ratio deadline extraction from challenge pages ─────────────────────────
+// Individual challenge pages render: "End Date</span> <p> Jul 24, 2026&nbsp;ET </p>"
+function extractRatioDeadline(html: string): number | undefined {
+          const match = html.match(
+                      /End Date<\/span>[\s\S]{0,80}?([A-Z][a-z]{2,} \d{1,2},?\s*\d{4})/
+          );
+          if (!match) return undefined;
+          const ms = Date.parse(match[1]);
+          return Number.isNaN(ms) ? undefined : Math.floor(ms / 1000);
+}
+
 // ─── DARPA deadline extraction from program pages ───────────────────────────
 function extractDarpaDeadline(html: string): number | undefined {
           // Pattern: Closes: June 3, 2026
@@ -306,8 +317,12 @@ function parseDiuHtml(html: string): unknown[] {
                       const title = m[1].replace(/<[^>]+>/g, "").trim();
                       if (!title) continue;
                       const surrounding = html.slice(m.index, m.index + 3000);
+                      // Markup is: "Responses Due By</h6> <p>2026-06-15 23:59:59 US/Eastern Time</p>"
+                      // so allow arbitrary tags/whitespace between the label and the date.
                       const deadline =
-                                    surrounding.match(/Responses Due By ([\d]{4}-[\d]{2}-[\d]{2})/)?.[1] ?? "";
+                                    surrounding.match(
+                                                    /Responses Due By[\s\S]{0,40}?([\d]{4}-[\d]{2}-[\d]{2})/
+                                                  )?.[1] ?? "";
                       const submitLink =
                                     surrounding.match(
                                                     /href="(https:\/\/www\.diu\.mil\/work-with-us\/submit-solution\/[^"]+)"/
@@ -699,6 +714,30 @@ app.get("/api/opportunities", async (c) => {
                       if (ratioHtml) {
                                     const ratioItems = parseRatioHtml(ratioHtml);
                                     ratioTotal = ratioItems.length;
+
+                                    // Enrich with End Date scraped from each challenge page.
+                                    await Promise.all(
+                                                    ratioItems.map(async (item) => {
+                                                                      const i = item as Record<string, unknown>;
+                                                                      const url = String(i.url ?? "");
+                                                                      if (!url.includes("ratio.exchange")) return;
+                                                                      try {
+                                                                                        const pageHtml = await cachedFetch(url, TTL.ratio);
+                                                                                        if (!pageHtml) return;
+                                                                                        const endTs = extractRatioDeadline(pageHtml);
+                                                                                        if (endTs) {
+                                                                                                          i.topicEndDate = endTs;
+                                                                                                          i.topicStatus = normalizeStatus(
+                                                                                                                            String(i.topicStatus ?? ""),
+                                                                                                                            endTs
+                                                                                                          );
+                                                                                        }
+                                                                      } catch {
+                                                                                        // Gracefully skip — leave challenge without a deadline
+                                                                      }
+                                                    })
+                                                  );
+
                                     allResults.push(...ratioItems);
                       }
           }
@@ -787,30 +826,46 @@ app.get("/api/opportunities/:id", async (c) => {
 
           try {
                       // The SBIR detail endpoint (/topics/{id}/details) returns 403.
-                      // Instead, search all statuses and filter client-side by topicId.
-                      const searchParam = { topicStatuses: [583, 592, 593] };
-                      const params = new URLSearchParams();
-                      params.set("searchParam", JSON.stringify(searchParam));
-                      params.set("page", "0");
-                      params.set("size", "500");
-                      const response = await fetch(
-                                    `${SBIR_SEARCH_URL}?${params.toString()}`,
-                                    { headers: SBIR_HEADERS }
-                      );
-                      if (!response.ok) {
-                                    return c.json(
-                                            { success: false, error: `SBIR API returned ${response.status}` },
-                                            502
+                      // Instead, search all statuses and filter by topicId. A single
+                      // 500-row page can miss legacy / lower-priority topics, so page
+                      // through results (bounded) until the id is found.
+                      // NOTE: the SBIR API field is `topicReleaseStatus` (matching the
+                      // list query) — `topicStatuses` is silently ignored and returns a
+                      // default window that omits some open topics.
+                      const searchParam = { topicReleaseStatus: [583, 592, 593] };
+                      const PAGE_SIZE = 200;
+                      const MAX_PAGES = 10; // up to 2,000 topics — covers the full active set
+                      let match: Record<string, unknown> | undefined;
+                      for (let pageIdx = 0; pageIdx < MAX_PAGES && !match; pageIdx++) {
+                                    const params = new URLSearchParams();
+                                    params.set("searchParam", JSON.stringify(searchParam));
+                                    params.set("page", String(pageIdx));
+                                    params.set("size", String(PAGE_SIZE));
+                                    const response = await fetch(
+                                                    `${SBIR_SEARCH_URL}?${params.toString()}`,
+                                                    { headers: SBIR_HEADERS }
                                     );
+                                    if (!response.ok) {
+                                                    // First page failure is fatal; later pages just stop the scan.
+                                                    if (pageIdx === 0) {
+                                                                      return c.json(
+                                                                              { success: false, error: `SBIR API returned ${response.status}` },
+                                                                              502
+                                                                      );
+                                                    }
+                                                    break;
+                                    }
+                                    const body = (await response.json()) as Record<string, unknown>;
+                                    const content = Array.isArray(body.content) ? body.content
+                                                    : Array.isArray(body.data) ? body.data as unknown[]
+                                                    : [];
+                                    match = content.find((item: unknown) => {
+                                                    const record = item as Record<string, unknown>;
+                                                    return String(record.topicId ?? record.id ?? "") === id;
+                                    }) as Record<string, unknown> | undefined;
+                                    // No more pages to scan.
+                                    if (content.length < PAGE_SIZE) break;
                       }
-                      const body = (await response.json()) as Record<string, unknown>;
-                      const content = Array.isArray(body.content) ? body.content
-                                    : Array.isArray(body.data) ? body.data as unknown[]
-                                    : [];
-                      const match = content.find((item: unknown) => {
-                                    const record = item as Record<string, unknown>;
-                                    return String(record.topicId ?? record.id ?? "") === id;
-                      }) as Record<string, unknown> | undefined;
                       if (!match) {
                                     return c.json(
                                             { success: false, error: `Opportunity ${id} not found` },

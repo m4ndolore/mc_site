@@ -18,6 +18,7 @@ export interface FetchOptions {
   component?: string;
   keyword?: string;
   sort?: string;
+  sources?: string;
 }
 
 type RawOpportunity = Record<string, unknown>;
@@ -222,6 +223,7 @@ export async function fetchOpportunities(
   if (opts.component) params.set("component", opts.component);
   if (opts.keyword) params.set("keyword", opts.keyword);
   if (opts.sort) params.set("sort", opts.sort);
+  if (opts.sources) params.set("sources", opts.sources);
 
   const response = await fetch(
     `${API_BASE}/api/opportunities?${params.toString()}`,
@@ -241,9 +243,57 @@ export async function fetchOpportunities(
   };
 }
 
+// ── Opportunity cache ────────────────────────────────────────────────────────
+// The detail endpoint /api/opportunities/:id is SBIR-only and 404s for darpa/diu/
+// ratio (which have no stable id) and for legacy SBIR topics that fall outside the
+// live search window. To keep the detail page reliable, list loads cache every
+// opportunity in sessionStorage keyed by id||topicId; the detail page reads from
+// the cache first and only falls back to the network for direct/cold loads.
+const CACHE_KEY = "mc-opportunities-cache";
+
+function opportunityKey(opp: Opportunity): string {
+  return opp.id || opp.topicId;
+}
+
+export function cacheOpportunities(items: Opportunity[]): void {
+  if (typeof sessionStorage === "undefined") return;
+  try {
+    const existing = readOpportunityCache();
+    for (const item of items) {
+      const key = opportunityKey(item);
+      if (key) existing[key] = item;
+    }
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify(existing));
+  } catch {
+    /* sessionStorage unavailable or quota exceeded — skip caching */
+  }
+}
+
+function readOpportunityCache(): Record<string, Opportunity> {
+  if (typeof sessionStorage === "undefined") return {};
+  try {
+    const raw = sessionStorage.getItem(CACHE_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw) as Record<string, Opportunity>;
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export function getCachedOpportunity(id: string): Opportunity | null {
+  if (!id) return null;
+  return readOpportunityCache()[id] ?? null;
+}
+
 export async function fetchOpportunity(
   id: string,
 ): Promise<OpportunityDetailResponse> {
+  // Prefer the cache so detail pages resolve for every source, not just SBIR.
+  const cached = getCachedOpportunity(id);
+  if (cached) {
+    return { success: true, data: cached };
+  }
   const response = await fetch(`${API_BASE}/api/opportunities/${id}`);
   if (!response.ok) throw new Error("Opportunity not found");
   const payload = (await response.json()) as OpportunityDetailResponse;

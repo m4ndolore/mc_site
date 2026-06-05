@@ -588,7 +588,8 @@ function OpportunityModal({
   isSaved: boolean;
   allOpportunities?: Opportunity[];
 }): React.JSX.Element {
-  const detailPageHref = `/opportunities/${opportunity.id || opportunity.topicId}`;
+  const detailKey = opportunity.id || opportunity.topicId;
+  const detailPageHref = detailKey ? `/opportunities/${detailKey}` : null;
   const externalUrl = getSourceUrl(opportunity);
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
@@ -1070,9 +1071,11 @@ function OpportunityModal({
               </a>
             </div>
             <div className="modal-footer-links">
-              <a className="modal-footer-link" href={detailPageHref}>
-                Open detail page
-              </a>
+              {detailPageHref && (
+                <a className="modal-footer-link" href={detailPageHref}>
+                  Open detail page
+                </a>
+              )}
               {externalUrl && (
                 <a
                   className="modal-footer-link"
@@ -1080,7 +1083,7 @@ function OpportunityModal({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  View source
+                  View solicitation ↗
                 </a>
               )}
               <a className="modal-footer-link" href={emailHref}>
@@ -1787,7 +1790,7 @@ function OpportunityDetailPage(): React.JSX.Element {
 
   const dueDate = opportunity.responseDeadline ?? opportunity.closeDate;
   const externalSourceUrl = getSourceUrl(opportunity);
-  const sourceLabel = "View primary source";
+  const sourceLabel = "View solicitation ↗";
   const accessHref = buildOpportunityAccessUrl(opportunity);
   const emailHref = buildOpportunityEmailHref(opportunity);
   const saved = isSaved(opportunity.id) || isSaved(opportunity.topicId);
