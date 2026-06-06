@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import type { Opportunity } from "../types/opportunity";
 import type { OpportunityProfile } from "../types/profile";
-import { fetchOpportunities } from "../lib/api";
+import { fetchOpportunities, cacheOpportunities } from "../lib/api";
 import OpportunityCard from "./OpportunityCard";
 
 interface OpportunityListProps {
@@ -157,11 +157,22 @@ function computeMatchCount(
 }
 
 const STATUS_OPTIONS = [
-  { value: "active", label: "Active" },
-  { value: "open", label: "Open" },
-  { value: "pre-release", label: "Pre-Release" },
+  { value: "active", label: "Active (Open + Pre-Release)" },
+  { value: "open", label: "Open only" },
+  { value: "pre-release", label: "Pre-Release only" },
   { value: "closed", label: "Closed" },
-  { value: "all", label: "All" },
+  { value: "all", label: "All statuses" },
+];
+
+// Opportunity type maps to the worker's `sources` param. Each source is a distinct
+// vehicle: SBIR/STTR (sbir), DARPA BAAs (darpa), DIU CSOs/OTAs (diu), Ratio
+// challenges (ratio). Empty value = all types.
+const TYPE_OPTIONS = [
+  { value: "", label: "All Types" },
+  { value: "sbir", label: "SBIR / STTR" },
+  { value: "darpa", label: "DARPA (BAA)" },
+  { value: "diu", label: "DIU (CSO / OTA)" },
+  { value: "ratio", label: "Ratio Challenges" },
 ];
 
 const COMPONENT_OPTIONS = [
@@ -198,7 +209,8 @@ function OpportunityList({
   const [error, setError] = useState<string | null>(null);
 
   // Filters
-  const [statusFilter, setStatusFilter] = useState("open");
+  const [statusFilter, setStatusFilter] = useState("active");
+  const [typeFilter, setTypeFilter] = useState("");
   const [componentFilter, setComponentFilter] = useState("");
   const [keyword, setKeyword] = useState(initialKeyword);
   const [pendingKeyword, setPendingKeyword] = useState(initialKeyword);
@@ -222,7 +234,10 @@ function OpportunityList({
           component: componentFilter,
           keyword: keyword,
           sort: sortBy,
+          sources: typeFilter || undefined,
         });
+        // Cache so the detail page resolves for every source (not just SBIR).
+        cacheOpportunities(response.data);
         setOpportunities((prev) =>
           append ? [...prev, ...response.data] : response.data,
         );
@@ -236,7 +251,7 @@ function OpportunityList({
         setLoadingMore(false);
       }
     },
-    [statusFilter, componentFilter, keyword, sortBy],
+    [statusFilter, typeFilter, componentFilter, keyword, sortBy],
   );
 
   useEffect(() => {
@@ -247,7 +262,7 @@ function OpportunityList({
   useEffect(() => {
     setOpportunities([]);
     setPage(0);
-  }, [statusFilter, componentFilter, keyword, sortBy]);
+  }, [statusFilter, typeFilter, componentFilter, keyword, sortBy]);
 
   useEffect(() => {
     setKeyword(initialKeyword);
@@ -479,7 +494,17 @@ function OpportunityList({
               </button>
             ))}
           </div>
-          <span className="filters__label" style={{ marginLeft: "auto" }}>Component</span>
+          <span className="filters__label" style={{ marginLeft: "auto" }}>Type</span>
+          <select
+            className="filters__select"
+            value={typeFilter}
+            onChange={(e) => setTypeFilter(e.target.value)}
+          >
+            {TYPE_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+          <span className="filters__label">Component</span>
           <select
             className="filters__select"
             value={componentFilter}
