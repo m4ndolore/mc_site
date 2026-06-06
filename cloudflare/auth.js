@@ -142,7 +142,7 @@ async function decryptSession(encrypted, secret) {
 
     const decoder = new TextDecoder();
     return JSON.parse(decoder.decode(decrypted));
-  } catch (e) {
+  } catch {
     return null;
   }
 }
@@ -221,7 +221,7 @@ function sanitizeReturnTo(returnTo) {
       return null;
     }
     return url.toString();
-  } catch (err) {
+  } catch {
     return null;
   }
 }
@@ -647,6 +647,72 @@ async function handleAdminAccessSummary(request, env) {
 }
 
 /**
+ * Handle /auth/admin/company/:id - admin proxy for company updates.
+ */
+async function handleAdminCompanyUpdate(request, env) {
+  if (request.method !== "PATCH") {
+    return new Response(JSON.stringify({ error: { code: "METHOD_NOT_ALLOWED", message: "PATCH required" } }), {
+      status: 405,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+
+  const session = await getSession(request, env)
+  if (!session || !session.accessToken) {
+    return new Response(JSON.stringify({ error: { code: "UNAUTHORIZED", message: "Authentication required" } }), {
+      status: 401,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+
+  if (!isAdminSession(session, env)) {
+    return new Response(JSON.stringify({ error: { code: "FORBIDDEN", message: "Admin access required" } }), {
+      status: 403,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+
+  const requestUrl = new URL(request.url)
+  const match = requestUrl.pathname.match(/^\/auth\/admin\/company\/([^/]+)$/)
+  const companyId = match?.[1]
+  if (!companyId) {
+    return new Response(JSON.stringify({ error: { code: "BAD_REQUEST", message: "Company id required" } }), {
+      status: 400,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+
+  const apiOrigin = env.MC_API_ORIGIN || "https://api.mergecombinator.com"
+  const upstreamUrl = `${apiOrigin}/guild/companies/${encodeURIComponent(companyId)}`
+
+  try {
+    const upstream = await fetch(upstreamUrl, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${session.accessToken}`,
+        Accept: "application/json",
+        "Content-Type": request.headers.get("content-type") || "application/json",
+      },
+      body: request.body,
+    })
+    const body = await upstream.text()
+    return new Response(body, {
+      status: upstream.status,
+      headers: {
+        "Content-Type": upstream.headers.get("content-type") || "application/json",
+        "Cache-Control": "no-store",
+      },
+    })
+  } catch (error) {
+    console.error("admin company update proxy failed", error)
+    return new Response(JSON.stringify({ error: { code: "UPSTREAM_ERROR", message: "Company update unavailable" } }), {
+      status: 502,
+      headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
+    })
+  }
+}
+
+/**
  * Get current session from request
  */
 export async function getSession(request, env) {
@@ -699,6 +765,10 @@ export async function handleAuthRoute(request, env) {
 
   if (path === "/auth/admin/access-summary") {
     return handleAdminAccessSummary(request, env);
+  }
+
+  if (path.startsWith("/auth/admin/company/")) {
+    return handleAdminCompanyUpdate(request, env);
   }
 
   return null;

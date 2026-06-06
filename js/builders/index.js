@@ -347,6 +347,22 @@ function openModal(companyId) {
                 editBtn.addEventListener('click', () => enterEditMode(currentCompany));
             }
         }
+
+        const copyContactBtn = modalBody.querySelector('[data-copy-contact]');
+        if (copyContactBtn) {
+            copyContactBtn.addEventListener('click', async () => {
+                const contact = copyContactBtn.dataset.copyContact || '';
+                try {
+                    await navigator.clipboard.writeText(contact);
+                    copyContactBtn.textContent = 'Copied';
+                    setTimeout(() => { copyContactBtn.textContent = 'Copy Contact'; }, 1200);
+                } catch (error) {
+                    console.error('[Builders] Failed to copy contact:', error);
+                    copyContactBtn.textContent = 'Copy Failed';
+                    setTimeout(() => { copyContactBtn.textContent = 'Copy Contact'; }, 1200);
+                }
+            });
+        }
     }
     if (modal) {
         modal.classList.add('active');
@@ -408,9 +424,9 @@ function enterEditMode(company) {
             if (statusEl) { statusEl.textContent = ''; statusEl.className = 'edit-form__status'; }
 
             try {
-                const res = await fetch(`https://api.mergecombinator.com/guild/companies/${company.id}`, {
+                const res = await fetch(`/auth/admin/company/${encodeURIComponent(company.id)}`, {
                     method: 'PATCH',
-                    credentials: 'include',
+                    credentials: 'same-origin',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload),
                 });

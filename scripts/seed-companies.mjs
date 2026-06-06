@@ -26,6 +26,7 @@ if (!existsSync(OUTPUT_DIR)) {
 }
 const API_BASE = 'https://api.sigmablox.com';
 const PAGE_LIMIT = 100;
+const REQUIRE_LIVE_SEED = process.env.MC_REQUIRE_LIVE_SEED === '1';
 
 /**
  * Fallback mock data when API is unavailable and no cache exists
@@ -288,6 +289,10 @@ async function seed() {
     } catch (error) {
         console.warn('[seed] API unavailable:', error.message);
 
+        if (REQUIRE_LIVE_SEED) {
+            throw new Error(`Live company seed required but unavailable: ${error.message}`, { cause: error });
+        }
+
         // Prefer the private cache if present. The public cache is sanitized and
         // should only be used when no private source is available.
         const cached = loadPrivateCachedData() || loadCachedData();
@@ -346,6 +351,9 @@ async function seed() {
 // Run the script
 seed().catch(error => {
     console.error('[seed] Fatal error:', error);
+    if (REQUIRE_LIVE_SEED) {
+        process.exit(1);
+    }
     // Don't fail the build - just use empty data
     const emptyData = {
         companies: [],

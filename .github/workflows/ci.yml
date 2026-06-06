@@ -10,20 +10,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            cloudflare/api-worker/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install API worker dependencies
+        run: npm ci --prefix cloudflare/api-worker
 
       - name: Lint
         run: npm run lint
@@ -32,39 +36,24 @@ jobs:
         run: npm run secrets:scan
 
       - name: Build
+        env:
+          MC_REQUIRE_LIVE_SEED: '1'
         run: npm run build
 
       - name: Router unit tests
         run: node cloudflare/test-router.mjs --unit
+
+      - name: API worker typecheck
+        run: npm run typecheck --prefix cloudflare/api-worker
+
+      - name: API worker unit tests
+        run: npm run test --prefix cloudflare/api-worker
 
       # Visual Regression Tests
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
       - name: Run visual regression tests
-        id: visual-tests
-        run: npx playwright test
-        continue-on-error: true
-
-      - name: Regenerate snapshots on failure
-        if: steps.visual-tests.outcome == 'failure'
-        run: npx playwright test --update-snapshots
-
-      - name: Commit updated snapshots
-        if: steps.visual-tests.outcome == 'failure'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add tests/visual/screenshots/
-          if git diff --cached --quiet; then
-            echo "No snapshot changes to commit"
-            exit 1
-          fi
-          git commit -m "chore(ci): update visual regression baselines [skip ci]"
-          git push
-
-      - name: Verify updated snapshots
-        if: steps.visual-tests.outcome == 'failure'
         run: npx playwright test
 
       - name: Upload Playwright report

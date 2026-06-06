@@ -17,7 +17,7 @@
     "claims:classify": "node scripts/classify-claims.mjs",
     "claims:source-map": "node scripts/prepare-claim-source-map.mjs",
     "secrets:scan": "node scripts/scan-secrets.mjs",
-    "lint": "eslint js/ scripts/ cloudflare/test-router.mjs",
+    "lint": "eslint js/ scripts/ cloudflare/*.js cloudflare/test-router.mjs",
     "build": "npm run seed && npm run enrich && npm run optimize && vite build",
     "preview": "vite preview",
     "deploy": "npm run deploy:worker",

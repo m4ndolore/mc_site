@@ -32,22 +32,36 @@ function isPlatformActive(activePath, platformLinks) {
   return platformLinks.some(link => isActive(link.href, activePath));
 }
 
-function buildSignInHref() {
-  const returnTo = `${window.location.pathname}${window.location.search}${window.location.hash}`;
-  return `/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value);
+}
+
+function safeHref(value) {
+  const href = String(value ?? '').trim();
+  if (href.startsWith('/') && !href.startsWith('//')) return href;
+  if (/^https?:\/\//i.test(href)) return href;
+  return '#';
 }
 
 function renderNavHTML(activePath, navLinks, platformLinks) {
   const navLinksHTML = navLinks.map(link =>
-    `<a href="${link.href}" class="nav__link${isActive(link.href, activePath) ? ' nav__link--active' : ''}">${link.label}</a>`
+    `<a href="${escapeAttr(safeHref(link.href))}" class="nav__link${isActive(link.href, activePath) ? ' nav__link--active' : ''}">${escapeHtml(link.label)}</a>`
   ).join('\n          ');
 
   const platformLinksHTML = platformLinks.map(link =>
-    `<a href="${link.href}" class="nav__dropdown-item${isActive(link.href, activePath) ? ' nav__link--active' : ''}">${link.label}</a>`
+    `<a href="${escapeAttr(safeHref(link.href))}" class="nav__dropdown-item${isActive(link.href, activePath) ? ' nav__link--active' : ''}">${escapeHtml(link.label)}</a>`
   ).join('\n              ');
 
   const platformActive = isPlatformActive(activePath, platformLinks);
-  const signInHref = buildSignInHref();
 
   return `<header class="nav" id="nav">
     <div class="nav__container">
