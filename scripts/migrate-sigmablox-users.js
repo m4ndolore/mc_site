@@ -30,30 +30,6 @@ const isDryRun = args.includes('--dry-run');
 const outputIndex = args.indexOf('--output');
 const outputPath = outputIndex !== -1 ? args[outputIndex + 1] : DEFAULT_OUTPUT_PATH;
 
-// Label to role mapping
-const LABEL_TO_ROLE_MAP = {
-  'Admin': 'admin',
-  'admin': 'admin',
-  'Staff': 'member', // Staff are regular members with special labels
-  'staff': 'member',
-  'Coach': 'member',
-  'coach': 'member',
-  'Alumni': 'member',
-  'alumni': 'member',
-  'founder': 'member',
-  'Industry': 'member',
-  'industry': 'member',
-  'operator': 'member',
-  'advisor': 'member',
-  'Trusted': 'member',
-  'trust': 'member',
-  'Trust': 'member',
-  'general': 'member',
-  'guest': 'member',
-  'restricted': 'member',
-  'limited': 'member'
-};
-
 /**
  * Determines the user role based on their labels
  * Priority: Admin > default member
@@ -103,7 +79,7 @@ function extractCapabilities(labels) {
 /**
  * Extracts company name from note field or other metadata
  */
-function extractCompany(note, name) {
+function extractCompany(note) {
   // Check if note contains auto-approval info (these are new sign-ups)
   if (note && note.includes('Auto-approved:')) {
     return null;
@@ -154,7 +130,7 @@ function transformUser(member) {
   const labels = member.labels ? member.labels.split(',') : [];
   const role = determineRole(labels);
   const capabilities = extractCapabilities(labels);
-  const company = extractCompany(member.note, member.name);
+  const company = extractCompany(member.note);
 
   return {
     email: member.email,

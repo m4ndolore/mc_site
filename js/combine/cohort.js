@@ -4,7 +4,6 @@
 import { outboundUrl, toCompanySlug } from '../lib/outbound.js';
 
 let allCompanies = [];
-let currentFilter = 'all';
 
 const filterContainer = document.querySelector('.filter-tags');
 const gridContainer = document.querySelector('#cohort-grid');
@@ -124,8 +123,6 @@ function updateResultsCount(visible, total) {
 }
 
 function applyFilter(filter) {
-    currentFilter = filter;
-
     if (filterContainer) {
         filterContainer.querySelectorAll('.filter-tag').forEach(btn => {
             btn.classList.toggle('filter-tag--active', btn.dataset.filter === filter);

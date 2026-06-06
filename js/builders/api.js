@@ -2,7 +2,7 @@
 // API client for fetching builder data from SigmaBlox public API
 // Supports: 1) Live API, 2) Build-time seeded static JSON, 3) Mock data fallback
 
-import { handleApiResponse, clearAuthCache, redirectToLogin } from './auth.js';
+import { handleApiResponse } from './auth.js';
 
 /**
  * Default retry configuration for exponential backoff
@@ -244,7 +244,7 @@ async function loadSeededData() {
             return data;
         }
         return null;
-    } catch (error) {
+    } catch {
         return null;
     }
 }
@@ -265,7 +265,7 @@ async function loadSeededData() {
  * @param {number} options.offset - Pagination offset
  * @returns {Promise<{companies: Array, total: number, limit: number, offset: number}>}
  */
-export async function fetchCompanies(options = {}) {
+export async function fetchCompanies(_options = {}) {
     // In local development with useMockData=true, use mock data directly
     if (shouldUseMockData()) {
         console.warn('[Builders] Using mock data for local development');

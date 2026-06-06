@@ -1,7 +1,12 @@
 // js/navbar.js — Single source of truth for MC navbar
 // Renders into <div id="mc-navbar"></div> on any page
-import './sentry.js';
 import { toggleTheme } from './theme.js';
+
+if (import.meta.env.PROD) {
+  void import('./sentry.js').catch((error) => {
+    console.warn('[Sentry] Failed to load error monitoring:', error);
+  });
+}
 
 const DEFAULT_NAV_LINKS = [
   { href: '/signals', label: 'Signals' },

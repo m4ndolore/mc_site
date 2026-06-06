@@ -28,7 +28,6 @@ const HOP_BY_HOP_HEADERS = new Set([
 ]);
 
 const CONSOLE_PATHS = new Set(["/control"]);
-const DEFAULT_ADMIN_GROUPS = ["mc-admins"];
 
 // Platform convergence: canonical redirect targets
 // guild.mergecombinator.com = authenticated platform
@@ -151,24 +150,6 @@ function consoleValueFromPath(pathname) {
     return "control";
   }
   return "app";
-}
-
-function isAdminSession(session, env) {
-  if (!session || !session.user || !Array.isArray(session.user.groups)) {
-    return false;
-  }
-  const configured = env.CONTROL_ADMIN_GROUPS
-    ? env.CONTROL_ADMIN_GROUPS.split(",").map((item) => item.trim()).filter(Boolean)
-    : DEFAULT_ADMIN_GROUPS;
-  const groupSet = new Set(configured);
-  return session.user.groups.some((group) => groupSet.has(group));
-}
-
-function createLoginRedirect(request) {
-  const url = new URL(request.url);
-  const loginUrl = new URL("/auth/login", url.origin);
-  loginUrl.searchParams.set("returnTo", `${url.pathname}${url.search}${url.hash}`);
-  return Response.redirect(loginUrl.toString(), 302);
 }
 
 function withLastConsoleCookie(response, value, env, request) {

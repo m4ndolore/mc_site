@@ -15,7 +15,7 @@
  * No external dependencies — Node built-ins only.
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync, statSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -227,7 +227,6 @@ function injectBuilders(html) {
   );
 
   // 3. Grounding paragraph — insert before #builders-grid section (idempotent)
-  const topMissions = missionAreas.slice(0, 4).join(', ');
   const groundingText = `<div class="builders-grounding">
   <p>The Defense Builders Directory highlights ${stats.total} high-signal companies selected from Merge Combinator's in-person Defense Tech Combine cohort. Public profiles retain rich company narrative and technical metadata while withholding direct contact details, fundraising data, scores, badges, and internal evaluation outcomes.</p>
 </div>`;

@@ -97,10 +97,9 @@ function updateRailTotal(count) {
 /**
  * Create a human-readable summary of active filters
  * @param {Object} filters
- * @param {number} resultsCount
  * @returns {string}
  */
-function summarizeFilters(filters, resultsCount) {
+function summarizeFilters(filters) {
     const parts = [];
     if (filters.search) parts.push(`"${filters.search}"`);
     if (filters.ctas && filters.ctas.length > 0) parts.push(filters.ctas.join(', '));
@@ -119,11 +118,10 @@ function summarizeFilters(filters, resultsCount) {
 /**
  * Update filter summary in the rail
  * @param {Object} filters
- * @param {number} resultsCount
  */
-function updateRailFilters(filters, resultsCount) {
+function updateRailFilters(filters) {
     if (!railFilterSummary) return;
-    railFilterSummary.textContent = summarizeFilters(filters, resultsCount);
+    railFilterSummary.textContent = summarizeFilters(filters);
 }
 
 /**
@@ -217,11 +215,11 @@ async function init() {
         if (hasStaticCards) {
             enhanceStaticCards();
             updateResultsCount(allCompanies.length);
-            updateRailFilters(getFilterState(), allCompanies.length);
+            updateRailFilters(getFilterState());
         } else {
             // No static cards — render JS cards
             renderBuilders(allCompanies);
-            updateRailFilters(getFilterState(), allCompanies.length);
+            updateRailFilters(getFilterState());
         }
 
     } catch (error) {
@@ -241,7 +239,7 @@ function renderBuilders(companies) {
     if (!grid) return;
 
     updateResultsCount(companies.length);
-    updateRailFilters(getFilterState(), companies.length);
+    updateRailFilters(getFilterState());
 
     if (companies.length === 0) {
         grid.innerHTML = renderEmptyState();
@@ -315,7 +313,7 @@ function applyFilters() {
         if (grid) grid.innerHTML = staticGridHtml;
         enhanceStaticCards();
         updateResultsCount(allCompanies.length);
-        updateRailFilters(filters, allCompanies.length);
+        updateRailFilters(filters);
     } else {
         // Filters active — render JS cards for filtered set
         renderBuilders(filtered);
