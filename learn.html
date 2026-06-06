@@ -70,10 +70,18 @@
     <div class="container">
       <div class="bookshelf__grid">
 
-        <!-- Book: Web Development with Clojure -->
+        <!-- Book: Valley of Death Survival Guide -->
         <div class="book-card">
           <div class="book-card__cover-wrap">
-            <canvas id="book-cover-1" class="book-card__cover" width="400" height="566"></canvas>
+            <img
+              src="/assets/learn/valley-of-death-cover.jpg"
+              alt="Valley of Death Survival Guide cover"
+              class="book-card__cover"
+              width="800"
+              height="619"
+              loading="lazy"
+              decoding="async"
+            >
           </div>
           <div class="book-card__info">
             <span class="book-card__badge">
@@ -174,9 +182,5 @@
   </footer>
 
   <script type="module" src="js/navbar.js"></script>
-  <script type="module">
-    import { renderCover } from './js/learn/cover.js'
-    renderCover('book-cover-1', '/content/web_small.pdf')
-  </script>
 </body>
 </html>
