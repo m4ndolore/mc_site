@@ -40,6 +40,9 @@ jobs:
           MC_REQUIRE_LIVE_SEED: '1'
         run: npm run build
 
+      - name: Enforce performance budgets
+        run: npm run check:performance
+
       - name: Router unit tests
         run: node cloudflare/test-router.mjs --unit
 
