@@ -265,7 +265,7 @@ export function renderBuilderModal(company, options = {}) {
                 </p>
                 <div class="modal-cta-box__actions">
                     ${company.founders ? `
-                        <button class="modal-cta-btn modal-cta-btn--primary" onclick="navigator.clipboard.writeText('${escapeHtml(company.founders)}')">
+                        <button class="modal-cta-btn modal-cta-btn--primary" type="button" data-copy-contact="${escapeAttr(company.founders)}">
                             Copy Contact
                         </button>
                     ` : ''}

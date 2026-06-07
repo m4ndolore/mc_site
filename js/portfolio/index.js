@@ -7,7 +7,6 @@ import { outboundUrl, toCompanySlug } from '../lib/outbound.js';
  * State
  */
 let allCompanies = [];
-let currentFilter = 'all';
 
 /**
  * DOM Elements
@@ -191,8 +190,6 @@ function updateResultsCount(visible, total) {
  * @param {string} filter
  */
 function applyFilter(filter) {
-    currentFilter = filter;
-
     // Update filter button states
     if (filterContainer) {
         filterContainer.querySelectorAll('.filter-tag').forEach(btn => {

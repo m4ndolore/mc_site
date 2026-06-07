@@ -7,6 +7,7 @@ import { createOnboardingProfile } from '../repos/guild/onboarding'
 import { createOtpChallenge, verifyOtp } from '../lib/otp'
 import { sendOtpEmail } from '../lib/email'
 import { getDb } from '../lib/db'
+import { companiesToPublicDtos } from '../lib/public-company'
 
 const access = new Hono<{ Bindings: Env; Variables: AppVars }>()
 
@@ -292,10 +293,11 @@ access.get('/companies', async (c) => {
     const companies = await prisma.company.findMany({
       orderBy: [{ pipelineStage: 'asc' }, { name: 'asc' }],
     })
+    const publicCompanies = companiesToPublicDtos(companies)
 
-    return c.json(ok({ companies }, {
+    return c.json(ok({ companies: publicCompanies }, {
       request_id: requestId,
-      total: companies.length,
+      total: publicCompanies.length,
     }), 200)
   } catch (e) {
     const message = e instanceof Error ? e.message : 'Unknown error'

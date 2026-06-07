@@ -13,7 +13,6 @@
  */
 
 const fs = require('fs');
-const path = require('path');
 
 // Parse command line arguments
 const args = process.argv.slice(2);
@@ -89,7 +88,7 @@ async function importUsers() {
   try {
     const mongodb = require('mongodb');
     MongoClient = mongodb.MongoClient;
-  } catch (error) {
+  } catch {
     console.error('Error: MongoDB module not found');
     console.error('Install it with: npm install mongodb');
     process.exit(1);

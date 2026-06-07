@@ -88,7 +88,7 @@
       } else {
         throw new Error('Request failed');
       }
-    } catch (err) {
+    } catch {
       form.style.display = 'none';
       errorEl.style.display = 'flex';
     } finally {

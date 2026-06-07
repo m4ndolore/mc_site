@@ -126,7 +126,6 @@ export function initHeroWaveform() {
     const { r, g, b } = center.color;
 
     // Pulse travels left to right, looping
-    const period = 6000; // ms per traversal at 60fps ≈ 360 frames
     const px = (time * 1.2) % (W + 100) - 50;
     const py = waveY(center, px, time);
 

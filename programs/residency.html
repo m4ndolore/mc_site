@@ -22,7 +22,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>body{opacity:0;background:#0a0a0a}body.page-ready{opacity:1;transition:opacity .15s ease-in}</style>
   <link rel="stylesheet" href="/styles.css">
@@ -35,13 +35,6 @@
       grid-template-columns: minmax(0, 1.25fr) minmax(280px, 340px);
       gap: 24px;
       align-items: start;
-    }
-    .residency-program__lead {
-      font-family: var(--font-serif);
-      font-size: clamp(22px, 2.5vw, 32px);
-      color: var(--white);
-      line-height: 1.3;
-      margin: 0 0 16px;
     }
     .residency-program__body {
       color: rgba(255,255,255,.76);
@@ -107,22 +100,23 @@
       background: rgba(255,255,255,.03);
       border: 1px solid rgba(255,255,255,.1);
       border-radius: var(--radius-xl);
-      overflow: hidden;
+      padding: 20px;
       display: grid;
-      grid-template-columns: 100px minmax(0, 1fr);
-      min-height: 100%;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
     }
     .resident-card__photo {
-      display: block;
-      width: 100%;
-      height: 100%;
-      min-height: 100%;
+      width: 120px;
+      height: 148px;
       object-fit: cover;
-      object-position: center top;
+      object-position: center 18%;
+      border-radius: 2px;
+      border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.02);
     }
     .resident-card__body {
-      padding: 16px;
+      padding: 0;
     }
     .resident-card__name {
       font-size: 16px;
@@ -188,7 +182,13 @@
         grid-template-columns: 1fr;
       }
       .resident-card {
-        grid-template-columns: 80px minmax(0, 1fr);
+        grid-template-columns: 112px minmax(0, 1fr);
+        padding: 16px;
+        gap: 14px;
+      }
+      .resident-card__photo {
+        width: 112px;
+        height: 138px;
       }
     }
   </style>
@@ -199,7 +199,7 @@
   <!-- ── Hero Section ─────────────────────────────── -->
   <section class="subpage-hero" style="position: relative; overflow: hidden;">
     <div class="subpage-hero__bg"></div>
-    <img src="/assets/signals/mtr-residency.jpeg" alt="Missionized Tech Residency" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.18; z-index: 0;">
+    <img src="/assets/signals/mtr-residency.webp" alt="Missionized Tech Residency" width="1920" height="1641" decoding="async" fetchpriority="high" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.18; z-index: 0;">
     <div class="container" style="position: relative; z-index: 1; max-width: 1120px;">
       <div class="subpage-hero__content">
         <div class="subpage-hero__text">
@@ -261,7 +261,7 @@
         </div>
         <div class="residency-roster__grid">
           <article class="resident-card">
-            <img src="/assets/images/camillia.jpg" alt="Camillia King-Stanley" class="resident-card__photo" loading="lazy">
+            <img src="/assets/images/camillia.webp" alt="Camillia King-Stanley" class="resident-card__photo" loading="lazy" decoding="async" width="120" height="148">
             <div class="resident-card__body">
               <h4 class="resident-card__name">Camillia King-Stanley</h4>
               <p class="resident-card__role">Capability Decision Lead</p>
@@ -269,7 +269,7 @@
             </div>
           </article>
           <article class="resident-card">
-            <img src="/assets/images/kristen.png" alt="Kristen Painter" class="resident-card__photo" loading="lazy">
+            <img src="/assets/images/kristen.webp" alt="Kristen Painter" class="resident-card__photo" loading="lazy" decoding="async" width="120" height="148">
             <div class="resident-card__body">
               <h4 class="resident-card__name">Kristen Painter</h4>
               <p class="resident-card__role">Mission Portfolio Lead</p>
@@ -277,7 +277,7 @@
             </div>
           </article>
           <article class="resident-card">
-            <img src="/assets/images/pete.png" alt="Pete Harlan" class="resident-card__photo" loading="lazy">
+            <img src="/assets/images/pete.webp" alt="Pete Harlan" class="resident-card__photo" loading="lazy" decoding="async" width="120" height="148">
             <div class="resident-card__body">
               <h4 class="resident-card__name">Pete Harlan</h4>
               <p class="resident-card__role">Transition Acceleration Lead</p>
@@ -285,7 +285,7 @@
             </div>
           </article>
           <article class="resident-card">
-            <img src="/assets/images/piyush.png" alt="Dr. Sharma" class="resident-card__photo" loading="lazy">
+            <img src="/assets/images/piyush.webp" alt="Dr. Sharma" class="resident-card__photo" loading="lazy" decoding="async" width="120" height="148">
             <div class="resident-card__body">
               <h4 class="resident-card__name">Dr. Sharma</h4>
               <p class="resident-card__role">AI Deployment Lead</p>
@@ -314,7 +314,7 @@
             </div>
           </article>
           <article class="blog-card">
-            <div class="blog-card__image"><img src="/assets/signals/residency.jpg" alt="Missionized Tech Residency" loading="lazy"></div>
+            <div class="blog-card__image"><img src="/assets/signals/residency.jpg" alt="Missionized Tech Residency" loading="lazy" decoding="async" width="800" height="450"></div>
             <div class="blog-card__content">
               <div class="blog-card__meta">
                 <span class="blog-card__category blog-card__category--policy">Programs</span>
@@ -327,7 +327,7 @@
             </div>
           </article>
           <article class="blog-card">
-            <div class="blog-card__image"><img src="/assets/signals/african-lion-mchmr-1.jpg" alt="MCHMR at African Lion 26" loading="lazy"></div>
+            <div class="blog-card__image"><img src="/assets/signals/african-lion-mchmr-1.jpg" alt="MCHMR at African Lion 26" loading="lazy" decoding="async" width="1000" height="667"></div>
             <div class="blog-card__content">
               <div class="blog-card__meta">
                 <span class="blog-card__category blog-card__category--readiness">Field Notes</span>
