@@ -10,7 +10,8 @@ export default defineConfig({
 
   expect: {
     toHaveScreenshot: {
-      maxDiffPixelRatio: 0.015,
+      // Chromium font rasterization differs between macOS development and Linux CI.
+      maxDiffPixelRatio: 0.035,
       animations: 'disabled',
     },
   },
