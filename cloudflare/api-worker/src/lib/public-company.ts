@@ -1,5 +1,3 @@
-import type { Company } from '@prisma/client'
-
 export const PUBLIC_COMPANY_FIELDS = [
   'id',
   'name',
@@ -44,15 +42,37 @@ export const RESTRICTED_COMPANY_FIELDS = [
   'updatedAt',
 ] as const
 
-type PublicCompanyField = (typeof PUBLIC_COMPANY_FIELDS)[number]
+export interface PublicCompanyDto {
+  id: string
+  name: string
+  productName: string | null
+  website: string | null
+  cfImageId: string | null
+  location: string | null
+  missionArea: string | null
+  warfareDomain: string | null
+  trlLevel: number | null
+  technicalMaturity: string | null
+  teamSize: string | null
+  productType: string | null
+  technologyArea: string | null
+  cohort: string | null
+  cohortId: string | null
+  cohortLabel: string | null
+  tulsaAttended: string | null
+  pipelineStage: string
+  description: string | null
+  synopsisRaw: string | null
+  synopsisSections: unknown
+}
 
-export type PublicCompanyDto = Pick<Company, PublicCompanyField>
-
-export function isPublicCompany(company: Pick<Company, 'pipelineStage' | 'tulsaAttended'>): boolean {
+export function isPublicCompany(
+  company: Pick<PublicCompanyDto, 'pipelineStage' | 'tulsaAttended'>,
+): boolean {
   return company.pipelineStage === 'alumni' || company.tulsaAttended === 'Attended'
 }
 
-export function companyToPublicDto(company: Company): PublicCompanyDto {
+export function companyToPublicDto(company: PublicCompanyDto): PublicCompanyDto {
   const dto = {} as PublicCompanyDto
 
   for (const field of PUBLIC_COMPANY_FIELDS) {
@@ -62,7 +82,7 @@ export function companyToPublicDto(company: Company): PublicCompanyDto {
   return dto
 }
 
-export function companiesToPublicDtos(companies: Company[]): PublicCompanyDto[] {
+export function companiesToPublicDtos(companies: PublicCompanyDto[]): PublicCompanyDto[] {
   return companies
     .filter(isPublicCompany)
     .map(companyToPublicDto)

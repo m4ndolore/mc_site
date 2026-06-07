@@ -1,14 +1,28 @@
 import { describe, expect, it } from 'vitest'
-import type { Company } from '@prisma/client'
 import {
   companiesToPublicDtos,
   companyToPublicDto,
   CONTROLLED_PUBLIC_COMPANY_FIELDS,
   PUBLIC_COMPANY_FIELDS,
   RESTRICTED_COMPANY_FIELDS,
+  type PublicCompanyDto,
 } from '../lib/public-company'
 
-function buildCompany(overrides: Partial<Company> = {}): Company {
+type TestCompany = PublicCompanyDto & {
+  legacyAirtableId: string
+  logoUrl: string
+  fundingStage: string
+  ctas: string[]
+  combineStandout: string
+  badgeJudges: string
+  podRanking: number
+  upvoteCount: number
+  competitionScores: Record<string, number>
+  createdAt: Date
+  updatedAt: Date
+}
+
+function buildCompany(overrides: Partial<TestCompany> = {}): TestCompany {
   return {
     id: '11111111-1111-4111-8111-111111111111',
     legacyAirtableId: 'airtable-private-id',
