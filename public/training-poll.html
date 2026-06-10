@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Call Training Feedback — Merge Combinator</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #3b82f6;
+    --blue-dark: #2563eb;
+    --bg: #0a0a0a;
+    --card: #141414;
+    --offwhite: #f5f5f5;
+    --gray-light: #a3a3a3;
+    --gray-medium: #525252;
+    --border: #262626;
+    --radius: 2px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--offwhite);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 40px 16px;
+  }
+  .container { width: 100%; max-width: 640px; }
+  .header {
+    border: 1px solid var(--border);
+    border-bottom: 2px solid var(--blue);
+    background: var(--card);
+    border-radius: var(--radius) var(--radius) 0 0;
+    padding: 32px 28px;
+  }
+  .header h1 { font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .header p { font-size: 0.92rem; color: var(--gray-light); line-height: 1.55; }
+  .badge {
+    display: inline-block;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    border-radius: var(--radius);
+    padding: 4px 10px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    margin-top: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  form {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    padding: 28px;
+  }
+  .q { margin-bottom: 30px; }
+  .q-label { font-weight: 600; font-size: 0.98rem; margin-bottom: 4px; display: block; }
+  .q-hint { font-size: 0.8rem; color: var(--gray-medium); margin-bottom: 12px; }
+  .scale { display: flex; gap: 8px; margin-top: 10px; }
+  .scale label {
+    flex: 1;
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 0;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--gray-light);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .scale input { display: none; }
+  .scale label:has(input:checked) {
+    border-color: var(--blue);
+    background: var(--blue);
+    color: #fff;
+  }
+  .scale-ends { display: flex; justify-content: space-between; font-size: 0.76rem; color: var(--gray-medium); margin-top: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .chips label {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 9px 14px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--gray-light);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .chips label:has(input:checked) {
+    border-color: var(--blue);
+    background: rgba(59,130,246,0.12);
+    color: var(--blue);
+    font-weight: 600;
+  }
+  .chips input { display: none; }
+  textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    font: inherit;
+    font-size: 0.92rem;
+    color: var(--offwhite);
+    min-height: 96px;
+    resize: vertical;
+    margin-top: 10px;
+  }
+  textarea::placeholder { color: var(--gray-medium); }
+  textarea:focus { outline: none; border-color: var(--blue); }
+  button {
+    width: 100%;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    padding: 15px;
+    font: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  button:hover { background: var(--blue-dark); }
+  button:disabled { opacity: 0.6; cursor: wait; }
+  .error { color: #ef4444; font-size: 0.86rem; margin-top: 12px; display: none; text-align: center; }
+  .thanks {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--blue);
+    border-radius: var(--radius);
+    padding: 56px 28px;
+    text-align: center;
+    display: none;
+  }
+  .thanks .check { font-size: 2.6rem; margin-bottom: 16px; }
+  .thanks h2 { margin-bottom: 8px; font-size: 1.3rem; }
+  .thanks p { color: var(--gray-light); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div id="pollCard">
+    <div class="header">
+      <h1>Call Training Feedback</h1>
+      <p>Thanks for joining today's call training. Your honest feedback helps us make these sessions worth your time.</p>
+      <span class="badge">100% anonymous &mdash; no names or emails collected</span>
+    </div>
+    <form id="pollForm">
+      <div class="q">
+        <span class="q-label">1. Overall, how helpful was today's call training?</span>
+        <div class="scale">
+          <label><input type="radio" name="Overall helpfulness (1-5)" value="1" required><span>1</span></label>
+          <label><input type="radio" name="Overall helpfulness (1-5)" value="2"><span>2</span></label>
+          <label><input type="radio" name="Overall helpfulness (1-5)" value="3"><span>3</span></label>
+          <label><input type="radio" name="Overall helpfulness (1-5)" value="4"><span>4</span></label>
+          <label><input type="radio" name="Overall helpfulness (1-5)" value="5"><span>5</span></label>
+        </div>
+        <div class="scale-ends"><span>Not helpful</span><span>Extremely helpful</span></div>
+      </div>
+
+      <div class="q">
+        <span class="q-label">2. Which parts were most useful?</span>
+        <div class="q-hint">Select all that apply</div>
+        <div class="chips">
+          <label><input type="checkbox" name="Most useful parts" value="Live call examples / demos">Live call examples</label>
+          <label><input type="checkbox" name="Most useful parts" value="Handling objections">Handling objections</label>
+          <label><input type="checkbox" name="Most useful parts" value="Scripts & talking points">Scripts &amp; talking points</label>
+          <label><input type="checkbox" name="Most useful parts" value="Role-play / practice">Role-play / practice</label>
+          <label><input type="checkbox" name="Most useful parts" value="Q&A / discussion">Q&amp;A / discussion</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <span class="q-label">3. How confident do you feel applying what you learned on real calls?</span>
+        <div class="scale">
+          <label><input type="radio" name="Confidence applying skills (1-5)" value="1" required><span>1</span></label>
+          <label><input type="radio" name="Confidence applying skills (1-5)" value="2"><span>2</span></label>
+          <label><input type="radio" name="Confidence applying skills (1-5)" value="3"><span>3</span></label>
+          <label><input type="radio" name="Confidence applying skills (1-5)" value="4"><span>4</span></label>
+          <label><input type="radio" name="Confidence applying skills (1-5)" value="5"><span>5</span></label>
+        </div>
+        <div class="scale-ends"><span>Not confident</span><span>Very confident</span></div>
+      </div>
+
+      <div class="q">
+        <span class="q-label">4. What would be most helpful in future trainings?</span>
+        <div class="q-hint">Select all that apply</div>
+        <div class="chips">
+          <label><input type="checkbox" name="Future training topics" value="More practice / role-play time">More practice time</label>
+          <label><input type="checkbox" name="Future training topics" value="Deeper dive on objections">Deeper dive on objections</label>
+          <label><input type="checkbox" name="Future training topics" value="Reviewing real recorded calls">Reviewing real calls</label>
+          <label><input type="checkbox" name="Future training topics" value="One-on-one coaching">One-on-one coaching</label>
+          <label><input type="checkbox" name="Future training topics" value="Written reference materials">Reference materials</label>
+          <label><input type="checkbox" name="Future training topics" value="Shorter, more frequent sessions">Shorter, more frequent sessions</label>
+        </div>
+      </div>
+
+      <div class="q">
+        <span class="q-label">5. Anything else you'd like to share?</span>
+        <div class="q-hint">What worked, what didn't, ideas &mdash; anything goes (optional)</div>
+        <textarea name="Open comments" placeholder="Your thoughts..."></textarea>
+      </div>
+
+      <button type="submit" id="submitBtn">Submit anonymously</button>
+      <div class="error" id="errorMsg">Something went wrong sending your response. Please try again.</div>
+    </form>
+  </div>
+
+  <div class="thanks" id="thanksCard">
+    <div class="check">&#10003;</div>
+    <h2>Thank you!</h2>
+    <p>Your anonymous feedback has been submitted.</p>
+  </div>
+</div>
+
+<script>
+  var ENDPOINT = "https://formsubmit.co/ajax/gus@mergecombinator.com";
+
+  document.getElementById("pollForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var btn = document.getElementById("submitBtn");
+    var err = document.getElementById("errorMsg");
+    err.style.display = "none";
+    btn.disabled = true;
+    btn.textContent = "Submitting...";
+
+    var fd = new FormData(e.target);
+    var data = { _subject: "Call Training Feedback (anonymous response)", _template: "table" };
+    fd.forEach(function (value, key) {
+      data[key] = data[key] ? data[key] + ", " + value : value;
+    });
+
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(data)
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.success === "true" || res.success === true) {
+          document.getElementById("pollCard").style.display = "none";
+          document.getElementById("thanksCard").style.display = "block";
+          window.scrollTo(0, 0);
+        } else { throw new Error(res.message || "Submission failed"); }
+      })
+      .catch(function () {
+        err.style.display = "block";
+        btn.disabled = false;
+        btn.textContent = "Submit anonymously";
+      });
+  });
+</script>
+</body>
+</html>
