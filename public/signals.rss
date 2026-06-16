@@ -5,7 +5,7 @@
     <link>https://mergecombinator.com/signals</link>
     <description>Perspectives on defense innovation, operator-driven development, and the future of national security technology.</description>
     <language>en-us</language>
-    <lastBuildDate>Thu, 04 Jun 2026 06:19:08 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 16 Jun 2026 17:56:10 GMT</lastBuildDate>
     <atom:link href="https://mergecombinator.com/signals.rss" rel="self" type="application/rss+xml"/>
     <image>
       <url>/assets/logowhite.png</url>
@@ -13,28 +13,100 @@
       <link>https://mergecombinator.com</link>
     </image>
     <item>
-      <title>Inside JIATF 401: The Pentagon&#39;s New Counter-Drone Marketplace</title>
+      <title>A Disciplined Case for the A-10</title>
+      <link>https://mergecombinator.com/signals/disciplined-case-for-the-a-10</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/disciplined-case-for-the-a-10</guid>
+      <pubDate>Mon, 15 Jun 2026 00:00:00 GMT</pubDate>
+      <category>Analysis</category>
+      <description>The Air Force says the A-10 flies until 2030. The budget says otherwise. Why proven combat power is being written off, and what it costs to wait.</description>
+    </item>
+    <item>
+      <title>Two Services Restructured Acquisition in Six Weeks. Most Builders Missed It.</title>
+      <link>https://mergecombinator.com/signals/navy-airforce-acquisition-restructure</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/navy-airforce-acquisition-restructure</guid>
+      <pubDate>Thu, 04 Jun 2026 00:00:00 GMT</pubDate>
+      <category>Acquisition</category>
+      <description>The Navy and Air Force both restructured major acquisition authorities in under two months. The signal is structural.</description>
+    </item>
+    <item>
+      <title>The Army Is Rewriting How It Buys Technology</title>
+      <link>https://mergecombinator.com/signals/army-rewriting-acquisition</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/army-rewriting-acquisition</guid>
+      <pubDate>Tue, 12 May 2026 00:00:00 GMT</pubDate>
+      <category>Acquisition</category>
+      <description>The Army is restructuring acquisition around software velocity and operational feedback loops.</description>
+    </item>
+    <item>
+      <title>MCHMR Delivers Tactical Edge Dominance During African Lion 26</title>
+      <link>https://mergecombinator.com/signals/mchmr-african-lion-26</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/mchmr-african-lion-26</guid>
+      <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
+      <category>Field Notes</category>
+      <description>Real-time Arabic-to-English AI translation over MPU5 radios. Allied and partner sensors feeding a shared common operational picture.</description>
+    </item>
+    <item>
+      <title>Missionized Tech Residency</title>
+      <link>https://mergecombinator.com/signals/missionized-tech-residency</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/missionized-tech-residency</guid>
+      <pubDate>Sat, 02 May 2026 00:00:00 GMT</pubDate>
+      <category>Programs</category>
+      <description>Embedding acquisition professionals inside industry for six months. In partnership with the US Army and DAU.</description>
+    </item>
+    <item>
+      <title>The $16B Alignment Problem</title>
+      <link>https://mergecombinator.com/signals/vc-defense-alignment-problem</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/vc-defense-alignment-problem</guid>
+      <pubDate>Fri, 01 May 2026 00:00:00 GMT</pubDate>
+      <category>Analysis</category>
+      <description>$16 billion in defense VC. The question isn&#39;t money. It&#39;s whether the system can absorb it.</description>
+    </item>
+    <item>
+      <title>DAWG&#39;s $54.6B Problem</title>
+      <link>https://mergecombinator.com/signals/dawg-54-billion-problem</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/dawg-54-billion-problem</guid>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 GMT</pubDate>
+      <category>Analysis</category>
+      <description>A 24,000% budget increase doesn&#39;t fix a broken acquisition system. It amplifies it.</description>
+    </item>
+    <item>
+      <title>From Combine to Series A: Ulysses</title>
+      <link>https://mergecombinator.com/signals/ulysses-combine-to-series-a</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/ulysses-combine-to-series-a</guid>
+      <pubDate>Fri, 24 Apr 2026 00:00:00 GMT</pubDate>
+      <category>Case Study</category>
+      <description>29th of 83 companies. Then $46M from a16z. What operator-validated formation actually produces.</description>
+    </item>
+    <item>
+      <title>The Interceptor Math Is Broken</title>
+      <link>https://mergecombinator.com/signals/interceptor-stockpile-crisis</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/interceptor-stockpile-crisis</guid>
+      <pubDate>Tue, 21 Apr 2026 00:00:00 GMT</pubDate>
+      <category>Analysis</category>
+      <description>25% of the stockpile, gone in 12 days. The Indo-Pacific math is worse.</description>
+    </item>
+    <item>
+      <title>Inside JIATF 401: The Counter-Drone Marketplace</title>
       <link>https://mergecombinator.com/signals/counter-drone-jiatf-401</link>
       <guid isPermaLink="true">https://mergecombinator.com/signals/counter-drone-jiatf-401</guid>
       <pubDate>Mon, 22 Dec 2025 00:00:00 GMT</pubDate>
       <category>Policy &amp; Acquisition</category>
-      <description>The Pentagon is building an app store for counter-drone solutions. JIATF 401 replaces the Joint Counter-small UAS Office with a streamlined approach — including an online marketplace for vetted systems and a common C2 framework targeted within 90 days.</description>
+      <description>The Pentagon is building an &quot;app store&quot; for counter-drone solutions. Here&#39;s what it takes to get listed.</description>
     </item>
     <item>
-      <title>9 Months Under Fire: Combat Lessons from the USS Eisenhower</title>
+      <title>9 Months Under Fire: USS Eisenhower</title>
       <link>https://mergecombinator.com/signals/uss-eisenhower-lessons</link>
       <guid isPermaLink="true">https://mergecombinator.com/signals/uss-eisenhower-lessons</guid>
       <pubDate>Mon, 22 Dec 2025 00:00:00 GMT</pubDate>
       <category>Combat Lessons</category>
-      <description>770+ weapons expended, multiple combat firsts, and critical insights for defense tech companies from the most intense carrier deployment since WWII.</description>
+      <description>770+ weapons expended. The most intense carrier combat since WWII.</description>
     </item>
     <item>
-      <title>FY26 NDAA Decoded: What the SPEED Act Means for Your Defense Startup</title>
+      <title>FY26 NDAA: What the SPEED Act Means</title>
       <link>https://mergecombinator.com/signals/ndaa-speed-act</link>
       <guid isPermaLink="true">https://mergecombinator.com/signals/ndaa-speed-act</guid>
       <pubDate>Mon, 22 Dec 2025 00:00:00 GMT</pubDate>
       <category>Policy &amp; Acquisition</category>
-      <description>The SPEED Act promises faster procurement. What is actually changing, implementation challenges ahead, and what defense tech companies should do now.</description>
+      <description>Faster procurement doesn&#39;t mean more money. Here&#39;s what actually changes.</description>
     </item>
   </channel>
 </rss>
