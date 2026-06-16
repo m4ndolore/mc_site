@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    // FOUC prevention: apply theme before first paint
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="The Air Force says the A-10 flies until 2030. The budget says otherwise. Paul Garcia on why proven combat power is being written off, and what it costs to wait.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://mergecombinator.com/signals/disciplined-case-for-the-a-10">
+  <meta name="keywords" content="A-10, Warthog, close air support, Sandy, combat search and rescue, 357th Fighter Squadron, Air Force divestment, defense acquisition, Merge Combinator, Paul Garcia">
+  <meta name="author" content="Paul Garcia">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="A Disciplined Case for the A-10">
+  <meta property="og:description" content="The Air Force says the A-10 flies until 2030. The budget says otherwise. Why proven combat power is being written off, and what it costs to wait.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="/assets/signals/a10-sandy-delamar.jpg">
+  <meta property="og:url" content="https://mergecombinator.com/signals/disciplined-case-for-the-a-10">
+  <meta property="article:published_time" content="2026-06-15">
+  <meta property="article:section" content="Analysis">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="A Disciplined Case for the A-10 — Merge Combinator">
+  <meta name="twitter:description" content="The Air Force says the A-10 flies until 2030. The budget says otherwise. Why proven combat power is being written off, and what it costs to wait.">
+  <meta name="twitter:image" content="/assets/signals/a10-sandy-delamar.jpg">
+
+  <title>A Disciplined Case for the A-10 — Merge Combinator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <style>body{opacity:0;background:#0a0a0a}body.page-ready{opacity:1;transition:opacity .15s ease-in}</style>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../styles/light-theme.css">
+  <link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "A Disciplined Case for the A-10",
+    "description": "The Air Force says the A-10 flies until 2030. The budget says otherwise. Why proven combat power is being written off, and what it costs to wait.",
+    "datePublished": "2026-06-15",
+    "author": { "@type": "Person", "name": "Paul Garcia" },
+    "publisher": { "@type": "Organization", "name": "Merge Combinator", "url": "https://mergecombinator.com", "logo": { "@type": "ImageObject", "url": "/assets/logowhite.png" } },
+    "url": "https://mergecombinator.com/signals/disciplined-case-for-the-a-10",
+    "mainEntityOfPage": "https://mergecombinator.com/signals/disciplined-case-for-the-a-10",
+    "articleSection": "Analysis"
+  }
+  </script>
+</head>
+<body>
+  <div id="mc-navbar"></div>
+
+  <!-- Article -->
+  <article class="blog-article">
+    <header class="blog-article__header">
+      <div class="container container--narrow">
+        <div class="blog-article__meta">
+          <a href="/signals" class="blog-article__back">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M13 8H3M3 8L8 3M3 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Back to Signals
+          </a>
+          <div class="blog-article__tags">
+            <span class="blog-article__tag">Analysis</span>
+            <span class="blog-article__tag">Air Force</span>
+            <span class="blog-article__tag">Readiness</span>
+          </div>
+        </div>
+        <h1 class="blog-article__title">A Disciplined Case for the A-10</h1>
+        <p class="blog-article__subtitle">The Air Force says the A-10 flies until 2030. The budget says otherwise. I made the full case in The War Zone. Here is why it matters.</p>
+        <div class="blog-article__byline">
+          <span class="blog-article__author">Paul Garcia, Founder</span>
+          <span class="blog-article__divider">&bull;</span>
+          <time class="blog-article__date" datetime="2026-06-15">Jun 15, 2026</time>
+          <span class="blog-article__divider">&bull;</span>
+          <span class="blog-article__read-time">3 min read</span>
+        </div>
+      </div>
+    </header>
+
+    <figure class="blog-article__hero-image" style="margin: 0; padding: 0 0 8px;">
+      <div class="container container--narrow">
+        <img src="/assets/signals/a10-sandy-delamar.jpg" alt="A U.S. Air Force A-10 Thunderbolt II assigned to the 66th Weapons Squadron performs an austere landing at Delamar Dry Lake, Nevada" style="width: 100%; border-radius: 4px;">
+        <figcaption style="font-size: 12px; color: rgba(255,255,255,0.4); margin-top: 6px; font-family: var(--font-mono);">An A-10 assigned to the 66th Weapons Squadron, U.S. Air Force Weapons School, performs an austere landing at Delamar Dry Lake near Alamo, Nevada, May 28, 2026. (U.S. Air Force photo by Airman 1st Class Jennifer Nesbitt)</figcaption>
+      </div>
+    </figure>
+
+    <div class="blog-article__content">
+      <div class="container container--narrow">
+
+        <p>The Air Force says the A-10 flies until 2030. The budget says otherwise.</p>
+
+        <p>The fiscal 2027 request funds zero dollars of A-10 modernization and cuts depot maintenance below the service's own stated requirement. By the end of this year, the jet will have no depot support, no training pipeline, no weapons-school instruction, and no operational-test capacity. The 357th Fighter Squadron, the only formal A-10 training unit and the home of Sandy combat search-and-rescue qualification, graduated its final class in April and is set to inactivate. No successor program exists anywhere in the Department of War, and the service has confirmed none is in development.</p>
+
+        <p>This is not nostalgia for an old airframe. In March, A-10s ranged Iranian fast-attack craft in the Strait of Hormuz. In April, they flew the search-and-rescue escort that recovered F-15E aircrew inside Iran. The capability is still working. It is being retired anyway, before anything is qualified to take its place.</p>
+
+        <p>And retirement does not erase the demand. The missions migrate to higher-cost platforms, with more flight hours and more sustainment burden. Congress already spent roughly $2.1 billion re-winging this fleet to fly into the late 2030s. The service is treating that as a write-off.</p>
+
+        <p>The expensive mistake is not keeping the A-10. It is losing the people, the schoolhouse, and the institutional knowledge faster than any of it can be rebuilt. Every month of waiting makes that rebuild slower, costlier, and closer to impossible.</p>
+
+        <p>I wrote the full case, with the numbers and the three fixes I think Congress and the Air Force should act on now, in The War Zone.</p>
+
+        <p style="margin-top: 32px;">
+          <a href="https://www.twz.com/air/a-disciplined-case-for-the-a-10-the-air-force-wont-make" class="btn btn--primary" target="_blank" rel="noopener">
+            Read the full case in The War Zone &rarr;
+          </a>
+        </p>
+
+        <p style="margin-top: 40px;"><em>Paul Garcia is the founder of <a href="/about">Merge Combinator</a>, a venture studio for national security. He is a retired Air Force officer and Weapons School graduate with more than 2,000 combat flight hours.</em></p>
+
+        <!-- Related Articles -->
+        <div class="blog-related">
+          <h3 class="blog-related__title">Related Articles</h3>
+          <div class="blog-related__links">
+            <a href="/signals/navy-airforce-acquisition-restructure" class="blog-related__link">
+              <span class="blog-related__link-title">Two Services Restructured Acquisition in Six Weeks. Most Builders Missed It.</span>
+              <span class="blog-related__link-arrow">&rarr;</span>
+            </a>
+            <a href="/signals/interceptor-stockpile-crisis" class="blog-related__link">
+              <span class="blog-related__link-title">The Interceptor Stockpile Crisis</span>
+              <span class="blog-related__link-arrow">&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </article>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
+          </a>
+          <p class="footer__tagline">Venture studio for national security.</p>
+          <div class="footer__social">
+            <a href="https://www.linkedin.com/company/merge-combinator/" class="footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+            </a>
+            <a href="https://x.com/FPExtraordinAir" class="footer__social-link" aria-label="X (Twitter)" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer__links">
+          <div class="footer__column">
+            <h4 class="footer__heading">Platform</h4>
+            <ul class="footer__list">
+              <li><a href="/programs/the-combine">The Combine</a></li>
+              <li><a href="/builders">Defense Builders</a></li>
+              <li><a href="/opportunities">Opportunities</a></li>
+            </ul>
+          </div>
+          <div class="footer__column">
+            <h4 class="footer__heading">Company</h4>
+            <ul class="footer__list">
+              <li><a href="/about">About</a></li>
+              <li><a href="/about#faq">FAQ</a></li>
+              <li><a href="/#engage">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer__column">
+            <h4 class="footer__heading">Resources</h4>
+            <ul class="footer__list">
+              <li><a href="/signals">Signals</a></li>
+              <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="https://docs.mergecombinator.com">Docs</a></li>
+            </ul>
+          </div>
+          <div class="footer__column">
+            <h4 class="footer__heading">Legal</h4>
+            <ul class="footer__list">
+              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="/security">Security</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
+        <p class="footer__location">Honolulu &bull; Seattle &bull; Las Vegas</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/navbar.js"></script>
+  <script type="module" src="../script.js"></script>
+</body>
+</html>
