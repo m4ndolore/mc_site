@@ -4802,13 +4802,13 @@ h4, .h4 {
   color: var(--black);
 }
 
-.blog-article__content a {
+.blog-article__content a:not(.btn) {
   color: var(--blue);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.blog-article__content a:hover {
+.blog-article__content a:not(.btn):hover {
   color: var(--black);
 }
 
@@ -5686,11 +5686,11 @@ h4, .h4 {
   color: var(--white);
 }
 
-.blog-article__content a {
+.blog-article__content a:not(.btn) {
   color: var(--blue-light);
 }
 
-.blog-article__content a:hover {
+.blog-article__content a:not(.btn):hover {
   color: var(--white);
 }
 
