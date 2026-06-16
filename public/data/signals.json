@@ -1,6 +1,18 @@
 {
   "articles": [
     {
+      "id": "disciplined-case-for-the-a-10",
+      "title": "A Disciplined Case for the A-10",
+      "excerpt": "By Paul Garcia, Founder. The Air Force says the A-10 flies until 2030. The budget says otherwise. Why proven combat power is being written off, and what it costs to wait.",
+      "url": "/signals/disciplined-case-for-the-a-10",
+      "date": "2026-06-15",
+      "category": "Analysis",
+      "author": "Paul Garcia, Founder",
+      "tags": ["a-10", "air force", "readiness", "close air support"],
+      "image": "/assets/signals/a10-sandy-delamar.jpg",
+      "featured": true
+    },
+    {
       "id": "navy-airforce-acquisition-restructure",
       "title": "Two Services Restructured Acquisition in Six Weeks. Most Builders Missed It.",
       "excerpt": "By Pete Harlan, Missionized Tech Resident. The Navy and Air Force both restructured major acquisition authorities in under two months. The signal is structural.",

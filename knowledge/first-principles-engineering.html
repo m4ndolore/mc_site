@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Elon Musk's 5-Step Design Process applied to defense engineering. Question, delete, simplify, accelerate, automate — in that order.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta name="keywords" content="first principles, engineering process, Elon Musk, defense technology, design process, systems engineering">
+  <meta name="author" content="Merge Combinator">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
+  <link rel="apple-touch-icon" href="/assets/favicon-512.png?v=2">
+
+  <link rel="canonical" href="https://mergecombinator.com/knowledge/first-principles-engineering">
+
+  <meta property="og:title" content="The 5-Step Design Process — Merge Combinator">
+  <meta property="og:description" content="Question, delete, simplify, accelerate, automate — in that order.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://mergecombinator.com/knowledge/first-principles-engineering">
+  <meta property="og:image" content="/assets/logowhite.png">
+  <meta property="article:published_time" content="2026-06-14">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The 5-Step Design Process — Merge Combinator">
+  <meta name="twitter:description" content="Question, delete, simplify, accelerate, automate — in that order.">
+
+  <title>The 5-Step Design Process — Knowledge — Merge Combinator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles/light-theme.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "The 5-Step Design Process",
+    "description": "Elon Musk's 5-Step Design Process applied to defense engineering.",
+    "datePublished": "2026-06-14",
+    "author": { "@type": "Organization", "name": "Merge Combinator" },
+    "publisher": { "@type": "Organization", "name": "Merge Combinator", "url": "https://mergecombinator.com" },
+    "url": "https://mergecombinator.com/knowledge/first-principles-engineering"
+  }
+  </script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* --- Hero --- */
+    .fpe-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px var(--padding-x) 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fpe-hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(800px 500px at 20% 50%, rgba(59,130,246,0.08), transparent 60%),
+        radial-gradient(600px 400px at 80% 30%, rgba(59,130,246,0.04), transparent 50%);
+      z-index: 0;
+    }
+
+    .fpe-hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    .fpe-hero__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray-medium);
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 48px;
+      transition: color 0.2s;
+    }
+    .fpe-hero__back:hover { color: var(--blue); }
+
+    .fpe-hero__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--blue);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .fpe-hero__eyebrow::before {
+      content: '';
+      width: 32px;
+      height: 2px;
+      background: var(--blue);
+    }
+
+    .fpe-hero__title {
+      font-family: var(--font-primary);
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--offwhite);
+      margin-bottom: 40px;
+    }
+
+    .fpe-hero__title span {
+      display: block;
+    }
+
+    .fpe-hero__title .thin {
+      font-weight: 300;
+      color: var(--gray-light);
+    }
+
+    .fpe-hero__quote {
+      max-width: 600px;
+      padding-left: 24px;
+      border-left: 2px solid var(--blue);
+    }
+
+    .fpe-hero__quote-text {
+      font-family: var(--font-serif);
+      font-size: clamp(16px, 2vw, 20px);
+      font-style: italic;
+      color: var(--gray-light);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .fpe-hero__quote-attr {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gray-medium);
+      letter-spacing: 0.04em;
+    }
+
+    .fpe-hero__scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--ghost-gray);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: fpe-float 2s ease-in-out infinite;
+    }
+
+    @keyframes fpe-float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* --- Step Sections --- */
+    .fpe-step {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px var(--padding-x);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fpe-step__inner {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    /* Giant number */
+    .fpe-step__num {
+      font-family: var(--font-primary);
+      font-size: clamp(140px, 20vw, 280px);
+      font-weight: 900;
+      line-height: 0.85;
+      color: var(--blue);
+      opacity: 0.06;
+      letter-spacing: -0.05em;
+      user-select: none;
+      transition: opacity 0.6s;
+    }
+
+    .fpe-step.in-view .fpe-step__num {
+      opacity: 0.1;
+    }
+
+    /* Content block */
+    .fpe-step__content {
+      max-width: 580px;
+    }
+
+    .fpe-step__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--blue);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .fpe-step__eyebrow::before {
+      content: '';
+      width: 20px;
+      height: 2px;
+      background: var(--blue);
+    }
+
+    .fpe-step.in-view .fpe-step__eyebrow {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fpe-step__title {
+      font-family: var(--font-primary);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--offwhite);
+      margin-bottom: 12px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s 0.1s, transform 0.6s 0.1s;
+    }
+
+    .fpe-step.in-view .fpe-step__title {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fpe-step__subtitle {
+      font-family: var(--font-serif);
+      font-size: clamp(16px, 2vw, 20px);
+      font-style: italic;
+      color: var(--gray-light);
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s 0.2s, transform 0.5s 0.2s;
+    }
+
+    .fpe-step.in-view .fpe-step__subtitle {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fpe-step__text {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      color: var(--gray-light);
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s 0.3s, transform 0.5s 0.3s;
+    }
+
+    .fpe-step.in-view .fpe-step__text {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Divider line between steps */
+    .fpe-step__divider {
+      position: absolute;
+      bottom: 0;
+      left: var(--padding-x);
+      right: var(--padding-x);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 20%, rgba(255,255,255,0.06) 80%, transparent);
+    }
+
+    /* Alternate layout: number on right */
+    .fpe-step--alt .fpe-step__inner {
+      grid-template-columns: 1fr auto;
+    }
+    .fpe-step--alt .fpe-step__content {
+      order: -1;
+    }
+
+    /* --- Progress indicator --- */
+    .fpe-progress {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .fpe-progress__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ghost-gray);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+      border: none;
+      padding: 0;
+    }
+
+    .fpe-progress__dot:hover {
+      background: var(--gray-light);
+      transform: scale(1.3);
+    }
+
+    .fpe-progress__dot.active {
+      background: var(--blue);
+      transform: scale(1.4);
+      box-shadow: 0 0 12px rgba(59,130,246,0.4);
+    }
+
+    /* --- CTA Footer --- */
+    .fpe-cta {
+      padding: 80px var(--padding-x) 120px;
+      text-align: center;
+    }
+
+    .fpe-cta__inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .fpe-cta__text {
+      font-size: 14px;
+      color: var(--gray-light);
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    .fpe-cta__text strong { color: var(--offwhite); }
+    .fpe-cta__text a { color: var(--blue); text-decoration: none; }
+    .fpe-cta__text a:hover { text-decoration: underline; }
+
+    .fpe-cta__updated {
+      font-size: 12px;
+      color: var(--ghost-gray);
+      font-family: var(--font-mono);
+    }
+
+    /* --- Mobile --- */
+    @media (max-width: 768px) {
+      .fpe-hero {
+        min-height: auto;
+        padding: 100px 24px 60px;
+      }
+      .fpe-hero__back { margin-bottom: 32px; }
+      .fpe-hero__title {
+        font-size: clamp(40px, 12vw, 64px);
+        margin-bottom: 28px;
+      }
+      .fpe-hero__quote {
+        padding-left: 16px;
+      }
+      .fpe-hero__scroll { display: none; }
+
+      .fpe-step {
+        min-height: auto;
+        padding: 80px 24px;
+      }
+      .fpe-step__inner {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .fpe-step__num {
+        font-size: 90px;
+        position: absolute;
+        top: 32px;
+        right: 20px;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: opacity 0.6s, transform 0.6s;
+      }
+      .fpe-step.in-view .fpe-step__num {
+        opacity: 0.07;
+        transform: translateX(0);
+      }
+
+      .fpe-step--alt .fpe-step__inner { grid-template-columns: 1fr; }
+      .fpe-step--alt .fpe-step__content { order: 0; }
+
+      .fpe-step__content {
+        position: relative;
+        z-index: 1;
+      }
+      .fpe-step__eyebrow { margin-bottom: 12px; }
+      .fpe-step__title {
+        font-size: clamp(32px, 10vw, 44px);
+        margin-bottom: 8px;
+      }
+      .fpe-step__subtitle {
+        font-size: 15px;
+        margin-bottom: 20px;
+      }
+      .fpe-step__text {
+        font-size: 15px;
+        line-height: 1.65;
+      }
+      .fpe-step__divider {
+        left: 24px;
+        right: 24px;
+      }
+
+      .fpe-progress { display: none; }
+
+      .fpe-cta {
+        padding: 48px 24px 80px;
+      }
+      .fpe-cta__text { font-size: 13px; }
+    }
+
+    /* --- Entrance --- */
+    @keyframes fpe-heroIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fpe-hero__eyebrow { animation: fpe-heroIn 0.6s ease-out 0.1s both; }
+    .fpe-hero__title { animation: fpe-heroIn 0.7s ease-out 0.2s both; }
+    .fpe-hero__quote { animation: fpe-heroIn 0.6s ease-out 0.5s both; }
+
+    /* Light theme */
+    .light-theme .fpe-hero__title { color: var(--gray-900, #1a1a1a); }
+    .light-theme .fpe-hero__title .thin { color: var(--gray-500, #6b7280); }
+    .light-theme .fpe-step__title { color: var(--gray-900, #1a1a1a); }
+    .light-theme .fpe-step__text { color: var(--gray-700, #4a4a4a); }
+    .light-theme .fpe-step__subtitle { color: var(--gray-600, #555); }
+    .light-theme .fpe-step__num { color: var(--blue); opacity: 0.06; }
+    .light-theme .fpe-step.in-view .fpe-step__num { opacity: 0.08; }
+    .light-theme .fpe-step__divider {
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06) 20%, rgba(0,0,0,0.06) 80%, transparent);
+    }
+  </style>
+</head>
+<body>
+  <div id="mc-navbar"></div>
+
+  <!-- Hero -->
+  <section class="fpe-hero" id="hero">
+    <div class="fpe-hero__bg"></div>
+    <div class="fpe-hero__content">
+      <a href="/knowledge" class="fpe-hero__back">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M13 8H3M3 8L8 3M3 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Knowledge
+      </a>
+      <div class="fpe-hero__eyebrow">First Principles Engineering</div>
+      <h1 class="fpe-hero__title">
+        <span class="thin">The</span>
+        <span>5-Step</span>
+        <span>Design</span>
+        <span>Process</span>
+      </h1>
+      <div class="fpe-hero__quote">
+        <p class="fpe-hero__quote-text">Possibly the most common error of a smart engineer is to optimise a thing that should not exist.</p>
+        <p class="fpe-hero__quote-attr">— Elon Musk</p>
+      </div>
+    </div>
+    <div class="fpe-hero__scroll">
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+        <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="8" cy="8" r="2" fill="currentColor">
+          <animate attributeName="cy" values="8;14;8" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+      Scroll
+    </div>
+  </section>
+
+  <!-- Step 1 -->
+  <section class="fpe-step" id="step1" data-step="1">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">01</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Step 01</div>
+        <h2 class="fpe-step__title">Question</h2>
+        <p class="fpe-step__subtitle">Make the requirements less dumb</p>
+        <p class="fpe-step__text">Every requirement must have an owner — a named person who understands why it exists and is accountable for it. Requirements from smart people are the most dangerous because they go unquestioned. Challenge every single one, regardless of source. The person who wrote the requirement must defend it.</p>
+      </div>
+    </div>
+    <div class="fpe-step__divider"></div>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="fpe-step fpe-step--alt" id="step2" data-step="2">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">02</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Step 02</div>
+        <h2 class="fpe-step__title">Delete</h2>
+        <p class="fpe-step__subtitle">Remove the part or process</p>
+        <p class="fpe-step__text">Ruthlessly cut parts, processes, and steps. If you aren't occasionally adding something back that you deleted, you aren't deleting enough. The bias should always be toward removal — the right answer is less, not more. This is the hardest step because it requires overriding every instinct to preserve.</p>
+      </div>
+    </div>
+    <div class="fpe-step__divider"></div>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="fpe-step" id="step3" data-step="3">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">03</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Step 03</div>
+        <h2 class="fpe-step__title">Simplify</h2>
+        <p class="fpe-step__subtitle">Optimize the design</p>
+        <p class="fpe-step__text">Only simplify what survives deletion. The most common mistake is optimizing a thing that should not exist. Simplify the design, then simplify it again. Add complexity back only when testing proves you must. The third step, not the first.</p>
+      </div>
+    </div>
+    <div class="fpe-step__divider"></div>
+  </section>
+
+  <!-- Step 4 -->
+  <section class="fpe-step fpe-step--alt" id="step4" data-step="4">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">04</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Step 04</div>
+        <h2 class="fpe-step__title">Accelerate</h2>
+        <p class="fpe-step__subtitle">Shorten cycle time</p>
+        <p class="fpe-step__text">Now — and only now — speed things up. Shorten the iteration loop, reduce handoffs, compress timelines. But never accelerate a process you should have deleted or a design you should have simplified first. Speed amplifies both quality and waste.</p>
+      </div>
+    </div>
+    <div class="fpe-step__divider"></div>
+  </section>
+
+  <!-- Step 5 -->
+  <section class="fpe-step" id="step5" data-step="5">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">05</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Step 05</div>
+        <h2 class="fpe-step__title">Automate</h2>
+        <p class="fpe-step__subtitle">Last, never first</p>
+        <p class="fpe-step__text">Automation is step five for a reason. Automating a broken process locks in the waste and scales it. Only automate what has survived questioning, deletion, simplification, and acceleration. The most common engineering mistake is automating something that should not exist.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="fpe-cta">
+    <div class="fpe-cta__inner">
+      <p class="fpe-cta__text"><strong>Merge Combinator</strong> is a venture studio for national security. Founded by those who know the mission, the systems, and the people. We co-found defense technology ventures with champions who own the problem. <a href="/about">Learn more</a> or <a href="/access">request access</a>.</p>
+      <p class="fpe-cta__updated">June 2026</p>
+    </div>
+  </section>
+
+  <!-- Progress dots -->
+  <nav class="fpe-progress" id="progress">
+    <button class="fpe-progress__dot active" data-target="hero" aria-label="Intro"></button>
+    <button class="fpe-progress__dot" data-target="step1" aria-label="Step 1"></button>
+    <button class="fpe-progress__dot" data-target="step2" aria-label="Step 2"></button>
+    <button class="fpe-progress__dot" data-target="step3" aria-label="Step 3"></button>
+    <button class="fpe-progress__dot" data-target="step4" aria-label="Step 4"></button>
+    <button class="fpe-progress__dot" data-target="step5" aria-label="Step 5"></button>
+  </nav>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
+          </a>
+          <p class="footer__tagline">Venture studio for national security.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__column">
+            <h4 class="footer__heading">Platform</h4>
+            <ul class="footer__list">
+              <li><a href="/programs/the-combine">The Combine</a></li>
+              <li><a href="/builders">Defense Builders</a></li>
+              <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="/opportunities">Opportunities</a></li>
+            </ul>
+          </div>
+          <div class="footer__column">
+            <h4 class="footer__heading">Company</h4>
+            <ul class="footer__list">
+              <li><a href="/about">About</a></li>
+              <li><a href="/signals">Signals</a></li>
+              <li><a href="/access">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer__column">
+            <h4 class="footer__heading">Legal</h4>
+            <ul class="footer__list">
+              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="/security">Security</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
+        <p class="footer__location">Honolulu</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/navbar.js"></script>
+  <script type="module" src="/script.js"></script>
+  <script>
+    const sections = document.querySelectorAll('.fpe-step, .fpe-hero');
+    const dots = document.querySelectorAll('.fpe-progress__dot');
+
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+
+          const id = entry.target.id;
+          dots.forEach(d => d.classList.remove('active'));
+          const activeDot = document.querySelector(`.fpe-progress__dot[data-target="${id}"]`);
+          if (activeDot) activeDot.classList.add('active');
+        }
+      });
+    }, {
+      threshold: isMobile ? 0.15 : 0.35,
+      rootMargin: isMobile ? '0px' : '-10% 0px -10% 0px'
+    });
+
+    sections.forEach(s => observer.observe(s));
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const target = document.getElementById(dot.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>

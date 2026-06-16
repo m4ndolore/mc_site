@@ -699,9 +699,8 @@ function generateSitemap(slugs) {
     { loc: '/ai/overview', priority: '0.7', changefreq: 'weekly' },
     { loc: '/signals', priority: '0.8', changefreq: 'weekly' },
     { loc: '/archive', priority: '0.6', changefreq: 'weekly' },
-    { loc: '/signals/counter-drone-jiatf-401', priority: '0.7', changefreq: 'monthly' },
-    { loc: '/signals/uss-eisenhower-lessons', priority: '0.7', changefreq: 'monthly' },
-    { loc: '/signals/ndaa-speed-act', priority: '0.7', changefreq: 'monthly' },
+    // Individual signal articles, sourced from public/data/signals.json (newest first).
+    ...loadSignalsArticles().map(a => ({ loc: a.url, priority: '0.7', changefreq: 'monthly' })),
     { loc: '/privacy', priority: '0.3', changefreq: 'yearly' },
     { loc: '/terms', priority: '0.3', changefreq: 'yearly' },
     { loc: '/security', priority: '0.3', changefreq: 'yearly' },
@@ -868,38 +867,28 @@ function injectKnowledge(html) {
 
 // ── 9. Signals RSS feed ────────────────────────────────────────────────
 
+// Reads the canonical signals list, newest first (matches the /signals feed order).
+function loadSignalsArticles() {
+  const data = JSON.parse(readFileSync(join(ROOT, 'public', 'data', 'signals.json'), 'utf-8'));
+  return [...data.articles].sort((a, b) => new Date(b.date) - new Date(a.date));
+}
+
+// Strips the "By Name, Title." byline prefix some excerpts carry, for clean feed/meta text.
+function signalDescription(article) {
+  return (article.excerpt || '').replace(/^By [^.]+\.\s*/, '').trim();
+}
+
 function generateSignalsRss() {
-  const articles = [
-    {
-      title: 'Inside JIATF 401: The Pentagon\'s New Counter-Drone Marketplace',
-      slug: 'counter-drone-jiatf-401',
-      date: '2025-12-22',
-      category: 'Policy &amp; Acquisition',
-      description: 'The Pentagon is building an app store for counter-drone solutions. JIATF 401 replaces the Joint Counter-small UAS Office with a streamlined approach — including an online marketplace for vetted systems and a common C2 framework targeted within 90 days.',
-    },
-    {
-      title: '9 Months Under Fire: Combat Lessons from the USS Eisenhower',
-      slug: 'uss-eisenhower-lessons',
-      date: '2025-12-22',
-      category: 'Combat Lessons',
-      description: '770+ weapons expended, multiple combat firsts, and critical insights for defense tech companies from the most intense carrier deployment since WWII.',
-    },
-    {
-      title: 'FY26 NDAA Decoded: What the SPEED Act Means for Your Defense Startup',
-      slug: 'ndaa-speed-act',
-      date: '2025-12-22',
-      category: 'Policy &amp; Acquisition',
-      description: 'The SPEED Act promises faster procurement. What is actually changing, implementation challenges ahead, and what defense tech companies should do now.',
-    },
-  ];
+  // Source of truth: public/data/signals.json (same list the /signals feed renders).
+  const articles = loadSignalsArticles();
 
   const items = articles.map(a => `    <item>
       <title>${escapeHtml(a.title)}</title>
-      <link>https://mergecombinator.com/signals/${a.slug}</link>
-      <guid isPermaLink="true">https://mergecombinator.com/signals/${a.slug}</guid>
+      <link>https://mergecombinator.com${a.url}</link>
+      <guid isPermaLink="true">https://mergecombinator.com${a.url}</guid>
       <pubDate>${new Date(a.date).toUTCString()}</pubDate>
-      <category>${a.category}</category>
-      <description>${escapeHtml(a.description)}</description>
+      <category>${escapeHtml(a.category)}</category>
+      <description>${escapeHtml(signalDescription(a))}</description>
     </item>`).join('\n');
 
   return `<?xml version="1.0" encoding="UTF-8"?>
