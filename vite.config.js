@@ -79,6 +79,7 @@ export default defineConfig({
         'knowledge-sbir': resolve(__dirname, 'knowledge/sbir.html'),
         'knowledge-compliance': resolve(__dirname, 'knowledge/compliance.html'),
         'knowledge-defense-venture-studio': resolve(__dirname, 'knowledge/defense-venture-studio.html'),
+        'knowledge-first-principles': resolve(__dirname, 'knowledge/first-principles-engineering.html'),
         // Signals articles
         'signals-counter-drone': resolve(__dirname, 'signals/counter-drone-jiatf-401.html'),
         'signals-ndaa': resolve(__dirname, 'signals/ndaa-speed-act.html'),
