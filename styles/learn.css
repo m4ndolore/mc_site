@@ -86,8 +86,9 @@
 
 .book-card__cover {
   width: 100%;
-  aspect-ratio: 0.707;
-  object-fit: cover;
+  height: auto;
+  aspect-ratio: 800 / 619;
+  object-fit: contain;
   border-radius: var(--radius-sm);
   box-shadow:
     4px 4px 16px rgba(0,0,0,0.4),
