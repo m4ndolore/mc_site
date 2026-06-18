@@ -688,6 +688,7 @@ function generateSitemap(slugs) {
     { loc: '/knowledge/compliance', priority: '0.7', changefreq: 'monthly' },
     { loc: '/knowledge/go-to-market', priority: '0.7', changefreq: 'monthly' },
     { loc: '/knowledge/defense-venture-studio', priority: '0.7', changefreq: 'monthly' },
+    { loc: '/knowledge/first-principles-engineering', priority: '0.7', changefreq: 'monthly' },
     { loc: '/access', priority: '0.8', changefreq: 'weekly' },
     { loc: '/combine/cohort25-1', priority: '0.7', changefreq: 'monthly' },
     { loc: '/learn', priority: '0.6', changefreq: 'monthly' },
