@@ -61,3 +61,5 @@ assets/data/
 # Playwright CI outputs
 tests/visual/test-results/
 tests/visual/playwright-report/
+
+.claude/scheduled_tasks.lock
