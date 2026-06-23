@@ -57,6 +57,46 @@
     "url": "https://mergecombinator.com/knowledge/compliance"
   }
   </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What are the CMMC 2.0 levels and which one do I need?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CMMC 2.0 has three levels. Level 1 (Foundational) covers basic FAR safeguarding of Federal Contract Information via 17 practices, self-assessed annually. Level 2 (Advanced) maps to the 110 controls in NIST SP 800-171 and applies when you handle CUI. Level 3 (Expert) adds NIST SP 800-172 controls for the most sensitive programs. Your required level is set by the contract's DFARS clause and the data you'll touch, not by your preference."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What's the difference between ITAR and CUI/NIST 800-171?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "They're separate regimes that often overlap. ITAR, administered by the State Department's DDTC, governs export of defense articles and technical data on the U.S. Munitions List, including who can access that data. CUI is a marking and handling category for sensitive-but-unclassified government information, with the security baseline defined by NIST SP 800-171. ITAR technical data is frequently also CUI, so handling controls and export controls both apply at once."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need a facility security clearance to win a DoD contract?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not for most early work. A Facility Clearance (FCL) is only required when a contract demands access to classified information, and you generally can't self-sponsor one. A contracting activity or cleared prime sponsors your FCL through DCSA after you're on a classified requirement. Plenty of defense contracts, including most SBIR Phase I and II efforts and CUI-only work, run entirely at the unclassified level with no clearance needed."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does CMMC 2.0 require a third-party assessment or can I self-assess?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It depends on level. Level 1 and a subset of Level 2 contracts allow annual self-assessment with a senior official's affirmation in SPRS. Most Level 2 contracts require a triennial third-party assessment by a C3PAO, and Level 3 is assessed by the government's DIBCAC. Before certification is contractually enforced, you can still post a NIST SP 800-171 self-assessment score in SPRS, which DFARS 252.204-7019/7020 already require."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
   <div id="mc-navbar"></div>
@@ -175,6 +215,34 @@
             <path d="M3 8H13M13 8L8 3M13 8L8 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- FAQ -->
+  <section class="resources-section">
+    <div class="container">
+      <div class="resources-section__header">
+        <h2 class="resources-section__title">Frequently Asked Questions</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item">
+          <summary class="faq-item__q">What are the CMMC 2.0 levels and which one do I need?</summary>
+          <p class="faq-item__a">CMMC 2.0 has three levels. Level 1 (Foundational) covers basic FAR safeguarding of Federal Contract Information via 17 practices, self-assessed annually. Level 2 (Advanced) maps to the 110 controls in NIST SP 800-171 and applies when you handle CUI. Level 3 (Expert) adds NIST SP 800-172 controls for the most sensitive programs. Your required level is set by the contract's DFARS clause and the data you'll touch, not by your preference.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-item__q">What's the difference between ITAR and CUI/NIST 800-171?</summary>
+          <p class="faq-item__a">They're separate regimes that often overlap. ITAR, administered by the State Department's DDTC, governs export of defense articles and technical data on the U.S. Munitions List, including who can access that data. CUI is a marking and handling category for sensitive-but-unclassified government information, with the security baseline defined by NIST SP 800-171. ITAR technical data is frequently also CUI, so handling controls and export controls both apply at once.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-item__q">Do I need a facility security clearance to win a DoD contract?</summary>
+          <p class="faq-item__a">Not for most early work. A Facility Clearance (FCL) is only required when a contract demands access to classified information, and you generally can't self-sponsor one. A contracting activity or cleared prime sponsors your FCL through DCSA after you're on a classified requirement. Plenty of defense contracts, including most SBIR Phase I and II efforts and CUI-only work, run entirely at the unclassified level with no clearance needed.</p>
+        </details>
+        <details class="faq-item">
+          <summary class="faq-item__q">Does CMMC 2.0 require a third-party assessment or can I self-assess?</summary>
+          <p class="faq-item__a">It depends on level. Level 1 and a subset of Level 2 contracts allow annual self-assessment with a senior official's affirmation in SPRS. Most Level 2 contracts require a triennial third-party assessment by a C3PAO, and Level 3 is assessed by the government's DIBCAC. Before certification is contractually enforced, you can still post a NIST SP 800-171 self-assessment score in SPRS, which DFARS 252.204-7019/7020 already require.</p>
+        </details>
       </div>
     </div>
   </section>

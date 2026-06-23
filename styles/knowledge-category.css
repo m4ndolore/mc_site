@@ -73,6 +73,45 @@
   color: var(--gray-medium);
 }
 
+/* FAQ accordion */
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faq-item {
+  border: 1px solid var(--gray-medium, rgba(255,255,255,.1));
+  border-radius: 2px;
+  background: rgba(255,255,255,.02);
+}
+
+.faq-item__q {
+  cursor: pointer;
+  padding: 16px 18px;
+  font-weight: 600;
+  color: var(--offwhite, #fff);
+  list-style: none;
+}
+
+.faq-item__q::-webkit-details-marker { display: none; }
+
+.faq-item__q::after {
+  content: '+';
+  float: right;
+  color: var(--gray-medium);
+  font-weight: 400;
+}
+
+.faq-item[open] .faq-item__q::after { content: '\2212'; }
+
+.faq-item__a {
+  margin: 0;
+  padding: 0 18px 18px;
+  color: var(--gray-light);
+  line-height: 1.7;
+}
+
 /* ============================================
    RESOURCE SECTIONS
    ============================================ */
