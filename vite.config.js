@@ -73,6 +73,11 @@ export default defineConfig({
         'programs-index': resolve(__dirname, 'programs/index.html'),
         'programs-combine': resolve(__dirname, 'programs/the-combine.html'),
         'programs-residency': resolve(__dirname, 'programs/residency.html'),
+        // Residency capstone recalibration forms (internal, noindex)
+        'residency-kristen': resolve(__dirname, 'residency/kristen.html'),
+        'residency-camillia': resolve(__dirname, 'residency/camillia.html'),
+        'residency-pete-harlan': resolve(__dirname, 'residency/pete-harlan.html'),
+        'residency-piyush': resolve(__dirname, 'residency/piyush.html'),
         // Knowledge base
         'knowledge-gtm': resolve(__dirname, 'knowledge/go-to-market.html'),
         'knowledge-acq': resolve(__dirname, 'knowledge/acquisition.html'),

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Capstone Recalibration — Kristen Painter — Merge Combinator</title>
+<title>The Capstone Project — Merge Combinator</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;900&display=swap">
 <style>
   :root {
@@ -148,15 +148,14 @@
 <main>
   <section class="hero">
     <div class="eyebrow">Missionized Tech Residency · PPTE 2026</div>
-    <h1>Capstone Recalibration</h1>
-    <p class="subhead-mono">Kristen Painter — Defense Portfolio Strategist</p>
+    <h1>The Capstone Project</h1>
+    <p class="subhead-mono">Gathering resident feedback to improve outcomes.</p>
     <p class="subhead">
-      At kickoff we set a direction based on assumptions about your organization, the problems worth
-      solving, and the value you'd bring home. A few weeks in, you have direct experience to weigh those
-      against. This replaces the live walkthrough: work through it on your own, be direct, and leave with
-      <strong>one clearly defined capstone deliverable</strong> that can influence a decision, accelerate a
-      capability, or create measurable value for your organization. Where a field is pre-filled, it's a
-      starting point drawn from your kickoff package — confirm it, sharpen it, or replace it.
+      The Capstone is the throughline from your residency to a tangible outcome for your organization: one
+      clearly defined deliverable that can influence a decision, accelerate a capability, or create
+      measurable value. This short form gathers your feedback to shape it — what you’ve learned so far,
+      what’s working, and where the strongest opportunity lies. Where a field is prefilled, it’s a starting
+      point; confirm it, sharpen it, or replace it.
     </p>
   </section>
 
@@ -164,13 +163,17 @@
 
     <!-- IDENTITY -->
     <section class="panel panel-body stack">
-      <div class="controls">
+      <div class="controls" style="grid-template-columns:repeat(3,minmax(0,1fr))">
         <div class="field">
-          <label for="r_name">Resident</label>
+          <label for="r_name">Name</label>
           <input type="text" id="r_name" name="Resident" value="Kristen Painter">
         </div>
         <div class="field">
-          <label for="r_date">Date</label>
+          <label for="r_role">Role</label>
+          <input type="text" id="r_role" name="Role" value="Defense Portfolio Strategist">
+        </div>
+        <div class="field">
+          <label for="r_date">Today’s Date</label>
           <input type="date" id="r_date" name="Date">
         </div>
       </div>
@@ -329,12 +332,8 @@
 
       <div class="field">
         <div class="field-label">D1 · The deliverable</div>
-        <div class="summary-shell">
-          <span class="summary-tag">Candidate capstone — edit freely</span>
-          <span class="summary-line">A Program of Record Playbook for one venture, end-to-end — color-of-money / fiscal bridge from prototype to PoR, POM positioning, Congressional engagement, and sustainment — that enables a resource sponsor or HQDA FM&amp;C to decide whether and how to position the capability for sustained funding.</span>
-        </div>
-        <p class="field-copy">State it in one sentence: "By the end of the residency, I will deliver ___ that enables ___ to make a decision about ___."</p>
-        <textarea name="D1 — The deliverable">A Program of Record Playbook for one venture, end-to-end — color-of-money / fiscal bridge from prototype to PoR, POM positioning, Congressional engagement, and sustainment — that enables a resource sponsor or HQDA FM&amp;C to decide whether and how to position the capability for sustained funding.</textarea>
+        <p class="field-copy">State it in one sentence: "By the end of the residency, I will deliver ___ that enables ___ to make a decision about ___." Edit the prefilled draft below.</p>
+        <textarea name="D1 — The deliverable">By the end of the residency, I will deliver a Program of Record Playbook for one venture — a color-of-money / fiscal bridge from prototype to program of record, with POM positioning, Congressional engagement, and sustainment — that enables a resource sponsor or HQDA FM&amp;C to make a decision about whether and how to position the capability for sustained funding.</textarea>
       </div>
 
       <div class="field">
@@ -422,7 +421,7 @@
         <button type="submit" id="submitBtn">Submit &amp; send copies</button>
         <button type="button" class="secondary" id="downloadBtn">Download a copy</button>
       </div>
-      <p class="status" id="status">Submitting sends a copy to gus@, doe@, and kristen@mergecombinator.com.</p>
+      <p class="status" id="status">Submitting sends a copy to the residency team.</p>
       <p class="savednote" id="savednote"></p>
     </div>
   </form>
@@ -488,7 +487,7 @@
     const d=snapshot();
     const order=Array.from(form.querySelectorAll('[name]')).map(e=>e.name);
     const seen={}; const lines=[];
-    lines.push('MTR CAPSTONE RECALIBRATION — '+RESIDENT);
+    lines.push('THE CAPSTONE PROJECT — '+RESIDENT);
     lines.push('='.repeat(50));
     order.forEach(name=>{
       if(seen[name]) return; seen[name]=1;
@@ -503,7 +502,7 @@
   function buildPayload(){
     const d=snapshot();
     const payload={
-      _subject: 'MTR Capstone Recalibration — '+RESIDENT,
+      _subject: 'The Capstone Project — '+RESIDENT,
       _cc: CC.join(','),
       _template: 'table',
       _captcha: 'false'
@@ -517,7 +516,7 @@
     const blob=new Blob([compileText()],{type:'text/plain'});
     const a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
-    a.download='MTR_Recalibration_'+RESIDENT.replace(/\s+/g,'_')+'.txt';
+    a.download='MTR_Capstone_'+RESIDENT.replace(/\s+/g,'_')+'.txt';
     a.click(); URL.revokeObjectURL(a.href);
     statusEl.className='status ok';
     statusEl.textContent='Downloaded. You can attach this to an email to the team.';
@@ -526,7 +525,7 @@
   /* ---- mailto fallback (if the endpoint can't be reached) ---- */
   function mailtoFallback(){
     const url='mailto:'+[PRIMARY,...CC].join(',')
-      +'?subject='+encodeURIComponent('MTR Capstone Recalibration — '+RESIDENT)
+      +'?subject='+encodeURIComponent('The Capstone Project — '+RESIDENT)
       +'&body='+encodeURIComponent(compileText());
     window.location.href=url;
   }
