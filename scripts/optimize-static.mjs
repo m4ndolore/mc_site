@@ -866,6 +866,71 @@ function injectKnowledge(html) {
   return html;
 }
 
+// Build-inject a category page's public + member resources as STATIC HTML so AI
+// crawlers and no-JS fetches see real content (the inline JS only enhances).
+// Mirrors the markup produced by loadResources() in each category page, and
+// replaces the same "Populated by JavaScript" markers the JS targets — so the
+// inline script's idempotency guard skips re-rendering.
+function injectKnowledgeCategory(html, categoryId) {
+  const knowledgeData = JSON.parse(readFileSync(join(ROOT, 'public', 'data', 'knowledge.json'), 'utf-8'));
+  const category = knowledgeData.categories.find(c => c.id === categoryId);
+  if (!category) {
+    console.warn(`[optimize] knowledge category "${categoryId}" not found in knowledge.json — skipping injection`);
+    return html;
+  }
+  const resources = knowledgeData.resources.filter(r => r.category === categoryId);
+
+  const domainOf = (url) => {
+    try { return new URL(url).hostname.replace('www.', ''); } catch { return ''; }
+  };
+
+  // Public resources — anchor cards matching .resource-link markup
+  const publicHtml = resources.filter(r => r.access === 'public').map(r => `
+        <a href="${escapeHtml(r.url)}" target="_blank" rel="noopener" class="resource-link">
+          <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15,3 21,3 21,9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          <div class="resource-link__content">
+            <div class="resource-link__title">
+              ${escapeHtml(r.title)}
+              <svg class="resource-link__external" width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="resource-link__description">${escapeHtml(r.description)}</div>
+            <div class="resource-link__source">${escapeHtml(domainOf(r.url))}</div>
+          </div>
+        </a>`).join('');
+
+  // Member resources — gated cards matching .resource-gated markup
+  const memberHtml = resources.filter(r => r.access === 'members').map(r => `
+        <div class="resource-gated">
+          <svg class="resource-gated__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <div class="resource-gated__content">
+            <div class="resource-gated__title">${escapeHtml(r.title)}</div>
+            <div class="resource-gated__description">${escapeHtml(r.description)}</div>
+          </div>
+        </div>`).join('');
+
+  // Replace the public-resources marker
+  html = html.replace(
+    /(<div class="resources-list" id="public-resources">)\s*<!--\s*Populated by JavaScript\s*-->/,
+    `$1${publicHtml}`
+  );
+  // Replace the member-resources marker (may be empty if no member resources)
+  html = html.replace(
+    /(<div class="resources-list" id="member-resources">)\s*<!--\s*Populated by JavaScript\s*-->/,
+    `$1${memberHtml}`
+  );
+
+  return html;
+}
+
 // ── 9. Signals RSS feed ────────────────────────────────────────────────
 
 // Reads the canonical signals list, newest first (matches the /signals feed order).
@@ -963,6 +1028,15 @@ let knowledgeHtml = readFileSync(join(ROOT, 'knowledge.html'), 'utf-8');
 knowledgeHtml = injectKnowledge(knowledgeHtml);
 writeFileSync(join(ROOT, 'knowledge.html'), knowledgeHtml);
 console.log('[optimize] knowledge.html: category cards + resource summary injected');
+
+// 1c. Inject static resource content into each category page (AEO: crawlers see real content)
+for (const categoryId of ['acquisition', 'compliance', 'go-to-market', 'sbir']) {
+  const file = join(ROOT, 'knowledge', `${categoryId}.html`);
+  let categoryHtml = readFileSync(file, 'utf-8');
+  categoryHtml = injectKnowledgeCategory(categoryHtml, categoryId);
+  writeFileSync(file, categoryHtml);
+  console.log(`[optimize] knowledge/${categoryId}.html: static resources injected`);
+}
 
 // 2. Process dashboard.html
 console.log('[optimize] Injecting dashboard.html...');
