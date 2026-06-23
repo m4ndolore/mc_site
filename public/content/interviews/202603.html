@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Capstone Recalibration — Pete Harlan — Merge Combinator</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700;900&display=swap">
+<style>
+  :root {
+    --bg: #f9f9f9;
+    --bg-2: #ffffff;
+    --panel: #ffffff;
+    --panel-soft: #f5f5f5;
+    --text: #2d2d2d;
+    --text-strong: #1a1a1a;
+    --muted: #6b6b6b;
+    --line: #e5e5e5;
+    --line-strong: #d4d4d4;
+    --accent: #6b21a8;
+    --accent-2: #7c3aed;
+    --accent-3: #f3edff;
+    --danger: #dc2626;
+    --good: #15803d;
+    --shadow: 0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+    --font-sans: "Source Sans 3","Source Sans Pro","Inter","Segoe UI","Helvetica Neue",Arial,sans-serif;
+    --font-mono: "SFMono-Regular","SF Mono",Consolas,"Liberation Mono",Menlo,monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: var(--font-sans); color: var(--text);
+    background: var(--bg); min-height: 100vh;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  }
+  main { width: min(900px, calc(100vw - 48px)); margin: 0 auto; padding: 40px 0 80px; }
+
+  .hero { display: grid; gap: 10px; margin-bottom: 28px; }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: .18em;
+    text-transform: uppercase; color: var(--accent);
+  }
+  h1 {
+    margin: 0; font-size: clamp(28px,4vw,42px); line-height: 1.15;
+    letter-spacing: -.02em; font-weight: 700; color: var(--text-strong); text-wrap: balance;
+  }
+  .subhead-mono { font-family: var(--font-mono); font-size: 14px; color: var(--muted); margin: 0; }
+  .subhead { margin: 8px 0 0; max-width: 74ch; font-size: 16px; line-height: 1.7; color: var(--muted); }
+  .subhead strong { color: var(--text-strong); }
+
+  .stacked-panels { display: grid; gap: 20px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); }
+  .panel-body { padding: 28px 32px; }
+  .stack { display: grid; gap: 20px; }
+
+  .section-label {
+    display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--accent); background: var(--accent-3);
+    padding: 8px 14px; border-radius: 6px; justify-self: start;
+  }
+  .panel-title { margin: 0; font-size: 22px; line-height: 1.1; letter-spacing: -.03em; color: var(--text-strong); font-weight: 700; }
+  .panel-subhead { margin: 0; color: var(--muted); line-height: 1.55; }
+
+  .field { display: grid; gap: 6px; }
+  label, .field-label { font-size: 14px; font-weight: 600; color: var(--text-strong); }
+  .field-copy { font-size: 14px; line-height: 1.5; color: var(--muted); margin: 0; }
+
+  textarea, select, input {
+    width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 11px 14px;
+    color: var(--text); background: #fff; font: inherit; font-size: 15px;
+    transition: border-color 140ms ease, box-shadow 140ms ease;
+  }
+  textarea { min-height: 110px; resize: vertical; line-height: 1.5; }
+  select {
+    appearance: none; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b6b6b' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center; padding-right: 38px; cursor: pointer;
+  }
+  textarea:focus, select:focus, input:focus {
+    outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(107,33,168,.08);
+  }
+  textarea::placeholder, input::placeholder { color: #a3a3a3; }
+
+  .controls { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+
+  .toggle-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .toggle-card { display: block; }
+  .toggle-card input { position: absolute; opacity: 0; pointer-events: none; }
+  .toggle-card-body {
+    display: grid; gap: 4px; padding: 12px 14px; border: 1px solid var(--line);
+    border-radius: 10px; background: #fff; min-height: 100%; cursor: pointer;
+    transition: border-color 140ms ease, background 140ms ease, box-shadow 140ms ease;
+  }
+  .toggle-card input:checked + .toggle-card-body {
+    border-color: var(--accent); background: var(--accent-3); box-shadow: 0 0 0 2px rgba(107,33,168,.1);
+  }
+  .toggle-title { font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--text-strong); }
+  .toggle-copy { font-size: 13px; line-height: 1.45; color: var(--muted); }
+
+  .summary-shell {
+    display: grid; gap: 6px; padding: 14px 16px; border-radius: 10px;
+    border: 1px dashed var(--line-strong); background: var(--panel-soft);
+  }
+  .summary-tag { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); }
+  .summary-line { font-size: 14.5px; line-height: 1.55; color: var(--text); }
+
+  .triplet { display: grid; gap: 10px; }
+  .triplet label { font-size: 13px; color: var(--muted); font-weight: 500; }
+
+  .actions-table { width: 100%; border-collapse: collapse; }
+  .actions-table th { text-align: left; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 0 8px 6px 0; }
+  .actions-table td { padding: 0 8px 8px 0; vertical-align: top; }
+  .actions-table td:last-child, .actions-table th:last-child { padding-right: 0; }
+
+  .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  button {
+    border: 0; border-radius: 8px; padding: 12px 22px; background: var(--accent);
+    color: #fff; font: inherit; font-weight: 600; cursor: pointer; transition: background 140ms ease;
+  }
+  button:hover { background: #581c87; }
+  button.secondary { background: #fff; color: var(--text); border: 1px solid var(--line); }
+  button.secondary:hover { background: var(--panel-soft); }
+  button:disabled { opacity: .6; cursor: wait; }
+
+  .status { min-height: 22px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+  .status.error { color: var(--danger); }
+  .status.ok { color: var(--good); }
+  .savednote { font-size: 12.5px; color: #9a9a9a; }
+
+  .footer { position: sticky; bottom: 0; background: linear-gradient(180deg, rgba(249,249,249,0) 0%, var(--bg) 40%); padding: 22px 0 10px; }
+
+  .thanks { display: none; text-align: center; padding: 30px 20px; }
+  .thanks.show { display: block; }
+  .thanks .check { width: 46px; height: 46px; border-radius: 50%; background: var(--accent-3); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 12px; }
+  .thanks h2 { margin: 0 0 6px; color: var(--text-strong); }
+  .thanks p { margin: 0; color: var(--muted); }
+
+  .chip-internal { background:#fee2e2; color:var(--danger); border:1px solid #fecaca; border-radius:999px; font-size:11px; padding:3px 8px; font-family:var(--font-mono); letter-spacing:.04em; }
+
+  @media (max-width: 720px) {
+    .controls, .toggle-grid { grid-template-columns: 1fr; }
+    .actions-table, .actions-table tbody, .actions-table tr, .actions-table td { display: block; width: 100%; }
+    .actions-table th { display: none; }
+    .actions-table td { padding: 0 0 8px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <section class="hero">
+    <div class="eyebrow">Missionized Tech Residency · PPTE 2026</div>
+    <h1>Capstone Recalibration</h1>
+    <p class="subhead-mono">Pete Harlan — Transition &amp; Scale Strategist</p>
+    <p class="subhead">
+      At kickoff we set a direction based on assumptions about your organization, the problems worth
+      solving, and the value you'd bring home. A few weeks in, you have direct experience to weigh those
+      against. This replaces the live walkthrough: work through it on your own, be direct, and leave with
+      <strong>one clearly defined capstone deliverable</strong> that can influence a decision, accelerate a
+      capability, or create measurable value for your organization. Where a field is pre-filled, it's a
+      starting point drawn from your kickoff package — confirm it, sharpen it, or replace it.
+    </p>
+  </section>
+
+  <form id="recal" class="stacked-panels">
+
+    <!-- IDENTITY -->
+    <section class="panel panel-body stack">
+      <div class="controls">
+        <div class="field">
+          <label for="r_name">Resident</label>
+          <input type="text" id="r_name" name="Resident" value="Pete Harlan">
+        </div>
+        <div class="field">
+          <label for="r_date">Date</label>
+          <input type="date" id="r_date" name="Date">
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION A -->
+    <section class="panel panel-body stack">
+      <span class="section-label">Section A</span>
+      <div>
+        <h2 class="panel-title">Revalidate the Mission</h2>
+        <p class="panel-subhead">Does the bet we made at kickoff still hold?</p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">A1 · Original problem statement</div>
+        <div class="summary-shell">
+          <span class="summary-tag">Your kickoff problem</span>
+          <span class="summary-line">Embed transition, regulatory, and scaling rigor into venture builds — validate prototype-to-fielding paths, surface regulatory and compliance gates early, and align interagency, international, and supplier stakeholders.</span>
+        </div>
+        <p class="field-copy">Is this still the right problem? If it has changed, what is the real problem you've discovered since arriving?</p>
+        <textarea name="A1 — Still the right problem?" placeholder="Still right / what changed…"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">A2 · Assumptions check</div>
+        <p class="field-copy">What did we assume about your organization, mission, or environment that turned out to be incorrect, incomplete, or outdated?</p>
+        <textarea name="A2 — Assumptions check"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">A3 · Priority check</div>
+        <p class="field-copy">Which matters most to your organization today, and which matters least right now? Add why below.</p>
+        <div class="controls">
+          <select name="A3 — Most important">
+            <option value="">Most important…</option>
+            <option>Transition pathways</option>
+            <option>Closing the feedback loop</option>
+            <option>Honest Read / ecosystem awareness</option>
+          </select>
+          <select name="A3 — Least important">
+            <option value="">Least important right now…</option>
+            <option>Transition pathways</option>
+            <option>Closing the feedback loop</option>
+            <option>Honest Read / ecosystem awareness</option>
+          </select>
+        </div>
+        <textarea name="A3 — Why" placeholder="Why?"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">A4 · Commander's question</div>
+        <p class="field-copy">If your commander asked tomorrow, "What have you learned so far that matters?" — what would you say?</p>
+        <textarea name="A4 — Commander's question"></textarea>
+      </div>
+    </section>
+
+    <!-- SECTION B -->
+    <section class="panel panel-body stack">
+      <span class="section-label">Section B</span>
+      <div>
+        <h2 class="panel-title">Operational Assessment</h2>
+        <p class="panel-subhead">What's working, what isn't. Be specific.</p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">B1 · Highest value</div>
+        <p class="field-copy">The single most valuable thing you've gained access to (person, company, capability, process, network, insight, authority).</p>
+        <textarea name="B1 — Highest value"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">B2 · Friction analysis</div>
+        <p class="field-copy">Where have you invested time without creating progress? Mark the cause(s), then explain.</p>
+        <div class="toggle-grid">
+          <label class="toggle-card"><input type="checkbox" name="B2 cause" value="Unclear objective"><span class="toggle-card-body"><span class="toggle-title">Unclear objective</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="B2 cause" value="Missing access"><span class="toggle-card-body"><span class="toggle-title">Missing access</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="B2 cause" value="Missing authority"><span class="toggle-card-body"><span class="toggle-title">Missing authority</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="B2 cause" value="Missing skill"><span class="toggle-card-body"><span class="toggle-title">Missing skill</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="B2 cause" value="Missing funding"><span class="toggle-card-body"><span class="toggle-title">Missing funding</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="B2 cause" value="Missing stakeholder alignment"><span class="toggle-card-body"><span class="toggle-title">Missing stakeholder alignment</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="B2 cause" value="Missing acquisition pathway"><span class="toggle-card-body"><span class="toggle-title">Missing acquisition pathway</span></span></label>
+        </div>
+        <textarea name="B2 — Detail" placeholder="Where, and why?"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">B3 · Expectation gap</div>
+        <p class="field-copy">What did you expect from the residency that has not happened?</p>
+        <textarea name="B3 — Expectation gap"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">B4 · Immediate unblock</div>
+        <p class="field-copy">What single change could the program make in the next two weeks that would create the most value?</p>
+        <textarea name="B4 — Immediate unblock"></textarea>
+      </div>
+    </section>
+
+    <!-- SECTION C -->
+    <section class="panel panel-body stack">
+      <span class="section-label">Section C</span>
+      <div>
+        <h2 class="panel-title">The Thing Worth Bringing Home</h2>
+        <p class="panel-subhead">The core — one thing of durable value to your organization.</p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">C1 · Organizational value</div>
+        <p class="field-copy">If your commander asked, "What did we gain by sending you here?" — what is the most valuable thing you could realistically bring back?</p>
+        <textarea name="C1 — Organizational value"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">C2 · Category</div>
+        <p class="field-copy">Select the primary category.</p>
+        <div class="toggle-grid">
+          <label class="toggle-card"><input type="radio" name="C2 — Category" value="Capability"><span class="toggle-card-body"><span class="toggle-title">Capability</span><span class="toggle-copy">A skill, tool, or workflow you can operate</span></span></label>
+          <label class="toggle-card"><input type="radio" name="C2 — Category" value="Process"><span class="toggle-card-body"><span class="toggle-title">Process</span><span class="toggle-copy">A repeatable way of working</span></span></label>
+          <label class="toggle-card"><input type="radio" name="C2 — Category" value="Insight"><span class="toggle-card-body"><span class="toggle-title">Insight</span><span class="toggle-copy">An understanding that changes a decision</span></span></label>
+          <label class="toggle-card"><input type="radio" name="C2 — Category" value="Transition pathway"><span class="toggle-card-body"><span class="toggle-title">Transition pathway</span><span class="toggle-copy">An authority or route that moves capability forward</span></span></label>
+          <label class="toggle-card"><input type="radio" name="C2 — Category" value="Relationship / network"><span class="toggle-card-body"><span class="toggle-title">Relationship / network</span></span></label>
+          <label class="toggle-card"><input type="radio" name="C2 — Category" value="Decision advantage"><span class="toggle-card-body"><span class="toggle-title">Decision advantage</span></span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">C3 · Transformation statement</div>
+        <p class="field-copy">Fill the blanks.</p>
+        <div class="triplet">
+          <div class="field"><label>If I returned understanding…</label><input type="text" name="C3 — Understanding"></div>
+          <div class="field"><label>my organization could stop…</label><input type="text" name="C3 — Stop"></div>
+          <div class="field"><label>and start…</label><input type="text" name="C3 — Start"></div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">C4 · Unique access</div>
+        <p class="field-copy">What can you see, test, learn, or influence here that you could not inside your home organization?</p>
+        <textarea name="C4 — Unique access"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">C5 · Stakeholder analysis</div>
+        <p class="field-copy">Who immediately sees value? Who resists? What evidence would convince the skeptic?</p>
+        <textarea name="C5 — Stakeholder analysis"></textarea>
+      </div>
+    </section>
+
+    <!-- SECTION D -->
+    <section class="panel panel-body stack">
+      <span class="section-label">Section D</span>
+      <div>
+        <h2 class="panel-title">Define the Deliverable</h2>
+        <p class="panel-subhead">Turn the value into something concrete and finishable.</p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">D1 · The deliverable</div>
+        <div class="summary-shell">
+          <span class="summary-tag">Candidate capstone — edit freely</span>
+          <span class="summary-line">A Full Transition Playbook for one venture — problem framing, acquisition pathway, regulatory compliance (DoD/FDA as applicable), partner alignment, supply chain, and sustainment — that enables a program office or transition sponsor to decide whether the capability is ready to move toward a program of record.</span>
+        </div>
+        <p class="field-copy">State it in one sentence: "By the end of the residency, I will deliver ___ that enables ___ to make a decision about ___."</p>
+        <textarea name="D1 — The deliverable">A Full Transition Playbook for one venture — problem framing, acquisition pathway, regulatory compliance (DoD/FDA as applicable), partner alignment, supply chain, and sustainment — that enables a program office or transition sponsor to decide whether the capability is ready to move toward a program of record.</textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">D2 · Audience &amp; decision</div>
+        <p class="field-copy">Who is the decision maker, and what specific decision should they be able to make afterward?</p>
+        <textarea name="D2 — Audience & decision" placeholder="Program office, transition sponsor, and T&E / regulatory authority — decision: ready to move to the next acquisition gate, or fund the next phase."></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">D3 · Evidence requirement</div>
+        <p class="field-copy">What evidence makes this credible? Mark what applies, then note specifics.</p>
+        <div class="toggle-grid">
+          <label class="toggle-card"><input type="checkbox" name="D3 evidence" value="Named organization"><span class="toggle-card-body"><span class="toggle-title">Named organization</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="D3 evidence" value="Named capability"><span class="toggle-card-body"><span class="toggle-title">Named capability</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="D3 evidence" value="Named stakeholder"><span class="toggle-card-body"><span class="toggle-title">Named stakeholder</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="D3 evidence" value="Budget line"><span class="toggle-card-body"><span class="toggle-title">Budget line</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="D3 evidence" value="Authority"><span class="toggle-card-body"><span class="toggle-title">Authority</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="D3 evidence" value="Transition pathway"><span class="toggle-card-body"><span class="toggle-title">Transition pathway</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="D3 evidence" value="Operational data"><span class="toggle-card-body"><span class="toggle-title">Operational data</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="D3 evidence" value="Cost estimate"><span class="toggle-card-body"><span class="toggle-title">Cost estimate</span></span></label>
+          <label class="toggle-card"><input type="checkbox" name="D3 evidence" value="Timeline"><span class="toggle-card-body"><span class="toggle-title">Timeline</span></span></label>
+        </div>
+        <textarea name="D3 — Detail" placeholder="Specifics — which org, which budget line, which stakeholder…"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">D4 · Transition potential</div>
+        <p class="field-copy">If this succeeds: who acts on it, what happens next, what authority and funding source are required, what timeline is realistic?</p>
+        <textarea name="D4 — Transition potential"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">D5 · Minimum viable deliverable</div>
+        <p class="field-copy">Smallest version you could finish and defend by the final presentation — and the stretch version.</p>
+        <textarea name="D5 — Smallest version" placeholder="Smallest finishable version…"></textarea>
+        <textarea name="D5 — Stretch version" placeholder="Stretch version…"></textarea>
+      </div>
+    </section>
+
+    <!-- SECTION E -->
+    <section class="panel panel-body stack">
+      <span class="section-label">Section E</span>
+      <div>
+        <h2 class="panel-title">Transition Plan</h2>
+        <p class="panel-subhead">Your commitments coming out of this.</p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Track</div>
+        <p class="field-copy">Which track will you own end-to-end? (From your kickoff package.)</p>
+        <div class="toggle-grid">
+          <label class="toggle-card"><input type="radio" name="Track" value="Transition Strategy Lead"><span class="toggle-card-body"><span class="toggle-title">Transition Strategy Lead</span></span></label>
+          <label class="toggle-card"><input type="radio" name="Track" value="Scale & Supply Chain Architect"><span class="toggle-card-body"><span class="toggle-title">Scale &amp; Supply Chain Architect</span></span></label>
+          <label class="toggle-card"><input type="radio" name="Track" value="Partner & Ecosystem Builder"><span class="toggle-card-body"><span class="toggle-title">Partner &amp; Ecosystem Builder</span></span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Next 3 actions</div>
+        <table class="actions-table">
+          <thead><tr><th style="width:54%">Action</th><th style="width:26%">Owner</th><th style="width:20%">Due</th></tr></thead>
+          <tbody>
+            <tr><td><input type="text" name="Action 1"></td><td><input type="text" name="Owner 1"></td><td><input type="text" name="Due 1" placeholder="date"></td></tr>
+            <tr><td><input type="text" name="Action 2"></td><td><input type="text" name="Owner 2"></td><td><input type="text" name="Due 2" placeholder="date"></td></tr>
+            <tr><td><input type="text" name="Action 3"></td><td><input type="text" name="Owner 3"></td><td><input type="text" name="Due 3" placeholder="date"></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Program support required</div>
+        <p class="field-copy">People, access, authorities, introductions, or resources you need from the program.</p>
+        <textarea name="Program support required"></textarea>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Next review date</div>
+        <input type="date" name="Next review date">
+      </div>
+    </section>
+
+    <!-- FOOTER / SUBMIT -->
+    <div class="footer">
+      <div class="actions">
+        <button type="submit" id="submitBtn">Submit &amp; send copies</button>
+        <button type="button" class="secondary" id="downloadBtn">Download a copy</button>
+      </div>
+      <p class="status" id="status">Submitting sends a copy to gus@, doe@, and pete.harlan@mergecombinator.com.</p>
+      <p class="savednote" id="savednote"></p>
+    </div>
+  </form>
+
+  <section class="panel panel-body thanks" id="thanks">
+    <div class="check">✓</div>
+    <h2>Submitted</h2>
+    <p>Copies are on their way to the team. You can close this tab.</p>
+  </section>
+</main>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+  const RESIDENT   = "Pete Harlan";
+  const PRIMARY     = "gus@mergecombinator.com";
+  const CC          = ["doe@mergecombinator.com","pete.harlan@mergecombinator.com"];
+  const ENDPOINT    = "https://formsubmit.co/ajax/" + PRIMARY;
+
+  const form = document.getElementById('recal');
+  const statusEl = document.getElementById('status');
+  const savedEl = document.getElementById('savednote');
+  const submitBtn = document.getElementById('submitBtn');
+  const thanks = document.getElementById('thanks');
+  const STORAGE_KEY = 'mtr_recal_' + RESIDENT.replace(/\s+/g,'_');
+
+  (function(){ const d=document.getElementById('r_date'); if(d&&!d.value){ d.value=new Date().toISOString().slice(0,10);} })();
+
+  /* ---- autosave so work isn't lost ---- */
+  function snapshot(){
+    const data={};
+    new FormData(form).forEach((v,k)=>{
+      if(data[k]!==undefined){ data[k]=Array.isArray(data[k])?[...data[k],v]:[data[k],v]; }
+      else data[k]=v;
+    });
+    return data;
+  }
+  function save(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot()));
+      savedEl.textContent='Draft saved in this browser · '+new Date().toLocaleTimeString();
+    }catch(e){}
+  }
+  function restore(){
+    let raw; try{ raw=localStorage.getItem(STORAGE_KEY);}catch(e){return;}
+    if(!raw) return;
+    let data; try{ data=JSON.parse(raw);}catch(e){return;}
+    Object.entries(data).forEach(([k,val])=>{
+      form.querySelectorAll('[name="'+CSS.escape(k)+'"]').forEach(el=>{
+        if(el.type==='checkbox'||el.type==='radio'){
+          const vals=Array.isArray(val)?val:[val];
+          if(vals.includes(el.value)) el.checked=true;
+        } else { el.value=val; }
+      });
+    });
+    savedEl.textContent='Draft restored from this browser.';
+  }
+  restore();
+  form.addEventListener('input', save);
+
+  /* ---- readable text copy ---- */
+  function compileText(){
+    const d=snapshot();
+    const order=Array.from(form.querySelectorAll('[name]')).map(e=>e.name);
+    const seen={}; const lines=[];
+    lines.push('MTR CAPSTONE RECALIBRATION — '+RESIDENT);
+    lines.push('='.repeat(50));
+    order.forEach(name=>{
+      if(seen[name]) return; seen[name]=1;
+      let v=d[name]; if(v==null||v==='') v='—';
+      if(Array.isArray(v)) v=v.join(', ');
+      lines.push(name+': '+v);
+    });
+    return lines.join('\n');
+  }
+
+  /* ---- payload for FormSubmit ---- */
+  function buildPayload(){
+    const d=snapshot();
+    const payload={
+      _subject: 'MTR Capstone Recalibration — '+RESIDENT,
+      _cc: CC.join(','),
+      _template: 'table',
+      _captcha: 'false'
+    };
+    Object.entries(d).forEach(([k,v])=>{ payload[k]=Array.isArray(v)?v.join(', '):v; });
+    return payload;
+  }
+
+  /* ---- download fallback ---- */
+  document.getElementById('downloadBtn').addEventListener('click',()=>{
+    const blob=new Blob([compileText()],{type:'text/plain'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='MTR_Recalibration_'+RESIDENT.replace(/\s+/g,'_')+'.txt';
+    a.click(); URL.revokeObjectURL(a.href);
+    statusEl.className='status ok';
+    statusEl.textContent='Downloaded. You can attach this to an email to the team.';
+  });
+
+  /* ---- mailto fallback (if the endpoint can't be reached) ---- */
+  function mailtoFallback(){
+    const url='mailto:'+[PRIMARY,...CC].join(',')
+      +'?subject='+encodeURIComponent('MTR Capstone Recalibration — '+RESIDENT)
+      +'&body='+encodeURIComponent(compileText());
+    window.location.href=url;
+  }
+
+  /* ---- submit via FormSubmit AJAX ---- */
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    save();
+    submitBtn.disabled=true;
+    statusEl.className='status'; statusEl.textContent='Sending…';
+    try{
+      const res=await fetch(ENDPOINT,{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify(buildPayload())
+      });
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok || (data.success!==undefined && String(data.success)!=='true')){
+        throw new Error(data.message||('status '+res.status));
+      }
+      form.style.display='none';
+      thanks.classList.add('show');
+      window.scrollTo({top:0,behavior:'smooth'});
+    }catch(err){
+      submitBtn.disabled=false;
+      statusEl.className='status error';
+      statusEl.textContent='Couldn’t reach the mail service — opening your email app instead. ('+err.message+')';
+      setTimeout(mailtoFallback, 800);
+    }
+  });
+</script>
+</body>
+</html>
