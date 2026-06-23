@@ -85,7 +85,74 @@
         <span class="resources-section__badge resources-section__badge--public">Public</span>
       </div>
       <div class="resources-list" id="public-resources">
-        <!-- Populated by JavaScript -->
+        <a href="https://dodcio.defense.gov/CMMC/" target="_blank" rel="noopener" class="resource-link">
+          <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15,3 21,3 21,9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          <div class="resource-link__content">
+            <div class="resource-link__title">
+              CMMC 2.0 Requirements
+              <svg class="resource-link__external" width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="resource-link__description">Official DoD CMMC program overview and requirements</div>
+            <div class="resource-link__source">dodcio.defense.gov</div>
+          </div>
+        </a>
+        <a href="https://www.pmddtc.state.gov/ddtc_public/ddtc_public?id=ddtc_public_portal_itar_landing" target="_blank" rel="noopener" class="resource-link">
+          <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15,3 21,3 21,9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          <div class="resource-link__content">
+            <div class="resource-link__title">
+              ITAR Basics for Startups
+              <svg class="resource-link__external" width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="resource-link__description">State Department ITAR portal - registration and compliance basics</div>
+            <div class="resource-link__source">pmddtc.state.gov</div>
+          </div>
+        </a>
+        <a href="https://www.archives.gov/cui/registry/cui-handbook" target="_blank" rel="noopener" class="resource-link">
+          <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15,3 21,3 21,9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          <div class="resource-link__content">
+            <div class="resource-link__title">
+              CUI Marking Handbook
+              <svg class="resource-link__external" width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="resource-link__description">NARA guide to marking and handling Controlled Unclassified Information</div>
+            <div class="resource-link__source">archives.gov</div>
+          </div>
+        </a>
+        <a href="https://www.dcsa.mil/is/security-clearance-faqs/" target="_blank" rel="noopener" class="resource-link">
+          <svg class="resource-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15,3 21,3 21,9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          <div class="resource-link__content">
+            <div class="resource-link__title">
+              Security Clearance Process
+              <svg class="resource-link__external" width="12" height="12" viewBox="0 0 16 16" fill="none">
+                <path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="resource-link__description">DCSA FAQ on obtaining and maintaining security clearances</div>
+            <div class="resource-link__source">dcsa.mil</div>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -98,7 +165,6 @@
         <span class="resources-section__badge resources-section__badge--members">Members</span>
       </div>
       <div class="resources-list" id="member-resources">
-        <!-- Populated by JavaScript -->
       </div>
       <div class="resources-section__cta" id="signin-cta">
         <a href="/auth/login">
@@ -203,7 +269,7 @@
         const publicResources = resources.filter(r => r.access === 'public');
         const publicList = document.getElementById('public-resources');
 
-        publicResources.forEach(resource => {
+        if (publicList.children.length === 0) publicResources.forEach(resource => {
           const el = document.createElement('a');
           el.href = resource.url;
           el.target = '_blank';
@@ -239,7 +305,7 @@
 
         if (memberResources.length === 0) {
           document.getElementById('members-section').style.display = 'none';
-        } else {
+        } else if (memberList.children.length === 0) {
           memberResources.forEach(resource => {
             const el = document.createElement('div');
             el.className = 'resource-gated';
