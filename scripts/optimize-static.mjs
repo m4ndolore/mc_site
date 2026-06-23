@@ -856,6 +856,11 @@ function injectKnowledge(html) {
     }
     resourceSummary += '        </ul>\n';
   }
+  // Long-form guides (standalone articles, not knowledge.json categories)
+  resourceSummary += '        <h3>Guides</h3>\n        <ul>\n';
+  resourceSummary += '          <li><a href="/knowledge/first-principles-engineering">The 5-Step Design Process</a> — Question, delete, simplify, accelerate, automate: Musk\'s engineering algorithm applied to defense.</li>\n';
+  resourceSummary += '          <li><a href="/knowledge/defense-venture-studio">What is a Defense Venture Studio?</a> — How venture studios differ from accelerators, incubators, and VC funds in national security.</li>\n';
+  resourceSummary += '        </ul>\n';
   resourceSummary += '      </div>';
 
   html = html.replace(
