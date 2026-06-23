@@ -25,6 +25,11 @@
 .category-hero__content {
   position: relative;
   z-index: 1;
+}
+
+/* Constrain the hero text to a readable measure WITHOUT re-centering, so its
+   left edge aligns with the full-width section content below it. */
+.category-hero__content > * {
   max-width: 680px;
 }
 
