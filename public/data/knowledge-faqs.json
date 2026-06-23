@@ -1,0 +1,70 @@
+{
+  "acquisition": [
+    {
+      "question": "What is an OTA (Other Transaction Authority) and why does it matter for defense-tech startups?",
+      "answer": "An OTA is a contracting instrument outside the FAR, authorized under 10 U.S.C. 4021 and 4022, that DoD uses for prototype and research efforts. It lets program offices move faster, negotiate flexible terms, and engage nontraditional contractors without standard FAR/DFARS clauses. For startups, OTAs lower the barrier to a first award, but watch the transition: a prototype OTA that meets its terms can convert to a follow-on production contract without re-competition."
+    },
+    {
+      "question": "What's the difference between an FFP, T&M, and cost-reimbursement contract in DoD?",
+      "answer": "Firm-fixed-price (FFP) pays a set amount regardless of your costs, so you carry the risk and keep the upside. Time-and-materials (T&M) pays labor hours at fixed rates plus materials, used when scope is uncertain. Cost-reimbursement types like CPFF and CPIF repay allowable costs plus a fee, shifting risk to the government but requiring an approved accounting system. DAU's Contract Type Comparison and Contracting Cone map which applies at each dollar threshold."
+    },
+    {
+      "question": "What is PPBE and how does it affect when a program office can buy my product?",
+      "answer": "PPBE (Planning, Programming, Budgeting, and Execution) is DoD's annual resource cycle that decides what gets funded years in advance. Money is appropriated by color: RDT&E for research, Procurement for production, O&M for sustainment. A program office can only spend the color and fiscal year already budgeted, so a pilot can stall if there's no programmed line for transition. Understanding the cycle tells you when funds actually become available."
+    },
+    {
+      "question": "How do I land a defense pilot that actually leads to a real contract?",
+      "answer": "Start by finding the program office that owns the requirement and the contracting officer who can obligate funds, then confirm there's a transition path before you sign. A pilot without programmed follow-on money is a demo, not a program. Tie your effort to a documented requirement and a future budget line, ideally through an OTA that can convert to production. The relationship with the program office, not the pilot itself, is what carries you to scale."
+    }
+  ],
+  "compliance": [
+    {
+      "question": "What are the CMMC 2.0 levels and which one do I need?",
+      "answer": "CMMC 2.0 has three levels. Level 1 (Foundational) covers basic FAR safeguarding of Federal Contract Information via 17 practices, self-assessed annually. Level 2 (Advanced) maps to the 110 controls in NIST SP 800-171 and applies when you handle CUI. Level 3 (Expert) adds NIST SP 800-172 controls for the most sensitive programs. Your required level is set by the contract's DFARS clause and the data you'll touch, not by your preference."
+    },
+    {
+      "question": "What's the difference between ITAR and CUI/NIST 800-171?",
+      "answer": "They're separate regimes that often overlap. ITAR, administered by the State Department's DDTC, governs export of defense articles and technical data on the U.S. Munitions List, including who can access that data. CUI is a marking and handling category for sensitive-but-unclassified government information, with the security baseline defined by NIST SP 800-171. ITAR technical data is frequently also CUI, so handling controls and export controls both apply at once."
+    },
+    {
+      "question": "Do I need a facility security clearance to win a DoD contract?",
+      "answer": "Not for most early work. A Facility Clearance (FCL) is only required when a contract demands access to classified information, and you generally can't self-sponsor one. A contracting activity or cleared prime sponsors your FCL through DCSA after you're on a classified requirement. Plenty of defense contracts, including most SBIR Phase I and II efforts and CUI-only work, run entirely at the unclassified level with no clearance needed."
+    },
+    {
+      "question": "Does CMMC 2.0 require a third-party assessment or can I self-assess?",
+      "answer": "It depends on level. Level 1 and a subset of Level 2 contracts allow annual self-assessment with a senior official's affirmation in SPRS. Most Level 2 contracts require a triennial third-party assessment by a C3PAO, and Level 3 is assessed by the government's DIBCAC. Before certification is contractually enforced, you can still post a NIST SP 800-171 self-assessment score in SPRS, which DFARS 252.204-7019/7020 already require."
+    }
+  ],
+  "sbir": [
+    {
+      "question": "What's the difference between SBIR Phase I and Phase II?",
+      "answer": "Phase I is a short feasibility study, typically six months, that proves your technical concept and earns the right to compete for Phase II. Phase II is the larger R&D effort, usually up to two years, that builds and demonstrates a prototype. Phase I winners are eligible to pursue Phase II; you generally cannot skip straight to Phase II without a qualifying Phase I award or a Direct-to-Phase-II solicitation."
+    },
+    {
+      "question": "Is SBIR funding non-dilutive, and why does that matter for defense founders?",
+      "answer": "Yes. SBIR and STTR awards are federal R&D contracts or grants, so they fund development without taking equity or requiring repayment. For defense founders, that means extending runway and de-risking technology while keeping your cap table intact. But treat it as fuel for a transition path, not the destination. A string of Phase I awards without a Phase III or program of record is a warning sign, not a milestone."
+    },
+    {
+      "question": "How does SBIR Phase III work and what does transition to a program of record mean?",
+      "answer": "Phase III is where SBIR-developed technology moves into production or operational use, funded by non-SBIR dollars. Critically, Phase III awards can be sole-sourced without further competition, drawing on your SBIR data rights. A program of record is a funded, budgeted acquisition program in the DoD's PPBE cycle. Transitioning means getting a mission owner to commit real procurement money, the difference between a successful pilot and a fielded capability."
+    },
+    {
+      "question": "What's the difference between SBIR and STTR?",
+      "answer": "Both are non-dilutive federal R&D programs with the same phase structure, but STTR requires formal partnership with a research institution such as a university or federal lab. STTR mandates that the research institution perform a minimum share of the work, while SBIR places more of the effort on the small business itself. Pick STTR when your technology depends on academic research collaboration; pick SBIR when your team carries the core development in-house."
+    }
+  ],
+  "go-to-market": [
+    {
+      "question": "What's the difference between a problem sponsor and a champion, and why do I need both?",
+      "answer": "A champion is an internal advocate who wants your capability; a problem sponsor is the program office or organization that owns the requirement, the money, and the authority to field it. Champions open doors, but sponsors carry the requirement through JCIDS and the budget process. Without a sponsor tied to color-of-money and a program of record, a pilot has no transition path and dies at demo."
+    },
+    {
+      "question": "How do AFWERX and DIU differ as entry points for defense tech founders?",
+      "answer": "AFWERX is the Air Force's innovation arm, with Spark (airman-led problems), Prime (commercial markets like agility prime), and Ventures pathways, often tied to SBIR/STTR funding. DIU is a DoD-wide unit that fields commercial technology across services, primarily through its Commercial Solutions Opening using OTAs. AFWERX is service-specific and SBIR-heavy; DIU is joint and prototype-OTA-driven. Choose based on where your end user and transition sponsor sit."
+    },
+    {
+      "question": "How should I price for government contracts as a startup?",
+      "answer": "Pricing depends on contract type. Firm-fixed-price (FFP) puts cost risk on you but rewards efficiency; time-and-materials (T&M) bills labor hours plus materials; cost-plus-fixed-fee (CPFF) reimburses allowable costs plus a set fee and demands robust accounting. Prototype OTAs often allow more commercial-style pricing. Match the structure to your cost certainty and the contracting vehicle, and account for color-of-money: RDT&E, procurement, and O&M funds aren't interchangeable."
+    }
+  ]
+}
