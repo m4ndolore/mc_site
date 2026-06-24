@@ -1,0 +1,332 @@
+{
+  "stages": [
+    {
+      "id": "preflight",
+      "number": 1,
+      "title": "Preflight",
+      "subtitle": "Prepare to succeed.",
+      "description": "Before anything else, learn how the system works. Who buys, how they buy, and where the money flows. This stage builds the mental model that keeps everything else from being wasted motion.",
+      "resources": [
+        {
+          "id": "contracting-cone",
+          "type": "external",
+          "title": "Contracting Cone",
+          "description": "Visual guide to contract types and dollar thresholds — DAU",
+          "url": "https://www.dau.edu/tools/t/Contracting-Cone",
+          "timeToRead": 15,
+          "order": 1,
+          "sourceLabel": "DAU"
+        },
+        {
+          "id": "far-startups",
+          "type": "external",
+          "title": "FAR for Startups",
+          "description": "Federal Acquisition Regulation — the rules governing DoD procurement",
+          "url": "https://www.acquisition.gov/browse/index/far",
+          "timeToRead": 25,
+          "order": 2,
+          "sourceLabel": "Acquisition.gov"
+        },
+        {
+          "id": "contract-types-explained",
+          "type": "external",
+          "title": "Contract Types Explained",
+          "description": "FFP, T&M, CPFF, CPIF — when to use each and what they mean",
+          "url": "https://www.dau.edu/tools/t/Contract-Type-Comparison",
+          "timeToRead": 20,
+          "order": 3,
+          "sourceLabel": "DAU"
+        },
+        {
+          "id": "ppbe-overview",
+          "type": "external",
+          "title": "Understanding PPBE",
+          "description": "Planning, Programming, Budgeting, and Execution cycle",
+          "url": "https://acqnotes.com/acqnote/acquisitions/ppbe-overview",
+          "timeToRead": 15,
+          "order": 4,
+          "sourceLabel": "AcqNotes"
+        },
+        {
+          "id": "signals-feed",
+          "type": "signal",
+          "title": "Signals Feed",
+          "description": "Live intel from Breaking Defense, ExecutiveGov, and Merge Combinator analysis",
+          "internalLink": "/signals",
+          "timeToRead": 5,
+          "order": 5
+        },
+        {
+          "id": "ecosystem-map",
+          "type": "gated",
+          "title": "Defense Ecosystem Map",
+          "description": "Interactive map of commands, agencies, and innovation units",
+          "gateType": "guild",
+          "gateName": "Guild — Free",
+          "timeToRead": 30,
+          "order": 6
+        }
+      ]
+    },
+    {
+      "id": "spot",
+      "number": 2,
+      "title": "Spot",
+      "subtitle": "Where you are and what's next.",
+      "description": "Identify the mission problem you solve and the acquisition pathway that fits. Match your technology to active demand signals — SBIR topics, CSOs, OTAs, or direct engagement with problem sponsors.",
+      "resources": [
+        {
+          "id": "problem-sponsor",
+          "type": "external",
+          "title": "Finding Problem Sponsors",
+          "description": "DAU guide to identifying and engaging problem sponsors in DoD",
+          "url": "https://www.dau.edu/tools/t/Problem-Sponsor",
+          "timeToRead": 20,
+          "order": 1,
+          "sourceLabel": "DAU"
+        },
+        {
+          "id": "afwerx-pathways",
+          "type": "external",
+          "title": "AFWERX Engagement Pathways",
+          "description": "Air Force innovation pathways: Spark, Prime, and Ventures",
+          "url": "https://afwerx.com/divisions/",
+          "timeToRead": 15,
+          "order": 2,
+          "sourceLabel": "AFWERX"
+        },
+        {
+          "id": "diu-cso",
+          "type": "external",
+          "title": "DIU Commercial Solutions Opening",
+          "description": "How to engage Defense Innovation Unit through CSO process",
+          "url": "https://www.diu.mil/work-with-us",
+          "timeToRead": 15,
+          "order": 3,
+          "sourceLabel": "DIU"
+        },
+        {
+          "id": "ota-guide",
+          "type": "external",
+          "title": "Other Transaction Authority Guide",
+          "description": "OTA vs traditional FAR-based contracts — DAU",
+          "url": "https://aaf.dau.edu/aaf/ota/",
+          "timeToRead": 20,
+          "order": 4,
+          "sourceLabel": "DAU"
+        },
+        {
+          "id": "opportunities-board",
+          "type": "signal",
+          "title": "Opportunities Board",
+          "description": "Live solicitations from SBIR, DARPA, DIU, SAM.gov, and more",
+          "internalLink": "/opportunities",
+          "timeToRead": 5,
+          "order": 5
+        },
+        {
+          "id": "sbir-topics",
+          "type": "external",
+          "title": "SBIR Topic Search",
+          "description": "Find open SBIR/STTR topics across all federal agencies",
+          "url": "https://www.sbir.gov/topics",
+          "timeToRead": 15,
+          "order": 6,
+          "sourceLabel": "SBIR.gov"
+        },
+        {
+          "id": "pricing-strategies",
+          "type": "gated",
+          "title": "Pricing Strategies for Government Contracts",
+          "description": "How to structure pricing for FFP, T&M, and CPFF contracts",
+          "gateType": "builders",
+          "gateName": "Defense Builders",
+          "timeToRead": 25,
+          "order": 7
+        }
+      ]
+    },
+    {
+      "id": "ready",
+      "number": 3,
+      "title": "Ready for Launch",
+      "subtitle": "Get connected.",
+      "description": "Land your first contract vehicle. Get compliant, write proposals that win, and connect your solution to the acquisition system. This is where most startups stall — the bureaucratic interface between innovation and procurement.",
+      "resources": [
+        {
+          "id": "phase-1-guide",
+          "type": "external",
+          "title": "Phase I Proposal Guide",
+          "description": "SBIR.gov official tutorial on writing winning proposals",
+          "url": "https://www.sbir.gov/tutorials/preparing-proposals/tutorial-1",
+          "timeToRead": 30,
+          "order": 1,
+          "sourceLabel": "SBIR.gov"
+        },
+        {
+          "id": "cmmc-2-0",
+          "type": "external",
+          "title": "CMMC 2.0 Requirements",
+          "description": "Official DoD CMMC program overview and maturity levels",
+          "url": "https://dodcio.defense.gov/CMMC/",
+          "timeToRead": 25,
+          "order": 2,
+          "sourceLabel": "DoD CIO"
+        },
+        {
+          "id": "itar-basics",
+          "type": "external",
+          "title": "ITAR Basics for Startups",
+          "description": "State Department ITAR portal — registration and compliance basics",
+          "url": "https://www.pmddtc.state.gov/ddtc_public/ddtc_public?id=ddtc_public_portal_itar_landing",
+          "timeToRead": 20,
+          "order": 3,
+          "sourceLabel": "State Dept"
+        },
+        {
+          "id": "cui-handbook",
+          "type": "external",
+          "title": "CUI Marking Handbook",
+          "description": "NARA guide to marking and handling Controlled Unclassified Information",
+          "url": "https://www.archives.gov/files/cui/documents/20161206-cui-marking-handbook-v1-1-20190524.pdf",
+          "timeToRead": 20,
+          "order": 4,
+          "sourceLabel": "NARA"
+        },
+        {
+          "id": "security-clearance",
+          "type": "external",
+          "title": "Security Clearance Process",
+          "description": "DCSA FAQ on obtaining and maintaining clearances",
+          "url": "https://www.dcsa.mil/is/security-clearance-faqs/",
+          "timeToRead": 15,
+          "order": 5,
+          "sourceLabel": "DCSA"
+        },
+        {
+          "id": "proposal-playbook",
+          "type": "gated",
+          "title": "Proposal Writing Playbook",
+          "description": "Merge Combinator framework for structuring winning SBIR/OTA proposals",
+          "gateType": "builders",
+          "gateName": "Defense Builders",
+          "timeToRead": 45,
+          "order": 6
+        }
+      ]
+    },
+    {
+      "id": "tension",
+      "number": 4,
+      "title": "Tension",
+      "subtitle": "Build to full power.",
+      "description": "You won a contract and built the prototype. Now the tension builds to production and scale. Build the relationships, evidence, and end user demand that launches you over the valley of death.",
+      "resources": [
+        {
+          "id": "valley-of-death",
+          "type": "learn",
+          "title": "Valley of Death Survival Guide",
+          "description": "John Ferry — 351 pages, read online. The foundational playbook for crossing the valley.",
+          "internalLink": "/learn/read?src=/content/web_small.pdf",
+          "timeToRead": 180,
+          "order": 1
+        },
+        {
+          "id": "don-phase-3",
+          "type": "external",
+          "title": "DON Phase III Guidebook",
+          "description": "Navy SBIR/STTR guide to transitioning funded work into production contracts",
+          "url": "https://www.navysbir.com/docs/DON-SBIR_STTR_Phase-III_Guidebook_V2-2020.pdf",
+          "timeToRead": 40,
+          "order": 2,
+          "sourceLabel": "Navy SBIR"
+        },
+        {
+          "id": "interceptor-analysis",
+          "type": "signal",
+          "title": "The Interceptor Math Is Broken",
+          "description": "Merge Combinator Analysis — why affordable mass matters for your production story",
+          "internalLink": "/signals/interceptor-stockpile-crisis",
+          "timeToRead": 8,
+          "order": 3
+        },
+        {
+          "id": "valley-navigator",
+          "type": "gated",
+          "title": "Valley of Death Navigator",
+          "description": "Interactive decision framework for prototype-to-production transitions",
+          "gateType": "builders",
+          "gateName": "Defense Builders",
+          "timeToRead": 60,
+          "order": 4
+        },
+        {
+          "id": "operator-validation",
+          "type": "gated",
+          "title": "Operator Validation Toolkit",
+          "description": "Templates and frameworks for building warfighter evidence",
+          "gateType": "guild",
+          "gateName": "Guild — Free",
+          "timeToRead": 45,
+          "order": 5
+        }
+      ]
+    },
+    {
+      "id": "launch",
+      "number": 5,
+      "title": "Launch",
+      "subtitle": "Go operational.",
+      "description": "Production contracts, follow-on awards, colors of money, B2B partnerships, and lifecycle optimization. You're building the team and the right team members change everything.",
+      "resources": [
+        {
+          "id": "ulysses-case-study",
+          "type": "signal",
+          "title": "From Combine to Series A: Ulysses",
+          "description": "Merge Combinator Case Study — what operator-validated formation actually produces",
+          "internalLink": "/signals/ulysses-combine-to-series-a",
+          "timeToRead": 10,
+          "order": 1
+        },
+        {
+          "id": "vc-alignment-problem",
+          "type": "signal",
+          "title": "The $16B Alignment Problem",
+          "description": "Merge Combinator Analysis — whether the system can absorb the capital flowing in",
+          "internalLink": "/signals/vc-defense-alignment-problem",
+          "timeToRead": 10,
+          "order": 2
+        },
+        {
+          "id": "army-acquisition",
+          "type": "signal",
+          "title": "The Army Is Rewriting How It Buys Technology",
+          "description": "Merge Combinator Analysis — acquisition restructured around software velocity",
+          "internalLink": "/signals/army-rewriting-acquisition",
+          "timeToRead": 10,
+          "order": 3
+        },
+        {
+          "id": "production-playbook",
+          "type": "gated",
+          "title": "Production Contract Playbook",
+          "description": "Strategies for follow-on, sole-source justification, and teaming",
+          "gateType": "builders",
+          "gateName": "Defense Builders",
+          "timeToRead": 40,
+          "order": 4
+        },
+        {
+          "id": "prime-teaming",
+          "type": "gated",
+          "title": "Prime Teaming & Subcontractor Strategy",
+          "description": "How to structure partnerships that scale",
+          "gateType": "builders",
+          "gateName": "Defense Builders",
+          "timeToRead": 35,
+          "order": 5
+        }
+      ]
+    }
+  ]
+}
