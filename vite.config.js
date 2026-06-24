@@ -86,6 +86,7 @@ export default defineConfig({
         'knowledge-defense-venture-studio': resolve(__dirname, 'knowledge/defense-venture-studio.html'),
         'knowledge-first-principles': resolve(__dirname, 'knowledge/first-principles-engineering.html'),
         // Signals articles
+        'signals-cheap-missiles': resolve(__dirname, 'signals/cheap-missiles-next-air-war.html'),
         'signals-counter-drone': resolve(__dirname, 'signals/counter-drone-jiatf-401.html'),
         'signals-ndaa': resolve(__dirname, 'signals/ndaa-speed-act.html'),
         'signals-eisenhower': resolve(__dirname, 'signals/uss-eisenhower-lessons.html'),
