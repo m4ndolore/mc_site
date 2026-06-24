@@ -54,6 +54,63 @@ const LEGACY_PATH_REDIRECTS = new Map([
 ]);
 
 // ────────────────────────────────────────────────────────────────────────────
+// AI traffic detection (AEO measurement)
+//
+// Two signals, both observable only at the edge:
+//   - AI crawler bots (no JS, invisible to GA4) → matched on User-Agent
+//   - AI-assistant referrals (a human clicking through from an AI answer)
+//     → matched on the Referer host
+// ────────────────────────────────────────────────────────────────────────────
+
+// User-Agent substrings → AI crawler label. Lowercased comparison.
+const AI_BOT_UAS = [
+  ["gptbot", "openai"],
+  ["oai-searchbot", "openai"],
+  ["chatgpt-user", "openai"],
+  ["perplexitybot", "perplexity"],
+  ["perplexity-user", "perplexity"],
+  ["claudebot", "anthropic"],
+  ["anthropic-ai", "anthropic"],
+  ["claude-web", "anthropic"],
+  ["google-extended", "google"],
+  ["googleother", "google"],
+  ["bingbot", "microsoft"],
+  ["amazonbot", "amazon"],
+  ["bytespider", "bytedance"],
+  ["ccbot", "commoncrawl"],
+];
+
+// Referer host substrings → AI assistant label (human click-through).
+const AI_REFERRER_HOSTS = [
+  ["chatgpt.com", "openai"],
+  ["chat.openai.com", "openai"],
+  ["perplexity.ai", "perplexity"],
+  ["gemini.google.com", "google"],
+  ["bard.google.com", "google"],
+  ["copilot.microsoft.com", "microsoft"],
+  ["bing.com/chat", "microsoft"],
+  ["claude.ai", "anthropic"],
+  ["you.com", "you"],
+  ["phind.com", "phind"],
+];
+
+// Classify a request as AI crawler, AI referral, or neither.
+// Returns null for ordinary traffic (nothing logged), or { kind, vendor, source }.
+function classifyAiTraffic(request) {
+  const ua = (request.headers.get("user-agent") || "").toLowerCase();
+  for (const [needle, vendor] of AI_BOT_UAS) {
+    if (ua.includes(needle)) return { kind: "crawl", vendor, source: needle };
+  }
+  const referer = (request.headers.get("referer") || "").toLowerCase();
+  if (referer) {
+    for (const [needle, vendor] of AI_REFERRER_HOSTS) {
+      if (referer.includes(needle)) return { kind: "referral", vendor, source: needle };
+    }
+  }
+  return null;
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 // MC Pages HTML Transformation (Turnstile injection)
 // ────────────────────────────────────────────────────────────────────────────
 
@@ -212,6 +269,31 @@ export default {
     if (ALIAS_HOSTS.has(host)) {
       url.hostname = CANONICAL_HOST;
       return Response.redirect(url.toString(), 301);
+    }
+
+    // 1.05) AI traffic measurement (fire-and-forget, no cookies).
+    // Logs AI-crawler hits and AI-assistant referrals to Analytics Engine so we
+    // can see whether the knowledge/AEO work is getting cited and clicked.
+    if (env.AI_TRAFFIC) {
+      const ai = classifyAiTraffic(request);
+      if (ai) {
+        try {
+          env.AI_TRAFFIC.writeDataPoint({
+            // blobs are queryable string dimensions; index1 = vendor for grouping
+            blobs: [
+              ai.kind,                                              // "crawl" | "referral"
+              ai.vendor,                                            // openai | perplexity | anthropic | …
+              ai.source,                                           // matched UA/referer needle
+              url.pathname,                                         // which page
+              (request.headers.get("user-agent") || "").slice(0, 256),
+            ],
+            doubles: [1],
+            indexes: [ai.vendor],
+          });
+        } catch (e) {
+          console.error("[mc-router] ai traffic write failed", e);
+        }
+      }
     }
 
     // 1.1) Legacy subdomain redirects (e.g. app.* → guild.*)

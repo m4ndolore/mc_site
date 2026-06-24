@@ -53,6 +53,11 @@ WINGMAN_CONSOLE_ENABLED = "false"
 binding = "OUTBOUND_CLICKS"
 dataset = "mc_outbound_clicks"
 
+# AI traffic analytics — AI-assistant referrals + AI crawler bot hits (raw event stream)
+[[analytics_engine_datasets]]
+binding = "AI_TRAFFIC"
+dataset = "mc_ai_traffic"
+
 # -----------------------------------------------------------------------------
 # Staging environment - for testing changes before production
 # Deploy with: wrangler deploy --env staging
@@ -81,6 +86,10 @@ WINGMAN_CONSOLE_ENABLED = "false"
 binding = "OUTBOUND_CLICKS"
 dataset = "mc_outbound_clicks_staging"
 
+[[env.staging.analytics_engine_datasets]]
+binding = "AI_TRAFFIC"
+dataset = "mc_ai_traffic_staging"
+
 # -----------------------------------------------------------------------------
 # Local development overrides (source of truth: config/dev.local.yaml)
 # Run with: wrangler dev --env dev
@@ -102,3 +111,7 @@ WINGMAN_CONSOLE_ENABLED = "false"
 [[env.dev.analytics_engine_datasets]]
 binding = "OUTBOUND_CLICKS"
 dataset = "mc_outbound_clicks_dev"
+
+[[env.dev.analytics_engine_datasets]]
+binding = "AI_TRAFFIC"
+dataset = "mc_ai_traffic_dev"
