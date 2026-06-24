@@ -20,6 +20,8 @@
 
 /
   Cache-Control: public, max-age=0, must-revalidate
+  # Agent discovery (RFC 8288): point AI agents/crawlers at machine-readable resources
+  Link: </llms.txt>; rel="describedby"; type="text/plain", </llms-full.txt>; rel="service-doc"; type="text/plain", </sitemap.xml>; rel="sitemap"; type="application/xml"
 
 # CORS for API data - allow console subdomain
 /data/*
