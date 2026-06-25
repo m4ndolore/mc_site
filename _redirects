@@ -2,10 +2,10 @@
 # Note: CF Pages automatically serves .html files without extension
 # Only add redirects for non-standard routing here
 
-# Curriculum SPA - serve index.html for all /curriculum paths and subpaths
-/curriculum /curriculum/index.html 301
-/curriculum/ /curriculum/index.html 301
-/curriculum/* /curriculum/index.html 301
+# Curriculum SPA - rewrite (not redirect) to index for all /curriculum paths
+/curriculum /curriculum/index 200
+/curriculum/ /curriculum/index 200
+/curriculum/* /curriculum/index 200
 
 /join /access?context=combine 301
 /marketplace /access 301
