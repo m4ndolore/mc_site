@@ -67,7 +67,7 @@ export function MetricsDashboard({ adminToken }: { adminToken: string }) {
               const percentage =
                 idx === 0
                   ? 100
-                  : Math.round((stage.value / conversionFunnel[idx - 1].value) * 100);
+                  : Math.round((stage.value / (conversionFunnel[idx - 1]?.value ?? 1)) * 100);
               return (
                 <tr key={stage.label} style={{ borderBottom: '1px solid var(--mc-border)' }}>
                   <td style={{ padding: '0.75rem' }}>{stage.label}</td>

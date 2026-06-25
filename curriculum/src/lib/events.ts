@@ -1,5 +1,6 @@
 export type CurriculumEventType =
   | "content_click"
+  | "curriculum_view"
   | "resource_view"
   | "stage_complete"
   | "advance_request"
@@ -11,6 +12,7 @@ export interface LogEventOptions {
   eventType: CurriculumEventType;
   stageId?: string;
   resourceId?: string;
+  funderId?: string;
   metadata?: Record<string, unknown>;
 }
 

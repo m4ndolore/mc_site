@@ -44,3 +44,6 @@ export interface AppVars {
   user: UserContext
   guildUserId: string
 }
+
+// Database type for Supabase client
+export type Database = any // Will be properly typed with Supabase generated types

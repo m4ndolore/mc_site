@@ -196,7 +196,7 @@ curriculum.post('/advance-request', async (c) => {
       engagedResources: [],
       completedResources: [],
       savedResources: [],
-      triageResponses: {},
+      triageResponses: null,
       advanceRequests: [],
       lastVisited: new Date().toISOString(),
     }

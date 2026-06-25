@@ -5,13 +5,21 @@
     <link>https://mergecombinator.com/signals</link>
     <description>Perspectives on defense innovation, operator-driven development, and the future of national security technology.</description>
     <language>en-us</language>
-    <lastBuildDate>Tue, 23 Jun 2026 05:27:32 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 24 Jun 2026 08:07:50 GMT</lastBuildDate>
     <atom:link href="https://mergecombinator.com/signals.rss" rel="self" type="application/rss+xml"/>
     <image>
       <url>/assets/logowhite.png</url>
       <title>Merge Combinator</title>
       <link>https://mergecombinator.com</link>
     </image>
+    <item>
+      <title>Drones Were the First Chapter</title>
+      <link>https://mergecombinator.com/signals/cheap-missiles-next-air-war</link>
+      <guid isPermaLink="true">https://mergecombinator.com/signals/cheap-missiles-next-air-war</guid>
+      <pubDate>Tue, 23 Jun 2026 00:00:00 GMT</pubDate>
+      <category>Analysis</category>
+      <description>Russia is bolting turbojets onto Shahed airframes faster than interceptor drones can catch them. The budget is buying the last war. The cost-exchange reset is moving to cheap autonomous missiles.</description>
+    </item>
     <item>
       <title>A Disciplined Case for the A-10</title>
       <link>https://mergecombinator.com/signals/disciplined-case-for-the-a-10</link>

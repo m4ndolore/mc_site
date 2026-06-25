@@ -13,7 +13,6 @@ function CurriculumPage({ funderId }: CurriculumPageProps): React.JSX.Element {
   const { curriculum, loading: curriculumLoading, error: curriculumError } = useCurriculum();
   const { progress, loading: progressLoading, updateProgress } = useProgress(funderId);
   const [showAdvanceDialog, setShowAdvanceDialog] = useState(false);
-  const [lastResource, setLastResource] = useState<string | null>(null);
 
   useEffect(() => {
     // Track curriculum_view event on mount
@@ -73,7 +72,6 @@ function CurriculumPage({ funderId }: CurriculumPageProps): React.JSX.Element {
 
   const handleResourceClick = async (resourceId: string) => {
     // Track resource engagement
-    setLastResource(resourceId);
     const updatedResources = {
       ...progress.completedResources,
       [resourceId]: true,
@@ -92,7 +90,7 @@ function CurriculumPage({ funderId }: CurriculumPageProps): React.JSX.Element {
     await logEvent({
       eventType: "advance_request",
       stageId: currentStage.id,
-      funderId,
+      funderId: funderId,
       metadata: { reason },
     });
 
