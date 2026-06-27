@@ -14,8 +14,27 @@ function plausiblePlugin() {
   }
 }
 
+/** Mount the Anymouse quick-capture widget on every page. The init module
+ *  (js/anymouse-init.js) self-gates: it shows for everyone and prompts sign-in
+ *  on Save when logged out. Vite resolves and bundles the referenced module. */
+function anymousePlugin() {
+  return {
+    name: 'inject-anymouse',
+    // `order: 'pre'` runs this before Vite analyses HTML entries, so the
+    // injected local module is picked up by the build graph (bundled + hashed)
+    // rather than left as a dead literal src.
+    transformIndexHtml: {
+      order: 'pre',
+      handler(html) {
+        const script = '<script type="module" src="/js/anymouse-init.js"></script>'
+        return html.replace('</body>', `  ${script}\n</body>`)
+      },
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [preact(), plausiblePlugin()],
+  plugins: [preact(), plausiblePlugin(), anymousePlugin()],
   resolve: {
     alias: {
       'react': 'preact/compat',
@@ -86,6 +105,7 @@ export default defineConfig({
         'knowledge-defense-venture-studio': resolve(__dirname, 'knowledge/defense-venture-studio.html'),
         'knowledge-first-principles': resolve(__dirname, 'knowledge/first-principles-engineering.html'),
         // Signals articles
+        'signals-cheap-missiles': resolve(__dirname, 'signals/cheap-missiles-next-air-war.html'),
         'signals-counter-drone': resolve(__dirname, 'signals/counter-drone-jiatf-401.html'),
         'signals-ndaa': resolve(__dirname, 'signals/ndaa-speed-act.html'),
         'signals-eisenhower': resolve(__dirname, 'signals/uss-eisenhower-lessons.html'),
