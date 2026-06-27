@@ -14,8 +14,27 @@ function plausiblePlugin() {
   }
 }
 
+/** Mount the Anymouse quick-capture widget on every page. The init module
+ *  (js/anymouse-init.js) self-gates: it shows for everyone and prompts sign-in
+ *  on Save when logged out. Vite resolves and bundles the referenced module. */
+function anymousePlugin() {
+  return {
+    name: 'inject-anymouse',
+    // `order: 'pre'` runs this before Vite analyses HTML entries, so the
+    // injected local module is picked up by the build graph (bundled + hashed)
+    // rather than left as a dead literal src.
+    transformIndexHtml: {
+      order: 'pre',
+      handler(html) {
+        const script = '<script type="module" src="/js/anymouse-init.js"></script>'
+        return html.replace('</body>', `  ${script}\n</body>`)
+      },
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [preact(), plausiblePlugin()],
+  plugins: [preact(), plausiblePlugin(), anymousePlugin()],
   resolve: {
     alias: {
       'react': 'preact/compat',
