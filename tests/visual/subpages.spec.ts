@@ -23,6 +23,12 @@ async function hideAnimatedElements(page: Page) {
       .video-bg__placeholder {
         animation: none !important;
       }
+      /* The Anymouse quick-capture widget is an animated overlay (breathing
+         icon, first-visit coachmark) injected on every page. It's verified
+         separately; hide it here so page-layout baselines stay stable. */
+      .anymouse-root {
+        display: none !important;
+      }
     `,
   });
   await page.waitForTimeout(100);

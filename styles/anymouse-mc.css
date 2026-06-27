@@ -1,0 +1,43 @@
+/* anymouse-mc.css — mc_site-specific theming for the Anymouse widget.
+ *
+ * The shared widget (js/lib/anymouse.js) ships dark-default styles, which are
+ * correct for MC's default dark theme. MC also has a LIGHT theme, toggled by a
+ * `.light-theme` class on <html>/<body> (see js/theme.js). These overrides only
+ * apply in light mode:
+ *   1. The mouse icon is light-on-dark by default and becomes invisible on a
+ *      light page — recolor its outline/ears/tail to a dark tone.
+ *   2. Re-skin the capture panel to a light surface via the widget's
+ *      --anymouse-* theme tokens (panel/tiles/input/text), since the widget's
+ *      defaults are tuned for dark.
+ *
+ * The widget injects its own <style id="anymouse-styles"> at runtime; this
+ * sheet is loaded alongside it and wins via the .light-theme scope (higher
+ * specificity than the widget's unscoped defaults). */
+
+/* ---- 1. Icon visibility on light backgrounds ---- */
+.light-theme .anymouse-shell {
+  fill: rgba(10, 10, 10, 0.08);          /* faint dark fill for body presence */
+  stroke: var(--mc-black, #0a0a0a);      /* dark outline reads on light page */
+}
+.light-theme .anymouse-ear {
+  fill: var(--mc-black, #0a0a0a);        /* solid dark ears */
+}
+.light-theme .anymouse-tail {
+  stroke: var(--mc-black, #0a0a0a);
+}
+/* The blue scroll-wheel accent (--anymouse-wheel/--mc-blue) stays — it reads on
+   both themes. Soften the drop-shadow, which was tuned to lift a light icon off
+   a dark page; on light it just adds muddiness. */
+.light-theme .anymouse-button .anymouse-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* ---- 2. Light panel surface via widget theme tokens ---- */
+.light-theme .anymouse-panel {
+  --anymouse-surface: var(--color-white, #ffffff);
+  --anymouse-border: var(--color-light-gray, #e0e0e0);
+  --anymouse-text: var(--mc-black, #0a0a0a);
+  --anymouse-muted: var(--mc-ghost-gray, #6b6b6b);
+  --anymouse-tile-bg: var(--color-white, #ffffff);
+  --anymouse-input-bg: var(--color-white, #ffffff);
+}
