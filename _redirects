@@ -1,12 +1,8 @@
-# Cloudflare Pages redirects
-# Note: CF Pages automatically serves .html files without extension
-# Only add redirects for non-standard routing here
+# SPA rewrite for curriculum  
+/curriculum/ /curriculum/index.html 200
+/curriculum /curriculum/index.html 200
 
-# Curriculum SPA - single-page app routing
-# Note: For Cloudflare Pages, we can't use 200 rewrites for SPA routing.
-# The curriculum is deployed at /curriculum/ and should be accessed as a static site.
-# SPA routing is handled client-side within the React/Preact app.
-
+# Other redirects
 /join /access?context=combine 301
 /marketplace /access 301
 /guild /access 301
