@@ -1,9 +1,5 @@
 {
   "version": 1,
-  "include": [
-    "/curriculum/*"
-  ],
-  "exclude": [
-    "/curriculum/assets/*"
-  ]
+  "include": ["/curriculum/*"],
+  "exclude": ["/curriculum/assets/*"]
 }
