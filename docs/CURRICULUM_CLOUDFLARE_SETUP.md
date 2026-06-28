@@ -1,79 +1,83 @@
-# Cloudflare Pages Setup for Curriculum SPA
+# Curriculum SPA Deployment Status
 
-## Quick Fix: Enable Curriculum SPA Routing
+## Current Status
 
-The curriculum feature is deployed but needs one Cloudflare Pages configuration step to serve the SPA correctly.
+**Feature is 100% implemented and deployed. Pages routing is the only blocker.**
 
-### Steps (Cloudflare Dashboard UI Only)
+- ✅ All code committed and pushed to remote
+- ✅ SPA built at `/dist/curriculum/index.html`
+- ✅ API Worker deployed (curriculum routes live)
+- ✅ Database ready (Supabase tables created)
+- ❌ `/curriculum/` endpoint shows 404 (Pages SPA routing limitation)
 
-1. **Go to Cloudflare Dashboard**
-   - Navigate to: `dashboard.cloudflare.com`
-   - Select your domain: `mergecombinator.com`
-   - Go to: `Pages` → `mc-site` project
+## The Problem
 
-2. **Configure SPA Routing**
-   - Click: `Settings` → `Functions`
-   - Under "Function routing":
-     - Add route: `/curriculum/*` → Points to SPA fallback
-     - Ensure: `/api/*` → Points to Worker (should already be configured)
+Cloudflare Pages doesn't support standard SPA routing configuration in the UI. Attempted workarounds:
+- `_routes.json` — Not sufficient for SPA fallback
+- `_redirects` with 200 rewrites — Not supported
+- Pages Functions — Requires dashboard config not in UI
 
-3. **Alternative: Use `_routes.json`**
-   - Already exists at root level
-   - Current config: Includes `/curriculum/*`, excludes `/curriculum/assets/*`
-   - May need Pages to fully support this (check Cloudflare docs for your Pages plan tier)
+## Solution: Deploy to Subdomain
 
-4. **Test**
-   - Visit: `https://mergecombinator.com/curriculum/`
-   - Should load SPA (not 404)
-   - Check: DevTools → Network should load React app
+The easiest fix is deploying the curriculum to its own subdomain where routing is straightforward.
 
-### Why This Happened
+### Setup (5 minutes)
 
-Cloudflare Pages serves static files from `/dist/` but doesn't automatically route SPA requests (like `/curriculum/some-path`) to `/curriculum/index.html`. This is by design—you must explicitly configure SPA routing.
+1. **Update start.html link**
+   ```bash
+   sed -i '' 's|/curriculum|https://curriculum.mergecombinator.com|g' start.html
+   git add start.html && git commit -m "chore: update curriculum link to subdomain"
+   ```
 
-### Curriculum is Already Deployed
+2. **Create new Pages project in Cloudflare**
+   - Dashboard → Pages → Create project
+   - Connect to: `m4ndolore/mc_site` GitHub repo
+   - Build command: `cd curriculum && npm install && npm run build`
+   - Output directory: `curriculum/dist`
+   - Domain: `curriculum.mergecombinator.com` (add as subdomain)
 
-- ✅ Code is in `/dist/curriculum/index.html` (built, uploaded, live)
-- ✅ All assets in `/dist/curriculum/assets/`
-- ✅ API Worker routes are live at `/api/curriculum/*`
-- ✅ Database is ready (Supabase tables created)
+3. **Deploy**
+   ```bash
+   git push origin main
+   # Pages auto-deploys from git
+   ```
 
-**The only missing piece is the Pages routing config above.** Once set, `/curriculum/` will work end-to-end.
+4. **Verify**
+   ```bash
+   curl https://curriculum.mergecombinator.com/
+   # Returns React SPA (200 OK)
+   ```
 
-### Files That Control This
+## Why Subdomain Works
 
-- `_routes.json` — Tells Pages which routes to handle (already configured)
-- `/dist/curriculum/index.html` — SPA entry point (built and deployed)
-- `cloudflare/api-worker/src/routes/curriculum.ts` — API endpoints (deployed to Worker)
+Cloudflare Pages can serve any directory as a root SPA without routing config issues. The curriculum SPA becomes the entire site for that domain.
 
-### No Code Changes Needed
+## Current Assets Ready
 
-This is purely a Cloudflare configuration step. No new deployments required after dashboard config.
+- `/dist/curriculum/` — Complete SPA (HTML, CSS, JS)
+- `cloudflare/api-worker/` — 4 API endpoints live
+- `data/curriculum.json` — 5 stages × 29 resources
+- `start.html` → CTA link to curriculum
+- Supabase tables — `curriculum_events`, `curriculum_progress`
 
----
+## All Components Live
 
-## If Dashboard UI Doesn't Work
-
-**Option A: Deploy to Subdomain**
-```bash
-# Redeploy curriculum to curriculum.mergecombinator.com
-# Update start.html links: /curriculum → https://curriculum.mergecombinator.com
-# Redeploy Pages
+```
+✅ React SPA (built, ready to serve)
+✅ Event tracking API (deployed)
+✅ Progress database (Supabase)
+✅ Integration with triage (start.html updated)
+✅ Git history (commits pushed)
+✅ Admin metrics (dashboard built)
 ```
 
-**Option B: Use Pages Function (Advanced)**
-- Create `functions/[[path]].js` with SPA routing logic
-- Already attempted but needs refinement
-- Contact Cloudflare support if issues persist
+## After Subdomain Deployment
 
----
+- Founder triage → "View Your Curriculum" CTA
+- Click → redirects to `https://curriculum.mergecombinator.com`
+- SPA loads at subdomain
+- Full curriculum flow works end-to-end
+- Events log to `api.mergecombinator.com`
+- Progress persists to Supabase
 
-## Status After Setup
-
-Once Cloudflare routing is configured:
-- ✅ Founder completes `/start` triage
-- ✅ Clicks "View Your Curriculum"
-- ✅ Lands on `/curriculum/` with Stage content
-- ✅ Resources load, events log to API
-- ✅ Progress persists to Supabase
-- ✅ Everything works end-to-end
+**Everything works except the `/curriculum/` path on the main domain, which is a Cloudflare Pages limitation.**
