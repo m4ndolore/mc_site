@@ -9,25 +9,6 @@ export default function CurriculumPage() {
   const { progress, updateProgress } = useProgress()
   const [currentStage, setCurrentStage] = useState(0)
 
-  // Load shared navbar and theme scripts
-  useEffect(() => {
-    // Load theme script
-    const themeScript = document.createElement('script')
-    themeScript.type = 'module'
-    themeScript.src = '/js/theme.js'
-    document.body.appendChild(themeScript)
-
-    // Load navbar script
-    const navbarScript = document.createElement('script')
-    navbarScript.type = 'module'
-    navbarScript.src = '/js/navbar.js'
-    document.body.appendChild(navbarScript)
-
-    return () => {
-      document.body.removeChild(themeScript)
-      document.body.removeChild(navbarScript)
-    }
-  }, [])
   const [sessionId] = useState(() => {
     const stored = sessionStorage.getItem('curriculum_session_id')
     if (stored) return stored
@@ -45,8 +26,12 @@ export default function CurriculumPage() {
     }
   }, [curriculum, progress, curriculumLoading])
 
-  if (curriculumLoading || !curriculum) {
+  if (curriculumLoading) {
     return <div className="curriculum-loading">Loading curriculum...</div>
+  }
+
+  if (!curriculum) {
+    return <div className="curriculum-loading" style={{ color: '#fff' }}>No curriculum data found. Check /data/curriculum.json</div>
   }
 
   const stage = curriculum.stages[currentStage]

@@ -9,12 +9,17 @@ export function useCurriculum() {
   useEffect(() => {
     const fetchCurriculum = async () => {
       try {
+        console.log('Fetching curriculum...')
         const response = await fetch('/data/curriculum.json')
-        if (!response.ok) throw new Error('Failed to load curriculum')
+        console.log('Fetch response:', response.status)
+        if (!response.ok) throw new Error('Failed to load curriculum: ' + response.status)
         const data = await response.json()
+        console.log('Curriculum loaded:', data)
         setCurriculum(data)
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error')
+        const message = err instanceof Error ? err.message : 'Unknown error'
+        console.error('Curriculum error:', message)
+        setError(message)
       } finally {
         setLoading(false)
       }

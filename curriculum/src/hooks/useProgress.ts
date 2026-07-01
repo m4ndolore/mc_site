@@ -20,15 +20,6 @@ export function useProgress() {
         if (stored) {
           setProgress(JSON.parse(stored))
         }
-
-        const response = await fetch('/api/curriculum/progress', {
-          headers: { 'Authorization': `Bearer ${localStorage.getItem('mc_session')}` },
-        })
-        if (response.ok) {
-          const data = await response.json()
-          setProgress(data)
-          localStorage.setItem('curriculum_progress', JSON.stringify(data))
-        }
       } catch (err) {
         console.error('Progress load error:', err)
       } finally {
