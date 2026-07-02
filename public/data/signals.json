@@ -1,6 +1,24 @@
 {
   "articles": [
     {
+      "id": "cheap-missiles-next-air-war",
+      "title": "Drones Were the First Chapter",
+      "excerpt": "Russia is bolting turbojets onto Shahed airframes faster than interceptor drones can catch them. The budget is buying the last war. The cost-exchange reset is moving to cheap autonomous missiles.",
+      "url": "/signals/cheap-missiles-next-air-war",
+      "date": "2026-06-23",
+      "category": "Analysis",
+      "author": "Paul Garcia, Founder",
+      "tags": [
+        "drones",
+        "missiles",
+        "counter-uas",
+        "cost-exchange",
+        "autonomy"
+      ],
+      "image": "",
+      "featured": false
+    },
+    {
       "id": "disciplined-case-for-the-a-10",
       "title": "A Disciplined Case for the A-10",
       "excerpt": "The Air Force says the A-10 flies until 2030. The budget says otherwise. Why proven combat power is being written off, and what it costs to wait.",
@@ -8,7 +26,12 @@
       "date": "2026-06-15",
       "category": "Analysis",
       "author": "Paul Garcia, Founder",
-      "tags": ["a-10", "air force", "readiness", "close air support"],
+      "tags": [
+        "a-10",
+        "air force",
+        "readiness",
+        "close air support"
+      ],
       "image": "/assets/signals/a10-sandy-delamar.jpg",
       "featured": true
     },
@@ -20,7 +43,12 @@
       "date": "2026-06-04",
       "category": "Acquisition",
       "author": "Pete Harlan, Missionized Tech Resident",
-      "tags": ["acquisition", "navy", "air force", "indo-pacific"],
+      "tags": [
+        "acquisition",
+        "navy",
+        "air force",
+        "indo-pacific"
+      ],
       "image": "/assets/signals/navy-af-restructure.jpg",
       "featured": true
     },
