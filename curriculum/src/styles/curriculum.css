@@ -1,7 +1,15 @@
+:root {
+  --black: #0a0a0a;
+  --offwhite: #e2e8f0;
+  --gray-light: #cbd5e1;
+  --gray-medium: #94a3b8;
+  --blue: #3b82f6;
+}
+
 .curriculum-page {
   min-height: 100vh;
-  background: var(--black);
-  color: var(--offwhite);
+  background: #0a0a0a;
+  color: #e2e8f0;
 }
 
 .curriculum-container {
@@ -16,7 +24,7 @@
   justify-content: center;
   min-height: 100vh;
   font-size: 1.1rem;
-  color: var(--gray-medium);
+  color: #94a3b8;
 }
 
 /* Stage View */
@@ -39,7 +47,7 @@
 
 .progress-bar {
   height: 4px;
-  background: var(--gray-light);
+  background: #cbd5e1;
   border-radius: 2px;
   overflow: hidden;
   margin-bottom: 12px;
@@ -47,13 +55,13 @@
 
 .progress-fill {
   height: 100%;
-  background: var(--blue);
+  background: #3b82f6;
   transition: width 0.3s ease;
 }
 
 .progress-label {
   font-size: 0.875rem;
-  color: var(--gray-medium);
+  color: #94a3b8;
   font-weight: 500;
 }
 
@@ -66,7 +74,7 @@
 
 .stage-description {
   font-size: 1.125rem;
-  color: var(--gray-light);
+  color: #cbd5e1;
   line-height: 1.6;
   margin: 0;
 }
@@ -120,7 +128,7 @@
 
 .resource-description {
   font-size: 0.95rem;
-  color: var(--gray-light);
+  color: #cbd5e1;
   margin: 0 0 12px;
   line-height: 1.5;
 }
@@ -129,7 +137,7 @@
   display: flex;
   gap: 12px;
   font-size: 0.875rem;
-  color: var(--gray-medium);
+  color: #94a3b8;
 }
 
 .resource-type {
@@ -138,7 +146,7 @@
 }
 
 .resource-duration {
-  color: var(--gray-medium);
+  color: #94a3b8;
 }
 
 /* Stage Actions */
@@ -152,7 +160,7 @@
 .stage-hint {
   margin-top: 12px;
   font-size: 0.95rem;
-  color: var(--gray-medium);
+  color: #94a3b8;
 }
 
 /* Advance Dialog */
@@ -171,7 +179,7 @@
 }
 
 .advance-dialog {
-  background: var(--black);
+  background: #0a0a0a;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 32px;
@@ -199,7 +207,7 @@
 
 .advance-dialog > p {
   margin: 0 0 24px;
-  color: var(--gray-light);
+  color: #cbd5e1;
 }
 
 .advance-options {
@@ -230,8 +238,8 @@
 }
 
 .advance-option.is-selected {
-  background: var(--blue);
-  border-color: var(--blue);
+  background: #3b82f6;
+  border-color: #3b82f6;
   color: white;
 }
 
@@ -258,7 +266,7 @@
 }
 
 .advance-textarea::placeholder {
-  color: var(--gray-medium);
+  color: #94a3b8;
 }
 
 .advance-actions {
@@ -281,7 +289,7 @@
 }
 
 .btn--primary {
-  background: var(--blue);
+  background: #3b82f6;
   color: white;
 }
 
