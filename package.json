@@ -18,7 +18,7 @@
     "claims:source-map": "node scripts/prepare-claim-source-map.mjs",
     "secrets:scan": "node scripts/scan-secrets.mjs",
     "lint": "eslint js/ scripts/ cloudflare/*.js cloudflare/test-router.mjs --max-warnings=0",
-    "build": "npm run seed && npm run enrich && npm run optimize && cp data/curriculum.json .curriculum-backup.json && vite build && mkdir -p dist/data && cp .curriculum-backup.json dist/data/curriculum.json && rm .curriculum-backup.json && npm run build:curriculum",
+    "build": "npm run seed && npm run enrich && npm run optimize && cp data/curriculum.json .curriculum-backup.json && cp public/curriculum.html .curriculum-backup.html && vite build && mkdir -p dist/data && cp .curriculum-backup.json dist/data/curriculum.json && cp .curriculum-backup.html dist/curriculum.html && rm .curriculum-backup.json .curriculum-backup.html && npm run build:curriculum",
     "build:curriculum": "cd curriculum && npm install && npm run build && cd .. && rm -rf dist/curriculum && mkdir -p dist/curriculum && cp -r curriculum/dist/* dist/curriculum/",
     "check:performance": "node scripts/check-performance-budget.mjs",
     "preview": "vite preview",
