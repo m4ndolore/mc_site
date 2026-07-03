@@ -42,6 +42,8 @@ h1.fp-lede { font-weight: inherit; }
   cursor: pointer; padding: 0;
 }
 .js-enhanced .cur-resource__check { display: flex; }
+.cur-resource__check:focus-visible,
+.cur-resource__link:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
 .cur-resource__check::before {
   content: ''; width: 18px; height: 18px;
   border: 1.5px solid var(--gray-medium); border-radius: 50%;
@@ -49,6 +51,8 @@ h1.fp-lede { font-weight: inherit; }
 }
 .cur-resource.is-engaged .cur-resource__check::before {
   border-color: var(--blue); background: var(--blue);
+  /* line-height 15px = 18px circle minus 2 × 1.5px border (border-box),
+     so the ✓ centers vertically inside the filled circle. */
   content: '✓'; color: #fff; font-size: 11px; line-height: 15px; text-align: center;
 }
 .cur-resource.is-engaged { border-color: rgba(59,130,246,0.35); }
@@ -90,6 +94,13 @@ h1.fp-lede { font-weight: inherit; }
 
 /* ── Progress segments: completed state (founder-path has is-active only) ── */
 .fp-progress__seg.is-complete { background: var(--blue); opacity: 0.45; }
+
+/* ── Light theme ── */
+/* The white-alpha borders above vanish on a white background; mirror
+   founder-path.css, which uses --ghost-gray for light-mode component borders. */
+.light-theme .cur-resource { border-color: var(--ghost-gray); }
+.light-theme .cur-resource__check { border-right-color: var(--ghost-gray); }
+.light-theme .cur-stage__actions { border-top-color: var(--ghost-gray); }
 
 @media (max-width: 640px) {
   .cur-resource__link { flex-direction: column; gap: 10px; }
