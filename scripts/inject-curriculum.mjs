@@ -16,6 +16,7 @@ const TYPE_LABEL = { external: 'External', gated: 'Gated', learn: 'Learn', signa
 
 const curriculum = JSON.parse(readFileSync(DATA, 'utf8'))
 const stages = curriculum.stages
+if (!Array.isArray(stages) || stages.length === 0) throw new Error('curriculum.json: stages missing or empty')
 
 function resourceRow(r, stageId) {
   const external = r.type === 'external'
@@ -76,7 +77,8 @@ const jsonld = JSON.stringify({
       '@type': 'ListItem', position: j + 1, name: r.title, url: r.url,
     })),
   })),
-}, null, 2)
+  // Escape < so data can never break out of the inline <script> tag (still valid JSON).
+}, null, 2).replace(/</g, '\\u003c')
 
 function inject(html, tag, content) {
   const re = new RegExp(`(<!-- CURRICULUM:${tag}:START -->)[\\s\\S]*?(<!-- CURRICULUM:${tag}:END -->)`)

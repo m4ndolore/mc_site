@@ -52,7 +52,6 @@
           "type": "signal",
           "title": "Signals Feed",
           "description": "Live intel from Breaking Defense, ExecutiveGov, and Merge Combinator analysis",
-          "internalLink": "/signals",
           "timeToRead": 5,
           "order": 5,
           "url": "/signals"
@@ -122,7 +121,6 @@
           "type": "signal",
           "title": "Opportunities Board",
           "description": "Live solicitations from SBIR, DARPA, DIU, SAM.gov, and more",
-          "internalLink": "/opportunities",
           "timeToRead": 5,
           "order": 5,
           "url": "/opportunities"
@@ -232,10 +230,9 @@
           "type": "learn",
           "title": "Valley of Death Survival Guide",
           "description": "John Ferry — 351 pages, read online. The foundational playbook for crossing the valley.",
-          "internalLink": "/learn/read?src=/content/web_small.pdf",
           "timeToRead": 180,
           "order": 1,
-          "url": "/learn"
+          "url": "/learn/read?src=/content/web_small.pdf"
         },
         {
           "id": "don-phase-3",
@@ -252,7 +249,6 @@
           "type": "signal",
           "title": "The Interceptor Math Is Broken",
           "description": "Merge Combinator Analysis — why affordable mass matters for your production story",
-          "internalLink": "/signals/interceptor-stockpile-crisis",
           "timeToRead": 8,
           "order": 3,
           "url": "/signals/interceptor-stockpile-crisis"
@@ -293,7 +289,6 @@
           "type": "signal",
           "title": "From Combine to Series A: Ulysses",
           "description": "Merge Combinator Case Study — what operator-validated formation actually produces",
-          "internalLink": "/signals/ulysses-combine-to-series-a",
           "timeToRead": 10,
           "order": 1,
           "url": "/signals/ulysses-combine-to-series-a"
@@ -303,7 +298,6 @@
           "type": "signal",
           "title": "The $16B Alignment Problem",
           "description": "Merge Combinator Analysis — whether the system can absorb the capital flowing in",
-          "internalLink": "/signals/vc-defense-alignment-problem",
           "timeToRead": 10,
           "order": 2,
           "url": "/signals/vc-defense-alignment-problem"
@@ -313,7 +307,6 @@
           "type": "signal",
           "title": "The Army Is Rewriting How It Buys Technology",
           "description": "Merge Combinator Analysis — acquisition restructured around software velocity",
-          "internalLink": "/signals/army-rewriting-acquisition",
           "timeToRead": 10,
           "order": 3,
           "url": "/signals/army-rewriting-acquisition"
