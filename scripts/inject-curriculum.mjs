@@ -18,6 +18,8 @@ const SITE = 'https://mergecombinator.com'
 const curriculum = JSON.parse(readFileSync(DATA, 'utf8'))
 const stages = curriculum.stages
 if (!Array.isArray(stages) || stages.length === 0) throw new Error('curriculum.json: stages missing or empty')
+const ids = stages.flatMap(s => s.resources.map(r => r.id))
+if (new Set(ids).size !== ids.length) throw new Error('curriculum.json: duplicate resource ids')
 
 function resourceRow(r, stageId) {
   const external = r.type === 'external'

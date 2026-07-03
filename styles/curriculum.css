@@ -80,6 +80,9 @@ h1.fp-lede { font-weight: inherit; }
   border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap;
 }
 .cur-stage__count { margin: 0; color: var(--gray-medium); font-size: 0.9rem; }
+/* .fp-btn's display:inline-flex beats the UA [hidden] rule — re-assert it
+   (mirrors founder-path.css .fp-resume[hidden]). */
+.cur-advance[hidden] { display: none; }
 
 /* ── Sidebar rail ── */
 .cur-rail__link { display: flex; align-items: center; gap: 10px; }

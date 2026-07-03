@@ -52,7 +52,7 @@ function init() {
       if (s && stageIds.includes(s.currentStage)) {
         return {
           currentStage: s.currentStage,
-          engaged: s.engaged || [],
+          engaged: Array.isArray(s.engaged) ? s.engaged : [],
           startedFrom: s.startedFrom || null,
           bannerDismissed: Boolean(s.bannerDismissed),
         };
@@ -82,6 +82,7 @@ function init() {
       bannerDismissed: false,
     };
     track("Curriculum Start", { stage: state.currentStage, fromTriage: String(Boolean(mapped)) });
+    save(); // persist immediately so Start fires once per user, not once per visit
   }
   let viewingStage = state.currentStage;
 
@@ -201,6 +202,9 @@ function init() {
 
     const adv = e.target.closest(".cur-advance");
     if (adv && !adv.disabled) {
+      // Defense in depth: only the CURRENT stage's button may advance
+      // (a stale button on a peeked stage must not move the real state).
+      if (adv.dataset.advanceFrom !== state.currentStage) return;
       const from = state.currentStage;
       const next = stageIds[idx(from) + 1];
       state.currentStage = next;
@@ -208,7 +212,11 @@ function init() {
       track("Curriculum Advance", { from, to: next });
       save();
       render();
-      document.getElementById("cur-main").scrollIntoView({ behavior: "smooth" });
+      const title = stageEls[idx(next)].querySelector(".cur-stage__title");
+      title.setAttribute("tabindex", "-1");
+      title.focus({ preventScroll: true });
+      const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+      document.getElementById("cur-main").scrollIntoView({ behavior });
     }
   });
 
