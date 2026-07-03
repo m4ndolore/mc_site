@@ -63,6 +63,7 @@ export default defineConfig({
         portfolio: resolve(__dirname, 'portfolio.html'),
         builders: resolve(__dirname, 'builders.html'),
         start: resolve(__dirname, 'start.html'),
+        curriculum: resolve(__dirname, 'curriculum.html'),
         'archive-start': resolve(__dirname, 'archive/start.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),
         status: resolve(__dirname, 'status.html'),

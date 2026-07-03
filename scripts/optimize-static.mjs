@@ -692,6 +692,7 @@ function generateSitemap(slugs) {
     { loc: '/access', priority: '0.8', changefreq: 'weekly' },
     { loc: '/combine/cohort25-1', priority: '0.7', changefreq: 'monthly' },
     { loc: '/learn', priority: '0.6', changefreq: 'monthly' },
+    { loc: '/curriculum', priority: '0.7', changefreq: 'monthly' },
     { loc: '/contribute', priority: '0.6', changefreq: 'monthly' },
     { loc: '/wingman', priority: '0.6', changefreq: 'monthly' },
     { loc: '/briefs', priority: '0.6', changefreq: 'monthly' },
