@@ -54,7 +54,8 @@
           "description": "Live intel from Breaking Defense, ExecutiveGov, and Merge Combinator analysis",
           "internalLink": "/signals",
           "timeToRead": 5,
-          "order": 5
+          "order": 5,
+          "url": "/signals"
         },
         {
           "id": "ecosystem-map",
@@ -64,7 +65,8 @@
           "gateType": "guild",
           "gateName": "Guild — Free",
           "timeToRead": 30,
-          "order": 6
+          "order": 6,
+          "url": "/access"
         }
       ]
     },
@@ -122,7 +124,8 @@
           "description": "Live solicitations from SBIR, DARPA, DIU, SAM.gov, and more",
           "internalLink": "/opportunities",
           "timeToRead": 5,
-          "order": 5
+          "order": 5,
+          "url": "/opportunities"
         },
         {
           "id": "sbir-topics",
@@ -142,7 +145,8 @@
           "gateType": "builders",
           "gateName": "Defense Builders",
           "timeToRead": 25,
-          "order": 7
+          "order": 7,
+          "url": "/access"
         }
       ]
     },
@@ -211,7 +215,8 @@
           "gateType": "builders",
           "gateName": "Defense Builders",
           "timeToRead": 45,
-          "order": 6
+          "order": 6,
+          "url": "/access"
         }
       ]
     },
@@ -229,7 +234,8 @@
           "description": "John Ferry — 351 pages, read online. The foundational playbook for crossing the valley.",
           "internalLink": "/learn/read?src=/content/web_small.pdf",
           "timeToRead": 180,
-          "order": 1
+          "order": 1,
+          "url": "/learn"
         },
         {
           "id": "don-phase-3",
@@ -248,7 +254,8 @@
           "description": "Merge Combinator Analysis — why affordable mass matters for your production story",
           "internalLink": "/signals/interceptor-stockpile-crisis",
           "timeToRead": 8,
-          "order": 3
+          "order": 3,
+          "url": "/signals/interceptor-stockpile-crisis"
         },
         {
           "id": "valley-navigator",
@@ -258,7 +265,8 @@
           "gateType": "builders",
           "gateName": "Defense Builders",
           "timeToRead": 60,
-          "order": 4
+          "order": 4,
+          "url": "/access"
         },
         {
           "id": "operator-validation",
@@ -268,7 +276,8 @@
           "gateType": "guild",
           "gateName": "Guild — Free",
           "timeToRead": 45,
-          "order": 5
+          "order": 5,
+          "url": "/access"
         }
       ]
     },
@@ -286,7 +295,8 @@
           "description": "Merge Combinator Case Study — what operator-validated formation actually produces",
           "internalLink": "/signals/ulysses-combine-to-series-a",
           "timeToRead": 10,
-          "order": 1
+          "order": 1,
+          "url": "/signals/ulysses-combine-to-series-a"
         },
         {
           "id": "vc-alignment-problem",
@@ -295,7 +305,8 @@
           "description": "Merge Combinator Analysis — whether the system can absorb the capital flowing in",
           "internalLink": "/signals/vc-defense-alignment-problem",
           "timeToRead": 10,
-          "order": 2
+          "order": 2,
+          "url": "/signals/vc-defense-alignment-problem"
         },
         {
           "id": "army-acquisition",
@@ -304,7 +315,8 @@
           "description": "Merge Combinator Analysis — acquisition restructured around software velocity",
           "internalLink": "/signals/army-rewriting-acquisition",
           "timeToRead": 10,
-          "order": 3
+          "order": 3,
+          "url": "/signals/army-rewriting-acquisition"
         },
         {
           "id": "production-playbook",
@@ -314,7 +326,8 @@
           "gateType": "builders",
           "gateName": "Defense Builders",
           "timeToRead": 40,
-          "order": 4
+          "order": 4,
+          "url": "/access"
         },
         {
           "id": "prime-teaming",
@@ -324,7 +337,8 @@
           "gateType": "builders",
           "gateName": "Defense Builders",
           "timeToRead": 35,
-          "order": 5
+          "order": 5,
+          "url": "/access"
         }
       ]
     }
