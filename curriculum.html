@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    // FOUC prevention: apply theme before first paint (same as start.html)
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A guided five-stage curriculum for defense-tech founders: Preflight, Spot, Ready for Launch, Tension, Launch. 29 curated resources ordered by what moves you forward fastest.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <link rel="canonical" href="https://mergecombinator.com/curriculum">
+  <meta property="og:title" content="Founder Curriculum — Merge Combinator">
+  <meta property="og:description" content="A guided five-stage curriculum for defense-tech founders. Resources ordered by what moves you forward fastest.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/logowhite.png">
+  <meta property="og:url" content="https://mergecombinator.com/curriculum">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Founder Curriculum — Merge Combinator">
+  <meta name="twitter:description" content="A guided five-stage curriculum for defense-tech founders.">
+  <title>Founder Curriculum — Merge Combinator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>body{opacity:0;background:#0a0a0a}body.page-ready{opacity:1;transition:opacity .15s ease-in}</style>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/light-theme.css">
+  <link rel="stylesheet" href="styles/founder-path.css">
+  <link rel="stylesheet" href="styles/curriculum.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <!-- CURRICULUM:JSONLD:START -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Defense Builders Curriculum",
+  "description": "Progressive five-stage curriculum for defense tech founders: Preflight, Spot, Ready for Launch, Tension, Launch.",
+  "url": "https://mergecombinator.com/curriculum",
+  "provider": {
+    "@type": "Organization",
+    "name": "Merge Combinator",
+    "url": "https://mergecombinator.com"
+  },
+  "hasPart": [
+    {
+      "@type": "ItemList",
+      "name": "Stage 1: Preflight",
+      "description": "Before anything else, learn how the system works. Who buys, how they buy, and where the money flows. This stage builds the mental model that keeps everything else from being wasted motion.",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Contracting Cone",
+          "url": "https://www.dau.edu/tools/t/Contracting-Cone"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "FAR for Startups",
+          "url": "https://www.acquisition.gov/browse/index/far"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Contract Types Explained",
+          "url": "https://www.dau.edu/tools/t/Contract-Type-Comparison"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Understanding PPBE",
+          "url": "https://acqnotes.com/acqnote/acquisitions/ppbe-overview"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Signals Feed",
+          "url": "/signals"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Defense Ecosystem Map",
+          "url": "/access"
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "name": "Stage 2: Spot",
+      "description": "Identify the mission problem you solve and the acquisition pathway that fits. Match your technology to active demand signals — SBIR topics, CSOs, OTAs, or direct engagement with problem sponsors.",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Finding Problem Sponsors",
+          "url": "https://www.dau.edu/tools/t/Problem-Sponsor"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "AFWERX Engagement Pathways",
+          "url": "https://afwerx.com/divisions/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "DIU Commercial Solutions Opening",
+          "url": "https://www.diu.mil/work-with-us"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Other Transaction Authority Guide",
+          "url": "https://aaf.dau.edu/aaf/ota/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Opportunities Board",
+          "url": "/opportunities"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "SBIR Topic Search",
+          "url": "https://www.sbir.gov/topics"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
+          "name": "Pricing Strategies for Government Contracts",
+          "url": "/access"
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "name": "Stage 3: Ready for Launch",
+      "description": "Land your first contract vehicle. Get compliant, write proposals that win, and connect your solution to the acquisition system. This is where most startups stall — the bureaucratic interface between innovation and procurement.",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Phase I Proposal Guide",
+          "url": "https://www.sbir.gov/tutorials/preparing-proposals/tutorial-1"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "CMMC 2.0 Requirements",
+          "url": "https://dodcio.defense.gov/CMMC/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "ITAR Basics for Startups",
+          "url": "https://www.pmddtc.state.gov/ddtc_public/ddtc_public?id=ddtc_public_portal_itar_landing"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "CUI Marking Handbook",
+          "url": "https://www.archives.gov/files/cui/documents/20161206-cui-marking-handbook-v1-1-20190524.pdf"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Security Clearance Process",
+          "url": "https://www.dcsa.mil/is/security-clearance-faqs/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Proposal Writing Playbook",
+          "url": "/access"
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "name": "Stage 4: Tension",
+      "description": "You won a contract and built the prototype. Now the tension builds to production and scale. Build the relationships, evidence, and end user demand that launches you over the valley of death.",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Valley of Death Survival Guide",
+          "url": "/learn/read?src=/content/web_small.pdf"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "DON Phase III Guidebook",
+          "url": "https://www.navysbir.com/docs/DON-SBIR_STTR_Phase-III_Guidebook_V2-2020.pdf"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "The Interceptor Math Is Broken",
+          "url": "/signals/interceptor-stockpile-crisis"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Valley of Death Navigator",
+          "url": "/access"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Operator Validation Toolkit",
+          "url": "/access"
+        }
+      ]
+    },
+    {
+      "@type": "ItemList",
+      "name": "Stage 5: Launch",
+      "description": "Production contracts, follow-on awards, colors of money, B2B partnerships, and lifecycle optimization. You're building the team and the right team members change everything.",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "From Combine to Series A: Ulysses",
+          "url": "/signals/ulysses-combine-to-series-a"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "The $16B Alignment Problem",
+          "url": "/signals/vc-defense-alignment-problem"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "The Army Is Rewriting How It Buys Technology",
+          "url": "/signals/army-rewriting-acquisition"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Production Contract Playbook",
+          "url": "/access"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Prime Teaming & Subcontractor Strategy",
+          "url": "/access"
+        }
+      ]
+    }
+  ]
+}
+</script>
+    <!-- CURRICULUM:JSONLD:END -->
+</head>
+<body class="founder-path-page curriculum-page">
+  <a href="#cur-main" class="skip-link">Skip to main content</a>
+  <div id="mc-navbar"></div>
+
+  <section style="padding: calc(var(--nav-height) + 40px) 0 0; background: var(--black);">
+    <div class="container" style="margin-bottom: 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+      <span class="fp-pill">Founder Path</span>
+      <p class="fp-lede">Your curriculum. Five stages from first principles to operational.</p>
+    </div>
+  </section>
+
+  <section class="section--lg" id="cur-main" style="background: var(--black); padding-top: 24px;">
+    <div class="container">
+      <div class="signals-layout">
+        <div class="signals-layout__main">
+
+          <div class="fp-resume" id="curTriageBanner" hidden>
+            <div><strong id="curTriageBannerText"></strong>
+              <span>Based on your triage. <button class="fp-btn fp-btn--link" type="button" id="curStartOver">Start from the beginning instead</button></span>
+            </div>
+            <button class="fp-btn fp-btn--link" type="button" id="curBannerDismiss">Dismiss</button>
+          </div>
+
+          <div class="fp-progress" id="curProgress" aria-label="Curriculum progress">
+            <div class="fp-progress__seg"></div>
+            <div class="fp-progress__seg"></div>
+            <div class="fp-progress__seg"></div>
+            <div class="fp-progress__seg"></div>
+            <div class="fp-progress__seg"></div>
+          </div>
+          <div class="fp-progress__label" id="curProgressLabel">Five stages · 29 resources</div>
+
+          <div class="fp-resume" id="curPeekStrip" hidden>
+            <div><strong>Previewing.</strong> <span id="curPeekText"></span></div>
+            <button class="fp-btn fp-btn--link" type="button" id="curPeekReturn">Return to current stage →</button>
+          </div>
+
+          <div class="fp-card" id="curStages">
+    <!-- CURRICULUM:CONTENT:START -->
+      <section class="cur-stage" data-stage-id="preflight" data-stage-index="0" id="stage-preflight">
+        <div class="cur-stage__head">
+          <span class="cur-stage__num">01</span>
+          <h2 class="cur-stage__title">Preflight</h2>
+          <p class="cur-stage__subtitle">Prepare to succeed.</p>
+        </div>
+        <p class="cur-stage__desc">Before anything else, learn how the system works. Who buys, how they buy, and where the money flows. This stage builds the mental model that keeps everything else from being wasted motion.</p>
+        <div class="cur-stage__resources">
+        <a class="cur-resource" data-resource-id="contracting-cone" data-stage-id="preflight"
+           href="https://www.dau.edu/tools/t/Contracting-Cone" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Contracting Cone</span>
+            <span class="cur-resource__desc">Visual guide to contract types and dollar thresholds — DAU</span>
+            <span class="cur-resource__meta">DAU · 15 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="far-startups" data-stage-id="preflight"
+           href="https://www.acquisition.gov/browse/index/far" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">FAR for Startups</span>
+            <span class="cur-resource__desc">Federal Acquisition Regulation — the rules governing DoD procurement</span>
+            <span class="cur-resource__meta">Acquisition.gov · 25 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="contract-types-explained" data-stage-id="preflight"
+           href="https://www.dau.edu/tools/t/Contract-Type-Comparison" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Contract Types Explained</span>
+            <span class="cur-resource__desc">FFP, T&amp;M, CPFF, CPIF — when to use each and what they mean</span>
+            <span class="cur-resource__meta">DAU · 20 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="ppbe-overview" data-stage-id="preflight"
+           href="https://acqnotes.com/acqnote/acquisitions/ppbe-overview" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Understanding PPBE</span>
+            <span class="cur-resource__desc">Planning, Programming, Budgeting, and Execution cycle</span>
+            <span class="cur-resource__meta">AcqNotes · 15 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="signals-feed" data-stage-id="preflight"
+           href="/signals">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Signals Feed</span>
+            <span class="cur-resource__desc">Live intel from Breaking Defense, ExecutiveGov, and Merge Combinator analysis</span>
+            <span class="cur-resource__meta">5 min · Signal</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        <a class="cur-resource" data-resource-id="ecosystem-map" data-stage-id="preflight"
+           href="/access">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Defense Ecosystem Map</span>
+            <span class="cur-resource__desc">Interactive map of commands, agencies, and innovation units</span>
+            <span class="cur-resource__meta">30 min · Gated</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        </div>
+        <div class="cur-stage__actions">
+          <p class="cur-stage__count" data-count-for="preflight"></p>
+          <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="preflight" hidden></button>
+        </div>
+      </section>
+
+      <section class="cur-stage" data-stage-id="spot" data-stage-index="1" id="stage-spot">
+        <div class="cur-stage__head">
+          <span class="cur-stage__num">02</span>
+          <h2 class="cur-stage__title">Spot</h2>
+          <p class="cur-stage__subtitle">Where you are and what&#39;s next.</p>
+        </div>
+        <p class="cur-stage__desc">Identify the mission problem you solve and the acquisition pathway that fits. Match your technology to active demand signals — SBIR topics, CSOs, OTAs, or direct engagement with problem sponsors.</p>
+        <div class="cur-stage__resources">
+        <a class="cur-resource" data-resource-id="problem-sponsor" data-stage-id="spot"
+           href="https://www.dau.edu/tools/t/Problem-Sponsor" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Finding Problem Sponsors</span>
+            <span class="cur-resource__desc">DAU guide to identifying and engaging problem sponsors in DoD</span>
+            <span class="cur-resource__meta">DAU · 20 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="afwerx-pathways" data-stage-id="spot"
+           href="https://afwerx.com/divisions/" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">AFWERX Engagement Pathways</span>
+            <span class="cur-resource__desc">Air Force innovation pathways: Spark, Prime, and Ventures</span>
+            <span class="cur-resource__meta">AFWERX · 15 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="diu-cso" data-stage-id="spot"
+           href="https://www.diu.mil/work-with-us" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">DIU Commercial Solutions Opening</span>
+            <span class="cur-resource__desc">How to engage Defense Innovation Unit through CSO process</span>
+            <span class="cur-resource__meta">DIU · 15 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="ota-guide" data-stage-id="spot"
+           href="https://aaf.dau.edu/aaf/ota/" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Other Transaction Authority Guide</span>
+            <span class="cur-resource__desc">OTA vs traditional FAR-based contracts — DAU</span>
+            <span class="cur-resource__meta">DAU · 20 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="opportunities-board" data-stage-id="spot"
+           href="/opportunities">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Opportunities Board</span>
+            <span class="cur-resource__desc">Live solicitations from SBIR, DARPA, DIU, SAM.gov, and more</span>
+            <span class="cur-resource__meta">5 min · Signal</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        <a class="cur-resource" data-resource-id="sbir-topics" data-stage-id="spot"
+           href="https://www.sbir.gov/topics" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">SBIR Topic Search</span>
+            <span class="cur-resource__desc">Find open SBIR/STTR topics across all federal agencies</span>
+            <span class="cur-resource__meta">SBIR.gov · 15 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="pricing-strategies" data-stage-id="spot"
+           href="/access">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Pricing Strategies for Government Contracts</span>
+            <span class="cur-resource__desc">How to structure pricing for FFP, T&amp;M, and CPFF contracts</span>
+            <span class="cur-resource__meta">25 min · Gated</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        </div>
+        <div class="cur-stage__actions">
+          <p class="cur-stage__count" data-count-for="spot"></p>
+          <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="spot" hidden></button>
+        </div>
+      </section>
+
+      <section class="cur-stage" data-stage-id="ready" data-stage-index="2" id="stage-ready">
+        <div class="cur-stage__head">
+          <span class="cur-stage__num">03</span>
+          <h2 class="cur-stage__title">Ready for Launch</h2>
+          <p class="cur-stage__subtitle">Get connected.</p>
+        </div>
+        <p class="cur-stage__desc">Land your first contract vehicle. Get compliant, write proposals that win, and connect your solution to the acquisition system. This is where most startups stall — the bureaucratic interface between innovation and procurement.</p>
+        <div class="cur-stage__resources">
+        <a class="cur-resource" data-resource-id="phase-1-guide" data-stage-id="ready"
+           href="https://www.sbir.gov/tutorials/preparing-proposals/tutorial-1" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Phase I Proposal Guide</span>
+            <span class="cur-resource__desc">SBIR.gov official tutorial on writing winning proposals</span>
+            <span class="cur-resource__meta">SBIR.gov · 30 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="cmmc-2-0" data-stage-id="ready"
+           href="https://dodcio.defense.gov/CMMC/" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">CMMC 2.0 Requirements</span>
+            <span class="cur-resource__desc">Official DoD CMMC program overview and maturity levels</span>
+            <span class="cur-resource__meta">DoD CIO · 25 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="itar-basics" data-stage-id="ready"
+           href="https://www.pmddtc.state.gov/ddtc_public/ddtc_public?id=ddtc_public_portal_itar_landing" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">ITAR Basics for Startups</span>
+            <span class="cur-resource__desc">State Department ITAR portal — registration and compliance basics</span>
+            <span class="cur-resource__meta">State Dept · 20 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="cui-handbook" data-stage-id="ready"
+           href="https://www.archives.gov/files/cui/documents/20161206-cui-marking-handbook-v1-1-20190524.pdf" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">CUI Marking Handbook</span>
+            <span class="cur-resource__desc">NARA guide to marking and handling Controlled Unclassified Information</span>
+            <span class="cur-resource__meta">NARA · 20 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="security-clearance" data-stage-id="ready"
+           href="https://www.dcsa.mil/is/security-clearance-faqs/" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Security Clearance Process</span>
+            <span class="cur-resource__desc">DCSA FAQ on obtaining and maintaining clearances</span>
+            <span class="cur-resource__meta">DCSA · 15 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="proposal-playbook" data-stage-id="ready"
+           href="/access">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Proposal Writing Playbook</span>
+            <span class="cur-resource__desc">Merge Combinator framework for structuring winning SBIR/OTA proposals</span>
+            <span class="cur-resource__meta">45 min · Gated</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        </div>
+        <div class="cur-stage__actions">
+          <p class="cur-stage__count" data-count-for="ready"></p>
+          <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="ready" hidden></button>
+        </div>
+      </section>
+
+      <section class="cur-stage" data-stage-id="tension" data-stage-index="3" id="stage-tension">
+        <div class="cur-stage__head">
+          <span class="cur-stage__num">04</span>
+          <h2 class="cur-stage__title">Tension</h2>
+          <p class="cur-stage__subtitle">Build to full power.</p>
+        </div>
+        <p class="cur-stage__desc">You won a contract and built the prototype. Now the tension builds to production and scale. Build the relationships, evidence, and end user demand that launches you over the valley of death.</p>
+        <div class="cur-stage__resources">
+        <a class="cur-resource" data-resource-id="valley-of-death" data-stage-id="tension"
+           href="/learn/read?src=/content/web_small.pdf">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Valley of Death Survival Guide</span>
+            <span class="cur-resource__desc">John Ferry — 351 pages, read online. The foundational playbook for crossing the valley.</span>
+            <span class="cur-resource__meta">180 min · Learn</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        <a class="cur-resource" data-resource-id="don-phase-3" data-stage-id="tension"
+           href="https://www.navysbir.com/docs/DON-SBIR_STTR_Phase-III_Guidebook_V2-2020.pdf" target="_blank" rel="noopener">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">DON Phase III Guidebook</span>
+            <span class="cur-resource__desc">Navy SBIR/STTR guide to transitioning funded work into production contracts</span>
+            <span class="cur-resource__meta">Navy SBIR · 40 min · External</span>
+          </span>
+          <span class="cur-resource__open">Open ↗</span>
+        </a>
+        <a class="cur-resource" data-resource-id="interceptor-analysis" data-stage-id="tension"
+           href="/signals/interceptor-stockpile-crisis">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">The Interceptor Math Is Broken</span>
+            <span class="cur-resource__desc">Merge Combinator Analysis — why affordable mass matters for your production story</span>
+            <span class="cur-resource__meta">8 min · Signal</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        <a class="cur-resource" data-resource-id="valley-navigator" data-stage-id="tension"
+           href="/access">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Valley of Death Navigator</span>
+            <span class="cur-resource__desc">Interactive decision framework for prototype-to-production transitions</span>
+            <span class="cur-resource__meta">60 min · Gated</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        <a class="cur-resource" data-resource-id="operator-validation" data-stage-id="tension"
+           href="/access">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Operator Validation Toolkit</span>
+            <span class="cur-resource__desc">Templates and frameworks for building warfighter evidence</span>
+            <span class="cur-resource__meta">45 min · Gated</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        </div>
+        <div class="cur-stage__actions">
+          <p class="cur-stage__count" data-count-for="tension"></p>
+          <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="tension" hidden></button>
+        </div>
+      </section>
+
+      <section class="cur-stage" data-stage-id="launch" data-stage-index="4" id="stage-launch">
+        <div class="cur-stage__head">
+          <span class="cur-stage__num">05</span>
+          <h2 class="cur-stage__title">Launch</h2>
+          <p class="cur-stage__subtitle">Go operational.</p>
+        </div>
+        <p class="cur-stage__desc">Production contracts, follow-on awards, colors of money, B2B partnerships, and lifecycle optimization. You&#39;re building the team and the right team members change everything.</p>
+        <div class="cur-stage__resources">
+        <a class="cur-resource" data-resource-id="ulysses-case-study" data-stage-id="launch"
+           href="/signals/ulysses-combine-to-series-a">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">From Combine to Series A: Ulysses</span>
+            <span class="cur-resource__desc">Merge Combinator Case Study — what operator-validated formation actually produces</span>
+            <span class="cur-resource__meta">10 min · Signal</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        <a class="cur-resource" data-resource-id="vc-alignment-problem" data-stage-id="launch"
+           href="/signals/vc-defense-alignment-problem">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">The $16B Alignment Problem</span>
+            <span class="cur-resource__desc">Merge Combinator Analysis — whether the system can absorb the capital flowing in</span>
+            <span class="cur-resource__meta">10 min · Signal</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        <a class="cur-resource" data-resource-id="army-acquisition" data-stage-id="launch"
+           href="/signals/army-rewriting-acquisition">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">The Army Is Rewriting How It Buys Technology</span>
+            <span class="cur-resource__desc">Merge Combinator Analysis — acquisition restructured around software velocity</span>
+            <span class="cur-resource__meta">10 min · Signal</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        <a class="cur-resource" data-resource-id="production-playbook" data-stage-id="launch"
+           href="/access">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Production Contract Playbook</span>
+            <span class="cur-resource__desc">Strategies for follow-on, sole-source justification, and teaming</span>
+            <span class="cur-resource__meta">40 min · Gated</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        <a class="cur-resource" data-resource-id="prime-teaming" data-stage-id="launch"
+           href="/access">
+          <span class="cur-resource__check" aria-hidden="true"></span>
+          <span class="cur-resource__body">
+            <span class="cur-resource__title">Prime Teaming &amp; Subcontractor Strategy</span>
+            <span class="cur-resource__desc">How to structure partnerships that scale</span>
+            <span class="cur-resource__meta">35 min · Gated</span>
+          </span>
+          <span class="cur-resource__open">Open →</span>
+        </a>
+        </div>
+        <div class="cur-stage__actions">
+          <p class="cur-stage__count" data-count-for="launch"></p>
+          <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="launch" hidden></button>
+        </div>
+      </section>
+    <!-- CURRICULUM:CONTENT:END -->
+          </div>
+
+          <p class="fp-muted-note">
+            Progress saves on this device — no account needed. For personalized guidance,
+            <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener" style="color: var(--blue);">book a triage call</a>.
+          </p>
+        </div>
+
+        <aside class="signals-layout__sidebar">
+          <div class="signals-sidebar">
+            <div class="signals-sidebar__section">
+              <h3 class="signals-sidebar__heading">Your Path</h3>
+              <ul class="signals-sidebar__links cur-rail" id="curRail">
+    <!-- CURRICULUM:RAIL:START -->
+              <li><a href="#stage-preflight" class="cur-rail__link" data-rail-stage="preflight">
+                <span class="cur-rail__marker" aria-hidden="true"></span>
+                <span class="cur-rail__label">1. Preflight</span>
+              </a></li>
+              <li><a href="#stage-spot" class="cur-rail__link" data-rail-stage="spot">
+                <span class="cur-rail__marker" aria-hidden="true"></span>
+                <span class="cur-rail__label">2. Spot</span>
+              </a></li>
+              <li><a href="#stage-ready" class="cur-rail__link" data-rail-stage="ready">
+                <span class="cur-rail__marker" aria-hidden="true"></span>
+                <span class="cur-rail__label">3. Ready for Launch</span>
+              </a></li>
+              <li><a href="#stage-tension" class="cur-rail__link" data-rail-stage="tension">
+                <span class="cur-rail__marker" aria-hidden="true"></span>
+                <span class="cur-rail__label">4. Tension</span>
+              </a></li>
+              <li><a href="#stage-launch" class="cur-rail__link" data-rail-stage="launch">
+                <span class="cur-rail__marker" aria-hidden="true"></span>
+                <span class="cur-rail__label">5. Launch</span>
+              </a></li>
+    <!-- CURRICULUM:RAIL:END -->
+              </ul>
+            </div>
+            <div class="signals-sidebar__section">
+              <h3 class="signals-sidebar__heading">Not sure where to start?</h3>
+              <ul class="signals-sidebar__links">
+                <li><a href="/start" class="signals-sidebar__link">Take the 90-second triage</a></li>
+              </ul>
+            </div>
+            <div class="signals-sidebar__section signals-sidebar__cta">
+              <p class="signals-sidebar__cta-text">Want to walk this path with a partner? Free 30-minute triage call.</p>
+              <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener" class="btn btn--primary" style="width: 100%; text-align: center;">Book the call</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__bottom">
+        <p>&copy; 2026 Merge Combinator. Venture studio for national security.</p>
+        <div class="footer__legal">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/security">Security</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/curriculum.js"></script>
+  <script type="module" src="/js/navbar.js"></script>
+  <script type="module" src="/script.js"></script>
+</body>
+</html>
