@@ -1,0 +1,98 @@
+/* styles/curriculum.css — curriculum-specific components.
+   Layers on founder-path.css; uses site tokens from styles.css. */
+
+/* ── Page header ── */
+/* The pill-header lede is the page h1 for SEO; founder-path.css already
+   pins .fp-lede font-size/margin, so only the UA bold needs neutralizing. */
+h1.fp-lede { font-weight: inherit; }
+
+/* ── Stage sections ── */
+/* No-JS / crawler default: all stages visible (full syllabus).
+   JS adds .js-enhanced to #curStages and drives visibility. */
+.js-enhanced .cur-stage { display: none; }
+.js-enhanced .cur-stage.is-open { display: block; }
+
+.cur-stage + .cur-stage { margin-top: 40px; }
+.js-enhanced .cur-stage + .cur-stage { margin-top: 0; }
+
+.cur-stage__head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.cur-stage__num {
+  font-family: 'Space Mono', monospace; font-size: 0.875rem;
+  color: var(--blue); letter-spacing: 0.1em;
+}
+.cur-stage__title { font-size: 1.75rem; font-weight: 700; margin: 0; color: var(--offwhite); }
+.cur-stage__subtitle { width: 100%; margin: 4px 0 0; color: var(--gray-medium); font-size: 1rem; }
+.cur-stage__desc { color: var(--gray-light); line-height: 1.6; margin: 16px 0 24px; }
+
+/* ── Resource rows ── */
+/* Structure: .cur-resource wrapper div > button.cur-resource__check (sibling)
+   + a.cur-resource__link (flex row with body + open affordance). */
+.cur-stage__resources { display: flex; flex-direction: column; gap: 10px; }
+.cur-resource {
+  display: flex; align-items: stretch; gap: 0;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 2px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.cur-resource:hover { border-color: var(--blue); background: rgba(59,130,246,0.04); }
+.cur-resource__check {
+  display: none; /* shown only when JS can make it functional */
+  flex: 0 0 auto; width: 44px; align-items: center; justify-content: center;
+  background: none; border: 0; border-right: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer; padding: 0;
+}
+.js-enhanced .cur-resource__check { display: flex; }
+.cur-resource__check::before {
+  content: ''; width: 18px; height: 18px;
+  border: 1.5px solid var(--gray-medium); border-radius: 50%;
+  display: block; transition: all 0.15s ease;
+}
+.cur-resource.is-engaged .cur-resource__check::before {
+  border-color: var(--blue); background: var(--blue);
+  content: '✓'; color: #fff; font-size: 11px; line-height: 15px; text-align: center;
+}
+.cur-resource.is-engaged { border-color: rgba(59,130,246,0.35); }
+.cur-resource.is-engaged .cur-resource__title { color: var(--gray-light); }
+.cur-resource__link {
+  flex: 1; display: flex; align-items: flex-start; gap: 14px;
+  padding: 16px; text-decoration: none; color: inherit; min-width: 0;
+}
+.cur-resource__body { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.cur-resource__title { font-weight: 600; color: var(--offwhite); font-size: 1rem; }
+.cur-resource__desc { color: var(--gray-medium); font-size: 0.9rem; line-height: 1.45; }
+.cur-resource__meta {
+  color: var(--gray-medium); font-size: 0.78rem;
+  font-family: 'Space Mono', monospace; letter-spacing: 0.02em; margin-top: 2px;
+}
+.cur-resource__open {
+  flex: 0 0 auto; color: var(--blue); font-size: 0.875rem; font-weight: 500;
+  align-self: center; white-space: nowrap;
+}
+
+/* ── Stage actions ── */
+.cur-stage__actions {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; margin-top: 28px; padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap;
+}
+.cur-stage__count { margin: 0; color: var(--gray-medium); font-size: 0.9rem; }
+
+/* ── Sidebar rail ── */
+.cur-rail__link { display: flex; align-items: center; gap: 10px; }
+.cur-rail__marker {
+  flex: 0 0 auto; width: 10px; height: 10px; border-radius: 50%;
+  border: 1.5px solid var(--gray-medium);
+}
+.cur-rail__link.is-complete .cur-rail__marker { background: var(--blue); border-color: var(--blue); }
+.cur-rail__link.is-current .cur-rail__marker { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(59,130,246,0.25); }
+.cur-rail__link.is-current .cur-rail__label { color: var(--offwhite); font-weight: 600; }
+.cur-rail__link.is-upcoming { opacity: 0.55; }
+
+/* ── Progress segments: completed state (founder-path has is-active only) ── */
+.fp-progress__seg.is-complete { background: var(--blue); opacity: 0.45; }
+
+@media (max-width: 640px) {
+  .cur-resource__link { flex-direction: column; gap: 10px; }
+  .cur-resource__open { align-self: flex-start; }
+  .cur-stage__actions { flex-direction: column; align-items: stretch; text-align: center; }
+}

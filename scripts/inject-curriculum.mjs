@@ -13,6 +13,7 @@ const esc = (s) => String(s ?? '')
   .replace(/"/g, '&quot;').replace(/'/g, '&#39;')
 
 const TYPE_LABEL = { external: 'External', gated: 'Gated', learn: 'Learn', signal: 'Signal' }
+const SITE = 'https://mergecombinator.com'
 
 const curriculum = JSON.parse(readFileSync(DATA, 'utf8'))
 const stages = curriculum.stages
@@ -23,16 +24,17 @@ function resourceRow(r, stageId) {
   const meta = [r.sourceLabel, `${r.timeToRead} min`, TYPE_LABEL[r.type] || r.type]
     .filter(Boolean).map(esc).join(' · ')
   return `
-        <a class="cur-resource" data-resource-id="${esc(r.id)}" data-stage-id="${esc(stageId)}"
-           href="${esc(r.url)}"${external ? ' target="_blank" rel="noopener"' : ''}>
-          <span class="cur-resource__check" aria-hidden="true"></span>
-          <span class="cur-resource__body">
-            <span class="cur-resource__title">${esc(r.title)}</span>
-            <span class="cur-resource__desc">${esc(r.description)}</span>
-            <span class="cur-resource__meta">${meta}</span>
-          </span>
-          <span class="cur-resource__open">Open ${external ? '↗' : '→'}</span>
-        </a>`
+        <div class="cur-resource" data-resource-id="${esc(r.id)}" data-stage-id="${esc(stageId)}">
+          <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;${esc(r.title)}&quot; as explored"></button>
+          <a class="cur-resource__link" href="${esc(r.url)}"${external ? ' target="_blank" rel="noopener"' : ''}>
+            <span class="cur-resource__body">
+              <span class="cur-resource__title">${esc(r.title)}</span>
+              <span class="cur-resource__desc">${esc(r.description)}</span>
+              <span class="cur-resource__meta">${meta}</span>
+            </span>
+            <span class="cur-resource__open" aria-hidden="true">Open ${external ? '↗' : '→'}</span>
+          </a>
+        </div>`
 }
 
 function stageSection(s, i) {
@@ -73,9 +75,13 @@ const jsonld = JSON.stringify({
     '@type': 'ItemList',
     name: `Stage ${i + 1}: ${s.title}`,
     description: s.description,
-    itemListElement: s.resources.map((r, j) => ({
-      '@type': 'ListItem', position: j + 1, name: r.title, url: r.url,
-    })),
+    itemListElement: s.resources.map((r, j) => {
+      const item = { '@type': 'ListItem', position: j + 1, name: r.title }
+      // Gated resources all point at /access; duplicate URLs dilute the
+      // ItemList, so emit them as name-only ListItems (valid schema).
+      if (r.type !== 'gated') item.url = r.url.startsWith('/') ? SITE + r.url : r.url
+      return item
+    }),
   })),
   // Escape < so data can never break out of the inline <script> tag (still valid JSON).
 }, null, 2).replace(/</g, '\\u003c')
