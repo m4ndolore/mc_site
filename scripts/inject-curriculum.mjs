@@ -52,7 +52,7 @@ function stageSection(s, i) {
         <div class="cur-stage__resources">${s.resources.map(r => resourceRow(r, s.id)).join('')}
         </div>
         <div class="cur-stage__actions">
-          <p class="cur-stage__count" data-count-for="${esc(s.id)}"></p>
+          <p class="cur-stage__count"></p>
           <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="${esc(s.id)}" hidden></button>
         </div>
       </section>`

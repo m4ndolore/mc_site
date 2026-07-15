@@ -29,7 +29,15 @@ const TRIAGE_LABELS = {
   "scaling": "fundraising, scaling, or transitioning",
 };
 
-function track(event, props) {
+function track(event, props, { beacon = false } = {}) {
+  // sendBeacon survives same-tab navigation, which cancels the script's fetch.
+  // Localhost guard mirrors the Plausible script's own dev exclusion.
+  if (beacon && navigator.sendBeacon && !/^localhost$|^127\./.test(location.hostname)) {
+    const payload = { n: event, u: location.href, d: "mergecombinator.com", r: document.referrer || null };
+    if (props) payload.p = props;
+    navigator.sendBeacon("https://plausible.io/api/event", JSON.stringify(payload));
+    return;
+  }
   const plausible = window.plausible;
   if (typeof plausible === "function") plausible(event, props ? { props } : undefined);
 }
@@ -170,6 +178,17 @@ function init() {
     banner.hidden = false;
   }
 
+  function showResumeStrip() {
+    if (!returning) return;
+    const allIds = [...document.querySelectorAll(".cur-resource")].map((el) => el.dataset.resourceId);
+    const explored = state.engaged.filter((id) => allIds.includes(id)).length;
+    if (explored === 0 && state.currentStage === stageIds[0]) return;
+    const stageTitle = stageEls[idx(state.currentStage)].querySelector(".cur-stage__title").textContent;
+    document.getElementById("curResumeText").textContent =
+      `Picking up at Stage ${idx(state.currentStage) + 1}: ${stageTitle} — ${explored} of ${allIds.length} resources explored.`;
+    document.getElementById("curResumeStrip").hidden = false;
+  }
+
   stagesEl.addEventListener("click", (e) => {
     const check = e.target.closest(".cur-resource__check");
     if (check) {
@@ -190,10 +209,11 @@ function init() {
     if (link) {
       const resource = link.closest(".cur-resource");
       const id = resource.dataset.resourceId;
-      track("Curriculum Resource Open", { resource: id });
+      const sameTab = link.target !== "_blank";
+      track("Curriculum Resource Open", { resource: id }, { beacon: sameTab });
       if (!state.engaged.includes(id)) {
         state.engaged.push(id);
-        track("Curriculum Resource Engaged", { resource: id, via: "open" });
+        track("Curriculum Resource Engaged", { resource: id, via: "open" }, { beacon: sameTab });
       }
       save();
       render();
@@ -251,6 +271,7 @@ function init() {
 
   stagesEl.classList.add("js-enhanced");
   showBanner();
+  showResumeStrip();
   render();
 }
 

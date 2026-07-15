@@ -141,7 +141,7 @@
           "@type": "ListItem",
           "position": 1,
           "name": "Phase I Proposal Guide",
-          "url": "https://www.sbir.gov/tutorials/preparing-proposals/tutorial-1"
+          "url": "https://www.sbir.gov/tutorials/preparing-proposal/tutorial-1"
         },
         {
           "@type": "ListItem",
@@ -265,6 +265,10 @@
       <div class="signals-layout">
         <div class="signals-layout__main">
 
+          <div class="fp-resume" id="curResumeStrip" hidden>
+            <div><strong>Welcome back.</strong> <span id="curResumeText"></span></div>
+          </div>
+
           <div class="fp-resume" id="curTriageBanner" hidden>
             <div><strong id="curTriageBannerText"></strong>
               <span>Based on your triage. <button class="fp-btn fp-btn--link" type="button" id="curStartOver">Start from the beginning instead</button></span>
@@ -364,7 +368,7 @@
         </div>
         </div>
         <div class="cur-stage__actions">
-          <p class="cur-stage__count" data-count-for="preflight"></p>
+          <p class="cur-stage__count"></p>
           <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="preflight" hidden></button>
         </div>
       </section>
@@ -456,7 +460,7 @@
         </div>
         </div>
         <div class="cur-stage__actions">
-          <p class="cur-stage__count" data-count-for="spot"></p>
+          <p class="cur-stage__count"></p>
           <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="spot" hidden></button>
         </div>
       </section>
@@ -471,7 +475,7 @@
         <div class="cur-stage__resources">
         <div class="cur-resource" data-resource-id="phase-1-guide" data-stage-id="ready">
           <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Phase I Proposal Guide&quot; as explored"></button>
-          <a class="cur-resource__link" href="https://www.sbir.gov/tutorials/preparing-proposals/tutorial-1" target="_blank" rel="noopener">
+          <a class="cur-resource__link" href="https://www.sbir.gov/tutorials/preparing-proposal/tutorial-1" target="_blank" rel="noopener">
             <span class="cur-resource__body">
               <span class="cur-resource__title">Phase I Proposal Guide</span>
               <span class="cur-resource__desc">SBIR.gov official tutorial on writing winning proposals</span>
@@ -537,7 +541,7 @@
         </div>
         </div>
         <div class="cur-stage__actions">
-          <p class="cur-stage__count" data-count-for="ready"></p>
+          <p class="cur-stage__count"></p>
           <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="ready" hidden></button>
         </div>
       </section>
@@ -607,7 +611,7 @@
         </div>
         </div>
         <div class="cur-stage__actions">
-          <p class="cur-stage__count" data-count-for="tension"></p>
+          <p class="cur-stage__count"></p>
           <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="tension" hidden></button>
         </div>
       </section>
@@ -677,7 +681,7 @@
         </div>
         </div>
         <div class="cur-stage__actions">
-          <p class="cur-stage__count" data-count-for="launch"></p>
+          <p class="cur-stage__count"></p>
           <button class="fp-btn fp-btn--primary cur-advance" data-advance-from="launch" hidden></button>
         </div>
       </section>
