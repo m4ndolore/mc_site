@@ -9,6 +9,7 @@
 
 const STORAGE_KEY = "mc.curriculum.v1";
 const TRIAGE_KEY = "mc-founder-path-state-v1";
+const ONBOARDING_KEY = "mc-onboarding-intent-v1"; // written by js/onboarding/MCOnboarding.jsx on /access
 const ADVANCE_GATE = 2;
 
 const TRIAGE_TO_STAGE = {
@@ -20,6 +21,15 @@ const TRIAGE_TO_STAGE = {
   "scaling": "tension",
 };
 
+// /access step 1 readiness intents. Deeper placements are safe: the triage
+// banner always offers "Start from the beginning instead".
+const INTENT_TO_STAGE = {
+  "exploring": "spot",
+  "building": "ready",
+  "scaling": "tension",
+  "operating": "launch",
+};
+
 const TRIAGE_LABELS = {
   "visionary-no-problem": "a visionary without a problem yet",
   "curious": "exploring defense tech",
@@ -27,6 +37,9 @@ const TRIAGE_LABELS = {
   "builder-no-problem": "a technical builder seeking a problem",
   "team-with-prototype": "a team with a working prototype",
   "scaling": "fundraising, scaling, or transitioning",
+  "exploring": "exploring a problem",
+  "building": "building or validating",
+  "operating": "deployed and expanding",
 };
 
 function track(event, props, { beacon = false } = {}) {
@@ -70,10 +83,17 @@ function init() {
   }
 
   function triageStage() {
+    // Founder-path triage first (richer signal), then /access onboarding intent.
     try {
       const t = JSON.parse(localStorage.getItem(TRIAGE_KEY));
       if (t && t.stage && TRIAGE_TO_STAGE[t.stage]) {
-        return { stage: TRIAGE_TO_STAGE[t.stage], answer: t.stage };
+        return { stage: TRIAGE_TO_STAGE[t.stage], answer: t.stage, source: "founder-path" };
+      }
+    } catch { /* ignore */ }
+    try {
+      const o = JSON.parse(localStorage.getItem(ONBOARDING_KEY));
+      if (o && o.intent && INTENT_TO_STAGE[o.intent]) {
+        return { stage: INTENT_TO_STAGE[o.intent], answer: o.intent, source: "onboarding" };
       }
     } catch { /* ignore */ }
     return null;
@@ -89,7 +109,11 @@ function init() {
       startedFrom: mapped ? mapped.answer : null,
       bannerDismissed: false,
     };
-    track("Curriculum Start", { stage: state.currentStage, fromTriage: String(Boolean(mapped)) });
+    track("Curriculum Start", {
+      stage: state.currentStage,
+      fromTriage: String(Boolean(mapped)),
+      source: mapped ? mapped.source : "direct",
+    });
     save(); // persist immediately so Start fires once per user, not once per visit
   }
   let viewingStage = state.currentStage;

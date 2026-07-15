@@ -4,6 +4,9 @@ import { useState, useEffect, useReducer, useRef, useCallback } from "preact/hoo
 const API_ENDPOINT = "https://api.mergecombinator.com/access/provision";
 const LEGACY_ENDPOINT = "https://api.sigmablox.com/api/access-request";
 const STORAGE_KEY = "mc-onboarding-state";
+// Read by js/curriculum.js to pick a starting stage — localStorage (not
+// session) so the curriculum stays personalized on later visits.
+const INTENT_KEY = "mc-onboarding-intent-v1";
 const COMPLETED_KEY = "mc-onboarding-completed";
 const TURNSTILE_SITE_KEY = document.body?.dataset?.turnstileSiteKey || "";
 const ANALYTICS_SCHEMA_VERSION = "access_ontology_v1";
@@ -981,7 +984,7 @@ function getDoneCta(products, referralContext) {
 }
 
 // ─── DONE SCREEN ──────────────────────────────────────────────────────────────
-function DoneScreen({ products, loginUrl, role, referralContext }) {
+function DoneScreen({ products, loginUrl, role, referralContext, intent }) {
   const autoPromoted = role && role !== "restricted";
   const ctaText = getDoneCta(products, referralContext);
   return (
@@ -996,8 +999,15 @@ function DoneScreen({ products, loginUrl, role, referralContext }) {
           : "Check your email to finish setup. Your sandbox is being configured based on your selections."}
         {products.length > 0 && " We've noted your starting points."}
       </p>
-      <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener" class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}>
-        Schedule a call &rarr;
+      <a href="/curriculum" class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}
+        onClick={() => track("done_curriculum_click", { intent: intent || "none" })}>
+        Start your curriculum &rarr;
+      </a>
+      <p class="onboarding__done-body" style={{ marginTop: 8, fontSize: 13 }}>
+        Staged to where you are \u2014 no account needed while your access is configured.
+      </p>
+      <a href="https://calendar.app.google/caYkEhTngEyUEgDn7" target="_blank" rel="noopener" class="onboarding__btn onboarding__btn--text" style={{ display: "block", textAlign: "center", marginTop: 12 }}>
+        Or schedule a call &rarr;
       </a>
     </div>
   );
@@ -1388,6 +1398,13 @@ export default function MCOnboarding() {
     });
   }, [sessionId, journeyId, entryMeta.context, entryMeta.source, entryMeta.referrerHost, referralContext, loginReturnTo, opportunityContext]);
 
+  // Persist readiness intent for the curriculum's stage mapping. Written on
+  // selection (not completion) so even step-1 abandoners land staged right.
+  useEffect(() => {
+    if (!state.intent) return;
+    try { localStorage.setItem(INTENT_KEY, JSON.stringify({ intent: state.intent, ts: Date.now() })); } catch { /* ignore */ }
+  }, [state.intent]);
+
   // Check if user is already authenticated — skip onboarding entirely
   useEffect(() => {
     (async () => {
@@ -1615,7 +1632,7 @@ export default function MCOnboarding() {
           ) : step === 0 ? (
             <WelcomeBack onNewUser={() => goTo(1)} loginHref={loginHref} referralContext={referralContext} />
           ) : step === 4 ? (
-            <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} referralContext={referralContext} />
+            <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} referralContext={referralContext} intent={state.intent} />
           ) : abVariant.current === "B" && step === 1 ? (
             <SimplifiedForm loginHref={loginHref} referralContext={referralContext} opportunityContext={opportunityContext} />
           ) : step === 1 ? (
