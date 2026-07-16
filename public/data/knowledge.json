@@ -36,8 +36,8 @@
       "type": "quick-link",
       "access": "public",
       "title": "Finding Problem Sponsors",
-      "url": "https://www.dau.edu/tools/t/Problem-Sponsor",
-      "description": "DAU guide to identifying and engaging problem sponsors in DoD"
+      "url": "https://www.h4d.us/",
+      "description": "How problem sponsors work in DoD and how to engage them — Hacking for Defense"
     },
     {
       "id": "afwerx-pathway",
@@ -63,8 +63,8 @@
       "type": "quick-link",
       "access": "public",
       "title": "Other Transaction Authority Guide",
-      "url": "https://aaf.dau.edu/aaf/ota/",
-      "description": "DAU guide to OTA vs traditional FAR-based contracts"
+      "url": "https://aaf.dau.edu/aaf/ot-guide/",
+      "description": "WarU (formerly DAU) guide to OTA vs traditional FAR-based contracts"
     },
     {
       "id": "pricing-strategies",
@@ -80,7 +80,7 @@
       "type": "quick-link",
       "access": "public",
       "title": "Contracting Cone",
-      "url": "https://www.dau.edu/tools/t/Contracting-Cone",
+      "url": "https://aaf.dau.edu/aaf/contracting-cone/",
       "description": "Visual guide to contract types and dollar thresholds"
     },
     {
@@ -98,7 +98,7 @@
       "type": "quick-link",
       "access": "public",
       "title": "Contract Types Explained",
-      "url": "https://www.dau.edu/tools/t/Contract-Type-Comparison",
+      "url": "https://www.waru.edu/tools/comparison-major-contract-types-chart",
       "description": "FFP, T&M, CPFF, CPIF - when to use each and what they mean"
     },
     {

@@ -97,7 +97,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 120px var(--padding-x) 80px;
+      padding: 120px calc(var(--padding-x) * 2) 80px;
       position: relative;
       overflow: hidden;
     }
@@ -216,7 +216,7 @@
       min-height: 100vh;
       display: flex;
       align-items: center;
-      padding: 80px var(--padding-x);
+      padding: 80px calc(var(--padding-x) * 2);
       position: relative;
       overflow: hidden;
     }
@@ -238,14 +238,14 @@
       font-weight: 900;
       line-height: 0.85;
       color: var(--blue);
-      opacity: 0.06;
+      opacity: 0.03;
       letter-spacing: -0.05em;
       user-select: none;
       transition: opacity 0.6s;
     }
 
     .fpe-step.in-view .fpe-step__num {
-      opacity: 0.1;
+      opacity: 0.05;
     }
 
     /* Content block */
@@ -333,8 +333,8 @@
     .fpe-step__divider {
       position: absolute;
       bottom: 0;
-      left: var(--padding-x);
-      right: var(--padding-x);
+      left: calc(var(--padding-x) * 2);
+      right: calc(var(--padding-x) * 2);
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 20%, rgba(255,255,255,0.06) 80%, transparent);
     }
@@ -383,7 +383,7 @@
 
     /* --- CTA Footer --- */
     .fpe-cta {
-      padding: 80px var(--padding-x) 120px;
+      padding: 80px calc(var(--padding-x) * 2) 120px;
       text-align: center;
     }
 
@@ -443,7 +443,7 @@
         transition: opacity 0.6s, transform 0.6s;
       }
       .fpe-step.in-view .fpe-step__num {
-        opacity: 0.07;
+        opacity: 0.04;
         transform: translateX(0);
       }
 
@@ -496,8 +496,8 @@
     .light-theme .fpe-step__title { color: var(--gray-900, #1a1a1a); }
     .light-theme .fpe-step__text { color: var(--gray-700, #4a4a4a); }
     .light-theme .fpe-step__subtitle { color: var(--gray-600, #555); }
-    .light-theme .fpe-step__num { color: var(--blue); opacity: 0.06; }
-    .light-theme .fpe-step.in-view .fpe-step__num { opacity: 0.08; }
+    .light-theme .fpe-step__num { color: var(--blue); opacity: 0.03; }
+    .light-theme .fpe-step.in-view .fpe-step__num { opacity: 0.04; }
     .light-theme .fpe-step__divider {
       background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06) 20%, rgba(0,0,0,0.06) 80%, transparent);
     }

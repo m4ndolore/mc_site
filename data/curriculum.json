@@ -11,11 +11,11 @@
           "id": "contracting-cone",
           "type": "external",
           "title": "Contracting Cone",
-          "description": "Visual guide to contract types and dollar thresholds — DAU",
-          "url": "https://www.dau.edu/tools/t/Contracting-Cone",
+          "description": "Visual guide to contract types and dollar thresholds — WarU (formerly DAU)",
+          "url": "https://aaf.dau.edu/aaf/contracting-cone/",
           "timeToRead": 15,
           "order": 1,
-          "sourceLabel": "DAU"
+          "sourceLabel": "WarU"
         },
         {
           "id": "far-startups",
@@ -32,10 +32,10 @@
           "type": "external",
           "title": "Contract Types Explained",
           "description": "FFP, T&M, CPFF, CPIF — when to use each and what they mean",
-          "url": "https://www.dau.edu/tools/t/Contract-Type-Comparison",
+          "url": "https://www.waru.edu/tools/comparison-major-contract-types-chart",
           "timeToRead": 20,
           "order": 3,
-          "sourceLabel": "DAU"
+          "sourceLabel": "WarU"
         },
         {
           "id": "ppbe-overview",
@@ -80,11 +80,11 @@
           "id": "problem-sponsor",
           "type": "external",
           "title": "Finding Problem Sponsors",
-          "description": "DAU guide to identifying and engaging problem sponsors in DoD",
-          "url": "https://www.dau.edu/tools/t/Problem-Sponsor",
+          "description": "How problem sponsors work in DoD and how to engage them — Hacking for Defense",
+          "url": "https://www.h4d.us/",
           "timeToRead": 20,
           "order": 1,
-          "sourceLabel": "DAU"
+          "sourceLabel": "H4D"
         },
         {
           "id": "afwerx-pathways",
@@ -110,11 +110,11 @@
           "id": "ota-guide",
           "type": "external",
           "title": "Other Transaction Authority Guide",
-          "description": "OTA vs traditional FAR-based contracts — DAU",
-          "url": "https://aaf.dau.edu/aaf/ota/",
+          "description": "OTA vs traditional FAR-based contracts — WarU OT Guide",
+          "url": "https://aaf.dau.edu/aaf/ot-guide/",
           "timeToRead": 20,
           "order": 4,
-          "sourceLabel": "DAU"
+          "sourceLabel": "WarU"
         },
         {
           "id": "opportunities-board",
