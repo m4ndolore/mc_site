@@ -1113,22 +1113,20 @@ function MobileActionBar({ step, state, onAction, onBack, canGoBack = true }) {
 }
 
 // ─── APP ──────────────────────────────────────────────────────────────────────
-// ─── A/B TEST: simplified form for organic traffic ───────────────────────────
-const AB_STORAGE_KEY = "mc-access-ab-variant";
-function getAbVariant() {
-  try {
-    const stored = sessionStorage.getItem(AB_STORAGE_KEY);
-    if (stored === "A" || stored === "B") return stored;
-    const variant = Math.random() < 0.5 ? "A" : "B";
-    sessionStorage.setItem(AB_STORAGE_KEY, variant);
-    return variant;
-  } catch { return "A"; } // fallback to full wizard if storage blocked
-}
-function isOrganicAccess() {
+// ─── FORM ROUTING ─────────────────────────────────────────────────────────────
+// Deterministic routing by entry context (replaced a 50/50 A/B that could
+// never reach significance at this traffic level):
+//  - product/opportunity params never reach step 1 (shortcut fast-tracks them)
+//  - warm tagged arrivals (?source=...: meeting follow-ups, newsletters,
+//    partner links) get the low-friction simplified form — they already know
+//    what MC is
+//  - cold organic traffic gets the full discovery wizard — the wizard is the
+//    pitch
+function getFormVariant() {
   try {
     const p = new URLSearchParams(window.location.search);
-    return !p.has("surface") && !p.has("context") && !p.has("ref") && !p.has("opp_id") && !p.has("opp_code");
-  } catch { return false; }
+    return p.get("source") ? "B" : "A";
+  } catch { return "A"; }
 }
 
 // Map surface/context params to pre-selected product + fast-track to contact step
@@ -1167,7 +1165,7 @@ function SimplifiedForm({ loginHref, referralContext, opportunityContext }) {
   const GOV_RE = /\.(gov|mil)$/i;
   const isGovEmail = GOV_RE.test((email || "").trim().split("@")[1] || "");
 
-  useEffect(() => { track("ab_variant_view", { variant: "B" }); }, []);
+  useEffect(() => { track("simplified_form_view", { route: "warm" }); }, []);
   useEffect(() => { if (sent && otpRef.current) otpRef.current.focus(); }, [sent]);
 
   const handleSend = async () => {
@@ -1371,8 +1369,7 @@ export default function MCOnboarding() {
   const [authUser, setAuthUser] = useState(null);
   const liveRef = useRef(null);
   const wasShortcut = useRef(!!getEntryShortcut() && state.step === 2);
-  // A/B test: simplified form for organic traffic
-  const abVariant = useRef(isOrganicAccess() && !localStorage.getItem(COMPLETED_KEY) ? getAbVariant() : "A");
+  const formVariant = useRef(getFormVariant());
   const { step } = state;
   const heroKey = getHeroKey(state);
   const loginReturnTo = resolveAccessReturnTo();
@@ -1394,7 +1391,7 @@ export default function MCOnboarding() {
       opportunity_id: opportunityContext?.id || null,
       opportunity_code: opportunityContext?.code || null,
       opportunity_title: opportunityContext?.title || null,
-      ab_variant: abVariant.current,
+      form_variant: formVariant.current,
     });
   }, [sessionId, journeyId, entryMeta.context, entryMeta.source, entryMeta.referrerHost, referralContext, loginReturnTo, opportunityContext]);
 
@@ -1587,7 +1584,7 @@ export default function MCOnboarding() {
 
       <div class="onboarding__form">
         <div class="onboarding__form-inner">
-          {typeof step === "number" && step >= 1 && step <= 2 && abVariant.current !== "B" && <ProgressBar step={step} />}
+          {typeof step === "number" && step >= 1 && step <= 2 && formVariant.current !== "B" && <ProgressBar step={step} />}
           {opportunityContext && typeof step === "number" && step >= 1 && step <= 3 && (
             <div
               style={{
@@ -1633,7 +1630,7 @@ export default function MCOnboarding() {
             <WelcomeBack onNewUser={() => goTo(1)} loginHref={loginHref} referralContext={referralContext} />
           ) : step === 4 ? (
             <DoneScreen products={state.products} loginUrl={state.loginUrl} role={state.role} referralContext={referralContext} intent={state.intent} />
-          ) : abVariant.current === "B" && step === 1 ? (
+          ) : formVariant.current === "B" && step === 1 ? (
             <SimplifiedForm loginHref={loginHref} referralContext={referralContext} opportunityContext={opportunityContext} />
           ) : step === 1 ? (
             <Step1 intent={state.intent} dispatch={dispatch} onNext={() => goTo(2)} onSkip={() => goTo(2)} loginHref={loginHref} />
