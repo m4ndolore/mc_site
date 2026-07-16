@@ -7,7 +7,7 @@
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A guided five-stage curriculum for defense-tech founders: Preflight, Spot, Ready for Launch, Tension, Launch. 29 curated resources ordered by what moves you forward fastest.">
+  <meta name="description" content="A guided five-stage curriculum for defense-tech founders: Preflight, Spot, Ready for Launch, Tension, Launch. 33 curated resources ordered by what moves you forward fastest.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://mergecombinator.com/curriculum">
   <meta property="og:title" content="Founder Curriculum — Merge Combinator">
@@ -194,17 +194,29 @@
         {
           "@type": "ListItem",
           "position": 3,
+          "name": "APFIT — Procurement & Fielding Funds",
+          "url": "https://www.cto.mil/apfit/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "STRATFI / TACFI Bridge Funding",
+          "url": "https://afwerx.com/stratfi-tacfi/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
           "name": "The Interceptor Math Is Broken",
           "url": "https://mergecombinator.com/signals/interceptor-stockpile-crisis"
         },
         {
           "@type": "ListItem",
-          "position": 4,
+          "position": 6,
           "name": "Valley of Death Navigator"
         },
         {
           "@type": "ListItem",
-          "position": 5,
+          "position": 7,
           "name": "Operator Validation Toolkit"
         }
       ]
@@ -217,14 +229,14 @@
         {
           "@type": "ListItem",
           "position": 1,
-          "name": "From Combine to Series A: Ulysses",
-          "url": "https://mergecombinator.com/signals/ulysses-combine-to-series-a"
+          "name": "Color of Money",
+          "url": "https://acqnotes.com/acqnote/acquisitions/color-of-money"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "The $16B Alignment Problem",
-          "url": "https://mergecombinator.com/signals/vc-defense-alignment-problem"
+          "name": "From Combine to Series A: Ulysses",
+          "url": "https://mergecombinator.com/signals/ulysses-combine-to-series-a"
         },
         {
           "@type": "ListItem",
@@ -235,11 +247,23 @@
         {
           "@type": "ListItem",
           "position": 4,
-          "name": "Production Contract Playbook"
+          "name": "Prime & Subcontracting Rules",
+          "url": "https://www.sba.gov/federal-contracting/contracting-guide/prime-subcontracting"
         },
         {
           "@type": "ListItem",
           "position": 5,
+          "name": "The $16B Alignment Problem",
+          "url": "https://mergecombinator.com/signals/vc-defense-alignment-problem"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Production Contract Playbook"
+        },
+        {
+          "@type": "ListItem",
+          "position": 7,
           "name": "Prime Teaming & Subcontractor Strategy"
         }
       ]
@@ -283,7 +307,7 @@
             <div class="fp-progress__seg"></div>
             <div class="fp-progress__seg"></div>
           </div>
-          <div class="fp-progress__label" id="curProgressLabel">Five stages · 29 resources</div>
+          <div class="fp-progress__label" id="curProgressLabel">Five stages · 33 resources</div>
 
           <div class="fp-resume" id="curPeekStrip" hidden>
             <div><strong>Previewing.</strong> <span id="curPeekText"></span></div>
@@ -576,6 +600,28 @@
             <span class="cur-resource__open" aria-hidden="true">Open ↗</span>
           </a>
         </div>
+        <div class="cur-resource" data-resource-id="apfit" data-stage-id="tension">
+          <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;APFIT — Procurement &amp; Fielding Funds&quot; as explored"></button>
+          <a class="cur-resource__link" href="https://www.cto.mil/apfit/" target="_blank" rel="noopener">
+            <span class="cur-resource__body">
+              <span class="cur-resource__title">APFIT — Procurement &amp; Fielding Funds</span>
+              <span class="cur-resource__desc">OUSD(R&amp;E) program that funds the jump from prototype to procurement — eight-figure awards aimed squarely at the valley of death</span>
+              <span class="cur-resource__meta">OUSD R&amp;E · 10 min · External</span>
+            </span>
+            <span class="cur-resource__open" aria-hidden="true">Open ↗</span>
+          </a>
+        </div>
+        <div class="cur-resource" data-resource-id="stratfi-tacfi" data-stage-id="tension">
+          <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;STRATFI / TACFI Bridge Funding&quot; as explored"></button>
+          <a class="cur-resource__link" href="https://afwerx.com/stratfi-tacfi/" target="_blank" rel="noopener">
+            <span class="cur-resource__body">
+              <span class="cur-resource__title">STRATFI / TACFI Bridge Funding</span>
+              <span class="cur-resource__desc">AFWERX bridge between SBIR Phase II and Phase III — government dollars matched by private capital to carry you across</span>
+              <span class="cur-resource__meta">AFWERX · 15 min · External</span>
+            </span>
+            <span class="cur-resource__open" aria-hidden="true">Open ↗</span>
+          </a>
+        </div>
         <div class="cur-resource" data-resource-id="interceptor-analysis" data-stage-id="tension">
           <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;The Interceptor Math Is Broken&quot; as explored"></button>
           <a class="cur-resource__link" href="/signals/interceptor-stockpile-crisis">
@@ -624,6 +670,17 @@
         </div>
         <p class="cur-stage__desc">Production contracts, follow-on awards, colors of money, B2B partnerships, and lifecycle optimization. You&#39;re building the team and the right team members change everything.</p>
         <div class="cur-stage__resources">
+        <div class="cur-resource" data-resource-id="color-of-money" data-stage-id="launch">
+          <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Color of Money&quot; as explored"></button>
+          <a class="cur-resource__link" href="https://acqnotes.com/acqnote/acquisitions/color-of-money" target="_blank" rel="noopener">
+            <span class="cur-resource__body">
+              <span class="cur-resource__title">Color of Money</span>
+              <span class="cur-resource__desc">Appropriation categories — RDT&amp;E, procurement, O&amp;M — and why the type of dollars decides what your customer can actually buy</span>
+              <span class="cur-resource__meta">AcqNotes · 10 min · External</span>
+            </span>
+            <span class="cur-resource__open" aria-hidden="true">Open ↗</span>
+          </a>
+        </div>
         <div class="cur-resource" data-resource-id="ulysses-case-study" data-stage-id="launch">
           <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;From Combine to Series A: Ulysses&quot; as explored"></button>
           <a class="cur-resource__link" href="/signals/ulysses-combine-to-series-a">
@@ -635,23 +692,34 @@
             <span class="cur-resource__open" aria-hidden="true">Open →</span>
           </a>
         </div>
-        <div class="cur-resource" data-resource-id="vc-alignment-problem" data-stage-id="launch">
-          <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;The $16B Alignment Problem&quot; as explored"></button>
-          <a class="cur-resource__link" href="/signals/vc-defense-alignment-problem">
-            <span class="cur-resource__body">
-              <span class="cur-resource__title">The $16B Alignment Problem</span>
-              <span class="cur-resource__desc">Merge Combinator Analysis — whether the system can absorb the capital flowing in</span>
-              <span class="cur-resource__meta">10 min · Signal</span>
-            </span>
-            <span class="cur-resource__open" aria-hidden="true">Open →</span>
-          </a>
-        </div>
         <div class="cur-resource" data-resource-id="army-acquisition" data-stage-id="launch">
           <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;The Army Is Rewriting How It Buys Technology&quot; as explored"></button>
           <a class="cur-resource__link" href="/signals/army-rewriting-acquisition">
             <span class="cur-resource__body">
               <span class="cur-resource__title">The Army Is Rewriting How It Buys Technology</span>
               <span class="cur-resource__desc">Merge Combinator Analysis — acquisition restructured around software velocity</span>
+              <span class="cur-resource__meta">10 min · Signal</span>
+            </span>
+            <span class="cur-resource__open" aria-hidden="true">Open →</span>
+          </a>
+        </div>
+        <div class="cur-resource" data-resource-id="prime-subcontracting" data-stage-id="launch">
+          <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Prime &amp; Subcontracting Rules&quot; as explored"></button>
+          <a class="cur-resource__link" href="https://www.sba.gov/federal-contracting/contracting-guide/prime-subcontracting" target="_blank" rel="noopener">
+            <span class="cur-resource__body">
+              <span class="cur-resource__title">Prime &amp; Subcontracting Rules</span>
+              <span class="cur-resource__desc">SBA guide to teaming with primes — subcontracting plans, flow-down clauses, and where small businesses fit</span>
+              <span class="cur-resource__meta">SBA · 15 min · External</span>
+            </span>
+            <span class="cur-resource__open" aria-hidden="true">Open ↗</span>
+          </a>
+        </div>
+        <div class="cur-resource" data-resource-id="vc-alignment-problem" data-stage-id="launch">
+          <button class="cur-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;The $16B Alignment Problem&quot; as explored"></button>
+          <a class="cur-resource__link" href="/signals/vc-defense-alignment-problem">
+            <span class="cur-resource__body">
+              <span class="cur-resource__title">The $16B Alignment Problem</span>
+              <span class="cur-resource__desc">Merge Combinator Analysis — whether the system can absorb the capital flowing in</span>
               <span class="cur-resource__meta">10 min · Signal</span>
             </span>
             <span class="cur-resource__open" aria-hidden="true">Open →</span>

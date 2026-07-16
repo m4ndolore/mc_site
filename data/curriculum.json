@@ -245,12 +245,32 @@
           "sourceLabel": "Navy SBIR"
         },
         {
+          "id": "apfit",
+          "type": "external",
+          "title": "APFIT — Procurement & Fielding Funds",
+          "description": "OUSD(R&E) program that funds the jump from prototype to procurement — eight-figure awards aimed squarely at the valley of death",
+          "url": "https://www.cto.mil/apfit/",
+          "timeToRead": 10,
+          "order": 3,
+          "sourceLabel": "OUSD R&E"
+        },
+        {
+          "id": "stratfi-tacfi",
+          "type": "external",
+          "title": "STRATFI / TACFI Bridge Funding",
+          "description": "AFWERX bridge between SBIR Phase II and Phase III — government dollars matched by private capital to carry you across",
+          "url": "https://afwerx.com/stratfi-tacfi/",
+          "timeToRead": 15,
+          "order": 4,
+          "sourceLabel": "AFWERX"
+        },
+        {
           "id": "interceptor-analysis",
           "type": "signal",
           "title": "The Interceptor Math Is Broken",
           "description": "Merge Combinator Analysis — why affordable mass matters for your production story",
           "timeToRead": 8,
-          "order": 3,
+          "order": 5,
           "url": "/signals/interceptor-stockpile-crisis"
         },
         {
@@ -261,7 +281,7 @@
           "gateType": "builders",
           "gateName": "Defense Builders",
           "timeToRead": 60,
-          "order": 4,
+          "order": 6,
           "url": "/access"
         },
         {
@@ -272,7 +292,7 @@
           "gateType": "guild",
           "gateName": "Guild — Free",
           "timeToRead": 45,
-          "order": 5,
+          "order": 7,
           "url": "/access"
         }
       ]
@@ -285,22 +305,23 @@
       "description": "Production contracts, follow-on awards, colors of money, B2B partnerships, and lifecycle optimization. You're building the team and the right team members change everything.",
       "resources": [
         {
+          "id": "color-of-money",
+          "type": "external",
+          "title": "Color of Money",
+          "description": "Appropriation categories — RDT&E, procurement, O&M — and why the type of dollars decides what your customer can actually buy",
+          "url": "https://acqnotes.com/acqnote/acquisitions/color-of-money",
+          "timeToRead": 10,
+          "order": 1,
+          "sourceLabel": "AcqNotes"
+        },
+        {
           "id": "ulysses-case-study",
           "type": "signal",
           "title": "From Combine to Series A: Ulysses",
           "description": "Merge Combinator Case Study — what operator-validated formation actually produces",
           "timeToRead": 10,
-          "order": 1,
-          "url": "/signals/ulysses-combine-to-series-a"
-        },
-        {
-          "id": "vc-alignment-problem",
-          "type": "signal",
-          "title": "The $16B Alignment Problem",
-          "description": "Merge Combinator Analysis — whether the system can absorb the capital flowing in",
-          "timeToRead": 10,
           "order": 2,
-          "url": "/signals/vc-defense-alignment-problem"
+          "url": "/signals/ulysses-combine-to-series-a"
         },
         {
           "id": "army-acquisition",
@@ -312,6 +333,25 @@
           "url": "/signals/army-rewriting-acquisition"
         },
         {
+          "id": "prime-subcontracting",
+          "type": "external",
+          "title": "Prime & Subcontracting Rules",
+          "description": "SBA guide to teaming with primes — subcontracting plans, flow-down clauses, and where small businesses fit",
+          "url": "https://www.sba.gov/federal-contracting/contracting-guide/prime-subcontracting",
+          "timeToRead": 15,
+          "order": 4,
+          "sourceLabel": "SBA"
+        },
+        {
+          "id": "vc-alignment-problem",
+          "type": "signal",
+          "title": "The $16B Alignment Problem",
+          "description": "Merge Combinator Analysis — whether the system can absorb the capital flowing in",
+          "timeToRead": 10,
+          "order": 5,
+          "url": "/signals/vc-defense-alignment-problem"
+        },
+        {
           "id": "production-playbook",
           "type": "gated",
           "title": "Production Contract Playbook",
@@ -319,7 +359,7 @@
           "gateType": "builders",
           "gateName": "Defense Builders",
           "timeToRead": 40,
-          "order": 4,
+          "order": 6,
           "url": "/access"
         },
         {
@@ -330,7 +370,7 @@
           "gateType": "builders",
           "gateName": "Defense Builders",
           "timeToRead": 35,
-          "order": 5,
+          "order": 7,
           "url": "/access"
         }
       ]

@@ -752,7 +752,7 @@ Primary domain: https://mergecombinator.com
 - The Combine: https://mergecombinator.com/programs/the-combine
 - FAQ: https://mergecombinator.com/faq
 - Knowledge: https://mergecombinator.com/knowledge
-- Founder Curriculum: https://mergecombinator.com/curriculum (guided five-stage learning path for defense tech founders, 29 curated resources)
+- Founder Curriculum: https://mergecombinator.com/curriculum (guided five-stage learning path for defense tech founders, 33 curated resources)
 - Opportunities: https://mergecombinator.com/opportunities
 - SBIR Opportunities: https://mergecombinator.com/opportunities/sbir
 - STTR Opportunities: https://mergecombinator.com/opportunities/sttr
