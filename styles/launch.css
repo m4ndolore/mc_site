@@ -324,11 +324,46 @@
   transform: translateY(-1px);
 }
 
+/* ── Stage schematic figures (drawing system in schematics.css) ── */
+.launch-stage__fig {
+  max-width: 640px;
+  margin: 24px 0 4px;
+}
+
 /* ── Bottom CTA ── */
 .launch-bottom-cta {
   padding: 64px 0;
   background: var(--charcoal);
   text-align: center;
+}
+
+.launch-bottom-cta__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.launch-btn--outline {
+  background: transparent;
+  color: var(--offwhite);
+  border: 1px solid var(--ghost-gray);
+}
+
+.launch-btn--outline:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.light-theme .launch-btn--outline {
+  color: #1a1a1a;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.light-theme .launch-btn--outline:hover {
+  color: var(--blue);
+  border-color: var(--blue);
 }
 
 .launch-bottom-cta__title {
