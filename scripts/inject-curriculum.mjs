@@ -43,17 +43,20 @@ function resourceRow(r, stageId) {
 // (drawing system in styles/schematics.css, triggered by js/schematics.js).
 const STAGE_GLYPHS = {
   preflight: `<svg viewBox="0 0 80 80">
-              <line class="d s" pathLength="1" x1="8" y1="58" x2="72" y2="58"/>
-              <path class="d s--blue" pathLength="1" d="M34 58 L37 50 L47 50 L50 58" style="--d:.35s"/>
-              <line class="d s--faint" pathLength="1" x1="42" y1="46" x2="42" y2="39" style="--d:.5s"/>
-              <circle class="d s--blue" pathLength="1" cx="42" cy="28" r="9" style="--d:.6s"/>
-              <path class="d s--blue" pathLength="1" d="M37 28 L41 32 L48 23" style="--d:.8s"/>
+              <rect class="d s" pathLength="1" x="12" y="22" width="56" height="36"/>
+              <line class="d s--faint" pathLength="1" x1="26" y1="27" x2="26" y2="53" style="--d:.35s"/>
+              <line class="d s--faint" pathLength="1" x1="40" y1="27" x2="40" y2="53" style="--d:.4s"/>
+              <line class="d s--faint" pathLength="1" x1="54" y1="27" x2="54" y2="53" style="--d:.45s"/>
+              <path class="d s--blue" pathLength="1" d="M23 32 H15 V40 H23 V48 H15" style="--d:.55s"/>
+              <path class="d s--blue" pathLength="1" d="M29 32 H37 V40 H29 V48 H37" style="--d:.65s"/>
+              <rect class="d s--blue" pathLength="1" x="43" y="32" width="8" height="16" style="--d:.75s"/>
+              <rect class="d s--blue" pathLength="1" x="57" y="32" width="8" height="16" style="--d:.85s"/>
             </svg>`,
   spot: `<svg viewBox="0 0 80 80">
-              <line class="d s" pathLength="1" x1="8" y1="58" x2="72" y2="58"/>
-              <circle class="d s" pathLength="1" cx="42" cy="50" r="11" style="--d:.4s"/>
-              <path class="d s--blue" pathLength="1" d="M10 16 Q28 20 37 40" style="--d:.55s"/>
-              <path class="f fill-blue" d="M39 44 L40 51 L33 47 Z" style="--d:.9s"/>
+              <path class="d s" pathLength="1" d="M12 30 L58 27 L70 34 L58 41 L46 42 L39 50 L16 52 Z"/>
+              <line class="s--faint ghost f" x1="46" y1="31" x2="66" y2="34" style="--d:.5s"/>
+              <line class="s--faint ghost f" x1="18" y1="49" x2="44" y2="40" style="--d:.55s"/>
+              <circle class="f fill-blue" cx="54" cy="34" r="3.5" style="--d:.8s"/>
             </svg>`,
   ready: `<svg viewBox="0 0 80 80">
               <line class="d s" pathLength="1" x1="8" y1="58" x2="72" y2="58"/>
