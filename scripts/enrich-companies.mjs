@@ -21,6 +21,9 @@ const PRIVATE_DATA_PATH = join(PRIVATE_DATA_DIR, 'companies.json');
 const PRIVATE_SEED_PATH = join(PRIVATE_DATA_DIR, 'companies.seed.json');
 const COHORT_CSV = join(__dirname, '..', 'assets', 'data', 'Cohort 25-1-Cohort 25-1.csv');
 const PROD_CSV = join(__dirname, '..', 'assets', 'data', 'Prod List-Grid view.csv');
+// Checked-in fallback reconstructed from the last known-good public dataset;
+// applied only when the Airtable CSV exports above are absent.
+const ENRICHMENT_OVERLAY = join(__dirname, 'data', 'company-enrichment.json');
 
 const dryRun = process.argv.includes('--dry-run');
 
@@ -137,11 +140,16 @@ const SOURCE_DATA_PATH = hasCsvSources && existsSync(PRIVATE_SEED_PATH)
 const raw = JSON.parse(readFileSync(SOURCE_DATA_PATH, 'utf-8'));
 const cohortRecords = hasCsvSources ? csvToObjects(readFileSync(COHORT_CSV, 'utf-8')) : [];
 const prodRecords = hasCsvSources ? csvToObjects(readFileSync(PROD_CSV, 'utf-8')) : [];
+const overlay = !hasCsvSources && existsSync(ENRICHMENT_OVERLAY)
+  ? JSON.parse(readFileSync(ENRICHMENT_OVERLAY, 'utf-8'))
+  : null;
 
 console.log(`[enrich] Loaded ${raw.companies.length} PG companies from ${SOURCE_DATA_PATH}`);
 if (hasCsvSources) {
   console.log(`[enrich] Loaded ${cohortRecords.length} Cohort CSV records`);
   console.log(`[enrich] Loaded ${prodRecords.length} Prod List CSV records`);
+} else if (overlay) {
+  console.log('[enrich] Local CSV sources absent; applying reconstructed overlay from scripts/data/company-enrichment.json.');
 } else {
   console.log('[enrich] Local CSV sources absent; using existing private/API company data without CSV enrichment.');
 }
@@ -343,6 +351,41 @@ for (const pr of prodRecords) {
   stats.applicantsAdded++;
 }
 
+// ── Overlay fallback: restore reconstructed CSV enrichment ──────────
+const overlayStats = { patched: 0, fields: 0, added: 0 };
+if (overlay) {
+  const patchByNorm = overlay.patches || {};
+  for (const c of raw.companies) {
+    const patch = patchByNorm[normalizeName(c.name)];
+    if (!patch) continue;
+    let touched = false;
+    for (const [k, v] of Object.entries(patch)) {
+      if (k === 'id' || k === 'name') continue;
+      const cur = c[k];
+      const missing = cur === null || cur === undefined || cur === '';
+      const shortDesc = k === 'description' && typeof cur === 'string' && cur.length < 30;
+      if (missing || shortDesc) {
+        c[k] = v;
+        overlayStats.fields++;
+        touched = true;
+      }
+    }
+    if (touched) overlayStats.patched++;
+  }
+  for (const rec of overlay.addCompanies || []) {
+    const norm = normalizeName(rec.name);
+    if (existingNorm.has(norm)) continue;
+    raw.companies.push(rec);
+    existingNorm.add(norm);
+    overlayStats.added++;
+  }
+  console.log('── Overlay Fallback ──');
+  console.log(`Companies patched from overlay: ${overlayStats.patched}`);
+  console.log(`Fields restored: ${overlayStats.fields}`);
+  console.log(`Companies re-added: ${overlayStats.added}`);
+  console.log();
+}
+
 // ── Sort: alumni first (by pod ranking), then applicants (by name) ──
 raw.companies.sort((a, b) => {
   if (a.pipelineStage !== b.pipelineStage) {
@@ -393,7 +436,11 @@ if (dryRun) {
     metadata: {
       ...raw.metadata,
       enrichedAt: new Date().toISOString(),
-      enrichmentSources: ['Cohort 25-1-Cohort 25-1.csv', 'Prod List-Grid view.csv'],
+      enrichmentSources: hasCsvSources
+        ? ['Cohort 25-1-Cohort 25-1.csv', 'Prod List-Grid view.csv']
+        : overlay
+          ? ['scripts/data/company-enrichment.json']
+          : [],
     },
   };
   if (!existsSync(PRIVATE_DATA_DIR)) {
