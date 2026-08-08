@@ -15,7 +15,19 @@ h1.fp-lede { font-weight: inherit; }
 .cur-stage + .cur-stage { margin-top: 40px; }
 .js-enhanced .cur-stage + .cur-stage { margin-top: 0; }
 
-.cur-stage__head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.cur-stage__head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; position: relative; padding-right: 92px; }
+
+/* Carrier-deck stage glyph (drawing system in schematics.css) */
+.cur-stage__glyph {
+  position: absolute;
+  right: 0;
+  top: -8px;
+  width: 76px;
+}
+@media (max-width: 640px) {
+  .cur-stage__head { padding-right: 64px; }
+  .cur-stage__glyph { width: 54px; top: -4px; }
+}
 .cur-stage__num {
   font-family: 'Space Mono', monospace; font-size: 0.875rem;
   color: var(--blue); letter-spacing: 0.1em;
