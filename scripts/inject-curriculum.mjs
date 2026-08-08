@@ -39,13 +39,57 @@ function resourceRow(r, stageId) {
         </div>`
 }
 
+// Carrier-deck stage glyphs — compact echoes of the /launch deck schematics
+// (drawing system in styles/schematics.css, triggered by js/schematics.js).
+const STAGE_GLYPHS = {
+  preflight: `<svg viewBox="0 0 80 80">
+              <line class="d s" pathLength="1" x1="8" y1="58" x2="72" y2="58"/>
+              <path class="d s--blue" pathLength="1" d="M34 58 L37 50 L47 50 L50 58" style="--d:.35s"/>
+              <line class="d s--faint" pathLength="1" x1="42" y1="46" x2="42" y2="39" style="--d:.5s"/>
+              <circle class="d s--blue" pathLength="1" cx="42" cy="28" r="9" style="--d:.6s"/>
+              <path class="d s--blue" pathLength="1" d="M37 28 L41 32 L48 23" style="--d:.8s"/>
+            </svg>`,
+  spot: `<svg viewBox="0 0 80 80">
+              <line class="d s" pathLength="1" x1="8" y1="58" x2="72" y2="58"/>
+              <circle class="d s" pathLength="1" cx="42" cy="50" r="11" style="--d:.4s"/>
+              <path class="d s--blue" pathLength="1" d="M10 16 Q28 20 37 40" style="--d:.55s"/>
+              <path class="f fill-blue" d="M39 44 L40 51 L33 47 Z" style="--d:.9s"/>
+            </svg>`,
+  ready: `<svg viewBox="0 0 80 80">
+              <line class="d s" pathLength="1" x1="8" y1="58" x2="72" y2="58"/>
+              <path class="d s--faint" pathLength="1" d="M22 58 L12 40" style="--d:.35s"/>
+              <path class="d s--blue" pathLength="1" d="M34 58 L37 50 L47 50 L50 58" style="--d:.45s"/>
+              <path class="d s--blue" pathLength="1" d="M62 26 L45 49" style="--d:.6s"/>
+              <circle class="f fill-blue" cx="45" cy="49" r="2.5" style="--d:.95s"/>
+            </svg>`,
+  tension: `<svg viewBox="0 0 80 80">
+              <line class="d s" pathLength="1" x1="8" y1="58" x2="72" y2="58"/>
+              <path class="d s--blue" pathLength="1" d="M34 58 L37 50 L47 50 L50 58" style="--d:.4s"/>
+              <line class="d s--blue" pathLength="1" x1="18" y1="54" x2="34" y2="51" style="--d:.55s"/>
+              <line class="d s--faint" pathLength="1" x1="26" y1="47" x2="24" y2="57" style="--d:.8s"/>
+              <line class="d s--blue" pathLength="1" x1="50" y1="44" x2="64" y2="44" style="--d:.7s"/>
+              <path class="f fill-blue" d="M64 40 L71 44 L64 48 Z" style="--d:1s"/>
+            </svg>`,
+  launch: `<svg viewBox="0 0 80 80">
+              <line class="d s" pathLength="1" x1="8" y1="58" x2="48" y2="58"/>
+              <line class="d s" pathLength="1" x1="48" y1="58" x2="48" y2="70" style="--d:.35s"/>
+              <line class="d s--faint" pathLength="1" x1="24" y1="52" x2="34" y2="52" style="--d:.5s"/>
+              <path class="d s--blue" pathLength="1" d="M40 52 Q58 40 68 24" style="--d:.6s"/>
+              <path class="f fill-blue" d="M64 18 L72 20 L67 30 Z" style="--d:1s"/>
+            </svg>`,
+}
+
 function stageSection(s, i) {
   const num = String(i + 1).padStart(2, '0')
+  const glyph = STAGE_GLYPHS[s.id]
+    ? `
+          <span class="cur-stage__glyph mc-fig" aria-hidden="true">${STAGE_GLYPHS[s.id]}</span>`
+    : ''
   return `
       <section class="cur-stage" data-stage-id="${esc(s.id)}" data-stage-index="${i}" id="stage-${esc(s.id)}">
         <div class="cur-stage__head">
           <span class="cur-stage__num">${num}</span>
-          <h2 class="cur-stage__title">${esc(s.title)}</h2>
+          <h2 class="cur-stage__title">${esc(s.title)}</h2>${glyph}
           <p class="cur-stage__subtitle">${esc(s.subtitle)}</p>
         </div>
         <p class="cur-stage__desc">${esc(s.description)}</p>
