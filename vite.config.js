@@ -105,6 +105,8 @@ export default defineConfig({
         'knowledge-compliance': resolve(__dirname, 'knowledge/compliance.html'),
         'knowledge-defense-venture-studio': resolve(__dirname, 'knowledge/defense-venture-studio.html'),
         'knowledge-first-principles': resolve(__dirname, 'knowledge/first-principles-engineering.html'),
+        'knowledge-valley-of-death': resolve(__dirname, 'knowledge/valley-of-death.html'),
+        'knowledge-color-of-money': resolve(__dirname, 'knowledge/color-of-money.html'),
         // Signals articles
         'signals-cheap-missiles': resolve(__dirname, 'signals/cheap-missiles-next-air-war.html'),
         'signals-counter-drone': resolve(__dirname, 'signals/counter-drone-jiatf-401.html'),
