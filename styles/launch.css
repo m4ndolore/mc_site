@@ -332,8 +332,11 @@
 }
 
 .launch-stage__fig {
+  /* top = stage padding (48px) + header height (64px number box) so the
+     svg's translateY(-100%) puts the figure's bottom flush with the
+     subtitle's bottom edge, whatever the figure's rendered height. */
   position: absolute;
-  top: -8px;
+  top: 112px;
   right: 0;
   width: min(480px, 72%);
   margin: 0;
@@ -342,11 +345,12 @@
 }
 
 .launch-stage__fig svg {
-  opacity: 0.14;
+  opacity: 0.3;
+  transform: translateY(-100%);
 }
 
 .light-theme .launch-stage__fig svg {
-  opacity: 0.11;
+  opacity: 0.24;
 }
 
 .launch-stage__header,
@@ -359,11 +363,11 @@
 
 @media (max-width: 768px) {
   .launch-stage__fig {
-    top: -4px;
+    top: 101px;
     width: min(300px, 88%);
   }
   .launch-stage__fig svg {
-    opacity: 0.1;
+    opacity: 0.2;
   }
 }
 
