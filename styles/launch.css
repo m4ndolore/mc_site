@@ -324,10 +324,47 @@
   transform: translateY(-1px);
 }
 
-/* ── Stage schematic figures (drawing system in schematics.css) ── */
+/* ── Stage schematic figures (drawing system in schematics.css) ──
+   Rendered as background texture: absolutely positioned behind the stage
+   header/description at low opacity, like the FPE page's ghost numerals. */
+.launch-stage {
+  position: relative;
+}
+
 .launch-stage__fig {
-  max-width: 640px;
-  margin: 24px 0 4px;
+  position: absolute;
+  top: -8px;
+  right: 0;
+  width: min(480px, 72%);
+  margin: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.launch-stage__fig svg {
+  opacity: 0.14;
+}
+
+.light-theme .launch-stage__fig svg {
+  opacity: 0.11;
+}
+
+.launch-stage__header,
+.launch-stage__description,
+.launch-resources,
+.launch-stage-cta {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .launch-stage__fig {
+    top: -4px;
+    width: min(300px, 88%);
+  }
+  .launch-stage__fig svg {
+    opacity: 0.1;
+  }
 }
 
 /* ── Bottom CTA ── */
