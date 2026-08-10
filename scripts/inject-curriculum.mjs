@@ -53,10 +53,10 @@ const STAGE_GLYPHS = {
               <rect class="d s--blue" pathLength="1" x="57" y="32" width="8" height="16" style="--d:.85s"/>
             </svg>`,
   spot: `<svg viewBox="0 0 80 80">
-              <path class="d s" pathLength="1" d="M12 30 L58 27 L70 34 L58 41 L46 42 L39 50 L16 52 Z"/>
-              <line class="s--faint ghost f" x1="46" y1="31" x2="66" y2="34" style="--d:.5s"/>
-              <line class="s--faint ghost f" x1="18" y1="49" x2="44" y2="40" style="--d:.55s"/>
-              <circle class="f fill-blue" cx="54" cy="34" r="3.5" style="--d:.8s"/>
+              <path class="d s" pathLength="1" d="M14 30 L40 29 L40 26 L52 26 L52 29 L60 30 L66 33 L67 42 L47 52 L28 51 L14 49 Z"/>
+              <line class="s--faint ghost f" x1="16" y1="45" x2="46" y2="50" style="--d:.5s"/>
+              <line class="s--faint ghost f" x1="46" y1="35" x2="64" y2="34" style="--d:.55s"/>
+              <circle class="f fill-blue" cx="57" cy="35" r="3.5" style="--d:.8s"/>
             </svg>`,
   ready: `<svg viewBox="0 0 80 80">
               <line class="d s" pathLength="1" x1="8" y1="58" x2="72" y2="58"/>
