@@ -130,6 +130,30 @@
   flex-wrap: wrap;
 }
 
+.launch-hero__bookmark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 560px;
+}
+.launch-hero__bookmark svg { color: var(--blue); flex-shrink: 0; }
+.launch-hero__bookmark kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 1px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.light-theme .launch-hero__bookmark { color: rgba(0, 0, 0, 0.5); }
+.light-theme .launch-hero__bookmark kbd {
+  border-color: rgba(0, 0, 0, 0.25);
+  color: rgba(0, 0, 0, 0.6);
+}
+
 /* ── Triage shortcut ── */
 .launch-triage {
   display: inline-flex;
