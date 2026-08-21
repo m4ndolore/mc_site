@@ -689,6 +689,8 @@ function generateSitemap(slugs) {
     { loc: '/knowledge/go-to-market', priority: '0.7', changefreq: 'monthly' },
     { loc: '/knowledge/defense-venture-studio', priority: '0.7', changefreq: 'monthly' },
     { loc: '/knowledge/first-principles-engineering', priority: '0.7', changefreq: 'monthly' },
+    { loc: '/knowledge/valley-of-death', priority: '0.8', changefreq: 'monthly' },
+    { loc: '/knowledge/color-of-money', priority: '0.8', changefreq: 'monthly' },
     { loc: '/access', priority: '0.8', changefreq: 'weekly' },
     { loc: '/combine/cohort25-1', priority: '0.7', changefreq: 'monthly' },
     { loc: '/learn', priority: '0.6', changefreq: 'monthly' },
@@ -862,6 +864,8 @@ function injectKnowledge(html) {
   resourceSummary += '        <h3>Guides</h3>\n        <ul>\n';
   resourceSummary += '          <li><a href="/knowledge/first-principles-engineering">The 5-Step Design Process</a> — Question, delete, simplify, accelerate, automate: Musk\'s engineering algorithm applied to defense.</li>\n';
   resourceSummary += '          <li><a href="/knowledge/defense-venture-studio">What is a Defense Venture Studio?</a> — How venture studios differ from accelerators, incubators, and VC funds in national security.</li>\n';
+  resourceSummary += '          <li><a href="/knowledge/valley-of-death">Crossing the Valley of Death</a>: Why funded prototypes die before production, and the five moves that carry companies across.</li>\n';
+  resourceSummary += '          <li><a href="/knowledge/color-of-money">The Color of Money</a>: Which appropriation can legally buy what you sell, and how to structure the ask to match.</li>\n';
   resourceSummary += '        </ul>\n';
   resourceSummary += '      </div>';
 
