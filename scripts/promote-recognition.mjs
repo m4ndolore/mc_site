@@ -95,6 +95,95 @@ function resolveCompany(record, companies) {
 const REQUIRED_FIELDS = ['id', 'companyName', 'category', 'awarder', 'announcedDate'];
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
+// ── awarder provenance ───────────────────────────────────────────────────────
+//
+// Verifying that an award was really announced is NOT the same as verifying the
+// awarder is worth citing. A large commercial industry exists to sell
+// recognition: an operator clones one program across verticals, opens a wide
+// lattice of "X of the Year" slots, solicits nominations, and hands winners a
+// press-release asset. Those are marketing products, not evidence, and putting
+// one on this site spends MC's credibility on someone else's funnel.
+//
+// The gate is deliberately NOT a heuristic that tries to sniff this out. It
+// requires a human to affirmatively attest how the awarder selects, and it
+// rejects anything that can't clear the bar. "Unknown" fails — silence is not
+// a pass.
+//
+// This also matches assets/branding/voice-profile.md, which says every
+// assertion should tie to "a deployment, program, exercise, budget line, or
+// field signal" and lists the authority markers worth citing. A vendor award
+// is none of them.
+
+// Selection bases we will publish. Anything else — including nomination-only
+// programs and anything undeclared — is rejected.
+const ACCEPTED_SELECTION_BASES = ['measured-performance', 'expert-panel', 'peer-review'];
+const ALL_SELECTION_BASES = [...ACCEPTED_SELECTION_BASES, 'editorial', 'nomination-only', 'unknown'];
+
+// Operators assessed and declined. Matched loosely against the awarder name so
+// sibling brands from the same shop are caught too. Add to this list when you
+// assess a new one — record the reasoning in the spec, not just here.
+const DECLINED_AWARDERS = [
+  {
+    // Tech Breakthrough runs AI / IoT / FinTech / MedTech / BioTech / Data
+    // Breakthrough in parallel, each a wide lattice of "X of the Year" slots
+    // filled from solicited nominations, with no published judging panel or
+    // methodology. Assessed 2026-08-21. See the spec for the full write-up.
+    pattern: /\bbreakthrough\b/i,
+    operator: 'Tech Breakthrough',
+    reason: 'multi-vertical commercial award program; nomination-solicited, judging methodology not published',
+  },
+];
+
+function checkDeclinedAwarder(name) {
+  return DECLINED_AWARDERS.find(d => d.pattern.test(String(name || '')));
+}
+
+/**
+ * Provenance gate. Every field here must be filled in by a human who actually
+ * looked at the awarding body — none of it can be derived from the award itself.
+ */
+function validateAwarderProvenance(record) {
+  const errors = [];
+  const p = record.awarderProfile;
+
+  if (!p || typeof p !== 'object') {
+    errors.push('missing awarderProfile — an award cannot be published without an assessment of who granted it (see the spec)');
+    return errors;
+  }
+
+  if (p.independent !== true) {
+    errors.push('awarderProfile.independent must be true — the granting body must be independent of the recipient and of paid placement');
+  }
+
+  if (!ALL_SELECTION_BASES.includes(p.selectionBasis)) {
+    errors.push(`awarderProfile.selectionBasis must be one of: ${ALL_SELECTION_BASES.join(', ')}`);
+  } else if (!ACCEPTED_SELECTION_BASES.includes(p.selectionBasis)) {
+    errors.push(`awarderProfile.selectionBasis "${p.selectionBasis}" is not publishable — we publish only: ${ACCEPTED_SELECTION_BASES.join(', ')}`);
+  }
+
+  if (p.entryFee !== 'none') {
+    errors.push(`awarderProfile.entryFee must be "none" (got "${p.entryFee ?? 'undeclared'}") — we do not publish awards that charge to enter or to win, and "unknown" does not pass`);
+  }
+
+  if (!p.methodologyUrl || !/^https:\/\//i.test(p.methodologyUrl)) {
+    errors.push('awarderProfile.methodologyUrl must be an https link to the published judging methodology — an unpublished methodology is not verifiable');
+  }
+
+  if (!p.vettedBy || !String(p.vettedBy).trim()) {
+    errors.push('awarderProfile.vettedBy is required — name the person who assessed this awarder');
+  }
+  if (!p.vettedOn || !ISO_DATE.test(p.vettedOn)) {
+    errors.push('awarderProfile.vettedOn must be YYYY-MM-DD — when the awarder was assessed');
+  }
+
+  const declined = checkDeclinedAwarder(record.awarder);
+  if (declined) {
+    errors.push(`awarder "${record.awarder}" matches a declined operator (${declined.operator}): ${declined.reason}`);
+  }
+
+  return errors;
+}
+
 /**
  * Every published claim needs a source. An award with no verifiable link is
  * exactly the kind of thing that should not reach the site.
@@ -134,6 +223,9 @@ function validateRecord(record, companies, { strictSources = true } = {}) {
     errors.push(`attribution must be "independent" — this ledger is for third-party recognition only (got "${record.attribution}")`);
   }
 
+  // Is the awarder worth citing at all? Separate question from "is the award real".
+  errors.push(...validateAwarderProvenance(record));
+
   const { company, matchedBy } = resolveCompany(record, companies);
   if (!company) {
     errors.push(`no company in companies.json matches companyId="${record.companyId || ''}" / companyName="${record.companyName || ''}"`);
@@ -170,6 +262,16 @@ function normalizeRecord(record, company) {
       primary: Boolean(s.primary),
     })),
     verifiedOn: record.verifiedOn || undefined,
+    // Persisted so the ledger carries the provenance assessment, not just its
+    // conclusion — a later reader can re-audit why this awarder was accepted.
+    awarderProfile: {
+      independent: true,
+      selectionBasis: record.awarderProfile.selectionBasis,
+      entryFee: record.awarderProfile.entryFee,
+      methodologyUrl: record.awarderProfile.methodologyUrl,
+      vettedBy: record.awarderProfile.vettedBy,
+      vettedOn: record.awarderProfile.vettedOn,
+    },
     handoff: record.handoff || undefined,
   };
   // Drop undefined so the committed JSON stays clean.

@@ -1,5 +1,5 @@
 {
-  "_comment": "Contract example for the mc-content → mc_site recognition handoff. Mirrors published/alitheon-ai-breakthrough-entry.json as received. See docs/plans/2026-08-21-cohort-recognition-promoter.md. Consumed by: node scripts/promote-recognition.mjs --in <this file>",
+  "_comment": "WORKED EXAMPLE OF A REJECTED SUBMISSION — do not merge this record. This is the Alitheon AI Breakthrough entry exactly as received from mc-content on 2026-08-21. The award is real and the facts check out; the entry is rejected because of who granted it, not whether it happened. Tech Breakthrough runs AI/IoT/FinTech/MedTech/BioTech/Data Breakthrough in parallel as a wide lattice of 'X of the Year' slots filled from solicited nominations, with no published judging panel or methodology, so it cannot fill in awarderProfile. Kept in the repo as the schema contract AND as the regression case for the provenance gate. Run: node scripts/promote-recognition.mjs --in scripts/data/recognition-handoff.rejected-example.json  (expect a non-zero exit and a provenance failure). See docs/plans/2026-08-21-cohort-recognition-promoter.md.",
   "id": "alitheon-ai-breakthrough-2026",
   "companyId": "cmknqiij4001rs601wdwnh82m",
   "companyName": "Alitheon, Inc.",
@@ -15,7 +15,6 @@
   "badgeTitle": "Overall Authentication Solution of the Year — 2026 AI Breakthrough Awards",
   "summary": "Alitheon's FeaturePrint was named Overall Authentication Solution of the Year in the 9th annual AI Breakthrough Awards, announced June 26, 2026.",
   "attribution": "independent",
-  "attributionNote": "Selected by the AI Breakthrough Awards program. Merge Combinator had no role in the nomination or selection.",
   "sources": [
     {
       "title": "Alitheon FeaturePrint® Named “Overall Authentication Solution of the Year” in 2026 AI Breakthrough Awards Program",
@@ -23,15 +22,10 @@
       "publisher": "GlobeNewswire",
       "date": "2026-06-26",
       "primary": true
-    },
-    {
-      "title": "2026 Award Winners — AI Breakthrough Awards",
-      "url": "https://aibreakthroughawards.com/2026-award-winners/",
-      "publisher": "AI Breakthrough Awards",
-      "primary": false
     }
   ],
   "verifiedOn": "2026-08-21",
+  "_awarderProfileNote": "Intentionally absent. selectionBasis would be 'nomination-only', entryFee could not be established as 'none', and no methodologyUrl is published — three independent failures. A schema-complete submission fills in awarderProfile: { independent, selectionBasis, entryFee, methodologyUrl, vettedBy, vettedOn }.",
   "handoff": {
     "repo": "mc-content",
     "entry": "published/alitheon-ai-breakthrough-entry.json",
