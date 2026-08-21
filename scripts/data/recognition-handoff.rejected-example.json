@@ -1,34 +1,32 @@
 {
-  "_comment": "WORKED EXAMPLE OF A REJECTED SUBMISSION — do not merge this record. This is the Alitheon AI Breakthrough entry exactly as received from mc-content on 2026-08-21. The award is real and the facts check out; the entry is rejected because of who granted it, not whether it happened. Tech Breakthrough runs AI/IoT/FinTech/MedTech/BioTech/Data Breakthrough in parallel as a wide lattice of 'X of the Year' slots filled from solicited nominations, with no published judging panel or methodology, so it cannot fill in awarderProfile. Kept in the repo as the schema contract AND as the regression case for the provenance gate. Run: node scripts/promote-recognition.mjs --in scripts/data/recognition-handoff.rejected-example.json  (expect a non-zero exit and a provenance failure). See docs/plans/2026-08-21-cohort-recognition-promoter.md.",
-  "id": "alitheon-ai-breakthrough-2026",
-  "companyId": "cmknqiij4001rs601wdwnh82m",
-  "companyName": "Alitheon, Inc.",
+  "_comment": "WORKED EXAMPLE OF A REJECTED SUBMISSION — do not merge this record. Synthetic: the company, the award, and the awarding body are all fictional. It exists as the schema contract AND as the regression case for the provenance gate. Run: node scripts/promote-recognition.mjs --in scripts/data/recognition-handoff.rejected-example.json (expect a non-zero exit). It fails twice: on the missing awarderProfile, which is the case under test, and on company resolution, because a fictional company is not in companies.json. See docs/plans/2026-08-21-cohort-recognition-promoter.md.",
+  "id": "example-co-vendor-award-2026",
+  "companyName": "Example Systems, Inc.",
   "kind": "award",
-  "product": "FeaturePrint",
-  "category": "Overall Authentication Solution of the Year",
-  "awarder": "AI Breakthrough Awards",
-  "program": "2026 AI Breakthrough Awards",
-  "edition": "9th annual",
+  "product": "ExampleProduct",
+  "category": "Overall Example Solution of the Year",
+  "awarder": "Example Industry Awards",
+  "program": "2026 Example Industry Awards",
   "year": 2026,
   "announcedDate": "2026-06-26",
-  "badgeLabel": "AI Breakthrough 2026",
-  "badgeTitle": "Overall Authentication Solution of the Year — 2026 AI Breakthrough Awards",
-  "summary": "Alitheon's FeaturePrint was named Overall Authentication Solution of the Year in the 9th annual AI Breakthrough Awards, announced June 26, 2026.",
+  "badgeLabel": "Example Awards 2026",
+  "badgeTitle": "Overall Example Solution of the Year — 2026 Example Industry Awards",
+  "summary": "A one-sentence, superlative-free description of what was recognized and when.",
   "attribution": "independent",
   "sources": [
     {
-      "title": "Alitheon FeaturePrint® Named “Overall Authentication Solution of the Year” in 2026 AI Breakthrough Awards Program",
-      "url": "https://www.globenewswire.com/news-release/2026/06/26/3318367/0/en/alitheon-featureprint-named-overall-authentication-solution-of-the-year-in-2026-ai-breakthrough-awards-program.html",
-      "publisher": "GlobeNewswire",
+      "title": "Example Systems Named Overall Example Solution of the Year",
+      "url": "https://example.com/press/example-systems-award",
+      "publisher": "Example Newswire",
       "date": "2026-06-26",
       "primary": true
     }
   ],
   "verifiedOn": "2026-08-21",
-  "_awarderProfileNote": "Intentionally absent. selectionBasis would be 'nomination-only', entryFee could not be established as 'none', and no methodologyUrl is published — three independent failures. A schema-complete submission fills in awarderProfile: { independent, selectionBasis, entryFee, methodologyUrl, vettedBy, vettedOn }.",
+  "_awarderProfileNote": "Intentionally absent, which is why this record is rejected. A schema-complete submission fills in awarderProfile: { independent, selectionBasis, entryFee, methodologyUrl, vettedBy, vettedOn }. Every one of those must be established by a human who looked at the awarding body — none can be derived from the award itself, and 'unknown' is not a pass. A record that reaches the gate without it fails on the missing profile alone.",
   "handoff": {
     "repo": "mc-content",
-    "entry": "published/alitheon-ai-breakthrough-entry.json",
-    "brief": "published/alitheon-ai-breakthrough.md"
+    "entry": "published/<entry>.json",
+    "brief": "published/<brief>.md"
   }
 }

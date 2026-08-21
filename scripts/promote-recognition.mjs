@@ -119,24 +119,17 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const ACCEPTED_SELECTION_BASES = ['measured-performance', 'expert-panel', 'peer-review'];
 const ALL_SELECTION_BASES = [...ACCEPTED_SELECTION_BASES, 'editorial', 'nomination-only', 'unknown'];
 
-// Operators assessed and declined. Matched loosely against the awarder name so
-// sibling brands from the same shop are caught too. Add to this list when you
-// assess a new one — record the reasoning in the spec, not just here.
-const DECLINED_AWARDERS = [
-  {
-    // Tech Breakthrough runs AI / IoT / FinTech / MedTech / BioTech / Data
-    // Breakthrough in parallel, each a wide lattice of "X of the Year" slots
-    // filled from solicited nominations, with no published judging panel or
-    // methodology. Assessed 2026-08-21. See the spec for the full write-up.
-    pattern: /\bbreakthrough\b/i,
-    operator: 'Tech Breakthrough',
-    reason: 'multi-vertical commercial award program; nomination-solicited, judging methodology not published',
-  },
-];
-
-function checkDeclinedAwarder(name) {
-  return DECLINED_AWARDERS.find(d => d.pattern.test(String(name || '')));
-}
+// There is deliberately no by-name list of declined awarders in this repo.
+//
+// The gate below is the standard, and it is sufficient: a program that solicits
+// nominations, charges to enter, or publishes no judging methodology already
+// fails on selectionBasis, entryFee, and methodologyUrl without anyone having to
+// name it. A hardcoded blocklist would add nothing enforcement-wise while
+// committing our assessment of a specific third party to git history, where it
+// ships with the repo and cannot be taken back.
+//
+// Assessments of particular awarding bodies belong in internal notes. If you are
+// asked to add a blocklist here, don't — tighten the gate instead.
 
 /**
  * Provenance gate. Every field here must be filled in by a human who actually
@@ -174,11 +167,6 @@ function validateAwarderProvenance(record) {
   }
   if (!p.vettedOn || !ISO_DATE.test(p.vettedOn)) {
     errors.push('awarderProfile.vettedOn must be YYYY-MM-DD — when the awarder was assessed');
-  }
-
-  const declined = checkDeclinedAwarder(record.awarder);
-  if (declined) {
-    errors.push(`awarder "${record.awarder}" matches a declined operator (${declined.operator}): ${declined.reason}`);
   }
 
   return errors;

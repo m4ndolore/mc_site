@@ -1,7 +1,7 @@
 # Cohort Recognition Promoter — mc-content → mc_site pipeline spec
 
 **Date:** 2026-08-21
-**Status:** Pipeline implemented · ledger intentionally empty · first candidate declined
+**Status:** Pipeline implemented · ledger intentionally empty
 **Sibling to:** `docs/promote-signal-workflow.md` · `scripts/promote-signal.mjs`
 
 How a third-party award earned by a Combine company gets from mc-content's
@@ -74,7 +74,7 @@ a partner's award.
 Verifying that an award *was really announced* is not the same as verifying the
 awarder is *worth citing*. Those are two different checks, and the first one
 passing tells you nothing about the second. The pipeline's first candidate
-cleared fact-checking cleanly and was still declined.
+cleared fact-checking cleanly and was still not published.
 
 A large commercial industry exists to sell recognition. The pattern is
 consistent: one operator clones a program across verticals, opens a wide
@@ -113,31 +113,26 @@ the awarding body. None of it can be derived from the award itself, and
 | `methodologyUrl` | https link to the **published** judging methodology — an unpublished methodology is not verifiable |
 | `vettedBy` / `vettedOn` | who assessed the awarder, and when |
 
-Plus a **declined-operator list** in `promote-recognition.mjs`, matched loosely
-against the awarder name so sibling brands from the same shop are caught. When
-you assess a new operator, add it there *and* record the reasoning here.
+There is deliberately **no by-name list of declined awarders in this repo.**
+The gate is the standard and it is sufficient on its own: a program that
+solicits nominations, charges to enter, or publishes no judging methodology
+already fails on `selectionBasis`, `entryFee`, and `methodologyUrl` without
+anyone having to name it.
 
-### Declined operators
+A hardcoded blocklist would add nothing enforcement-wise while committing our
+assessment of a specific third party to git history, where it ships with the
+repo and cannot be withdrawn. We are not in the business of publishing verdicts
+on companies we have no relationship with, and a repo is not the place to keep
+one.
 
-**Tech Breakthrough** — assessed 2026-08-21. Runs AI Breakthrough, IoT
-Breakthrough, FinTech Breakthrough, MedTech Breakthrough, BioTech Breakthrough,
-and Data Breakthrough in parallel: the same program cloned per vertical, each a
-wide lattice of "X of the Year" slots. The 2026 AI program claimed 5,000+
-nominations from 20+ countries but publishes no winner count, no judging panel,
-and no methodology.
-
-To be fair to them: we found **no evidence** that they charge to enter or to
-win, and **no documented allegations** against them. Real companies appear in
-their winner lists — NVIDIA, Dell, AMD, Qualcomm, Snowflake, Intuit, Okta.
-The decline is not an accusation of fraud. It is that the program cannot
-satisfy the gate above — nomination-solicited, methodology unpublished — and
-therefore is not something this site will cite as evidence.
+Keep assessments of particular awarding bodies in internal notes. If a future
+task asks you to add a blocklist here, decline it and tighten the gate instead.
 
 ### The declined worked example
 
-`scripts/data/recognition-handoff.rejected-example.json` is the real Alitheon
-submission as received, kept deliberately. It serves as the schema contract
-*and* as the gate's regression case:
+`scripts/data/recognition-handoff.rejected-example.json` is a **synthetic**
+submission — fictional company, fictional award, fictional awarding body. It
+serves as the schema contract *and* as the gate's regression case:
 
 ```bash
 node scripts/promote-recognition.mjs --in scripts/data/recognition-handoff.rejected-example.json
@@ -264,11 +259,11 @@ byte-identical to its pre-pipeline output.
   "prestigious", no "beat out thousands" unless the awarding body said it and
   the source says it. Numbers only with a link.
 - **The badge is usually the weakest thing you could say about a company.**
-  Alitheon's real substance was already in `companies.json` and hits every
-  authority marker the voice profile names: 2 USAF and 1 Army SBIR Phase II,
-  100% accuracy in DoD tests, 59 patents, TRL 7, Tradewinds. An award of
-  uncertain provenance adds nothing to that and imports risk. Check whether the
-  company's own record already says it better.
+  Most cohort companies' real substance is already in `companies.json` and hits
+  the authority markers the voice profile names — SBIR Phase II awards, test
+  results, patents, TRL, contract vehicles. An award of uncertain provenance
+  adds nothing to that and imports risk. Check whether the company's own record
+  already says it better.
 - **Recency is a real constraint.** A win that is two months old is fine for an
   evergreen site badge and wrong for a "just won" social post. A stale win needs
   a current news peg before it goes out.
@@ -283,10 +278,10 @@ promoter handles only the first. Nothing in this pipeline posts anywhere.
 | Item | Status |
 | --- | --- |
 | `public/data/recognition.json` | live · **0 records** |
-| `scripts/promote-recognition.mjs` | implemented · provenance gate tested against declined, honest-bad, and passing inputs |
-| Alitheon — "Overall Authentication Solution of the Year", 2026 AI Breakthrough Awards | **declined** — see §3. Facts verified; awarder does not clear the gate. Retained as the rejected worked example |
-| Rendered output | no badges anywhere; `companies/alitheon.html` byte-identical to pre-pipeline |
-| LinkedIn draft (mc-content) | **do not post** — the underlying award was declined here |
+| `scripts/promote-recognition.mjs` | implemented · provenance gate tested against a missing profile, an honest-bad declaration, and a passing input |
+| First candidate | assessed and not published — the awarder could not satisfy the gate in §3 |
+| Rendered output | no badges anywhere; every generated page byte-identical to pre-pipeline |
+| Any parked social draft for that candidate | **do not post** |
 
 The pipeline ships with an empty ledger on purpose. It is infrastructure plus a
 standard, waiting for a recognition that earns publication.
