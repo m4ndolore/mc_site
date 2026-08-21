@@ -46,6 +46,10 @@ const SUBDOMAIN_REDIRECTS = new Map([
 const SUBDOMAIN_PLACEHOLDER_REDIRECTS = new Map([
   ["wingman.mergecombinator.com", "/wingman"],
 ]);
+// Retired subdomains whose content now lives at a canonical path (301, permanent)
+const SUBDOMAIN_PATH_REDIRECTS = new Map([
+  ["curriculum.mergecombinator.com", "/curriculum"],
+]);
 const LEGACY_PATH_REDIRECTS = new Map([
   ["/sbir", "/knowledge/sbir"],
   ["/contact", "/access"],
@@ -304,6 +308,10 @@ export default {
     if (redirectHost) {
       url.hostname = redirectHost;
       return Response.redirect(url.toString(), 301);
+    }
+    const retiredPath = SUBDOMAIN_PATH_REDIRECTS.get(host);
+    if (retiredPath) {
+      return Response.redirect(`https://${CANONICAL_HOST}${retiredPath}${url.search}`, 301);
     }
     const placeholderPath = SUBDOMAIN_PLACEHOLDER_REDIRECTS.get(host);
     if (placeholderPath) {
