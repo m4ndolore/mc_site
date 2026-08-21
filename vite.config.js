@@ -67,6 +67,7 @@ export default defineConfig({
         'archive-start': resolve(__dirname, 'archive/start.html'),
         dashboard: resolve(__dirname, 'dashboard.html'),
         status: resolve(__dirname, 'status.html'),
+        momentum: resolve(__dirname, 'momentum.html'),
         merch: resolve(__dirname, 'merch.html'),
         opportunities: resolve(__dirname, 'opportunities.html'),
         knowledge: resolve(__dirname, 'knowledge.html'),

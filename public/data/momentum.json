@@ -1,0 +1,92 @@
+{
+  "_meta": {
+    "description": "Merge Combinator momentum ledger — dated public record of ecosystem milestones, field operations, program launches, and published analysis. Rendered at https://mergecombinator.com/momentum.",
+    "note": "Prototype seed data. Entries below are drawn from published site content (signals articles, builder directory exports). Add new entries at the top; the page sorts by date descending regardless.",
+    "types": {
+      "milestone": "Company and ecosystem milestones — raises, contracts, awards",
+      "field": "Field operations — exercises, deployments, operator integration",
+      "program": "Program launches and cohort activity",
+      "ecosystem": "Builder directory and network growth",
+      "signal": "Published analysis and original research"
+    }
+  },
+  "entries": [
+    {
+      "date": "2026-08-15",
+      "type": "milestone",
+      "title": "Momentum ledger goes live",
+      "detail": "The standing public answer to \"how is Merge Combinator going?\" — every milestone, dated and compounding. Send this link instead of a stale deck.",
+      "link": "/momentum"
+    },
+    {
+      "date": "2026-07-16",
+      "type": "ecosystem",
+      "title": "Builder directory reaches 83 companies",
+      "detail": "Public machine-readable export refreshed. 83 defense technology companies evaluated and tracked across mission areas and warfare domains.",
+      "link": "/builders"
+    },
+    {
+      "date": "2026-06-23",
+      "type": "signal",
+      "title": "Drones Were the First Chapter",
+      "detail": "Original analysis: cheap missiles and the next air war.",
+      "link": "/signals/cheap-missiles-next-air-war"
+    },
+    {
+      "date": "2026-06-15",
+      "type": "signal",
+      "title": "A Disciplined Case for the A-10",
+      "detail": "Original analysis on close air support and platform retirement discipline.",
+      "link": "/signals/disciplined-case-for-the-a-10"
+    },
+    {
+      "date": "2026-06-04",
+      "type": "signal",
+      "title": "Two Services Restructured Acquisition in Six Weeks. Most Builders Missed It.",
+      "detail": "Navy and Air Force acquisition restructure decoded for builders.",
+      "link": "/signals/navy-airforce-acquisition-restructure"
+    },
+    {
+      "date": "2026-05-12",
+      "type": "signal",
+      "title": "The Army Is Rewriting How It Buys Technology",
+      "detail": "What the Army's acquisition rewrite means for dual-use founders.",
+      "link": "/signals/army-rewriting-acquisition"
+    },
+    {
+      "date": "2026-05-10",
+      "type": "field",
+      "title": "MCHMR delivers tactical edge dominance during African Lion 26",
+      "detail": "Fielded capability performing in a live multinational exercise — the problem-to-deployment pipeline closing the loop.",
+      "link": "/signals/mchmr-african-lion-26"
+    },
+    {
+      "date": "2026-05-02",
+      "type": "program",
+      "title": "Missionized Tech Residency launches",
+      "detail": "New program: embedding builders with mission owners for sustained problem immersion.",
+      "link": "/signals/missionized-tech-residency"
+    },
+    {
+      "date": "2026-05-01",
+      "type": "signal",
+      "title": "The $16B Alignment Problem",
+      "detail": "Original analysis on venture capital and defense mission alignment.",
+      "link": "/signals/vc-defense-alignment-problem"
+    },
+    {
+      "date": "2026-04-28",
+      "type": "signal",
+      "title": "DAWG's $54.6B Problem",
+      "detail": "Analysis of the Defense Acquisition Working Group's spend portfolio.",
+      "link": "/signals/dawg-54-billion-problem"
+    },
+    {
+      "date": "2026-04-24",
+      "type": "milestone",
+      "title": "Ulysses closes $46M Series A led by a16z",
+      "detail": "From Combine to Series A: the 29th of 83 builder companies. What operator-validated formation actually produces.",
+      "link": "/signals/ulysses-combine-to-series-a"
+    }
+  ]
+}
