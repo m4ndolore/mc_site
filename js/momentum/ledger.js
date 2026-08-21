@@ -10,10 +10,17 @@ const TYPE_META = {
   program: { label: 'Programs' },
   ecosystem: { label: 'Ecosystem' },
   signal: { label: 'Signals' },
+  builder: { label: 'Builder News' },
+  press: { label: 'Press' },
+  partner: { label: 'Partner' },
 };
 
 const ARROW_SVG = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14" aria-hidden="true">
   <path d="M4 12L12 4M12 4H6M12 4V10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>`;
+
+const EXTERNAL_SVG = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" width="11" height="11" aria-hidden="true">
+  <path d="M6.5 3H3v10h10V9.5M9 3h4v4M13 3L7 9" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>`;
 
 function parseDate(dateStr) {
@@ -37,18 +44,39 @@ function relativeDays(dateStr) {
 }
 
 function renderEntry(entry) {
-  const el = document.createElement(entry.link ? 'a' : 'div');
-  if (entry.link) el.href = entry.link;
-  el.className = `ledger-entry ledger-entry--${entry.type}`;
+  const isReshare = entry.origin === 'reshare';
+  const href = isReshare ? entry.source_url : entry.link;
+  const el = document.createElement(href ? 'a' : 'div');
+  if (href) {
+    el.href = href;
+    if (isReshare) {
+      el.target = '_blank';
+      el.rel = 'noopener noreferrer';
+    }
+  }
+  el.className = `ledger-entry ledger-entry--${entry.type}${isReshare ? ' ledger-entry--reshare' : ''}`;
+
+  const sourceBadge = isReshare && entry.source_name
+    ? `<span class="ledger-entry__source">${entry.source_name}</span>`
+    : '';
+  const arrow = isReshare
+    ? `<span class="ledger-entry__arrow">${EXTERNAL_SVG}</span>`
+    : (entry.link ? `<span class="ledger-entry__arrow">${ARROW_SVG}</span>` : '');
+  const why = isReshare && entry.why
+    ? `<p class="ledger-entry__why"><span class="ledger-entry__why-label">Why it's here:</span> ${entry.why}</p>`
+    : '';
+
   el.innerHTML = `
     <div class="ledger-entry__date">${formatDay(entry.date)}</div>
     <div class="ledger-entry__marker" aria-hidden="true"></div>
     <div class="ledger-entry__content">
       <div class="ledger-entry__meta">
         <span class="ledger-entry__type">${TYPE_META[entry.type]?.label || entry.type}</span>
+        ${sourceBadge}
       </div>
-      <h3 class="ledger-entry__title">${entry.title}${entry.link ? ` <span class="ledger-entry__arrow">${ARROW_SVG}</span>` : ''}</h3>
+      <h3 class="ledger-entry__title">${entry.title}${arrow}</h3>
       <p class="ledger-entry__detail">${entry.detail || ''}</p>
+      ${why}
     </div>
   `;
   return el;
