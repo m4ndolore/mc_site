@@ -1,0 +1,40 @@
+{
+  "_comment": "Contract example for the mc-content → mc_site recognition handoff. Mirrors published/alitheon-ai-breakthrough-entry.json as received. See docs/plans/2026-08-21-cohort-recognition-promoter.md. Consumed by: node scripts/promote-recognition.mjs --in <this file>",
+  "id": "alitheon-ai-breakthrough-2026",
+  "companyId": "cmknqiij4001rs601wdwnh82m",
+  "companyName": "Alitheon, Inc.",
+  "kind": "award",
+  "product": "FeaturePrint",
+  "category": "Overall Authentication Solution of the Year",
+  "awarder": "AI Breakthrough Awards",
+  "program": "2026 AI Breakthrough Awards",
+  "edition": "9th annual",
+  "year": 2026,
+  "announcedDate": "2026-06-26",
+  "badgeLabel": "AI Breakthrough 2026",
+  "badgeTitle": "Overall Authentication Solution of the Year — 2026 AI Breakthrough Awards",
+  "summary": "Alitheon's FeaturePrint was named Overall Authentication Solution of the Year in the 9th annual AI Breakthrough Awards, announced June 26, 2026.",
+  "attribution": "independent",
+  "attributionNote": "Selected by the AI Breakthrough Awards program. Merge Combinator had no role in the nomination or selection.",
+  "sources": [
+    {
+      "title": "Alitheon FeaturePrint® Named “Overall Authentication Solution of the Year” in 2026 AI Breakthrough Awards Program",
+      "url": "https://www.globenewswire.com/news-release/2026/06/26/3318367/0/en/alitheon-featureprint-named-overall-authentication-solution-of-the-year-in-2026-ai-breakthrough-awards-program.html",
+      "publisher": "GlobeNewswire",
+      "date": "2026-06-26",
+      "primary": true
+    },
+    {
+      "title": "2026 Award Winners — AI Breakthrough Awards",
+      "url": "https://aibreakthroughawards.com/2026-award-winners/",
+      "publisher": "AI Breakthrough Awards",
+      "primary": false
+    }
+  ],
+  "verifiedOn": "2026-08-21",
+  "handoff": {
+    "repo": "mc-content",
+    "entry": "published/alitheon-ai-breakthrough-entry.json",
+    "brief": "published/alitheon-ai-breakthrough.md"
+  }
+}

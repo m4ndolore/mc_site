@@ -22,6 +22,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
 const DATA_PATH = join(ROOT, 'public', 'data', 'companies.json');
+const RECOGNITION_PATH = join(ROOT, 'public', 'data', 'recognition.json');
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 const CF_IMAGES_BASE = 'https://imagedelivery.net/9Lsa8lkCUz_we5KeaTm7fw';
 
@@ -145,6 +146,35 @@ function getRecentCount(companies) {
 console.log('[optimize] Loading public companies.json...');
 const raw = JSON.parse(readFileSync(DATA_PATH, 'utf-8'));
 const companies = raw.companies;
+
+// Third-party recognition (awards a company earned elsewhere). Kept in its own
+// ledger because companies.json is regenerated wholesale by `npm run seed` —
+// anything written into it by hand is lost on the next build.
+const recognitions = existsSync(RECOGNITION_PATH)
+  ? (JSON.parse(readFileSync(RECOGNITION_PATH, 'utf-8')).recognitions || [])
+  : [];
+
+if (recognitions.length) {
+  console.log(`[optimize] ${recognitions.length} third-party recognition record(s)`);
+}
+
+function normalizeCompanyKey(name) {
+  return String(name || '')
+    .toLowerCase()
+    .replace(/,?\s*(inc\.?|llc\.?|corporation|corp\.?)\s*$/i, '')
+    .replace(/[^a-z0-9]+/g, '')
+    .trim();
+}
+
+// Match on the stable company id, falling back to a normalized name so a
+// re-seed that reissues ids doesn't silently drop a partner's award.
+function getRecognitions(c) {
+  const nameKey = normalizeCompanyKey(c.name);
+  return recognitions.filter(r =>
+    (r.companyId && r.companyId === c.id) ||
+    (r.companyName && normalizeCompanyKey(r.companyName) === nameKey)
+  );
+}
 
 const featuredCompanies = companies;
 const missionAreas = getUniqueMissionAreas(companies);
@@ -326,6 +356,13 @@ const FOUC_SCRIPT = `(function(){var t=localStorage.getItem('mc-theme');if(!t){t
 
 function buildMetaBadges(c) {
   const badges = [];
+  // Award badges lead — they are the company's own earned recognition.
+  for (const r of getRecognitions(c)) {
+    if (!r.badgeLabel) continue;
+    badges.push(
+      `<span class="company-page__badge company-page__badge--award" title="${escapeHtml(r.badgeTitle || r.category || '')}">${escapeHtml(r.badgeLabel)}</span>`
+    );
+  }
   if (c.pipelineStage) {
     const label = c.pipelineStage === 'alumni' ? 'Alumni' : 'Applicant';
     badges.push(`<span class="company-page__badge company-page__badge--stage">${escapeHtml(label)}</span>`);
@@ -351,6 +388,62 @@ function buildMetaBadges(c) {
     badges.push(`<span class="company-page__badge company-page__badge--team">${escapeHtml(c.teamSize)} people</span>`);
   }
   return badges.join('\n        ');
+}
+
+const AWARD_MONTHS = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'];
+
+// Formats YYYY-MM-DD without going through Date() — avoids a timezone shift
+// pulling the announcement back a day.
+function formatAwardDate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso || ''));
+  if (!m) return iso || '';
+  const month = AWARD_MONTHS[Number(m[2]) - 1];
+  if (!month) return iso;
+  return `${month} ${Number(m[3])}, ${m[1]}`;
+}
+
+// Renders earned recognition with the granting body named and the source
+// linked. Deliberately does not credit Merge Combinator — MC did not select,
+// sponsor, or judge these awards.
+function renderRecognitionHtml(c) {
+  const items = getRecognitions(c);
+  if (items.length === 0) return '';
+
+  const rows = items.map(r => {
+    const heading = [r.category, r.program].filter(Boolean).join(' — ');
+    const subject = r.product ? `${r.companyName || c.name} · ${r.product}` : (r.companyName || c.name);
+    const primary = (r.sources || []).find(s => s.primary) || (r.sources || [])[0];
+    const sourceHtml = primary
+      ? `<a class="company-page__recognition-source" href="${escapeHtml(primary.url)}" target="_blank" rel="noopener nofollow">${escapeHtml(primary.publisher || 'Announcement')}<span aria-hidden="true"> &rarr;</span></a>`
+      : '';
+    const dateHtml = r.announcedDate
+      ? `<span class="company-page__recognition-date">Announced ${escapeHtml(formatAwardDate(r.announcedDate))}</span>`
+      : '';
+
+    return `
+        <li class="company-page__recognition">
+          <div class="company-page__recognition-title">${escapeHtml(heading)}</div>
+          <div class="company-page__recognition-subject">${escapeHtml(subject)}</div>
+          <div class="company-page__recognition-meta">${dateHtml}${sourceHtml}</div>
+        </li>`;
+  }).join('\n');
+
+  return `
+      <section class="company-page__section company-page__section--recognition">
+        <h2>Recognition</h2>
+        <ul class="company-page__recognition-list">${rows}
+        </ul>
+        <p class="company-page__recognition-note">Awarded independently of Merge Combinator. We had no role in the nomination or selection &mdash; we are only noting a cohort company&rsquo;s work being recognized.</p>
+      </section>`;
+}
+
+function buildAwardJsonLd(c) {
+  const items = getRecognitions(c)
+    .map(r => [r.category, r.program].filter(Boolean).join(', '))
+    .filter(Boolean);
+  if (items.length === 0) return '';
+  return `\n    "award": [${items.map(a => `"${escapeJsonLd(a)}"`).join(', ')}],`;
 }
 
 function generateEntityPage(c) {
@@ -404,7 +497,7 @@ function generateEntityPage(c) {
     "@type": "Organization",
     "name": "${escapeJsonLd(c.name)}",
     "url": "https://mergecombinator.com/companies/${slug}",
-    "description": "${escapeJsonLd(c.description || '')}",
+    "description": "${escapeJsonLd(c.description || '')}",${buildAwardJsonLd(c)}
     "knowsAbout": [${c.missionArea ? `"${escapeJsonLd(c.missionArea)}"` : ''}],
     "memberOf": {
       "@type": "Organization",
@@ -432,7 +525,7 @@ function generateEntityPage(c) {
       <div class="company-page__description">
         <h2>Overview</h2>
         ${descHtml}
-      </div>
+      </div>${renderRecognitionHtml(c)}
       ${synopsisHtml}
     </section>
     <nav class="company-page__footer">
