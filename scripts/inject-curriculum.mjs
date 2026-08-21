@@ -2,9 +2,11 @@
 // Follows the optimize-static.mjs pattern: mutates source HTML in place at
 // build time so crawlers and no-JS visitors get the full syllabus.
 import { readFileSync, writeFileSync } from 'fs'
-import { resolve } from 'path'
+import { dirname, resolve } from 'path'
+import { fileURLToPath } from 'url'
 
-const ROOT = resolve(import.meta.dirname, '..')
+const __dirname = dirname(fileURLToPath(import.meta.url))
+const ROOT = resolve(__dirname, '..')
 const PAGE = resolve(ROOT, 'curriculum.html')
 const DATA = resolve(ROOT, 'data/curriculum.json')
 
