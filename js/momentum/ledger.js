@@ -138,6 +138,73 @@ function setField(name, value) {
   if (el) el.textContent = value;
 }
 
+function initials(name) {
+  return name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function renderVoices(voices) {
+  const grid = document.getElementById('ledger-voices');
+  if (!grid) return;
+  grid.innerHTML = voices.map((v) => `
+    <div class="voice-card">
+      <p class="voice-card__quote">${v.quote}</p>
+      <div class="voice-card__author">
+        <span class="voice-card__avatar">${initials(v.name)}</span>
+        <div class="voice-card__info">
+          <span class="voice-card__name">${v.name}</span>
+          <span class="voice-card__role">${v.role}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderUpcoming(events) {
+  const section = document.getElementById('ledger-upcoming');
+  const list = document.getElementById('ledger-upcoming-list');
+  if (!section || !list) return;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcoming = events
+    .filter((e) => new Date(e.dates.end + 'T00:00:00') >= today)
+    .sort((a, b) => a.dates.start.localeCompare(b.dates.start));
+
+  if (!upcoming.length) {
+    section.hidden = true;
+    return;
+  }
+
+  section.hidden = false;
+  list.innerHTML = upcoming.map((e) => `
+    <a class="upcoming-card" href="/opportunities">
+      <span class="upcoming-card__type">${e.type}</span>
+      <h3 class="upcoming-card__title">${e.title}</h3>
+      <p class="upcoming-card__org">${e.organizer}</p>
+    </a>
+  `).join('');
+}
+
+function renderMedia(appearances) {
+  const section = document.getElementById('ledger-media-section');
+  const row = document.getElementById('ledger-media-row');
+  if (!section || !row) return;
+
+  if (!appearances.length) {
+    section.hidden = true;
+    return;
+  }
+
+  section.hidden = false;
+  row.innerHTML = appearances.map((a) => `
+    <a class="media-card" href="${a.url}" target="_blank" rel="noopener noreferrer">
+      ${a.thumbnail ? `<img class="media-card__thumb" src="${a.thumbnail}" alt="" loading="lazy">` : '<span class="media-card__thumb media-card__thumb--placeholder"></span>'}
+      <span class="media-card__title">${a.title}</span>
+      <span class="media-card__show">${a.show}</span>
+    </a>
+  `).join('');
+}
+
 async function init() {
   let momentum;
   try {
@@ -167,6 +234,32 @@ async function init() {
       if (count) setField('company-count', String(count));
     })
     .catch(() => {});
+
+  // Voices, upcoming, and media — each independent and non-blocking.
+  fetch('/data/voices.json')
+    .then((res) => res.json())
+    .then((data) => {
+      const voices = data.voices || [];
+      setField('voice-count', String(voices.length));
+      renderVoices(voices);
+    })
+    .catch(() => {});
+
+  fetch('/data/outlook.json')
+    .then((res) => res.json())
+    .then((data) => renderUpcoming(data.events || []))
+    .catch(() => {
+      const section = document.getElementById('ledger-upcoming');
+      if (section) section.hidden = true;
+    });
+
+  fetch('/data/media.json')
+    .then((res) => res.json())
+    .then((data) => renderMedia(data.appearances || []))
+    .catch(() => {
+      const section = document.getElementById('ledger-media-section');
+      if (section) section.hidden = true;
+    });
 }
 
 init();

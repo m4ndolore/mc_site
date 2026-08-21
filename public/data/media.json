@@ -1,0 +1,13 @@
+{
+  "_meta": {
+    "description": "Podcast/video appearances by Merge Combinator people, for the media carousel on /momentum. Empty until real appearances are added — the carousel hides itself when this array is empty rather than showing placeholder content.",
+    "schema": {
+      "title": "Episode/appearance title",
+      "show": "Podcast or channel name",
+      "url": "Link to the episode",
+      "date": "YYYY-MM-DD",
+      "thumbnail": "Path or URL to a thumbnail image (optional — falls back to a plain card if omitted)"
+    }
+  },
+  "appearances": []
+}
