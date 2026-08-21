@@ -24,7 +24,13 @@ const PRIVATE_SEED_PATH = join(PRIVATE_DATA_DIR, 'companies.seed.json');
 if (!existsSync(OUTPUT_DIR)) {
     mkdirSync(OUTPUT_DIR, { recursive: true });
 }
-const API_BASE = 'https://api.sigmablox.com';
+// Canonical company data lives in emdash (mc-platform) and is served from
+// www.sigmablox.com. The old api.sigmablox.com (GCP) was decommissioned in the
+// SigmaBlox cutover — see mc-platform docs/cutover-runbook.md. Seeding from it
+// silently fell through to cache below, which froze this site's published
+// directory and sitemap at the last successful build (2026-07-16).
+// Override with MC_COMPANY_API_BASE to point a build at staging.
+const API_BASE = process.env.MC_COMPANY_API_BASE || 'https://www.sigmablox.com';
 const PAGE_LIMIT = 100;
 const REQUIRE_LIVE_SEED = process.env.MC_REQUIRE_LIVE_SEED === '1';
 
@@ -288,6 +294,11 @@ async function seed() {
         console.log('[seed] API fetch successful:', companiesData.companies.length, 'companies');
     } catch (error) {
         console.warn('[seed] API unavailable:', error.message);
+        console.warn(
+            '[seed] ⚠️  FALLING BACK TO CACHED COMPANY DATA — the published directory,',
+            'sitemap, and llms.txt will be as stale as the last successful build.',
+            'Set MC_REQUIRE_LIVE_SEED=1 to make this a build failure instead.',
+        );
 
         if (REQUIRE_LIVE_SEED) {
             throw new Error(`Live company seed required but unavailable: ${error.message}`, { cause: error });
