@@ -4,6 +4,7 @@
 import { outboundUrl, toCompanySlug } from '../lib/outbound.js';
 
 let allCompanies = [];
+let recognitions = [];
 
 const filterContainer = document.querySelector('.filter-tags');
 const gridContainer = document.querySelector('#cohort-grid');
@@ -61,6 +62,37 @@ function extractSummary(description) {
     return description.substring(0, 200).replace(/\n/g, ' ').trim();
 }
 
+function normalizeCompanyKey(name) {
+    return String(name || '')
+        .toLowerCase()
+        .replace(/,?\s*(inc\.?|llc\.?|corporation|corp\.?)\s*$/i, '')
+        .replace(/[^a-z0-9]+/g, '')
+        .trim();
+}
+
+// Match on the stable company id, falling back to a normalized name so a
+// re-seed that reissues ids doesn't silently drop a partner's award.
+function getRecognitions(company) {
+    const nameKey = normalizeCompanyKey(company.name || company.companyName);
+    return recognitions.filter(r =>
+        (r.companyId && r.companyId === company.id) ||
+        (r.companyName && normalizeCompanyKey(r.companyName) === nameKey)
+    );
+}
+
+function renderAwardHtml(company) {
+    const items = getRecognitions(company);
+    if (items.length === 0) return '';
+    return items.map(r => {
+        const label = r.badgeLabel || r.program || 'Recognized';
+        const detail = r.category || '';
+        return `<div class="portfolio-card__award" title="${escapeHtml(r.badgeTitle || detail)}">
+                    <span class="portfolio-card__award-label">${escapeHtml(label)}</span>
+                    ${detail ? `<span class="portfolio-card__award-detail">${escapeHtml(detail)}</span>` : ''}
+                </div>`;
+    }).join('');
+}
+
 function renderCard(company) {
     const categories = getCategories(company);
     const categoryAttr = categories.join(' ');
@@ -89,6 +121,7 @@ function renderCard(company) {
             <div class="portfolio-card__content">
                 <h3 class="portfolio-card__title">${escapeHtml(companyName)}</h3>
                 ${company.productName ? `<p style="font-size: 13px; color: rgba(255,255,255,.5); margin: -4px 0 8px; font-family: var(--font-mono); letter-spacing: .02em;">${escapeHtml(company.productName)}</p>` : ''}
+                ${renderAwardHtml(company)}
                 <p class="portfolio-card__description" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
                     ${escapeHtml(summary)}
                 </p>
@@ -168,6 +201,20 @@ async function loadSeededData() {
     }
 }
 
+// Recognition lives in its own ledger because companies.json is regenerated
+// wholesale by the seed step. Failure here is non-fatal: the grid still renders.
+async function loadRecognitions() {
+    try {
+        const response = await fetch('/data/recognition.json');
+        if (!response.ok) return [];
+        const data = await response.json();
+        return Array.isArray(data.recognitions) ? data.recognitions : [];
+    } catch (error) {
+        console.warn('[Cohort] Failed to load recognition data:', error.message);
+        return [];
+    }
+}
+
 async function loadCompanies() {
     const seededData = await loadSeededData();
     if (seededData) return seededData;
@@ -176,7 +223,8 @@ async function loadCompanies() {
 }
 
 async function init() {
-    const raw = await loadCompanies();
+    const [raw, recognitionData] = await Promise.all([loadCompanies(), loadRecognitions()]);
+    recognitions = recognitionData;
 
     // Filter to real records: must have description >50 chars and a mission area
     allCompanies = raw.filter(c =>
