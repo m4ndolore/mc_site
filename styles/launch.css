@@ -130,6 +130,30 @@
   flex-wrap: wrap;
 }
 
+.launch-hero__bookmark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 0;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.45);
+  max-width: 560px;
+}
+.launch-hero__bookmark svg { color: var(--blue); flex-shrink: 0; }
+.launch-hero__bookmark kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 1px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.light-theme .launch-hero__bookmark { color: rgba(0, 0, 0, 0.5); }
+.light-theme .launch-hero__bookmark kbd {
+  border-color: rgba(0, 0, 0, 0.25);
+  color: rgba(0, 0, 0, 0.6);
+}
+
 /* ── Triage shortcut ── */
 .launch-triage {
   display: inline-flex;
@@ -324,11 +348,87 @@
   transform: translateY(-1px);
 }
 
+/* ── Stage schematic figures (drawing system in schematics.css) ──
+   Rendered as background texture: absolutely positioned behind the stage
+   header/description at low opacity, like the FPE page's ghost numerals. */
+.launch-stage {
+  position: relative;
+}
+
+.launch-stage__fig {
+  /* top = stage padding (48px) + header height (64px number box) so the
+     svg's translateY(-100%) puts the figure's bottom flush with the
+     subtitle's bottom edge, whatever the figure's rendered height. */
+  position: absolute;
+  top: 112px;
+  right: 0;
+  width: min(480px, 72%);
+  margin: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.launch-stage__fig svg {
+  opacity: 0.3;
+  transform: translateY(-100%);
+}
+
+.light-theme .launch-stage__fig svg {
+  opacity: 0.24;
+}
+
+.launch-stage__header,
+.launch-stage__description,
+.launch-resources,
+.launch-stage-cta {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 768px) {
+  .launch-stage__fig {
+    top: 101px;
+    width: min(300px, 88%);
+  }
+  .launch-stage__fig svg {
+    opacity: 0.2;
+  }
+}
+
 /* ── Bottom CTA ── */
 .launch-bottom-cta {
   padding: 64px 0;
   background: var(--charcoal);
   text-align: center;
+}
+
+.launch-bottom-cta__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.launch-btn--outline {
+  background: transparent;
+  color: var(--offwhite);
+  border: 1px solid var(--ghost-gray);
+}
+
+.launch-btn--outline:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+.light-theme .launch-btn--outline {
+  color: #1a1a1a;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+.light-theme .launch-btn--outline:hover {
+  color: var(--blue);
+  border-color: var(--blue);
 }
 
 .launch-bottom-cta__title {

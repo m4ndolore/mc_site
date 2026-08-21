@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Why defense prototypes die between demonstration and production, and the five moves that carry funded companies across the valley of death.">
+  <!-- DRAFT: flip to index,follow at publish -->
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="keywords" content="valley of death, defense transition, program of record, SBIR Phase III, PPBE, prototype to production">
+  <meta name="author" content="Merge Combinator">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
+  <link rel="apple-touch-icon" href="/assets/favicon-512.png?v=2">
+
+  <link rel="canonical" href="https://mergecombinator.com/knowledge/valley-of-death">
+
+  <meta property="og:title" content="Crossing the Valley of Death — Merge Combinator">
+  <meta property="og:description" content="The gap between prototype and production is engineered. Five moves get funded companies across.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://mergecombinator.com/knowledge/valley-of-death">
+  <meta property="og:image" content="/assets/logowhite.png">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Crossing the Valley of Death — Merge Combinator">
+  <meta name="twitter:description" content="The gap between prototype and production is engineered. Five moves get funded companies across.">
+
+  <title>Crossing the Valley of Death — Knowledge — Merge Combinator</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles/light-theme.css">
+  <link rel="stylesheet" href="/styles/schematics.css">
+  <link rel="stylesheet" href="/styles/cta.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Crossing the Valley of Death",
+    "description": "Why defense prototypes die between demonstration and production, and the five moves that carry funded companies across.",
+    "author": { "@type": "Organization", "name": "Merge Combinator" },
+    "publisher": { "@type": "Organization", "name": "Merge Combinator", "url": "https://mergecombinator.com" },
+    "url": "https://mergecombinator.com/knowledge/valley-of-death"
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Crossing the Valley of Death",
+    "description": "Five moves that carry funded defense companies from prototype to production contract.",
+    "url": "https://mergecombinator.com/knowledge/valley-of-death",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Understand the structure",
+        "text": "The gap between prototype and production is a funding-mechanics problem. Production dollars are programmed through PPBE roughly two years before they are spent, so the money that could buy your matured prototype was allocated while you were writing your Phase I."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Build the evidence record",
+        "text": "Program offices move on documented evidence: exercise outcomes, operator assessments, and field data. Every demo and deployment should produce artifacts a program manager can cite in a budget justification."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Pick your program of record early",
+        "text": "Production money lives in programs of record. Identify the POR whose gaps you fill, learn its budget lines and its PM's transition risks, and shape your roadmap to their milestones."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Use SBIR Phase III authority",
+        "text": "Work derived from SBIR/STTR lineage qualifies for Phase III: sole-source, any agency, any appropriation. Keep data rights and lineage documented from day one."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Fund the crossing itself",
+        "text": "Even a clean transition takes 18 to 36 months. Plan bridge revenue (follow-on SBIRs, OTA extensions, prime subcontracts, dual-use sales) before you need it."
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+
+    .draft-banner {
+      position: fixed;
+      top: calc(var(--nav-height, 56px) + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--status-yellow, #eab308);
+      border: 1px solid rgba(234, 179, 8, 0.4);
+      background: rgba(234, 179, 8, 0.08);
+      padding: 6px 14px;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* --- Hero --- */
+    .fpe-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px calc(var(--padding-x) * 2) 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fpe-hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(800px 500px at 20% 50%, rgba(59,130,246,0.08), transparent 60%),
+        radial-gradient(600px 400px at 80% 30%, rgba(59,130,246,0.04), transparent 50%);
+      z-index: 0;
+    }
+
+    .fpe-hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    .fpe-hero__back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray-medium);
+      text-decoration: none;
+      font-size: 14px;
+      margin-bottom: 48px;
+      transition: color 0.2s;
+    }
+    .fpe-hero__back:hover { color: var(--blue); }
+
+    .fpe-hero__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--blue);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .fpe-hero__eyebrow::before {
+      content: '';
+      width: 32px;
+      height: 2px;
+      background: var(--blue);
+    }
+
+    .fpe-hero__title {
+      font-family: var(--font-primary);
+      font-size: clamp(48px, 8vw, 96px);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--offwhite);
+      margin-bottom: 40px;
+    }
+    .fpe-hero__title span { display: block; }
+    .fpe-hero__title .thin {
+      font-weight: 300;
+      color: var(--gray-light);
+    }
+
+    .fpe-hero__quote {
+      max-width: 620px;
+      padding-left: 24px;
+      border-left: 2px solid var(--blue);
+    }
+    .fpe-hero__quote-text {
+      font-family: var(--font-serif);
+      font-size: clamp(16px, 2vw, 20px);
+      font-style: italic;
+      color: var(--gray-light);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .fpe-hero__quote-attr {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gray-medium);
+      letter-spacing: 0.04em;
+    }
+
+    .fpe-hero__scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--ghost-gray);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: fpe-float 2s ease-in-out infinite;
+    }
+    @keyframes fpe-float {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* --- Step Sections --- */
+    .fpe-step {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 80px calc(var(--padding-x) * 2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fpe-step__inner {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) minmax(200px, 300px);
+      gap: 48px;
+      align-items: center;
+    }
+
+    .fpe-step__num {
+      font-family: var(--font-primary);
+      font-size: clamp(140px, 20vw, 280px);
+      font-weight: 900;
+      line-height: 0.85;
+      color: var(--blue);
+      opacity: 0.03;
+      letter-spacing: -0.05em;
+      user-select: none;
+      transition: opacity 0.6s;
+    }
+    .fpe-step.in-view .fpe-step__num { opacity: 0.05; }
+
+    .fpe-step__content { max-width: 580px; }
+
+    .fpe-step__eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--blue);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .fpe-step__eyebrow::before {
+      content: '';
+      width: 20px;
+      height: 2px;
+      background: var(--blue);
+    }
+    .fpe-step.in-view .fpe-step__eyebrow { opacity: 1; transform: translateY(0); }
+
+    .fpe-step__title {
+      font-family: var(--font-primary);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: var(--offwhite);
+      margin-bottom: 12px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s 0.1s, transform 0.6s 0.1s;
+    }
+    .fpe-step.in-view .fpe-step__title { opacity: 1; transform: translateY(0); }
+
+    .fpe-step__subtitle {
+      font-family: var(--font-serif);
+      font-size: clamp(16px, 2vw, 20px);
+      font-style: italic;
+      color: var(--gray-light);
+      margin-bottom: 28px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s 0.2s, transform 0.5s 0.2s;
+    }
+    .fpe-step.in-view .fpe-step__subtitle { opacity: 1; transform: translateY(0); }
+
+    .fpe-step__text {
+      font-family: var(--font-primary);
+      font-size: 16px;
+      color: var(--gray-light);
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s 0.3s, transform 0.5s 0.3s;
+    }
+    .fpe-step.in-view .fpe-step__text { opacity: 1; transform: translateY(0); }
+
+    .fpe-step__fig {
+      width: min(300px, 100%);
+      justify-self: end;
+    }
+
+    .fpe-step__divider {
+      position: absolute;
+      bottom: 0;
+      left: calc(var(--padding-x) * 2);
+      right: calc(var(--padding-x) * 2);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 20%, rgba(255,255,255,0.06) 80%, transparent);
+    }
+
+    .fpe-step--alt .fpe-step__inner {
+      grid-template-columns: minmax(200px, 300px) minmax(0, 1fr) auto;
+    }
+    .fpe-step--alt .fpe-step__num { order: 2; }
+    .fpe-step--alt .fpe-step__fig {
+      order: -1;
+      justify-self: start;
+    }
+
+    /* --- Progress indicator --- */
+    .fpe-progress {
+      position: fixed;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 100;
+    }
+    .fpe-progress__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ghost-gray);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+      border: none;
+      padding: 0;
+    }
+    .fpe-progress__dot:hover { background: var(--gray-light); transform: scale(1.3); }
+    .fpe-progress__dot.active {
+      background: var(--blue);
+      transform: scale(1.4);
+      box-shadow: 0 0 12px rgba(59,130,246,0.4);
+    }
+
+    /* --- Tablet --- */
+    @media (min-width: 769px) and (max-width: 1080px) {
+      .fpe-step__inner { grid-template-columns: auto 1fr; }
+      .fpe-step__fig { grid-column: 2; justify-self: start; width: 230px; margin-top: 8px; }
+      .fpe-step--alt .fpe-step__inner { grid-template-columns: 1fr auto; }
+      .fpe-step--alt .fpe-step__fig { order: 3; grid-column: 1; }
+    }
+
+    /* --- Mobile --- */
+    @media (max-width: 768px) {
+      .fpe-hero { min-height: auto; padding: 100px 24px 60px; }
+      .fpe-hero__back { margin-bottom: 32px; }
+      .fpe-hero__title { font-size: clamp(40px, 12vw, 64px); margin-bottom: 28px; }
+      .fpe-hero__quote { padding-left: 16px; }
+      .fpe-hero__scroll { display: none; }
+
+      .fpe-step { min-height: auto; padding: 80px 24px; }
+      .fpe-step__inner { grid-template-columns: 1fr; gap: 0; }
+      .fpe-step__num {
+        font-size: 90px;
+        position: absolute;
+        top: 32px;
+        right: 20px;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: opacity 0.6s, transform 0.6s;
+      }
+      .fpe-step.in-view .fpe-step__num { opacity: 0.04; transform: translateX(0); }
+      .fpe-step--alt .fpe-step__inner { grid-template-columns: 1fr; }
+      .fpe-step--alt .fpe-step__content { order: 0; }
+      .fpe-step__fig,
+      .fpe-step--alt .fpe-step__fig {
+        order: 3;
+        justify-self: start;
+        width: 200px;
+        margin-top: 36px;
+      }
+      .fpe-step__content { position: relative; z-index: 1; }
+      .fpe-step__eyebrow { margin-bottom: 12px; }
+      .fpe-step__title { font-size: clamp(32px, 10vw, 44px); margin-bottom: 8px; }
+      .fpe-step__subtitle { font-size: 15px; margin-bottom: 20px; }
+      .fpe-step__text { font-size: 15px; line-height: 1.65; }
+      .fpe-step__divider { left: 24px; right: 24px; }
+      .fpe-progress { display: none; }
+    }
+
+    /* --- Entrance --- */
+    @keyframes fpe-heroIn {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fpe-hero__eyebrow { animation: fpe-heroIn 0.6s ease-out 0.1s both; }
+    .fpe-hero__title { animation: fpe-heroIn 0.7s ease-out 0.2s both; }
+    .fpe-hero__quote { animation: fpe-heroIn 0.6s ease-out 0.5s both; }
+
+    /* Light theme */
+    .light-theme .fpe-hero__title { color: var(--gray-900, #1a1a1a); }
+    .light-theme .fpe-hero__title .thin { color: var(--gray-500, #6b7280); }
+    .light-theme .fpe-step__title { color: var(--gray-900, #1a1a1a); }
+    .light-theme .fpe-step__text { color: var(--gray-700, #4a4a4a); }
+    .light-theme .fpe-step__subtitle { color: var(--gray-600, #555); }
+    .light-theme .fpe-step__num { color: var(--blue); opacity: 0.03; }
+    .light-theme .fpe-step.in-view .fpe-step__num { opacity: 0.04; }
+    .light-theme .fpe-step__divider {
+      background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06) 20%, rgba(0,0,0,0.06) 80%, transparent);
+    }
+  </style>
+</head>
+<body>
+  <div id="mc-navbar"></div>
+  <div class="draft-banner">Draft · editorial review</div>
+
+  <!-- Hero -->
+  <section class="fpe-hero" id="hero">
+    <div class="fpe-hero__bg"></div>
+    <div class="fpe-hero__content">
+      <a href="/knowledge" class="fpe-hero__back">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M13 8H3M3 8L8 3M3 8L8 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        Knowledge
+      </a>
+      <div class="fpe-hero__eyebrow">Transition Doctrine</div>
+      <h1 class="fpe-hero__title">
+        <span class="thin">Crossing the</span>
+        <span>Valley</span>
+        <span>of Death</span>
+      </h1>
+      <div class="fpe-hero__quote">
+        <p class="fpe-hero__quote-text">The prototype worked. The end user wanted it. The company still died waiting for money that was never in the budget.</p>
+        <p class="fpe-hero__quote-attr">— The default outcome, unless you engineer against it</p>
+      </div>
+    </div>
+    <div class="fpe-hero__scroll">
+      <svg width="16" height="24" viewBox="0 0 16 24" fill="none">
+        <rect x="1" y="1" width="14" height="22" rx="7" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="8" cy="8" r="2" fill="currentColor">
+          <animate attributeName="cy" values="8;14;8" dur="1.5s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+      Scroll
+    </div>
+  </section>
+
+  <!-- Step 1 -->
+  <section class="fpe-step mc-fig-scope" id="step1" data-step="1">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">01</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Structure</div>
+        <h2 class="fpe-step__title">The valley is engineered</h2>
+        <p class="fpe-step__subtitle">Two-year budget latency built it</p>
+        <p class="fpe-step__text">The gap between a demonstrated prototype and a production contract is a funding-mechanics problem before it is a product problem. Production dollars are programmed through PPBE roughly two years before they are spent. The budget year your prototype matures,, the money that could buy it was allocated while you were writing your Phase I. Companies that treat transition as a sales problem discover the mechanics too late.</p>
+      </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <path class="d s" pathLength="1" d="M20 70 H90 C120 70 105 150 130 150 C155 150 160 84 240 84"/>
+          <circle class="f fill-blue" cx="88" cy="70" r="4" style="--d:.8s"/>
+          <text class="f" x="24" y="58" style="--d:.9s">RDT&amp;E</text>
+          <text class="f" x="238" y="72" text-anchor="end" style="--d:1s">PROCUREMENT</text>
+          <line class="s--faint ghost f" x1="130" y1="156" x2="130" y2="196" style="--d:1.05s"/>
+          <text class="f" x="130" y="212" text-anchor="middle" style="--d:1.1s">PROGRAMMED AT FY-2</text>
+          <text class="f" x="130" y="234" text-anchor="middle" style="--d:1.2s">THE GAP IS BUILT INTO THE BUDGET</text>
+        </svg>
+      </figure>
+    </div>
+    <div class="fpe-step__divider"></div>
+  </section>
+
+  <!-- Step 2 -->
+  <section class="fpe-step fpe-step--alt mc-fig-scope" id="step2" data-step="2">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">02</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Evidence</div>
+        <h2 class="fpe-step__title">Evidence outranks advocacy</h2>
+        <p class="fpe-step__subtitle">Build the operator record</p>
+        <p class="fpe-step__text">A program office moves on documented evidence: exercise outcomes, operator assessments, sustainment data from real use. Enthusiastic end users without documentation move nothing. Every demo, exercise slot, and deployment should produce artifacts a PM can put into a budget justification; that record is what converts operator interest into a budget line.</p>
+      </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <rect class="d s" pathLength="1" x="50" y="28" width="160" height="164"/>
+          <line class="d s--faint" pathLength="1" x1="62" y1="52" x2="198" y2="52" style="--d:.35s"/>
+          <circle class="d s--blue" pathLength="1" cx="76" cy="80" r="7" style="--d:.5s"/>
+          <path class="d s--blue" pathLength="1" d="M72 80 L75 83 L81 76" style="--d:.7s"/>
+          <text class="f" x="92" y="84" style="--d:.8s">EXERCISE OUTCOME</text>
+          <circle class="d s--blue" pathLength="1" cx="76" cy="112" r="7" style="--d:.6s"/>
+          <path class="d s--blue" pathLength="1" d="M72 112 L75 115 L81 108" style="--d:.8s"/>
+          <text class="f" x="92" y="116" style="--d:.9s">OPERATOR ASSESSMENT</text>
+          <circle class="d s--blue" pathLength="1" cx="76" cy="144" r="7" style="--d:.7s"/>
+          <path class="d s--blue" pathLength="1" d="M72 144 L75 147 L81 140" style="--d:.9s"/>
+          <text class="f" x="92" y="148" style="--d:1s">FIELD DATA</text>
+          <circle class="s--faint ghost f" cx="76" cy="176" r="7" style="--d:1.05s"/>
+          <text class="f" x="92" y="180" style="--d:1.1s">NEXT DEPLOYMENT</text>
+          <text class="f" x="130" y="226" text-anchor="middle" style="--d:1.2s">ARTIFACTS A PM CAN CITE</text>
+        </svg>
+      </figure>
+    </div>
+    <div class="fpe-step__divider"></div>
+  </section>
+
+  <!-- Step 3 -->
+  <section class="fpe-step mc-fig-scope" id="step3" data-step="3">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">03</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Destination</div>
+        <h2 class="fpe-step__title">Pick your program of record early</h2>
+        <p class="fpe-step__subtitle">Transition needs a home</p>
+        <p class="fpe-step__text">Production money lives in programs of record. Your capability either lands inside one, creates a new start (rare and slow) or stays a demo. Identify the POR whose gaps you fill, learn its budget lines and its PM's transition risks, and shape your roadmap to their milestones. A prototype with a named destination reads as a transition plan. A prototype without one reads as a science project.</p>
+      </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <rect class="d s" pathLength="1" x="150" y="52" width="80" height="130"/>
+          <path class="d s--faint" pathLength="1" d="M150 100 h-12 v40 h12" style="--d:.4s"/>
+          <text class="f" x="190" y="122" text-anchor="middle" style="--d:.9s">POR</text>
+          <rect class="d s--blue" pathLength="1" x="46" y="104" width="60" height="32" style="--d:.55s"/>
+          <line class="d s--blue" pathLength="1" x1="112" y1="120" x2="132" y2="120" style="--d:.75s"/>
+          <path class="f fill-blue" d="M132 114 L142 120 L132 126 Z" style="--d:1s"/>
+          <text class="f" x="76" y="156" text-anchor="middle" style="--d:1.05s">YOUR CAPABILITY</text>
+          <text class="f" x="130" y="226" text-anchor="middle" style="--d:1.2s">NAME THE DESTINATION EARLY</text>
+        </svg>
+      </figure>
+    </div>
+    <div class="fpe-step__divider"></div>
+  </section>
+
+  <!-- Step 4 -->
+  <section class="fpe-step fpe-step--alt mc-fig-scope" id="step4" data-step="4">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">04</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Authority</div>
+        <h2 class="fpe-step__title">Phase III is broader than founders think</h2>
+        <p class="fpe-step__subtitle">Use the sole-source lineage</p>
+        <p class="fpe-step__text">Any work that derives from SBIR/STTR lineage qualifies for Phase III: sole-source, any agency, any appropriation, no recompete. Program offices use it when the paperwork trail is clean. Keep your data rights and lineage documented from day one. That authority is the widest legal bridge across the valley, and most founders never invoke it.</p>
+      </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <line class="d s" pathLength="1" x1="20" y1="120" x2="90" y2="120"/>
+          <line class="d s" pathLength="1" x1="90" y1="120" x2="90" y2="190" style="--d:.3s"/>
+          <line class="d s" pathLength="1" x1="170" y1="120" x2="240" y2="120" style="--d:.35s"/>
+          <line class="d s" pathLength="1" x1="170" y1="120" x2="170" y2="190" style="--d:.45s"/>
+          <line class="d s--blue" pathLength="1" x1="90" y1="120" x2="170" y2="120" style="--d:.6s"/>
+          <path class="d s--faint" pathLength="1" d="M90 120 L110 142 L130 120 L150 142 L170 120" style="--d:.8s"/>
+          <text class="t--blue f" x="130" y="106" text-anchor="middle" style="--d:1.05s">PHASE III</text>
+          <text class="f" x="130" y="226" text-anchor="middle" style="--d:1.2s">SOLE-SOURCE · ANY AGENCY · ANY COLOR</text>
+        </svg>
+      </figure>
+    </div>
+    <div class="fpe-step__divider"></div>
+  </section>
+
+  <!-- Step 5 -->
+  <section class="fpe-step mc-fig-scope" id="step5" data-step="5">
+    <div class="fpe-step__inner">
+      <div class="fpe-step__num">05</div>
+      <div class="fpe-step__content">
+        <div class="fpe-step__eyebrow">Endurance</div>
+        <h2 class="fpe-step__title">Fund the crossing itself</h2>
+        <p class="fpe-step__subtitle">Bridge revenue is oxygen</p>
+        <p class="fpe-step__text">Even a clean transition takes 18 to 36 months. Companies cross on bridge revenue: follow-on SBIRs, OTA prototype extensions, prime subcontracts, and commercial dual-use sales that keep the team alive while the budget cycle catches up. Plan the bridge before you need it. Raising capital against an open valley reads as distress, and it prices like it.</p>
+      </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <line class="d s" pathLength="1" x1="30" y1="180" x2="230" y2="180"/>
+          <text class="f" x="30" y="198" style="--d:.9s">MO 0</text>
+          <text class="f" x="130" y="198" text-anchor="middle" style="--d:1s">MO 18</text>
+          <text class="f" x="230" y="198" text-anchor="end" style="--d:1.1s">MO 36</text>
+          <text class="f" x="30" y="66" style="--d:.7s">SBIR</text>
+          <line class="d s--blue" pathLength="1" x1="30" y1="74" x2="110" y2="74" style="--d:.4s"/>
+          <text class="f" x="70" y="96" style="--d:.8s">OTA EXTENSION</text>
+          <line class="d s--blue" pathLength="1" x1="70" y1="104" x2="160" y2="104" style="--d:.55s"/>
+          <text class="f" x="110" y="126" style="--d:.9s">PRIME SUB</text>
+          <line class="d s--blue" pathLength="1" x1="110" y1="134" x2="200" y2="134" style="--d:.7s"/>
+          <text class="f" x="160" y="156" style="--d:1s">PRODUCTION</text>
+          <line class="d s" pathLength="1" x1="160" y1="164" x2="230" y2="164" style="--d:.85s"/>
+          <text class="f" x="130" y="226" text-anchor="middle" style="--d:1.2s">NO DEAD AIR BETWEEN VEHICLES</text>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="mc-cta">
+    <div class="mc-cta__inner">
+      <div class="mc-cta__label">Cross with us</div>
+      <h2 class="mc-cta__title">Build the crossing into the <em>company</em>.</h2>
+      <p class="mc-cta__text">Merge Combinator co-founds defense ventures with champions who own the problem, structured for transition from day one, with the evidence record, POR mapping, and bridge revenue planned before the valley opens.</p>
+      <div class="mc-cta__actions">
+        <a href="/access?source=knowledge-valley-of-death" class="mc-cta__btn mc-cta__btn--primary">Request Access
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M13 8L8 3M13 8l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/learn/read?src=/content/web_small.pdf" class="mc-cta__btn mc-cta__btn--secondary">Read the survival guide</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Progress dots -->
+  <nav class="fpe-progress" id="progress">
+    <button class="fpe-progress__dot active" data-target="hero" aria-label="Intro"></button>
+    <button class="fpe-progress__dot" data-target="step1" aria-label="Step 1"></button>
+    <button class="fpe-progress__dot" data-target="step2" aria-label="Step 2"></button>
+    <button class="fpe-progress__dot" data-target="step3" aria-label="Step 3"></button>
+    <button class="fpe-progress__dot" data-target="step4" aria-label="Step 4"></button>
+    <button class="fpe-progress__dot" data-target="step5" aria-label="Step 5"></button>
+  </nav>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
+          </a>
+          <p class="footer__tagline">Venture studio for national security.</p>
+        </div>
+        <div class="footer__links">
+          <div class="footer__column">
+            <h4 class="footer__heading">Platform</h4>
+            <ul class="footer__list">
+              <li><a href="/programs/the-combine">The Combine</a></li>
+              <li><a href="/builders">Defense Builders</a></li>
+              <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="/opportunities">Opportunities</a></li>
+            </ul>
+          </div>
+          <div class="footer__column">
+            <h4 class="footer__heading">Company</h4>
+            <ul class="footer__list">
+              <li><a href="/about">About</a></li>
+              <li><a href="/signals">Signals</a></li>
+              <li><a href="/access">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer__column">
+            <h4 class="footer__heading">Legal</h4>
+            <ul class="footer__list">
+              <li><a href="/privacy">Privacy Policy</a></li>
+              <li><a href="/terms">Terms of Service</a></li>
+              <li><a href="/security">Security</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
+        <p class="footer__location">Honolulu</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/navbar.js"></script>
+  <script type="module" src="/script.js"></script>
+  <script>
+    const sections = document.querySelectorAll('.fpe-step, .fpe-hero');
+    const dots = document.querySelectorAll('.fpe-progress__dot');
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          const id = entry.target.id;
+          dots.forEach(d => d.classList.remove('active'));
+          const activeDot = document.querySelector(`.fpe-progress__dot[data-target="${id}"]`);
+          if (activeDot) activeDot.classList.add('active');
+        }
+      });
+    }, {
+      threshold: isMobile ? 0.15 : 0.35,
+      rootMargin: isMobile ? '0px' : '-10% 0px -10% 0px'
+    });
+
+    sections.forEach(s => observer.observe(s));
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => {
+        const target = document.getElementById(dot.dataset.target);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>

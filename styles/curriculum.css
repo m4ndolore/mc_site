@@ -6,6 +6,25 @@
    pins .fp-lede font-size/margin, so only the UA bold needs neutralizing. */
 h1.fp-lede { font-weight: inherit; }
 
+/* ── Bookmark nudge ── */
+.cur-bookmark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--gray-medium);
+}
+.cur-bookmark svg { color: var(--blue); flex-shrink: 0; }
+.cur-bookmark kbd {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  padding: 1px 6px;
+  border: 1px solid rgba(125, 125, 125, 0.35);
+  border-radius: 2px;
+  color: var(--gray-light);
+}
+
 /* ── Stage sections ── */
 /* No-JS / crawler default: all stages visible (full syllabus).
    JS adds .js-enhanced to #curStages and drives visibility. */
@@ -15,7 +34,19 @@ h1.fp-lede { font-weight: inherit; }
 .cur-stage + .cur-stage { margin-top: 40px; }
 .js-enhanced .cur-stage + .cur-stage { margin-top: 0; }
 
-.cur-stage__head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.cur-stage__head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; position: relative; padding-right: 92px; }
+
+/* Carrier-deck stage glyph (drawing system in schematics.css) */
+.cur-stage__glyph {
+  position: absolute;
+  right: 0;
+  top: -8px;
+  width: 76px;
+}
+@media (max-width: 640px) {
+  .cur-stage__head { padding-right: 64px; }
+  .cur-stage__glyph { width: 54px; top: -4px; }
+}
 .cur-stage__num {
   font-family: 'Space Mono', monospace; font-size: 0.875rem;
   color: var(--blue); letter-spacing: 0.1em;

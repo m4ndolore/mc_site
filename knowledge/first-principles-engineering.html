@@ -6,7 +6,7 @@
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Elon Musk's 5-Step Design Process applied to defense engineering. Question, delete, simplify, accelerate, automate — in that order.">
+  <meta name="description" content="Elon Musk's 5-Step Design Process applied to defense engineering. Question, delete, simplify, accelerate, automate, in that order.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <meta name="keywords" content="first principles, engineering process, Elon Musk, defense technology, design process, systems engineering">
   <meta name="author" content="Merge Combinator">
@@ -17,7 +17,7 @@
   <link rel="canonical" href="https://mergecombinator.com/knowledge/first-principles-engineering">
 
   <meta property="og:title" content="The 5-Step Design Process — Merge Combinator">
-  <meta property="og:description" content="Question, delete, simplify, accelerate, automate — in that order.">
+  <meta property="og:description" content="Question, delete, simplify, accelerate, automate, in that order.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://mergecombinator.com/knowledge/first-principles-engineering">
   <meta property="og:image" content="/assets/logowhite.png">
@@ -25,7 +25,7 @@
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="The 5-Step Design Process — Merge Combinator">
-  <meta name="twitter:description" content="Question, delete, simplify, accelerate, automate — in that order.">
+  <meta name="twitter:description" content="Question, delete, simplify, accelerate, automate, in that order.">
 
   <title>The 5-Step Design Process — Knowledge — Merge Combinator</title>
 
@@ -35,6 +35,7 @@
 
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/styles/light-theme.css">
+  <link rel="stylesheet" href="/styles/schematics.css">
 
   <script type="application/ld+json">
   {
@@ -54,13 +55,13 @@
     "@context": "https://schema.org",
     "@type": "HowTo",
     "name": "The 5-Step Design Process",
-    "description": "Elon Musk's 5-Step Design Process applied to defense engineering. Question, delete, simplify, accelerate, automate — in that order.",
+    "description": "Elon Musk's 5-Step Design Process applied to defense engineering. Question, delete, simplify, accelerate, automate, in that order.",
     "url": "https://mergecombinator.com/knowledge/first-principles-engineering",
     "step": [
       {
         "@type": "HowToStep",
         "name": "Question",
-        "text": "Make the requirements less dumb. Every requirement must have an owner accountable for why it exists. Challenge every requirement regardless of source — those from smart people are the most dangerous because they go unquestioned."
+        "text": "Make the requirements less dumb. Every requirement must have an owner accountable for why it exists. Challenge every requirement regardless of source; those from smart people are the most dangerous because they go unquestioned."
       },
       {
         "@type": "HowToStep",
@@ -70,12 +71,12 @@
       {
         "@type": "HowToStep",
         "name": "Simplify",
-        "text": "Optimize the design — but only what survives deletion. The most common mistake is optimizing a thing that should not exist. Simplify, then simplify again, adding complexity back only when testing proves you must."
+        "text": "Optimize the design, but only what survives deletion. The most common mistake is optimizing a thing that should not exist. Simplify, then simplify again, adding complexity back only when testing proves you must."
       },
       {
         "@type": "HowToStep",
         "name": "Accelerate",
-        "text": "Shorten cycle time. Now — and only now — speed things up by shortening the iteration loop, reducing handoffs, and compressing timelines. Never accelerate a process you should have deleted or simplified first."
+        "text": "Shorten cycle time. Now, and only now, speed things up by shortening the iteration loop, reducing handoffs, and compressing timelines. Never accelerate a process you should have deleted or simplified first."
       },
       {
         "@type": "HowToStep",
@@ -226,7 +227,7 @@
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: auto 1fr;
+      grid-template-columns: auto minmax(0, 1fr) minmax(200px, 300px);
       gap: 48px;
       align-items: center;
     }
@@ -329,6 +330,12 @@
       transform: translateY(0);
     }
 
+    /* Step schematic figures — drawing system lives in /styles/schematics.css */
+    .fpe-step__fig {
+      width: min(300px, 100%);
+      justify-self: end;
+    }
+
     /* Divider line between steps */
     .fpe-step__divider {
       position: absolute;
@@ -339,12 +346,14 @@
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06) 20%, rgba(255,255,255,0.06) 80%, transparent);
     }
 
-    /* Alternate layout: number on right */
+    /* Alternate layout: figure left, number right */
     .fpe-step--alt .fpe-step__inner {
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(200px, 300px) minmax(0, 1fr) auto;
     }
-    .fpe-step--alt .fpe-step__content {
+    .fpe-step--alt .fpe-step__num { order: 2; }
+    .fpe-step--alt .fpe-step__fig {
       order: -1;
+      justify-self: start;
     }
 
     /* --- Progress indicator --- */
@@ -383,30 +392,136 @@
 
     /* --- CTA Footer --- */
     .fpe-cta {
-      padding: 80px calc(var(--padding-x) * 2) 120px;
+      padding: 120px calc(var(--padding-x) * 2) 140px;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fpe-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(59,130,246,0.05), transparent 55%);
+      border-top: 1px solid rgba(59,130,246,0.12);
+      pointer-events: none;
     }
 
     .fpe-cta__inner {
-      max-width: 600px;
+      max-width: 680px;
       margin: 0 auto;
+      position: relative;
+    }
+
+    .fpe-cta__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--blue);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .fpe-cta__label::before,
+    .fpe-cta__label::after {
+      content: '';
+      width: 28px;
+      height: 2px;
+      background: var(--blue);
+    }
+
+    .fpe-cta__title {
+      font-family: var(--font-primary);
+      font-size: clamp(30px, 4.5vw, 52px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      color: var(--offwhite);
+      margin-bottom: 20px;
+    }
+    .fpe-cta__title em {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 600;
+      color: var(--blue);
     }
 
     .fpe-cta__text {
-      font-size: 14px;
+      font-size: 16px;
       color: var(--gray-light);
       line-height: 1.7;
-      margin-bottom: 8px;
+      max-width: 540px;
+      margin: 0 auto 40px;
     }
 
-    .fpe-cta__text strong { color: var(--offwhite); }
-    .fpe-cta__text a { color: var(--blue); text-decoration: none; }
-    .fpe-cta__text a:hover { text-decoration: underline; }
+    .fpe-cta__actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 56px;
+    }
+
+    .fpe-cta__btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 2px;
+      font-family: var(--font-primary);
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .fpe-cta__btn--primary {
+      background: var(--blue);
+      color: #fff;
+    }
+    .fpe-cta__btn--primary:hover { background: #2563eb; }
+    .fpe-cta__btn--primary svg { transition: transform 0.2s; }
+    .fpe-cta__btn--primary:hover svg { transform: translateX(3px); }
+    .fpe-cta__btn--secondary {
+      background: transparent;
+      color: var(--offwhite);
+      border: 1px solid var(--ghost-gray);
+    }
+    .fpe-cta__btn--secondary:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
 
     .fpe-cta__updated {
       font-size: 12px;
       color: var(--ghost-gray);
       font-family: var(--font-mono);
+    }
+    .fpe-cta__updated a {
+      color: var(--gray-medium);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .fpe-cta__updated a:hover { color: var(--blue); }
+
+    /* --- Tablet: figure drops below content --- */
+    @media (min-width: 769px) and (max-width: 1080px) {
+      .fpe-step__inner { grid-template-columns: auto 1fr; }
+      .fpe-step__fig {
+        grid-column: 2;
+        justify-self: start;
+        width: 230px;
+        margin-top: 8px;
+      }
+      .fpe-step--alt .fpe-step__inner { grid-template-columns: 1fr auto; }
+      .fpe-step--alt .fpe-step__fig {
+        order: 3;
+        grid-column: 1;
+      }
     }
 
     /* --- Mobile --- */
@@ -450,6 +565,14 @@
       .fpe-step--alt .fpe-step__inner { grid-template-columns: 1fr; }
       .fpe-step--alt .fpe-step__content { order: 0; }
 
+      .fpe-step__fig,
+      .fpe-step--alt .fpe-step__fig {
+        order: 3;
+        justify-self: start;
+        width: 200px;
+        margin-top: 36px;
+      }
+
       .fpe-step__content {
         position: relative;
         z-index: 1;
@@ -475,9 +598,15 @@
       .fpe-progress { display: none; }
 
       .fpe-cta {
-        padding: 48px 24px 80px;
+        padding: 72px 24px 96px;
       }
-      .fpe-cta__text { font-size: 13px; }
+      .fpe-cta__title { font-size: clamp(28px, 9vw, 36px); }
+      .fpe-cta__text { font-size: 14px; margin-bottom: 32px; }
+      .fpe-cta__actions {
+        flex-direction: column;
+        align-items: stretch;
+        margin-bottom: 40px;
+      }
     }
 
     /* --- Entrance --- */
@@ -500,6 +629,20 @@
     .light-theme .fpe-step.in-view .fpe-step__num { opacity: 0.04; }
     .light-theme .fpe-step__divider {
       background: linear-gradient(90deg, transparent, rgba(0,0,0,0.06) 20%, rgba(0,0,0,0.06) 80%, transparent);
+    }
+    .light-theme .fpe-cta__title { color: var(--gray-900, #1a1a1a); }
+    .light-theme .fpe-cta__text { color: var(--gray-700, #4a4a4a); }
+    .light-theme .fpe-cta__btn--secondary {
+      color: #1a1a1a;
+      border-color: rgba(0,0,0,0.25);
+    }
+    .light-theme .fpe-cta__btn--secondary:hover {
+      color: var(--blue);
+      border-color: var(--blue);
+    }
+    .light-theme .fpe-cta::before {
+      background: linear-gradient(180deg, rgba(59,130,246,0.06), transparent 55%);
+      border-top: 1px solid rgba(59,130,246,0.18);
     }
   </style>
 </head>
@@ -540,35 +683,85 @@
   </section>
 
   <!-- Step 1 -->
-  <section class="fpe-step" id="step1" data-step="1">
+  <section class="fpe-step mc-fig-scope" id="step1" data-step="1">
     <div class="fpe-step__inner">
       <div class="fpe-step__num">01</div>
       <div class="fpe-step__content">
         <div class="fpe-step__eyebrow">Step 01</div>
         <h2 class="fpe-step__title">Question</h2>
         <p class="fpe-step__subtitle">Make the requirements less dumb</p>
-        <p class="fpe-step__text">Every requirement must have an owner — a named person who understands why it exists and is accountable for it. Requirements from smart people are the most dangerous because they go unquestioned. Challenge every single one, regardless of source. The person who wrote the requirement must defend it.</p>
+        <p class="fpe-step__text">Every requirement must have an owner: a named person who understands why it exists and is accountable for it. Requirements from smart people are the most dangerous because they go unquestioned. Challenge every single one, regardless of source. The person who wrote the requirement must defend it.</p>
       </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <rect class="d s" pathLength="1" x="44" y="30" width="104" height="168"/>
+          <line class="d s--faint" pathLength="1" x1="58" y1="52" x2="118" y2="52" style="--d:.3s"/>
+          <line class="d s--faint" pathLength="1" x1="58" y1="72" x2="134" y2="72" style="--d:.35s"/>
+          <line class="d s--faint" pathLength="1" x1="58" y1="92" x2="126" y2="92" style="--d:.4s"/>
+          <line class="d s--blue" pathLength="1" x1="58" y1="112" x2="134" y2="112" style="--d:.5s"/>
+          <line class="d s--faint" pathLength="1" x1="58" y1="132" x2="130" y2="132" style="--d:.45s"/>
+          <line class="d s--faint" pathLength="1" x1="58" y1="152" x2="116" y2="152" style="--d:.5s"/>
+          <line class="d s--faint" pathLength="1" x1="58" y1="172" x2="126" y2="172" style="--d:.55s"/>
+          <path class="d s--blue" pathLength="1" d="M134 112 H 176 V 96" style="--d:.65s"/>
+          <circle class="d s--blue" pathLength="1" cx="176" cy="74" r="20" style="--d:.8s"/>
+          <text class="t--blue f" x="176" y="80" text-anchor="middle" style="font-size:17px">?</text>
+          <text class="f" x="176" y="42" text-anchor="middle">OWNER</text>
+          <text class="f" x="130" y="226" text-anchor="middle">EVERY REQUIREMENT GETS A NAME</text>
+        </svg>
+      </figure>
     </div>
     <div class="fpe-step__divider"></div>
   </section>
 
   <!-- Step 2 -->
-  <section class="fpe-step fpe-step--alt" id="step2" data-step="2">
+  <section class="fpe-step fpe-step--alt mc-fig-scope" id="step2" data-step="2">
     <div class="fpe-step__inner">
       <div class="fpe-step__num">02</div>
       <div class="fpe-step__content">
         <div class="fpe-step__eyebrow">Step 02</div>
         <h2 class="fpe-step__title">Delete</h2>
         <p class="fpe-step__subtitle">Remove the part or process</p>
-        <p class="fpe-step__text">Ruthlessly cut parts, processes, and steps. If you aren't occasionally adding something back that you deleted, you aren't deleting enough. The bias should always be toward removal — the right answer is less, not more. This is the hardest step because it requires overriding every instinct to preserve.</p>
+        <p class="fpe-step__text">Ruthlessly cut parts, processes, and steps. If you aren't occasionally adding something back that you deleted, you aren't deleting enough. The bias should always be toward removal; the right answer is less, not more. This is the hardest step because it requires overriding every instinct to preserve.</p>
       </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <rect class="d s--faint" pathLength="1" x="49" y="26" width="30" height="30"/>
+          <rect class="d s--faint" pathLength="1" x="93" y="26" width="30" height="30" style="--d:.25s"/>
+          <line class="d s--blue" pathLength="1" x1="101" y1="34" x2="115" y2="48" style="--d:.55s"/>
+          <line class="d s--blue" pathLength="1" x1="115" y1="34" x2="101" y2="48" style="--d:.6s"/>
+          <rect class="d s--faint" pathLength="1" x="137" y="26" width="30" height="30" style="--d:.3s"/>
+          <rect class="s--faint ghost f" x="181" y="26" width="30" height="30" style="--d:.7s"/>
+          <rect class="d s--faint" pathLength="1" x="49" y="70" width="30" height="30" style="--d:.3s"/>
+          <line class="d s--blue" pathLength="1" x1="57" y1="78" x2="71" y2="92" style="--d:.65s"/>
+          <line class="d s--blue" pathLength="1" x1="71" y1="78" x2="57" y2="92" style="--d:.7s"/>
+          <rect class="d s--faint" pathLength="1" x="93" y="70" width="30" height="30" style="--d:.35s"/>
+          <rect class="d s--faint" pathLength="1" x="137" y="70" width="30" height="30" style="--d:.35s"/>
+          <line class="d s--blue" pathLength="1" x1="145" y1="78" x2="159" y2="92" style="--d:.75s"/>
+          <line class="d s--blue" pathLength="1" x1="159" y1="78" x2="145" y2="92" style="--d:.8s"/>
+          <rect class="d s--faint" pathLength="1" x="181" y="70" width="30" height="30" style="--d:.4s"/>
+          <rect class="d s--faint" pathLength="1" x="49" y="114" width="30" height="30" style="--d:.4s"/>
+          <rect class="s--faint ghost f" x="93" y="114" width="30" height="30" style="--d:.75s"/>
+          <rect class="d s--faint" pathLength="1" x="137" y="114" width="30" height="30" style="--d:.45s"/>
+          <rect class="d s--faint" pathLength="1" x="181" y="114" width="30" height="30" style="--d:.45s"/>
+          <line class="d s--blue" pathLength="1" x1="189" y1="122" x2="203" y2="136" style="--d:.85s"/>
+          <line class="d s--blue" pathLength="1" x1="203" y1="122" x2="189" y2="136" style="--d:.9s"/>
+          <rect class="d s--faint" pathLength="1" x="49" y="158" width="30" height="30" style="--d:.5s"/>
+          <line class="d s--blue" pathLength="1" x1="57" y1="166" x2="71" y2="180" style="--d:.95s"/>
+          <line class="d s--blue" pathLength="1" x1="71" y1="166" x2="57" y2="180" style="--d:1s"/>
+          <rect class="d s--faint" pathLength="1" x="93" y="158" width="30" height="30" style="--d:.5s"/>
+          <rect class="d s--blue" pathLength="1" x="137" y="158" width="30" height="30" style="--d:1.05s"/>
+          <line class="d s--blue" pathLength="1" x1="152" y1="166" x2="152" y2="180" style="--d:1.15s"/>
+          <line class="d s--blue" pathLength="1" x1="145" y1="173" x2="159" y2="173" style="--d:1.2s"/>
+          <rect class="d s--faint" pathLength="1" x="181" y="158" width="30" height="30" style="--d:.55s"/>
+          <text class="f" x="130" y="226" text-anchor="middle" style="--d:1.3s">THE RIGHT ANSWER IS LESS</text>
+        </svg>
+      </figure>
     </div>
     <div class="fpe-step__divider"></div>
   </section>
 
   <!-- Step 3 -->
-  <section class="fpe-step" id="step3" data-step="3">
+  <section class="fpe-step mc-fig-scope" id="step3" data-step="3">
     <div class="fpe-step__inner">
       <div class="fpe-step__num">03</div>
       <div class="fpe-step__content">
@@ -577,26 +770,60 @@
         <p class="fpe-step__subtitle">Optimize the design</p>
         <p class="fpe-step__text">Only simplify what survives deletion. The most common mistake is optimizing a thing that should not exist. Simplify the design, then simplify it again. Add complexity back only when testing proves you must. The third step, not the first.</p>
       </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <polyline class="d s--faint" pathLength="1" points="30,72 62,44 88,88 118,50 146,90 174,52 202,82 230,62"/>
+          <circle class="f fill-ink" cx="30" cy="72" r="2.5" style="--d:.5s"/>
+          <circle class="f fill-ink" cx="62" cy="44" r="2.5" style="--d:.55s"/>
+          <circle class="f fill-ink" cx="88" cy="88" r="2.5" style="--d:.6s"/>
+          <circle class="f fill-ink" cx="118" cy="50" r="2.5" style="--d:.65s"/>
+          <circle class="f fill-ink" cx="146" cy="90" r="2.5" style="--d:.7s"/>
+          <circle class="f fill-ink" cx="174" cy="52" r="2.5" style="--d:.75s"/>
+          <circle class="f fill-ink" cx="202" cy="82" r="2.5" style="--d:.8s"/>
+          <circle class="f fill-ink" cx="230" cy="62" r="2.5" style="--d:.85s"/>
+          <path class="d s" pathLength="1" d="M130 112 V 142 M123 136 L130 144 L137 136" style="--d:.5s"/>
+          <line class="d s--blue" pathLength="1" x1="30" y1="172" x2="230" y2="172" style="--d:.7s"/>
+          <circle class="f fill-blue" cx="30" cy="172" r="4" style="--d:1.1s"/>
+          <circle class="f fill-blue" cx="230" cy="172" r="4" style="--d:1.2s"/>
+          <text class="f" x="230" y="30" text-anchor="end" style="--d:.9s">7 SEGMENTS</text>
+          <text class="f" x="230" y="198" text-anchor="end" style="--d:1.25s">1 SEGMENT</text>
+          <text class="f" x="130" y="226" text-anchor="middle" style="--d:1.3s">OPTIMIZE WHAT SURVIVES</text>
+        </svg>
+      </figure>
     </div>
     <div class="fpe-step__divider"></div>
   </section>
 
   <!-- Step 4 -->
-  <section class="fpe-step fpe-step--alt" id="step4" data-step="4">
+  <section class="fpe-step fpe-step--alt mc-fig-scope" id="step4" data-step="4">
     <div class="fpe-step__inner">
       <div class="fpe-step__num">04</div>
       <div class="fpe-step__content">
         <div class="fpe-step__eyebrow">Step 04</div>
         <h2 class="fpe-step__title">Accelerate</h2>
         <p class="fpe-step__subtitle">Shorten cycle time</p>
-        <p class="fpe-step__text">Now — and only now — speed things up. Shorten the iteration loop, reduce handoffs, compress timelines. But never accelerate a process you should have deleted or a design you should have simplified first. Speed amplifies both quality and waste.</p>
+        <p class="fpe-step__text">Now, and only now, speed things up. Shorten the iteration loop, reduce handoffs, compress timelines. But never accelerate a process you should have deleted or a design you should have simplified first. Speed amplifies both quality and waste.</p>
       </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <circle class="d s" pathLength="1" cx="58" cy="104" r="46"/>
+          <path class="f fill-blue" d="M53 53 L64 58 L53 63 Z" style="--d:.7s"/>
+          <circle class="d s" pathLength="1" cx="142" cy="104" r="31" style="--d:.45s"/>
+          <path class="f fill-blue" d="M137 68 L148 73 L137 78 Z" style="--d:.9s"/>
+          <circle class="d s" pathLength="1" cx="206" cy="104" r="19" style="--d:.7s"/>
+          <path class="f fill-blue" d="M201 80 L212 85 L201 90 Z" style="--d:1.1s"/>
+          <text class="f" x="58" y="182" text-anchor="middle" style="--d:.8s">MONTHS</text>
+          <text class="f" x="142" y="182" text-anchor="middle" style="--d:1s">WEEKS</text>
+          <text class="f" x="206" y="182" text-anchor="middle" style="--d:1.2s">DAYS</text>
+          <text class="f" x="130" y="226" text-anchor="middle" style="--d:1.3s">COMPRESS THE ITERATION LOOP</text>
+        </svg>
+      </figure>
     </div>
     <div class="fpe-step__divider"></div>
   </section>
 
   <!-- Step 5 -->
-  <section class="fpe-step" id="step5" data-step="5">
+  <section class="fpe-step mc-fig-scope" id="step5" data-step="5">
     <div class="fpe-step__inner">
       <div class="fpe-step__num">05</div>
       <div class="fpe-step__content">
@@ -605,14 +832,56 @@
         <p class="fpe-step__subtitle">Last, never first</p>
         <p class="fpe-step__text">Automation is step five for a reason. Automating a broken process locks in the waste and scales it. Only automate what has survived questioning, deletion, simplification, and acceleration. The most common engineering mistake is automating something that should not exist.</p>
       </div>
+      <figure class="fpe-step__fig mc-fig" aria-hidden="true">
+        <svg viewBox="0 0 260 240">
+          <rect class="d s--faint" pathLength="1" x="24" y="99" width="22" height="22"/>
+          <path class="d s--faint" pathLength="1" d="M30 110 L34 114 L40 105" style="--d:.4s"/>
+          <path class="d s--faint" pathLength="1" d="M51 105 L57 110 L51 115" style="--d:.35s"/>
+          <rect class="d s--faint" pathLength="1" x="62" y="99" width="22" height="22" style="--d:.25s"/>
+          <path class="d s--faint" pathLength="1" d="M68 110 L72 114 L78 105" style="--d:.5s"/>
+          <path class="d s--faint" pathLength="1" d="M89 105 L95 110 L89 115" style="--d:.45s"/>
+          <rect class="d s--faint" pathLength="1" x="100" y="99" width="22" height="22" style="--d:.35s"/>
+          <path class="d s--faint" pathLength="1" d="M106 110 L110 114 L116 105" style="--d:.6s"/>
+          <path class="d s--faint" pathLength="1" d="M127 105 L133 110 L127 115" style="--d:.55s"/>
+          <rect class="d s--faint" pathLength="1" x="138" y="99" width="22" height="22" style="--d:.45s"/>
+          <path class="d s--faint" pathLength="1" d="M144 110 L148 114 L154 105" style="--d:.7s"/>
+          <path class="d s--blue" pathLength="1" d="M166 105 L172 110 L166 115" style="--d:.65s"/>
+          <circle class="d s--blue" pathLength="1" cx="210" cy="110" r="24" style="--d:.75s"/>
+          <circle class="d s--blue" pathLength="1" cx="210" cy="110" r="8" style="--d:.95s"/>
+          <line class="d s--blue" pathLength="1" x1="234" y1="110" x2="241" y2="110" style="--d:.85s"/>
+          <line class="d s--blue" pathLength="1" x1="227" y1="93" x2="232" y2="88" style="--d:.87s"/>
+          <line class="d s--blue" pathLength="1" x1="210" y1="86" x2="210" y2="79" style="--d:.89s"/>
+          <line class="d s--blue" pathLength="1" x1="193" y1="93" x2="188" y2="88" style="--d:.91s"/>
+          <line class="d s--blue" pathLength="1" x1="186" y1="110" x2="179" y2="110" style="--d:.93s"/>
+          <line class="d s--blue" pathLength="1" x1="193" y1="127" x2="188" y2="132" style="--d:.95s"/>
+          <line class="d s--blue" pathLength="1" x1="210" y1="134" x2="210" y2="141" style="--d:.97s"/>
+          <line class="d s--blue" pathLength="1" x1="227" y1="127" x2="232" y2="132" style="--d:.99s"/>
+          <text class="f" x="35" y="150" text-anchor="middle">01</text>
+          <text class="f" x="73" y="150" text-anchor="middle" style="--d:1s">02</text>
+          <text class="f" x="111" y="150" text-anchor="middle" style="--d:1.1s">03</text>
+          <text class="f" x="149" y="150" text-anchor="middle" style="--d:1.2s">04</text>
+          <text class="t--blue f" x="210" y="162" text-anchor="middle" style="--d:1.3s">05</text>
+          <text class="f" x="130" y="226" text-anchor="middle" style="--d:1.4s">LOCK IN ONLY WHAT WORKS</text>
+        </svg>
+      </figure>
     </div>
   </section>
 
   <!-- CTA -->
   <section class="fpe-cta">
     <div class="fpe-cta__inner">
-      <p class="fpe-cta__text"><strong>Merge Combinator</strong> is a venture studio for national security. Founded by those who know the mission, the systems, and the people. We co-found defense technology ventures with champions who own the problem. <a href="/about">Learn more</a> or <a href="/access">request access</a>.</p>
-      <p class="fpe-cta__updated">June 2026</p>
+      <div class="fpe-cta__label">Apply the process</div>
+      <h2 class="fpe-cta__title">Now question your <em>own</em> requirements.</h2>
+      <p class="fpe-cta__text">Merge Combinator is a venture studio for national security. We co-found defense technology ventures with champions who own the problem, and we run them on exactly this process.</p>
+      <div class="fpe-cta__actions">
+        <a href="/access?source=knowledge-first-principles" class="fpe-cta__btn fpe-cta__btn--primary">Request Access
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 8h10M13 8L8 3M13 8l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/curriculum" class="fpe-cta__btn fpe-cta__btn--secondary">Follow the Founder Path</a>
+      </div>
+      <p class="fpe-cta__updated">June 2026 · <a href="/about">About the studio</a></p>
     </div>
   </section>
 

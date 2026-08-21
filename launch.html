@@ -29,6 +29,7 @@
   <style>body{opacity:0;background:#0a0a0a}body.page-ready{opacity:1;transition:opacity .15s ease-in}</style>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/launch.css">
+  <link rel="stylesheet" href="styles/schematics.css">
   <link rel="stylesheet" href="styles/light-theme.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
@@ -44,6 +45,43 @@
       "name": "Merge Combinator",
       "url": "https://mergecombinator.com"
     }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "From Idea to Contract: The Defense Tech Launch Sequence",
+    "description": "A structured path for defense technology founders, modeled on carrier flight-deck launch operations: Preflight, Spot, Ready for Launch, Tension, Launch.",
+    "url": "https://mergecombinator.com/launch",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Preflight",
+        "text": "Learn how the system works before anything else. Who buys, how they buy, and where the money flows: contract types, the FAR, and the PPBE cycle."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Spot",
+        "text": "Identify the mission problem you solve and the acquisition pathway that fits. Match your technology to active demand signals: SBIR topics, CSOs, OTAs, or direct engagement with problem sponsors."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Ready for Launch",
+        "text": "Land your first contract vehicle. Get compliant, write proposals that win, and connect your solution to the acquisition system."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Tension",
+        "text": "You won a contract and built the prototype. Build the relationships, evidence, and end-user demand that carry you across the valley of death to production."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Launch",
+        "text": "Go operational. Production contracts, follow-on awards, colors of money, partnerships, and the team that scales."
+      }
+    ]
   }
   </script>
 </head>
@@ -68,6 +106,10 @@
             Overwhelmed? Click here to build a plan in 60 seconds and get started.
           </a>
         </div>
+        <p class="launch-hero__bookmark">
+          <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true"><path d="M1 1h10v12l-5-3.5L1 13V1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          Bookmark this page <kbd>&#8984;D</kbd>. You will not need it all today. The questions will come up, and this is where the answers stay.
+        </p>
       </div>
     </div>
   </section>
@@ -90,26 +132,40 @@
         <p class="launch-stage__description">
           Before anything else, learn how the system works. Who buys, how they buy, and where the money flows. This stage builds the mental model that keeps everything else from being wasted motion.
         </p>
+        <figure class="launch-stage__fig mc-fig" aria-hidden="true">
+          <svg viewBox="0 0 640 140">
+            <rect class="d s" pathLength="1" x="236" y="26" width="168" height="88"/>
+            <line class="d s--faint" pathLength="1" x1="272" y1="34" x2="272" y2="106" style="--d:.35s"/>
+            <line class="d s--faint" pathLength="1" x1="304" y1="34" x2="304" y2="106" style="--d:.4s"/>
+            <line class="d s--faint" pathLength="1" x1="336" y1="34" x2="336" y2="106" style="--d:.45s"/>
+            <line class="d s--faint" pathLength="1" x1="368" y1="34" x2="368" y2="106" style="--d:.5s"/>
+            <path class="d s--blue" pathLength="1" d="M264 46 H248 V68 H264 V90 H248" style="--d:.6s"/>
+            <path class="d s--blue" pathLength="1" d="M280 46 H296 V68 H280 V90 H296" style="--d:.7s"/>
+            <rect class="d s--blue" pathLength="1" x="312" y="46" width="16" height="44" style="--d:.8s"/>
+            <rect class="d s--blue" pathLength="1" x="344" y="46" width="16" height="44" style="--d:.9s"/>
+            <rect class="d s--blue" pathLength="1" x="376" y="46" width="16" height="44" style="--d:1s"/>
+          </svg>
+        </figure>
         <div class="launch-resources">
           <a href="https://aaf.dau.edu/aaf/contracting-cone/" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7v10M12 7v10M16 7v10"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">Contracting Cone</p>
-              <p class="launch-resource__meta">Visual guide to contract types and dollar thresholds — WarU (formerly DAU)</p>
+              <p class="launch-resource__meta">The one-minute chart for &quot;which contract vehicle?&quot; From WarU, formerly DAU.</p>
             </div>
           </a>
           <a href="https://www.acquisition.gov/browse/index/far" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">FAR for Startups</p>
-              <p class="launch-resource__meta">Federal Acquisition Regulation — the rules governing DoD procurement</p>
+              <p class="launch-resource__meta">The rulebook contracting officers live by. Search it when a clause number lands in your inbox.</p>
             </div>
           </a>
           <a href="https://www.waru.edu/tools/comparison-major-contract-types-chart" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">Contract Types Explained</p>
-              <p class="launch-resource__meta">FFP, T&amp;M, CPFF, CPIF — when to use each and what they mean</p>
+              <p class="launch-resource__meta">FFP, T&amp;M, CPFF, CPIF. Check before you agree; each type moves risk in a different direction.</p>
             </div>
           </a>
           <a href="https://acqnotes.com/acqnote/acquisitions/ppbe-overview" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
@@ -131,13 +187,13 @@
             <div class="launch-resource__text">
               <p class="launch-resource__title">Defense Ecosystem Map</p>
               <p class="launch-resource__meta">Interactive map of commands, agencies, and innovation units</p>
-              <p class="launch-resource__gate">Guild — Free</p>
+              <p class="launch-resource__gate">Guild · Free</p>
             </div>
           </div>
         </div>
         <div class="launch-stage-cta">
-          <a href="/access?context=founder" class="launch-stage-cta__card">
-            Find Supporters, Allies, and Cofounders &rarr;
+          <a href="/access?context=founder&amp;source=launch-preflight" class="launch-stage-cta__card">
+            Drowning in acronyms already? Ask us anything. No pitch deck required. &rarr;
           </a>
         </div>
       </div>
@@ -152,14 +208,34 @@
           </div>
         </div>
         <p class="launch-stage__description">
-          Identify the mission problem you solve and the acquisition pathway that fits. Match your technology to active demand signals — SBIR topics, CSOs, OTAs, or direct engagement with problem sponsors.
+          Identify the mission problem you solve and the acquisition pathway that fits. Match your technology to active demand signals: SBIR topics, CSOs, OTAs, or direct engagement with problem sponsors.
         </p>
+        <figure class="launch-stage__fig mc-fig" aria-hidden="true">
+          <svg viewBox="0 0 640 140">
+            <path class="d s" pathLength="1" d="M92 30 L196 28 L196 21 L248 21 L248 28 L322 26 L322 19 L430 19 L430 26 L500 30 L546 40 L550 78 L385 118 L300 114 L252 114 L252 119 L196 119 L196 113 L150 110 L92 104 Z"/>
+            <rect class="d s" pathLength="1" x="272" y="28" width="32" height="12" style="--d:.4s"/>
+            <line class="s--faint ghost f" x1="102" y1="88" x2="380" y2="113" style="--d:.55s"/>
+            <line class="s--faint ghost f" x1="400" y1="48" x2="540" y2="44" style="--d:.6s"/>
+            <line class="s--faint ghost f" x1="400" y1="64" x2="546" y2="62" style="--d:.65s"/>
+            <g class="f" style="--d:.75s" transform="translate(152 52) rotate(-8)">
+              <path class="s--faint" d="M0 0 L-20 -7 L-14 0 L-20 7 Z"/>
+            </g>
+            <g class="f" style="--d:.85s" transform="translate(190 68) rotate(5)">
+              <path class="s--faint" d="M0 0 L-20 -7 L-14 0 L-20 7 Z"/>
+            </g>
+            <g class="f" style="--d:.8s" transform="translate(354 38) rotate(-3)">
+              <path class="s--faint" d="M0 0 L-20 -7 L-14 0 L-20 7 Z"/>
+            </g>
+            <path class="d s--blue" pathLength="1" d="M508 47 L488 40 L494 47 L488 54 Z" style="--d:.9s"/>
+            <circle class="f fill-blue" cx="496" cy="47" r="3.5" style="--d:1.1s"/>
+          </svg>
+        </figure>
         <div class="launch-resources">
           <a href="https://www.h4d.us/" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">Finding Problem Sponsors</p>
-              <p class="launch-resource__meta">How problem sponsors work in DoD and how to engage them — Hacking for Defense</p>
+              <p class="launch-resource__meta">Find the person who owns your problem before you cold-email anyone with a .mil address. From Hacking for Defense.</p>
             </div>
           </a>
           <a href="https://afwerx.com/divisions/" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
@@ -180,7 +256,7 @@
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">Other Transaction Authority Guide</p>
-              <p class="launch-resource__meta">OTA vs traditional FAR-based contracts — WarU OT Guide</p>
+              <p class="launch-resource__meta">What an OTA can do that a FAR contract cannot. Worth knowing before someone offers you one.</p>
             </div>
           </a>
           <a href="/opportunities" class="launch-resource">
@@ -218,8 +294,21 @@
           </div>
         </div>
         <p class="launch-stage__description">
-          Land your first contract vehicle. Get compliant, write proposals that win, and connect your solution to the acquisition system. This is where most startups stall — the bureaucratic interface between innovation and procurement.
+          Land your first contract vehicle. Get compliant, write proposals that win, and connect your solution to the acquisition system. This is where most startups stall: the bureaucratic interface between innovation and procurement.
         </p>
+        <figure class="launch-stage__fig mc-fig" aria-hidden="true">
+          <svg viewBox="0 0 640 140">
+            <line class="d s" pathLength="1" x1="20" y1="96" x2="620" y2="96"/>
+            <line class="s--faint ghost f" x1="90" y1="91" x2="590" y2="91" style="--d:.5s"/>
+            <path class="d s" pathLength="1" d="M195 96 L150 52" style="--d:.35s"/>
+            <line class="d s--faint" pathLength="1" x1="172" y1="74" x2="172" y2="96" style="--d:.55s"/>
+            <path class="d s--blue" pathLength="1" d="M290 96 L295 84 L315 84 L320 96" style="--d:.45s"/>
+            <path class="d s--blue" pathLength="1" d="M352 56 L310 84" style="--d:.65s"/>
+            <circle class="f fill-blue" cx="310" cy="84" r="3.5" style="--d:1s"/>
+            <rect class="d s" pathLength="1" x="230" y="88" width="10" height="8" style="--d:.6s"/>
+            <path class="d s" pathLength="1" d="M240 90 L262 96" style="--d:.75s"/>
+          </svg>
+        </figure>
         <div class="launch-resources">
           <a href="https://www.sbir.gov/tutorials/preparing-proposals/tutorial-1" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -239,7 +328,7 @@
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">ITAR Basics for Startups</p>
-              <p class="launch-resource__meta">State Department ITAR portal — registration and compliance basics</p>
+              <p class="launch-resource__meta">Is your technology export-controlled? Answer this before you demo to anyone foreign-owned.</p>
             </div>
           </a>
           <a href="https://www.archives.gov/files/cui/documents/20161206-cui-marking-handbook-v1-1-20190524.pdf" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
@@ -267,7 +356,7 @@
         </div>
         <div class="launch-stage-cta">
           <a href="/programs/the-combine" class="launch-stage-cta__card">
-            Ready to get connected? Apply to The Combine &rarr;
+            Have a prototype operators should get their hands on? That is exactly what The Combine is for. &rarr;
           </a>
         </div>
       </div>
@@ -284,12 +373,31 @@
         <p class="launch-stage__description">
           You won a contract and built the prototype. Now the tension builds to production and scale. Build the relationships, evidence, and end user demand that launches you over the valley of death.
         </p>
+        <figure class="launch-stage__fig mc-fig" aria-hidden="true">
+          <svg viewBox="0 0 640 140">
+            <line class="d s" pathLength="1" x1="20" y1="96" x2="620" y2="96"/>
+            <line class="s--faint ghost f" x1="90" y1="91" x2="590" y2="91" style="--d:.5s"/>
+            <path class="d s--faint" pathLength="1" d="M195 96 L150 52" style="--d:.35s"/>
+            <path class="d s--blue" pathLength="1" d="M290 96 L295 84 L315 84 L320 96" style="--d:.45s"/>
+            <rect class="d s" pathLength="1" x="230" y="88" width="10" height="8" style="--d:.55s"/>
+            <path class="d s--blue" pathLength="1" d="M240 92 L290 88" style="--d:.6s"/>
+            <line class="d s--faint" pathLength="1" x1="262" y1="84" x2="258" y2="95" style="--d:.85s"/>
+            <line class="d s--faint" pathLength="1" x1="273" y1="83" x2="269" y2="94" style="--d:.9s"/>
+            <line class="d s--blue" pathLength="1" x1="322" y1="78" x2="390" y2="78" style="--d:.75s"/>
+            <path class="f fill-blue" d="M390 72 L402 78 L390 84 Z" style="--d:1.05s"/>
+            <path class="d s" pathLength="1" d="M60 52 A26 26 0 1 1 112 52" style="--d:.4s"/>
+            <line class="d s--faint" pathLength="1" x1="62" y1="42" x2="67" y2="45" style="--d:.6s"/>
+            <line class="d s--faint" pathLength="1" x1="86" y1="30" x2="86" y2="36" style="--d:.65s"/>
+            <line class="d s--faint" pathLength="1" x1="110" y1="42" x2="105" y2="45" style="--d:.7s"/>
+            <line class="d s--blue" pathLength="1" x1="86" y1="56" x2="106" y2="38" style="--d:.95s"/>
+          </svg>
+        </figure>
         <div class="launch-resources">
           <a href="/learn/read?src=/content/web_small.pdf" class="launch-resource">
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">Valley of Death Survival Guide</p>
-              <p class="launch-resource__meta">John Ferry — 351 pages, read online. The foundational playbook for crossing the valley.</p>
+              <p class="launch-resource__meta">John Ferry's 351-page playbook for the crossing. Search it by chapter when you hit the wall it names.</p>
             </div>
           </a>
           <a href="https://www.navysbir.com/docs/DON-SBIR_STTR_Phase-III_Guidebook_V2-2020.pdf" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
@@ -303,7 +411,7 @@
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">The Interceptor Math Is Broken</p>
-              <p class="launch-resource__meta">Merge Combinator Analysis — why affordable mass matters for your production story</p>
+              <p class="launch-resource__meta">Why affordable mass wins. Steal the framing for your own production story.</p>
             </div>
           </a>
           <div class="launch-resource launch-resource--gated">
@@ -319,13 +427,13 @@
             <div class="launch-resource__text">
               <p class="launch-resource__title">Operator Validation Toolkit</p>
               <p class="launch-resource__meta">Templates and frameworks for building warfighter evidence</p>
-              <p class="launch-resource__gate">Guild — Free</p>
+              <p class="launch-resource__gate">Guild · Free</p>
             </div>
           </div>
         </div>
         <div class="launch-stage-cta">
-          <a href="/access?context=founder" class="launch-stage-cta__card">
-            Building toward production? Talk to Merge Combinator &rarr;
+          <a href="/access?context=founder&amp;source=launch-tension" class="launch-stage-cta__card">
+            Phase II ending with production nowhere in sight? Ask us what worked at exactly this point. &rarr;
           </a>
         </div>
       </div>
@@ -342,26 +450,39 @@
         <p class="launch-stage__description">
           Production contracts, follow-on awards, colors of money, B2B partnerships, and lifecycle optimization. You're building the team and the right team members change everything.
         </p>
+        <figure class="launch-stage__fig mc-fig" aria-hidden="true">
+          <svg viewBox="0 0 640 140">
+            <line class="d s" pathLength="1" x1="48" y1="40" x2="300" y2="40"/>
+            <path class="d s" pathLength="1" d="M300 40 L296 52" style="--d:.25s"/>
+            <path class="d s" pathLength="1" d="M296 52 C 278 64 256 84 248 112" style="--d:.35s"/>
+            <line class="d s" pathLength="1" x1="248" y1="112" x2="48" y2="112" style="--d:.45s"/>
+            <line class="s--faint ghost f" x1="90" y1="36" x2="288" y2="36" style="--d:.55s"/>
+            <line class="s--faint ghost f" x1="20" y1="122" x2="620" y2="122" style="--d:.6s"/>
+            <line class="d s--faint" pathLength="1" x1="210" y1="32" x2="248" y2="32" style="--d:.7s"/>
+            <path class="d s--blue" pathLength="1" d="M296 36 C 370 20 470 12 592 8" style="--d:.65s"/>
+            <path class="f fill-blue" d="M588 2 L606 6 L592 16 Z" style="--d:1.05s"/>
+          </svg>
+        </figure>
         <div class="launch-resources">
           <a href="/signals/ulysses-combine-to-series-a" class="launch-resource">
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">From Combine to Series A: Ulysses</p>
-              <p class="launch-resource__meta">Merge Combinator Case Study — what operator-validated formation actually produces</p>
+              <p class="launch-resource__meta">Combine to Series A, documented. Show it to skeptical investors.</p>
             </div>
           </a>
           <a href="/signals/vc-defense-alignment-problem" class="launch-resource">
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">The $16B Alignment Problem</p>
-              <p class="launch-resource__meta">Merge Combinator Analysis — whether the system can absorb the capital flowing in</p>
+              <p class="launch-resource__meta">Can the system absorb the capital flowing in? Useful when your investors ask about the market.</p>
             </div>
           </a>
           <a href="/signals/army-rewriting-acquisition" class="launch-resource">
             <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
             <div class="launch-resource__text">
               <p class="launch-resource__title">The Army Is Rewriting How It Buys Technology</p>
-              <p class="launch-resource__meta">Merge Combinator Analysis — acquisition restructured around software velocity</p>
+              <p class="launch-resource__meta">Acquisition rebuilt around software velocity. Context for every Army conversation you will have this year.</p>
             </div>
           </a>
           <div class="launch-resource launch-resource--gated">
@@ -382,8 +503,8 @@
           </div>
         </div>
         <div class="launch-stage-cta">
-          <a href="/access?context=founder" class="launch-stage-cta__card">
-            Building the team for scale? Talk to Merge Combinator &rarr;
+          <a href="/access?context=founder&amp;source=launch-scale" class="launch-stage-cta__card">
+            First prime term sheet or first key hire on your desk? Ask someone who has signed one. &rarr;
           </a>
         </div>
       </div>
@@ -426,7 +547,10 @@
       <p class="launch-bottom-cta__text">
         We go deeper than advice. Merge Combinator builds alongside a small number of companies trading equity for founder-grade expertise.
       </p>
-      <a href="/programs/the-combine" class="btn btn--primary btn--glow">Learn about The Combine</a>
+      <div class="launch-bottom-cta__actions">
+        <a href="/programs/the-combine" class="btn btn--primary btn--glow">Learn about The Combine</a>
+        <a href="/access?context=founder&amp;source=launch-bottom" class="btn launch-btn--outline">Request Access</a>
+      </div>
     </div>
   </section>
 
@@ -493,5 +617,6 @@
 
   <script type="module" src="script.js"></script>
   <script type="module" src="js/navbar.js"></script>
+  <script type="module" src="js/schematics.js"></script>
 </body>
 </html>

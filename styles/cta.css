@@ -1,0 +1,135 @@
+/* MC page-end CTA — shared component.
+ * Pattern established on /knowledge/first-principles-engineering: mono label,
+ * headline with a serif-italic accent word, one-paragraph pitch, primary +
+ * secondary action. Primary links carry ?source= attribution for the funnel. */
+
+.mc-cta {
+  padding: 110px var(--padding-x) 130px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.mc-cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(59,130,246,0.05), transparent 55%);
+  border-top: 1px solid rgba(59,130,246,0.12);
+  pointer-events: none;
+}
+
+.mc-cta__inner {
+  max-width: 680px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.mc-cta__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--blue);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.mc-cta__label::before,
+.mc-cta__label::after {
+  content: '';
+  width: 28px;
+  height: 2px;
+  background: var(--blue);
+}
+
+.mc-cta__title {
+  font-family: var(--font-primary);
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--offwhite);
+  margin: 0 0 18px;
+}
+.mc-cta__title em {
+  font-family: var(--font-serif, Georgia, serif);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--blue);
+}
+
+.mc-cta__text {
+  font-size: 16px;
+  color: var(--gray-light);
+  line-height: 1.7;
+  max-width: 540px;
+  margin: 0 auto 36px;
+}
+
+.mc-cta__actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.mc-cta__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: 2px;
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.mc-cta__btn--primary {
+  background: var(--blue);
+  color: #fff;
+}
+.mc-cta__btn--primary:hover { background: #2563eb; }
+.mc-cta__btn--primary svg { transition: transform 0.2s; }
+.mc-cta__btn--primary:hover svg { transform: translateX(3px); }
+.mc-cta__btn--secondary {
+  background: transparent;
+  color: var(--offwhite);
+  border: 1px solid var(--ghost-gray);
+}
+.mc-cta__btn--secondary:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+}
+
+@media (max-width: 768px) {
+  .mc-cta {
+    padding: 72px 24px 96px;
+  }
+  .mc-cta__title { font-size: clamp(26px, 8vw, 34px); }
+  .mc-cta__text { font-size: 14px; margin-bottom: 30px; }
+  .mc-cta__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.light-theme .mc-cta__title { color: var(--gray-900, #1a1a1a); }
+.light-theme .mc-cta__text { color: var(--gray-700, #4a4a4a); }
+.light-theme .mc-cta__btn--secondary {
+  color: #1a1a1a;
+  border-color: rgba(0,0,0,0.25);
+}
+.light-theme .mc-cta__btn--secondary:hover {
+  color: var(--blue);
+  border-color: var(--blue);
+}
+.light-theme .mc-cta::before {
+  background: linear-gradient(180deg, rgba(59,130,246,0.06), transparent 55%);
+  border-top: 1px solid rgba(59,130,246,0.18);
+}
