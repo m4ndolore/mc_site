@@ -97,18 +97,35 @@ function initials(name) {
 function renderVoices(voices) {
   const grid = document.getElementById('ledger-voices');
   if (!grid) return;
-  grid.innerHTML = voices.map((voice) => `
-    <article class="voice-card">
-      <p class="voice-card__quote">${voice.quote}</p>
-      <div class="voice-card__author">
-        <span class="voice-card__avatar">${initials(voice.name)}</span>
-        <div class="voice-card__info">
-          <span class="voice-card__name">${voice.name}</span>
-          <span class="voice-card__role">${voice.role}</span>
+  const ordered = voices.slice().sort((a, b) => Number(Boolean(b.featured)) - Number(Boolean(a.featured)));
+
+  grid.innerHTML = ordered.map((voice) => {
+    const tag = voice.profile_url ? 'a' : 'article';
+    const link = voice.profile_url
+      ? ` href="${voice.profile_url}" target="_blank" rel="noopener noreferrer"`
+      : '';
+    const portrait = voice.image
+      ? `<img class="voice-card__image" src="${voice.image}" alt="${voice.image_alt || ''}" loading="lazy">`
+      : `<span class="voice-card__monogram" aria-hidden="true">${initials(voice.name)}</span>`;
+    const context = [voice.audience, voice.program].filter(Boolean).join(' · ') || 'From the field';
+
+    return `
+      <${tag} class="voice-card${voice.image ? ' voice-card--portrait' : ''}"${link}>
+        <div class="voice-card__visual">${portrait}</div>
+        <div class="voice-card__body">
+          <span class="voice-card__context">${context}</span>
+          <p class="voice-card__quote">“${voice.quote}”</p>
+          <div class="voice-card__author">
+            <div class="voice-card__info">
+              <span class="voice-card__name">${voice.name}</span>
+              <span class="voice-card__role">${voice.role}</span>
+            </div>
+            ${voice.profile_url ? `<span class="voice-card__arrow">${EXTERNAL_SVG}</span>` : ''}
+          </div>
         </div>
-      </div>
-    </article>
-  `).join('');
+      </${tag}>
+    `;
+  }).join('');
 }
 
 function renderUpcoming(events) {

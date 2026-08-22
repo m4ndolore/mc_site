@@ -5,7 +5,8 @@
  * Turns an mc-content (or hand-written) markdown draft into:
  *   1. signals/<slug>.html   — from the existing article template
  *   2. a public/data/signals.json entry (prepended; newest first)
- *   3. the vite.config.js input line to add (printed for you to paste)
+ *   3. a public/data/momentum.json entry (prepended; newest first)
+ *   4. the vite.config.js input line to add (printed for you to paste)
  *
  * This is a SCAFFOLDER, not an auto-publisher. It gets you 90% of the way;
  * a human finishes the design polish (hero image, lede note, related links)
@@ -316,6 +317,19 @@ const entry = {
 };
 const exists = signals.articles.some(a => a.id === slug);
 
+const momentumPath = join(ROOT, 'public', 'data', 'momentum.json');
+const momentum = JSON.parse(readFileSync(momentumPath, 'utf-8'));
+const momentumLink = `/signals/${slug}`;
+const momentumEntry = {
+  date,
+  type: 'signal',
+  origin: 'own',
+  title,
+  detail: excerpt,
+  link: momentumLink,
+};
+const existsInMomentum = momentum.entries.some(item => item.link === momentumLink);
+
 // vite registration line
 const viteKey = `signals-${slug.split('-').slice(0, 2).join('-')}`;
 const viteLine = `        '${viteKey}': resolve(__dirname, 'signals/${slug}.html'),`;
@@ -325,11 +339,13 @@ console.log(`[promote-signal] category:    ${category}`);
 console.log(`[promote-signal] read time:   ${meta.readTime} min`);
 console.log(`[promote-signal] paragraphs:  ${meta.paragraphs.split('\n\n').length}`);
 console.log(`[promote-signal] in signals.json already? ${exists ? 'YES (will not duplicate)' : 'no'}`);
+console.log(`[promote-signal] in momentum.json already? ${existsInMomentum ? 'YES (will not duplicate)' : 'no'}`);
 
 if (args.dryRun) {
   console.log('\n--- DRY RUN: nothing written ---');
   console.log(`Would write: signals/${slug}.html`);
   console.log(`Would ${exists ? 'SKIP (dup)' : 'prepend'} signals.json entry`);
+  console.log(`Would ${existsInMomentum ? 'SKIP (dup)' : 'prepend'} momentum.json entry`);
   console.log(`Add to vite.config.js rollupOptions.input:\n${viteLine}`);
   process.exit(0);
 }
@@ -342,6 +358,12 @@ if (!exists) {
   signals.articles.unshift(entry); // newest first
   writeFileSync(signalsPath, JSON.stringify(signals, null, 2) + '\n');
   console.log('✓ prepended entry to public/data/signals.json');
+}
+
+if (!existsInMomentum) {
+  momentum.entries.unshift(momentumEntry);
+  writeFileSync(momentumPath, JSON.stringify(momentum, null, 2) + '\n');
+  console.log('✓ prepended signal to public/data/momentum.json');
 }
 
 console.log('\n── FINISH BY HAND (the scaffolder did the skeleton) ──');

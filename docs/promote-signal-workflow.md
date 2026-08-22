@@ -12,7 +12,7 @@ draft as plain input. mc-content is never written to or deployed from.
 # 1. Prepare a promotion-ready markdown draft (see "Input" below)
 # 2. Dry-run to preview
 node scripts/promote-signal.mjs --in <draft.md> --date 2026-06-23 --dry-run
-# 3. Run for real (writes the HTML + signals.json entry)
+# 3. Run for real (writes the HTML + signals.json + momentum entries)
 node scripts/promote-signal.mjs --in <draft.md> --date 2026-06-23
 # 4. Finish by hand (checklist below), then:
 npm run build && npm run lint
@@ -53,7 +53,8 @@ and does not read the clock.
 
 1. `signals/<slug>.html` — full article from the live template (head/meta/OG/JSON-LD/footer), body paragraphs from your markdown.
 2. A `public/data/signals.json` entry, prepended (newest first) — drives the feed, RSS, and sitemap.
-3. The exact `vite.config.js` input line to paste (printed).
+3. A `public/data/momentum.json` entry, prepended — puts the new headline into the Momentum page’s latest-evidence rail and dated record.
+4. The exact `vite.config.js` input line to paste (printed).
 
 ## Finish by hand (the craft the scaffolder can't do)
 
@@ -66,6 +67,6 @@ and does not read the clock.
 
 ## Notes
 
-- The scaffolder refuses to overwrite an existing `signals/<slug>.html` and won't duplicate a signals.json id.
+- The scaffolder refuses to overwrite an existing `signals/<slug>.html` and won't duplicate a signals.json id or Momentum link.
 - Read time is auto-estimated (~220 wpm) from the body.
 - See `docs/mc-content-integration-options.md` for the full integration analysis and why we chose this (manual-first, semi-automated-later) approach.

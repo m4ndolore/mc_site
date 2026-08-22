@@ -1,7 +1,16 @@
 {
   "_meta": {
     "description": "Direct feedback from operators, mentors, and founders who've worked with Merge Combinator. Source of truth is the homepage testimonials section (index.html#feedback) — these are the same quotes, already published and cleared for public use. Rendered as the Voices wall on /momentum.",
-    "note": "Add new quotes here first, then mirror into index.html#feedback (or vice versa) — keep the two in sync by hand for now."
+    "note": "Add new quotes here first, then mirror into index.html#feedback (or vice versa) — keep the two in sync by hand for now. Photos are optional and only used when MC owns the asset or has a verified profile source.",
+    "optional_fields": {
+      "image": "Local public path to a cleared portrait",
+      "image_alt": "Concise portrait description",
+      "profile_url": "Official public profile or organization bio",
+      "source_url": "Public source supporting the portrait metadata",
+      "program": "Program or event where the feedback was given",
+      "audience": "Attendee, coach, operator, mentor, or partner",
+      "featured": "Show first in the visual testimonial rail"
+    }
   },
   "voices": [
     {
@@ -22,12 +31,26 @@
     {
       "quote": "This was, debatably, the most fulfilling week of my professional career. There are already a ton of conversations happening around partnerships, next steps, follow-ups, and emails.",
       "name": "Wes Bergmann",
-      "role": "Lead Investor, BetaBlox"
+      "role": "Lead Investor, BetaBlox",
+      "audience": "Program partner",
+      "program": "The Combine / SigmaBlox",
+      "image": "/assets/testimonials/wes-bergmann.webp",
+      "image_alt": "Portrait of Wes Bergmann",
+      "profile_url": "https://betablox.com/",
+      "source_url": "Owned MC platform profile asset",
+      "featured": true
     },
     {
       "quote": "It's an outstanding biz accelerator program unlike anything I've ever seen. I've been a coach and mentor for a number of programs in the US and AUS. But nothing quite like the week I just had.",
       "name": "Catherine Bair",
-      "role": "Coach & Mentor, US/AUS Defense Programs"
+      "role": "Coach & Mentor, US/AUS Defense Programs",
+      "audience": "Coach",
+      "program": "The Combine / SigmaBlox",
+      "image": "/assets/testimonials/catherine-bair.webp",
+      "image_alt": "Portrait of Catherine Bair",
+      "profile_url": "https://www.xr2lead.com/dr-catherine-bair/",
+      "source_url": "https://www.xr2lead.com/dr-catherine-bair/",
+      "featured": true
     },
     {
       "quote": "The results of the trip far exceeded our expectations: invitations to several PACAF exercises, sponsorship for IATT for our capability, advocacy for ACES to be considered during the PACAF C2 Working, and many conversations about contracting.",
