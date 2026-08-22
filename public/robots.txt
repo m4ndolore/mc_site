@@ -1,33 +1,33 @@
-# Merge Combinator robots.txt
+# Merge Combinator
+# Public pages may be indexed, cited, and used for real-time AI answers.
+# Model training and fine-tuning are not permitted.
 User-agent: *
 Allow: /
+Disallow: /api/
+Content-Signal: search=yes, ai-input=yes, ai-train=no, use=reference
 
-# AI crawlers — explicitly allowed for citation and indexing
-User-agent: GPTBot
-Allow: /
-
+# Search and user-directed AI retrieval.
+User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
-Allow: /
-
+User-agent: Claude-SearchBot
+User-agent: Claude-User
 User-agent: PerplexityBot
+User-agent: Perplexity-User
 Allow: /
+Disallow: /api/
 
+# Training and bulk-ingestion crawlers.
+User-agent: GPTBot
 User-agent: ClaudeBot
-Allow: /
-
 User-agent: anthropic-ai
-Allow: /
-
 User-agent: Google-Extended
-Allow: /
+User-agent: Applebot-Extended
+User-agent: CCBot
+Disallow: /
 
-# Sitemap
 Sitemap: https://mergecombinator.com/sitemap.xml
 
-# AI indexing guidance
-# See also: https://mergecombinator.com/llms.txt
-# See also: https://mergecombinator.com/llms-full.txt
-# See also: https://mergecombinator.com/ai/overview
-
-# Disallow admin/API paths
-Disallow: /api/
+# AI indexing guidance:
+# https://mergecombinator.com/llms.txt
+# https://mergecombinator.com/llms-full.txt
+# https://mergecombinator.com/ai/overview
