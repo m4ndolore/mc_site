@@ -1,6 +1,6 @@
 /**
- * Momentum Ledger — renders /data/momentum.json as a reverse-chronological,
- * month-grouped public record with type filtering. Builder company count is
+ * Momentum Ledger — renders /data/momentum.json as a reverse-chronological
+ * public timeline with type filtering. Builder company count is
  * read live from the public directory export so the header never goes stale.
  */
 
@@ -28,11 +28,15 @@ function parseDate(dateStr) {
 }
 
 function formatDay(dateStr) {
-  return parseDate(dateStr).toLocaleDateString('en-US', { month: 'short', day: '2-digit' });
+  return parseDate(dateStr).toLocaleDateString('en-US', { day: '2-digit' });
 }
 
 function formatMonth(dateStr) {
-  return parseDate(dateStr).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  return parseDate(dateStr).toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+}
+
+function formatYear(dateStr) {
+  return parseDate(dateStr).getFullYear();
 }
 
 function relativeDays(dateStr) {
@@ -63,13 +67,17 @@ function renderEntry(entry) {
     ? `<span class="ledger-entry__arrow">${EXTERNAL_SVG}</span>`
     : (entry.link ? `<span class="ledger-entry__arrow">${ARROW_SVG}</span>` : '');
   const why = isReshare && entry.why
-    ? `<p class="ledger-entry__why"><span class="ledger-entry__why-label">Why it's here:</span> ${entry.why}</p>`
+    ? `<p class="ledger-entry__why"><span class="ledger-entry__why-label">Why it’s here:</span> ${entry.why}</p>`
     : '';
 
   el.innerHTML = `
-    <div class="ledger-entry__date">${formatDay(entry.date)}</div>
-    <div class="ledger-entry__marker" aria-hidden="true"></div>
-    <div class="ledger-entry__content">
+    <time class="ledger-entry__date" datetime="${entry.date}">
+      <span class="ledger-entry__month">${formatMonth(entry.date)}</span>
+      <span class="ledger-entry__day">${formatDay(entry.date)}</span>
+      <span class="ledger-entry__year">${formatYear(entry.date)}</span>
+    </time>
+    <div class="ledger-entry__rail" aria-hidden="true"><span></span></div>
+    <div class="ledger-entry__card">
       <div class="ledger-entry__meta">
         <span class="ledger-entry__type">${TYPE_META[entry.type]?.label || entry.type}</span>
         ${sourceBadge}
@@ -80,6 +88,64 @@ function renderEntry(entry) {
     </div>
   `;
   return el;
+}
+
+function initials(name) {
+  return name.split(/\s+/).map((word) => word[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function renderVoices(voices) {
+  const grid = document.getElementById('ledger-voices');
+  if (!grid) return;
+  grid.innerHTML = voices.map((voice) => `
+    <article class="voice-card">
+      <p class="voice-card__quote">${voice.quote}</p>
+      <div class="voice-card__author">
+        <span class="voice-card__avatar">${initials(voice.name)}</span>
+        <div class="voice-card__info">
+          <span class="voice-card__name">${voice.name}</span>
+          <span class="voice-card__role">${voice.role}</span>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function renderUpcoming(events) {
+  const section = document.getElementById('ledger-upcoming');
+  const list = document.getElementById('ledger-upcoming-list');
+  if (!section || !list) return;
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const upcoming = events
+    .filter((event) => new Date(event.dates.end + 'T00:00:00') >= today)
+    .sort((a, b) => a.dates.start.localeCompare(b.dates.start));
+
+  if (!upcoming.length) return;
+  section.hidden = false;
+  list.innerHTML = upcoming.map((event) => `
+    <a class="upcoming-card" href="/opportunities">
+      <span class="upcoming-card__type">${event.type}</span>
+      <h3 class="upcoming-card__title">${event.title}</h3>
+      <p class="upcoming-card__org">${event.organizer}</p>
+    </a>
+  `).join('');
+}
+
+function renderMedia(appearances) {
+  const section = document.getElementById('ledger-media-section');
+  const row = document.getElementById('ledger-media-row');
+  if (!section || !row || !appearances.length) return;
+
+  section.hidden = false;
+  row.innerHTML = appearances.map((appearance) => `
+    <a class="media-card" href="${appearance.url}" target="_blank" rel="noopener noreferrer">
+      ${appearance.thumbnail ? `<img class="media-card__thumb" src="${appearance.thumbnail}" alt="" loading="lazy">` : '<span class="media-card__thumb media-card__thumb--placeholder"></span>'}
+      <span class="media-card__title">${appearance.title}</span>
+      <span class="media-card__show">${appearance.show}</span>
+    </a>
+  `).join('');
 }
 
 function renderFeed(entries, activeType) {
@@ -95,19 +161,35 @@ function renderFeed(entries, activeType) {
     return;
   }
 
-  let currentMonth = null;
-  let group = null;
   for (const entry of visible) {
-    const month = formatMonth(entry.date);
-    if (month !== currentMonth) {
-      currentMonth = month;
-      group = document.createElement('div');
-      group.className = 'ledger-group';
-      group.innerHTML = `<h2 class="ledger-group__month">${month}</h2>`;
-      feed.appendChild(group);
-    }
-    group.appendChild(renderEntry(entry));
+    feed.appendChild(renderEntry(entry));
   }
+}
+
+function renderHighlights(entries) {
+  const track = document.getElementById('ledger-highlights');
+  if (!track) return;
+
+  entries.slice(0, 4).forEach((entry, index) => {
+    const isReshare = entry.origin === 'reshare';
+    const href = isReshare ? entry.source_url : entry.link;
+    const el = document.createElement(href ? 'a' : 'article');
+    if (href) {
+      el.href = href;
+      if (isReshare) {
+        el.target = '_blank';
+        el.rel = 'noopener noreferrer';
+      }
+    }
+    el.className = 'ledger-highlight';
+    el.innerHTML = `
+      <span class="ledger-highlight__number">${String(index + 1).padStart(2, '0')}</span>
+      <span class="ledger-highlight__meta">${formatMonth(entry.date)} ${formatDay(entry.date)} · ${TYPE_META[entry.type]?.label || entry.type}</span>
+      <h3 class="ledger-highlight__title">${entry.title}</h3>
+      ${href ? `<span class="ledger-highlight__arrow">${isReshare ? EXTERNAL_SVG : ARROW_SVG}</span>` : ''}
+    `;
+    track.appendChild(el);
+  });
 }
 
 function renderFilters(entries, onChange) {
@@ -124,9 +206,14 @@ function renderFilters(entries, onChange) {
     btn.type = 'button';
     btn.className = 'ledger__filter' + (i === 0 ? ' is-active' : '');
     btn.textContent = f.label;
+    btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
     btn.addEventListener('click', () => {
-      container.querySelectorAll('.ledger__filter').forEach((b) => b.classList.remove('is-active'));
+      container.querySelectorAll('.ledger__filter').forEach((b) => {
+        b.classList.remove('is-active');
+        b.setAttribute('aria-pressed', 'false');
+      });
       btn.classList.add('is-active');
+      btn.setAttribute('aria-pressed', 'true');
       onChange(f.type);
     });
     container.appendChild(btn);
@@ -136,73 +223,6 @@ function renderFilters(entries, onChange) {
 function setField(name, value) {
   const el = document.querySelector(`[data-field="${name}"]`);
   if (el) el.textContent = value;
-}
-
-function initials(name) {
-  return name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
-}
-
-function renderVoices(voices) {
-  const grid = document.getElementById('ledger-voices');
-  if (!grid) return;
-  grid.innerHTML = voices.map((v) => `
-    <div class="voice-card">
-      <p class="voice-card__quote">${v.quote}</p>
-      <div class="voice-card__author">
-        <span class="voice-card__avatar">${initials(v.name)}</span>
-        <div class="voice-card__info">
-          <span class="voice-card__name">${v.name}</span>
-          <span class="voice-card__role">${v.role}</span>
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-function renderUpcoming(events) {
-  const section = document.getElementById('ledger-upcoming');
-  const list = document.getElementById('ledger-upcoming-list');
-  if (!section || !list) return;
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const upcoming = events
-    .filter((e) => new Date(e.dates.end + 'T00:00:00') >= today)
-    .sort((a, b) => a.dates.start.localeCompare(b.dates.start));
-
-  if (!upcoming.length) {
-    section.hidden = true;
-    return;
-  }
-
-  section.hidden = false;
-  list.innerHTML = upcoming.map((e) => `
-    <a class="upcoming-card" href="/opportunities">
-      <span class="upcoming-card__type">${e.type}</span>
-      <h3 class="upcoming-card__title">${e.title}</h3>
-      <p class="upcoming-card__org">${e.organizer}</p>
-    </a>
-  `).join('');
-}
-
-function renderMedia(appearances) {
-  const section = document.getElementById('ledger-media-section');
-  const row = document.getElementById('ledger-media-row');
-  if (!section || !row) return;
-
-  if (!appearances.length) {
-    section.hidden = true;
-    return;
-  }
-
-  section.hidden = false;
-  row.innerHTML = appearances.map((a) => `
-    <a class="media-card" href="${a.url}" target="_blank" rel="noopener noreferrer">
-      ${a.thumbnail ? `<img class="media-card__thumb" src="${a.thumbnail}" alt="" loading="lazy">` : '<span class="media-card__thumb media-card__thumb--placeholder"></span>'}
-      <span class="media-card__title">${a.title}</span>
-      <span class="media-card__show">${a.show}</span>
-    </a>
-  `).join('');
 }
 
 async function init() {
@@ -223,6 +243,7 @@ async function init() {
   setField('last-entry', entries.length ? relativeDays(entries[0].date) : '—');
   setField('entry-count', String(entries.length));
 
+  renderHighlights(entries);
   renderFilters(entries, (type) => renderFeed(entries, type));
   renderFeed(entries, null);
 
@@ -235,7 +256,6 @@ async function init() {
     })
     .catch(() => {});
 
-  // Voices, upcoming, and media — each independent and non-blocking.
   fetch('/data/voices.json')
     .then((res) => res.json())
     .then((data) => {
@@ -248,18 +268,12 @@ async function init() {
   fetch('/data/outlook.json')
     .then((res) => res.json())
     .then((data) => renderUpcoming(data.events || []))
-    .catch(() => {
-      const section = document.getElementById('ledger-upcoming');
-      if (section) section.hidden = true;
-    });
+    .catch(() => {});
 
   fetch('/data/media.json')
     .then((res) => res.json())
     .then((data) => renderMedia(data.appearances || []))
-    .catch(() => {
-      const section = document.getElementById('ledger-media-section');
-      if (section) section.hidden = true;
-    });
+    .catch(() => {});
 }
 
 init();

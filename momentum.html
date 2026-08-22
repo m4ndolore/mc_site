@@ -25,11 +25,6 @@
 
   <title>How is Merge Combinator going? — Momentum Ledger</title>
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
   <!-- Styles -->
   <style>body{opacity:0;background:#0a0a0a}body.page-ready{opacity:1;transition:opacity .15s ease-in}</style>
   <link rel="stylesheet" href="styles.css">
@@ -41,159 +36,108 @@
   <div id="mc-navbar"></div>
 
   <main class="ledger">
-    <!-- Console header -->
-    <section class="ledger__hero">
-      <div class="container">
-        <span class="ledger__badge">Momentum Ledger</span>
-        <div class="ledger__title-row">
-          <h1 class="ledger__title">How is Merge Combinator going?</h1>
-          <div class="ledger__status">
-            <span class="ledger__status-dot"></span>
-            COMPOUNDING
-          </div>
+    <header class="ledger__hero">
+      <div class="ledger__hero-grid">
+        <div class="ledger__proof ledger__proof--left" aria-label="Selected proof points">
+          <p><span>From Combine to Series A</span>Ulysses · $46M</p>
+          <p><span>Fielded in multinational exercise</span>African Lion 26</p>
         </div>
-        <p class="ledger__subtitle">The standing answer. Every milestone, dated and public — so nobody has to ask.</p>
+        <div class="ledger__proof ledger__proof--right" aria-label="Selected proof points">
+          <p><span>Missionized residency</span>Builders embedded with operators</p>
+          <p><span>Public builder directory</span>Machine-readable and current</p>
+        </div>
+        <h1 class="ledger__title">
+          <span class="ledger__question">How is</span>
+          <span class="ledger__name">Merge <span class="ledger__name-break">Combinator</span></span>
+          <span class="ledger__question ledger__question--end">going?</span>
+        </h1>
+        <p class="ledger__subtitle">The standing answer · Every milestone, dated and public</p>
+      </div>
+    </header>
 
-        <div class="ledger__bar" role="group" aria-label="Ledger status bar">
-          <div class="ledger__cell">
-            <div class="ledger__cell-label">Last Entry</div>
-            <div class="ledger__cell-value" data-field="last-entry">—</div>
-          </div>
-          <div class="ledger__cell">
-            <div class="ledger__cell-label">Entries Logged</div>
-            <div class="ledger__cell-value" data-field="entry-count">—</div>
-          </div>
-          <div class="ledger__cell">
-            <div class="ledger__cell-label">Builder Companies</div>
-            <div class="ledger__cell-value" data-field="company-count">—</div>
-          </div>
-          <div class="ledger__cell">
-            <div class="ledger__cell-label">Voices</div>
-            <div class="ledger__cell-value" data-field="voice-count">—</div>
-          </div>
+    <section class="ledger__scoreboard" aria-label="Current momentum">
+      <div class="ledger__scoreboard-grid">
+        <p class="ledger__scoreboard-intro">Not a pitch deck.<br>A record that compounds.</p>
+        <div class="ledger__metric">
+          <span class="ledger__metric-value" data-field="entry-count">—</span>
+          <span class="ledger__metric-label">moments logged</span>
+        </div>
+        <div class="ledger__metric">
+          <span class="ledger__metric-value" data-field="company-count">—</span>
+          <span class="ledger__metric-label">builder companies</span>
+        </div>
+        <div class="ledger__metric">
+          <span class="ledger__metric-value ledger__metric-value--status">Active</span>
+          <span class="ledger__metric-label">last update <span data-field="last-entry">—</span></span>
+        </div>
+        <div class="ledger__metric">
+          <span class="ledger__metric-value" data-field="voice-count">—</span>
+          <span class="ledger__metric-label">voices</span>
         </div>
       </div>
     </section>
 
-    <!-- What's next — forward-looking, hides itself when nothing is scheduled -->
+    <section class="ledger__highlights" aria-labelledby="ledger-highlights-title">
+      <div class="ledger__highlights-header">
+        <h2 id="ledger-highlights-title">Latest evidence</h2>
+        <p>Four recent moments from the record</p>
+      </div>
+      <div class="ledger__highlights-track" id="ledger-highlights"></div>
+    </section>
+
     <section class="ledger__upcoming" id="ledger-upcoming" hidden>
-      <div class="container">
-        <h2 class="ledger__section-title">What's Next</h2>
+      <div class="ledger__section-grid">
+        <div class="ledger__section-intro">
+          <h2 class="ledger__section-title">What’s next</h2>
+          <p class="ledger__section-sub">The forward edge of the record.</p>
+        </div>
         <div class="ledger__upcoming-list" id="ledger-upcoming-list"></div>
       </div>
     </section>
 
-    <!-- Filters + feed -->
     <section class="ledger__body">
-      <div class="container">
-        <div class="ledger__filters" id="ledger-filters" role="group" aria-label="Filter entries by type"></div>
-        <div class="ledger__feed" id="ledger-feed" aria-live="polite"></div>
+      <div class="ledger__body-grid">
+        <aside class="ledger__index">
+          <p class="ledger__index-title">The record</p>
+          <p class="ledger__index-copy">Field work, builder wins, programs, ecosystem growth, and original analysis—one dated stream.</p>
+        </aside>
+        <div class="ledger__stream">
+          <div class="ledger__filters" id="ledger-filters" role="group" aria-label="Filter entries by type"></div>
+          <div class="ledger__feed" id="ledger-feed" aria-live="polite"></div>
+        </div>
       </div>
     </section>
 
-    <!-- Voices — direct feedback, same quotes as the homepage testimonials -->
     <section class="ledger__voices">
-      <div class="container">
-        <h2 class="ledger__section-title">Voices</h2>
-        <p class="ledger__section-sub">Direct feedback from operators, mentors, and founders who've worked with us.</p>
+      <div class="ledger__section-grid">
+        <div class="ledger__section-intro">
+          <h2 class="ledger__section-title">Voices</h2>
+          <p class="ledger__section-sub">Direct feedback from operators, mentors, and founders who have worked with us.</p>
+        </div>
         <div class="ledger__voices-grid" id="ledger-voices"></div>
       </div>
     </section>
 
-    <!-- Media — podcast/video appearances, hides itself when empty -->
     <section class="ledger__media" id="ledger-media-section" hidden>
-      <div class="container">
-        <h2 class="ledger__section-title">In Their Own Words</h2>
+      <div class="ledger__section-grid">
+        <div class="ledger__section-intro">
+          <h2 class="ledger__section-title">In their own words</h2>
+          <p class="ledger__section-sub">Conversations and appearances.</p>
+        </div>
         <div class="ledger__media-row" id="ledger-media-row"></div>
       </div>
     </section>
 
-    <!-- Why this page exists -->
-    <section class="ledger__footer-panel">
-      <div class="container">
-        <div class="ledger__panel">
-          <div class="ledger__panel-header">
-            <h2 class="ledger__panel-title">Why this page exists</h2>
-          </div>
-          <p class="ledger__panel-desc">
-            Traction evidence goes stale the moment it ships in a deck. This ledger does the opposite —
-            every dated entry makes it more credible. Partners, primes, and program offices get one link
-            that is always current. Working with a builder who should have one of these?
-          </p>
-          <p class="ledger__panel-desc">
-            Featured entries are ours — written and owned by Merge Combinator. Compact, muted entries are
-            reshares: a builder's own news, press coverage, or a partner update we're pointing at, always
-            linked back to the original source.
-          </p>
-          <a href="/access" class="ledger__panel-cta">
-            Request Access
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
-              <path d="M3 8h10M9 4l4 4-4 4"/>
-            </svg>
-          </a>
-        </div>
-      </div>
+    <section class="ledger__manifesto">
+      <p class="ledger__manifesto-label">Why this exists</p>
+      <p class="ledger__manifesto-copy">Evidence goes stale in a deck. Here, every dated entry makes the record stronger.</p>
+      <a href="/access" class="ledger__manifesto-link">Work with us <span aria-hidden="true">↗</span></a>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__grid">
-        <div class="footer__brand">
-          <a href="/" class="footer__logo">
-            <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
-          </a>
-          <p class="footer__tagline">Venture studio for national security.</p>
-          <div class="footer__social">
-            <a href="https://www.linkedin.com/company/merge-combinator/" class="footer__social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-              </svg>
-            </a>
-            <a href="https://x.com/FPExtraordinAir" class="footer__social-link" aria-label="X (Twitter)" target="_blank" rel="noopener">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-        <div class="footer__links">
-          <div class="footer__column">
-            <h4 class="footer__heading">Platform</h4>
-            <ul class="footer__list">
-              <li><a href="/programs/the-combine">The Combine</a></li>
-              <li><a href="/builders">Defense Builders</a></li>
-              <li><a href="/opportunities">Opportunities</a></li>
-              <li><a href="/merch">Merch</a></li>
-            </ul>
-          </div>
-          <div class="footer__column">
-            <h4 class="footer__heading">Company</h4>
-            <ul class="footer__list">
-              <li><a href="/about">About</a></li>
-              <li><a href="/about#faq">FAQ</a></li>
-              <li><a href="/access">Contact</a></li>
-              <li><a href="/builders">Careers</a></li>
-            </ul>
-          </div>
-          <div class="footer__column">
-            <h4 class="footer__heading">Resources</h4>
-            <ul class="footer__list">
-              <li><a href="/signals">Signals</a></li>
-              <li><a href="/launch">Launch</a></li>
-              <li><a href="/knowledge">Knowledge</a></li>
-              <li><a href="/learn">Learn</a></li>
-              <li><a href="https://docs.mergecombinator.com">Docs</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer__bottom">
-        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
-        <p class="footer__location">Honolulu &bull; Seattle &bull; Las Vegas</p>
-      </div>
-    </div>
+  <footer class="ledger-footer">
+    <a href="/" class="ledger-footer__wordmark">MERGE<br>COMBINATOR</a>
+    <p class="ledger-footer__meta">Honolulu · Seattle · Las Vegas<br>&copy; 2026 Merge Combinator</p>
   </footer>
 
   <script type="module" src="script.js"></script>
