@@ -115,7 +115,27 @@ function getPublicProblemStatement(company) {
   return null;
 }
 
+/**
+ * Select the records that may be published.
+ *
+ * The legacy api.sigmablox.com feed returned every company it held — applicants,
+ * declined, alumni — so this file had to pick the public subset itself, and it
+ * did so on two markers the legacy feed stamped on every record:
+ * `pipelineStage: "alumni"` and `tulsaAttended: "Attended"`.
+ *
+ * The emdash feed carries neither. `pipelineStage` maps to emdash's
+ * `company_status` ("active"), and `tulsaAttended` does not exist there at all —
+ * so after the repoint this predicate rejected all 80 companies and the public
+ * feed silently became an empty array. Publication is the editorial gate now:
+ * the companies invited who did not attend were unpublished upstream rather than
+ * filtered here.
+ *
+ * `tulsaAttended` is the discriminator because the legacy feed set it on every
+ * record. Its absence means the record came from emdash and upstream already
+ * gated it; its presence means a legacy-shaped feed, which keeps the old rule.
+ */
 function isPublicCompany(company) {
+  if (company.tulsaAttended === undefined) return true;
   return company.pipelineStage === 'alumni' || company.tulsaAttended === 'Attended';
 }
 
@@ -151,9 +171,20 @@ export function sanitizeCompanyForPublic(company) {
 }
 
 export function sanitizeCompaniesPayloadForPublic(payload) {
-  const companies = Array.isArray(payload.companies)
-    ? payload.companies.filter(isPublicCompany).map(sanitizeCompanyForPublic)
-    : [];
+  const input = Array.isArray(payload.companies) ? payload.companies : [];
+  const companies = input.filter(isPublicCompany).map(sanitizeCompanyForPublic);
+
+  // A filter that removes every record is never a correct answer — it is a
+  // predicate that no longer matches the feed. That is precisely what happened
+  // when the seed was repointed at emdash: the directory, sitemap and llms.txt
+  // were rebuilt from an empty array and the build stayed green, because nothing
+  // downstream distinguishes "no companies" from "no companies yet".
+  if (input.length > 0 && companies.length === 0) {
+    throw new Error(
+      `[privacy] isPublicCompany rejected all ${input.length} companies. The feed shape has ` +
+        'changed and the predicate no longer matches it. Refusing to publish an empty directory.',
+    );
+  }
 
   return {
     companies,

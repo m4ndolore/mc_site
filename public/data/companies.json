@@ -2402,11 +2402,11 @@
     "buildAt": "2026-08-22T09:20:08.783Z",
     "source": "cache",
     "apiBase": "https://www.sigmablox.com",
-    "publicSanitizedAt": "2026-08-22T09:20:09.047Z",
+    "publicSanitizedAt": "2026-08-22T09:25:37.123Z",
     "publicPrivacyModel": "rich-public-profile",
     "restrictedFieldCount": 19,
     "publicAudience": "cohort-competitors",
-    "enrichedAt": "2026-08-22T09:20:09.043Z",
+    "enrichedAt": "2026-08-22T09:25:37.119Z",
     "enrichmentSources": [
       "scripts/data/company-enrichment.json"
     ]
