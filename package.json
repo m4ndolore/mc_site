@@ -21,6 +21,8 @@
     "momentum:curate": "node scripts/momentum-curate.mjs",
     "momentum:queue": "node scripts/momentum-approve.mjs --list",
     "momentum:approve": "node scripts/momentum-approve.mjs",
+    "recognition:promote": "node scripts/promote-recognition.mjs",
+    "recognition:verify": "node scripts/promote-recognition.mjs --verify",
     "lint": "eslint js/ scripts/ cloudflare/*.js cloudflare/test-router.mjs --max-warnings=0",
     "build": "npm run seed && npm run enrich && npm run curriculum:inject && npm run optimize && vite build",
     "check:performance": "node scripts/check-performance-budget.mjs",

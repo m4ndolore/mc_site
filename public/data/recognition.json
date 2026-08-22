@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 2,
+  "description": "Third-party recognition earned by Combine companies. Merge Combinator does not select, sponsor, or judge these awards and claims no credit for them.",
+  "publishingStandard": "A record only belongs here if the granting body evaluates on measured performance, expert panel, or peer review; publishes its methodology; and does not charge to enter or to win. Commercial award programs that solicit nominations across a wide category lattice are marketing assets, not evidence — see docs/plans/2026-08-21-cohort-recognition-promoter.md. Enforced by scripts/promote-recognition.mjs.",
+  "maintainedBy": "scripts/promote-recognition.mjs",
+  "recognitions": []
+}
