@@ -13,6 +13,7 @@
     "seed": "node scripts/seed-companies.mjs",
     "enrich": "node scripts/enrich-companies.mjs",
     "optimize": "node scripts/optimize-static.mjs",
+    "verify:slugs": "node scripts/verify-company-slugs.mjs",
     "curriculum:inject": "node scripts/inject-curriculum.mjs",
     "claims:extract": "node scripts/extract-claims.mjs",
     "claims:classify": "node scripts/classify-claims.mjs",
