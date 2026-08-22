@@ -55,15 +55,15 @@
 /blog/uss-eisenhower-lessons.html /signals/uss-eisenhower-lessons 301
 /blog/ulysses-combine-to-series-a.html /signals/ulysses-combine-to-series-a 301
 /faq.html /faq 301
-# Invited to Cohort 25-1, did not attend. These were placeholder records — the
-# auto-suffixed "Company" name and a TRL of 0 are the tell — and they have been
-# unpublished upstream, so no page regenerates for them. Both spellings redirect
-# to the directory rather than 404, because the -company URLs were live and
-# indexed for a while.
-/companies/smarterreality /builders 301
-/companies/smarterreality-company /builders 301
-/companies/thefraclexgroup /builders 301
-/companies/thefraclexgroup-company /builders 301
-/companies/xvector /builders 301
-/companies/xvector-company /builders 301
+# Three Cohort 25-1 attendees carried placeholder names — a collapsed lowercase
+# word with "Company" appended, left over from an exit survey they never filled
+# out. Renamed upstream to what they actually go by, which moves their page URLs.
+# Both earlier spellings redirect to the new one.
+#
+# There is deliberately no /companies/xvector rule: that is now the live page.
+/companies/smarterreality /companies/smarter-reality 301
+/companies/smarterreality-company /companies/smarter-reality 301
+/companies/thefraclexgroup /companies/the-fraclex-group 301
+/companies/thefraclexgroup-company /companies/the-fraclex-group 301
+/companies/xvector-company /companies/xvector 301
 /companies/*.html /companies/* 301

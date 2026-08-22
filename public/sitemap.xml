@@ -679,6 +679,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://mergecombinator.com/companies/smarter-reality</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://mergecombinator.com/companies/spectrum-defense-systems</loc>
     <lastmod>2026-08-22</lastmod>
     <changefreq>monthly</changefreq>
@@ -715,6 +721,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://mergecombinator.com/companies/the-fraclex-group</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://mergecombinator.com/companies/trackable-health-ai</loc>
     <lastmod>2026-08-22</lastmod>
     <changefreq>monthly</changefreq>
@@ -740,6 +752,12 @@
   </url>
   <url>
     <loc>https://mergecombinator.com/companies/xr-2-lead</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://mergecombinator.com/companies/xvector</loc>
     <lastmod>2026-08-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
