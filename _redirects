@@ -58,7 +58,15 @@
 /blog/uss-eisenhower-lessons.html /signals/uss-eisenhower-lessons 301
 /blog/ulysses-combine-to-series-a.html /signals/ulysses-combine-to-series-a 301
 /faq.html /faq 301
-/companies/smarterreality /companies/smarterreality-company 301
-/companies/thefraclexgroup /companies/thefraclexgroup-company 301
-/companies/xvector /companies/xvector-company 301
+# Invited to Cohort 25-1, did not attend. These were placeholder records — the
+# auto-suffixed "Company" name and a TRL of 0 are the tell — and they have been
+# unpublished upstream, so no page regenerates for them. Both spellings redirect
+# to the directory rather than 404, because the -company URLs were live and
+# indexed for a while.
+/companies/smarterreality /builders 301
+/companies/smarterreality-company /builders 301
+/companies/thefraclexgroup /builders 301
+/companies/thefraclexgroup-company /builders 301
+/companies/xvector /builders 301
+/companies/xvector-company /builders 301
 /companies/*.html /companies/* 301

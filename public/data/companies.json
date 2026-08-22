@@ -51,6 +51,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nCritical operations in commercial aviation and defense rely on outdated processes using paper checklists and human reporting. These methods are slow, error-prone, and lack real-time visibility. This causes mistakes, and delays missions. As aviation and defense demand faster readiness, and digital traceability, traditional methods can’t keep pace. \n\nSolution\nAEROSENS’ sensor-enabled platforms (AeroCMS and AeroISU) automate readiness checks for aircraft equipment and provides in-transit visibility and tamper detection for cargo, replacing blind manual processes with verifiable digital certainty.\n\nField Validation\nAeroISU: AFWERX Phase II, under TACFI with the 621st CRG.\nAeroCMS:  AFWERX Phase I and pilots with British Airways and JetBlue.\n\nTechnology Maturity (TRL)\nBoth platforms are at TRL 6\n\nStrategic Advantage\nAeroCMS is patented and FAA/FCC/CE certified, with deep workflow integration. AeroISU has a patent-pending ultra-secure BLE sensor. Years of validation give us timing, compliance, and integration advantages\n\nGo-to-Market Access\nAdvancing through AFWERX SBIR, TACFI, and OTA consortia . Commercial sales via HEICO and direct channels, backed by Boeing portfolio selection\n\nDual-Use Potential\nGlobal logistics, energy, rail, and emergency response\n\nTeam\nMaria Martinez (CEO) – Telecoms Eng., ESADE MBA\nReza Shibli (CTO) – CS, McGill University\n\nCompetitive Landscape\nRFID firms like ASD offer only proximity scans. Defense players like Savi and SkyBitz require connectivity and complex infrastructure\n\nPrimary User\nAeroISU: AMC, CRG, AIT/ITV\nAeroCMS: Fleet Maintenance Heads\n\nUser-Critical Problem\nManual tracking leads to missed inspections and lost visibility. Poor tools and training cause delays and misreporting.",
+      "problemStatement": "Critical operations in commercial aviation and defense rely on outdated processes using paper checklists and human reporting. These methods are slow, error-prone, and lack real-time visibility. This causes mistakes, and delays missions. As aviation and defense demand faster readiness, and digital traceability, traditional methods can’t keep pace.",
       "synopsisSections": {
         "problem": "Critical operations in commercial aviation and defense rely on outdated processes using paper checklists and human reporting. These methods are slow, error-prone, and lack real-time visibility. This causes mistakes, and delays missions. As aviation and defense demand faster readiness, and digital traceability, traditional methods can’t keep pace.",
         "solution": "AEROSENS’ sensor-enabled platforms (AeroCMS and AeroISU) automate readiness checks for aircraft equipment and provides in-transit visibility and tamper detection for cargo, replacing blind manual processes with verifiable digital certainty.",
@@ -63,8 +64,7 @@
         "competitiveLandscape": "RFID firms like ASD offer only proximity scans. Defense players like Savi and SkyBitz require connectivity and complex infrastructure",
         "primaryUser": "AeroISU: AMC, CRG, AIT/ITV\nAeroCMS: Fleet Maintenance Heads",
         "userCriticalProblem": "Manual tracking leads to missed inspections and lost visibility. Poor tools and training cause delays and misreporting."
-      },
-      "problemStatement": "Critical operations in commercial aviation and defense rely on outdated processes using paper checklists and human reporting. These methods are slow, error-prone, and lack real-time visibility. This causes mistakes, and delays missions. As aviation and defense demand faster readiness, and digital traceability, traditional methods can’t keep pace."
+      }
     },
     {
       "id": "cmknqihtf001cs60188k5g5f2",
@@ -86,6 +86,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nBrigade Support Battalions rely on warfighters to provide transport, security, and logistics support, creating operational strain across MOS roles.\nSolution\nAUV-1 delivers remote-controlled and autonomous capabilities to transport casualties to extraction points, carry supplies to forward operations, and establish perimeter defense. \nField Validation\nPre-field. We have completed the design and build phases of our prototype. \nTechnology Maturity (TRL)\nWe are currently at TRL 5.\nStrategic Advantage\nAUV-1 GVW: 2,500 lbs Power: 20 kWh Payload: 1,000 lb payload Range: 8 hours / 200 miles. IP: integrates 80% off-the-shelf, fully CAN-enabled components into a cloud-connected, agile, multipurpose, price point: 250k\nGo-to-Market Access\nOur primary commercial focus has been agriculture. \nDual-Use Potential\nAUV-1 supports med evac, perimeter defense, supply transport.\nTeam\nCarl D. Hays III – CEO/CPO: 15 years in precision navigation, IoT systems, and product R&D; doctoral candidate\nKevin Bentley – Principal Engineer: Navigation and autonomy; \nEric Del Real – Principal Electrical Engineer: MS in system controls; \nCody Bateman – Principal Mechanical Engineer: System design and COTS integration expert\nCompetitive Landscape\nCurrent AUVs are often overly specialized, underpowered, or oversized. AUV-1 fills a critical gap in the Light Duty AUV space with balance, flexibility, and affordability.\nPrimary User\n68W, 68J, 92Y, 88N \nUser-Critical Problem\nWarfighters are forced to split focus between mission-critical roles and logistics. AUV-1 restores focus to core MOS functions—saving lives, resupplying units, and protecting perimeters—enhancing force multiplication with fewer assets.",
+      "problemStatement": "Brigade Support Battalions rely on warfighters to provide transport, security, and logistics support, creating operational strain across MOS roles.",
       "synopsisSections": {
         "problem": "Brigade Support Battalions rely on warfighters to provide transport, security, and logistics support, creating operational strain across MOS roles.",
         "solution": "AUV-1 delivers remote-controlled and autonomous capabilities to transport casualties to extraction points, carry supplies to forward operations, and establish perimeter defense.",
@@ -98,8 +99,7 @@
         "competitiveLandscape": "Current AUVs are often overly specialized, underpowered, or oversized. AUV-1 fills a critical gap in the Light Duty AUV space with balance, flexibility, and affordability.",
         "primaryUser": "68W, 68J, 92Y, 88N",
         "userCriticalProblem": "Warfighters are forced to split focus between mission-critical roles and logistics. AUV-1 restores focus to core MOS functions—saving lives, resupplying units, and protecting perimeters—enhancing force multiplication with fewer assets."
-      },
-      "problemStatement": "Brigade Support Battalions rely on warfighters to provide transport, security, and logistics support, creating operational strain across MOS roles."
+      }
     },
     {
       "id": "cmknqihq0001as601ojnhl336",
@@ -192,6 +192,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nOnly 2% of the Intelligence Community's data is assessed by analysts. There's too much data and there will never be enough analysts to comb through it, leaving threats unseen and unaddressed. \n\nSolution\nA multi-agent system processes all the data, builds a knowledge graph to connect the dots, and allows users to query for information in plain language. \n\nField Validation\nPre-field\n\nTechnology Maturity (TRL)\nTRL 3. We have built a proof of concept of the solution. \n\nStrategic Advantage\nWe are leveraging our 20 years of experience as a government contractor to speed through the standard barriers to entry and leverage an open-source tech stack to quickly add value to users. \n\nGo-to-Market Access\nWe are pursuing SBIRs and BAAs to build and get user feedback, then leverage that towards a direct contract. \n\nDual-Use Potential\nAny industry that needs to know where and when. Logistics for monitoring and assessing supply lines, energy for grid monitoring and maintenance, agriculture for crop management, etc.\n\nTeam\nRichard Zareck II, CEO, 25 years tech entrepreneurship\nMireille Estephan, CTO, ex-AWS, ex-Capital One tech leader\nTrevor Moore, director of technology, 10 years of R&D for defense\n\nCompetitive Landscape\nOur biggest competition is Palantir with Project Maven. We are going beyond computer vision to aggregate information and insight from detections and classifications created by programs like them. \n\nPrimary User\nGeospatial intel analyst.\n\nUser-Critical Problem\nAnalysts must provide information to decision-makers in a timely fashion. But with too much data to assess, they focus on tracking problems they already know about, instead of looking for new ones or at the big picture.",
+      "problemStatement": "Only 2% of the Intelligence Community's data is assessed by analysts. There's too much data and there will never be enough analysts to comb through it, leaving threats unseen and unaddressed.",
       "synopsisSections": {
         "problem": "Only 2% of the Intelligence Community's data is assessed by analysts. There's too much data and there will never be enough analysts to comb through it, leaving threats unseen and unaddressed.",
         "solution": "A multi-agent system processes all the data, builds a knowledge graph to connect the dots, and allows users to query for information in plain language.",
@@ -204,8 +205,7 @@
         "competitiveLandscape": "Our biggest competition is Palantir with Project Maven. We are going beyond computer vision to aggregate information and insight from detections and classifications created by programs like them.",
         "primaryUser": "Geospatial intel analyst.",
         "userCriticalProblem": "Analysts must provide information to decision-makers in a timely fashion. But with too much data to assess, they focus on tracking problems they already know about, instead of looking for new ones or at the big picture."
-      },
-      "problemStatement": "Only 2% of the Intelligence Community's data is assessed by analysts. There's too much data and there will never be enough analysts to comb through it, leaving threats unseen and unaddressed."
+      }
     },
     {
       "id": "cmknqigve000ss6017xx8rjqk",
@@ -270,6 +270,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nMost systems are still penetration tested manually and infrequently, leaving vulnerabilities undiscovered until it’s too late. Cyber Protection Teams and system owners need a way to emulate adversarial behavior to match the speed of modern threats.\n\nSolution\nAI-driven, autonomous penetration testing platform that identifies, prioritizes, and remediates vulnerabilities in apps, devices and infrastructure; red team coverage without waiting on contract cycles.\n\nField Validation\nPre-field. Internal pilots completed with commercial partners. Early partner interest from federal contractors. Adopted by TechStars as standard security tool for new SaaS startups.\n\nTechnology Maturity (TRL)\nTRL 6. Operational-scale testing on hardened cloud apps using AI-orchestrated open-source tooling. Active in commercial.\n\nStrategic Advantage\nProprietary orchestration, chained exploit logic, and auto-remediation give Vortex an edge. A persistent adversary with fix generation. Built cloud-agnostic and VPC-ready.\n\nGo-to-Market Access\nPursuing direct contracts, Techstars for Defense, and pilots with primes. Exploring AFWERX, DIU, and OTA teaming. Already in Carahsoft and Bridgepoint Technologies.\n\nDual-Use Potential\nApplicable to critical infrastructure, healthcare, finance, and MSSPs, anywhere a breach could cripple operations.\n\nTeam\nCTO Derek Foster led high-scale security programs across SaaS and fintech. CEO Dan has worked on FSISAC Threat Intelligence Repository, securing the NASDAQ.\n\nCompetitive Landscape\nQualys & Rapid7 lack continuous attack logic. Startups offer pen-test-as-a-service—but without automation or remediation. Vortex delivers both.\n\nPrimary User\nCyber Protection Teams, DevSecOps units (e.g., Platform One), and ATO system owners.\n\nUser-Critical Problem\nOperators can’t run red teams on demand and are left guessing. Vortex resolves: autonomously, continuously.",
+      "problemStatement": "Most systems are still penetration tested manually and infrequently, leaving vulnerabilities undiscovered until it’s too late. Cyber Protection Teams and system owners need a way to emulate adversarial behavior to match the speed of modern threats.",
       "synopsisSections": {
         "problem": "Most systems are still penetration tested manually and infrequently, leaving vulnerabilities undiscovered until it’s too late. Cyber Protection Teams and system owners need a way to emulate adversarial behavior to match the speed of modern threats.",
         "solution": "AI-driven, autonomous penetration testing platform that identifies, prioritizes, and remediates vulnerabilities in apps, devices and infrastructure; red team coverage without waiting on contract cycles.",
@@ -282,8 +283,7 @@
         "competitiveLandscape": "Qualys & Rapid7 lack continuous attack logic. Startups offer pen-test-as-a-service—but without automation or remediation. Vortex delivers both.",
         "primaryUser": "Cyber Protection Teams, DevSecOps units (e.g., Platform One), and ATO system owners.",
         "userCriticalProblem": "Operators can’t run red teams on demand and are left guessing. Vortex resolves: autonomously, continuously."
-      },
-      "problemStatement": "Most systems are still penetration tested manually and infrequently, leaving vulnerabilities undiscovered until it’s too late. Cyber Protection Teams and system owners need a way to emulate adversarial behavior to match the speed of modern threats."
+      }
     },
     {
       "id": "cmknqijss002is601mr18mfcz",
@@ -327,6 +327,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nMotors that are inefficient, hot, and loud--and not made in America\n\nSolution\nThe TruVolt® is a rugged, compact, axial flux motor built for high performance and low heat signature, with near-silent operation and integrated electronics all in one ruggedized 2hp, 12lb unit. \n\nField Validation\nWe’ve delivered a custom motor for an underwater drone, and they want more.\n\nTechnology Maturity (TRL)\nTRL 7-8 live deployment.\n\nStrategic Advantage\nThe stator design is patented, the coil winding apparatus is proprietary and non-obvious, and the electronics and firmware are proprietary.\n\nGo-to-Market Access\nNavy SBIR, and direct contacts to OEMs, seeking additional SBIRs and connections to primes.\n\nDual-Use Potential\nExcellent and competitively priced option for fans, blowers, conveyors, pumps, compressors, and is capable of servoing. The integrated controller features VFD functionality, performance sensors, and is PLC programmable, enabling the replacement of multiple motor configurations with one motor. We have LOIs for 10,000+ units once we can deliver.\n\nTeam\nDr. Elijah Jensen (PhD physics, and Master's EE), PI on multiple NASA STTRs, 12 years of space-based power systems with work on the ISS and Artemis mission. Joshua Rimmer, COO, 15 years Army, Bronze Star, and 16 years manufacturing.\n\nCompetitive Landscape\nAxial Flux competitors--ECM, great small PCB motor, lower horsepower. Evolito by YASA weighs 13kg--we are 12lb. We are filling an in-between size for axial flux motor technology.\n\nPrimary User\nUnmanned and autonomous systems OEMs\n\nUser-Critical Problem\nChoice of American-made motors with the power density, quiet, low-thermal signature, and efficient performance of the TruVolt in the 1/2hp-7.5hp range needed for group 1 and 2 UAVs are very limited.",
+      "problemStatement": "Motors that are inefficient, hot, and loud--and not made in America",
       "synopsisSections": {
         "problem": "Motors that are inefficient, hot, and loud--and not made in America",
         "solution": "The TruVolt® is a rugged, compact, axial flux motor built for high performance and low heat signature, with near-silent operation and integrated electronics all in one ruggedized 2hp, 12lb unit.",
@@ -339,8 +340,7 @@
         "competitiveLandscape": "Axial Flux competitors--ECM, great small PCB motor, lower horsepower. Evolito by YASA weighs 13kg--we are 12lb. We are filling an in-between size for axial flux motor technology.",
         "primaryUser": "Unmanned and autonomous systems OEMs",
         "userCriticalProblem": "Choice of American-made motors with the power density, quiet, low-thermal signature, and efficient performance of the TruVolt in the 1/2hp-7.5hp range needed for group 1 and 2 UAVs are very limited."
-      },
-      "problemStatement": "Motors that are inefficient, hot, and loud--and not made in America"
+      }
     },
     {
       "id": "cmknqik4i002ps6018xv924nj",
@@ -384,6 +384,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nIn peer conflict Forward deployed units require low cost, survivable, and mobile systems for 24/7 wide area Surveillance, C3, Electronic Warfare, and Counter-UAS capability. \n\nSolution\nCUVs Expeditionary Aerostat System uses the a tethered blimp combining helium and wind lift.  Small sizes operate in high wind, allowing small mobile systems. EAS aerostats are mobile, air transportable, minimum manpower and low cost. It has lower air transport, logistics and manpower requirements than aircraft, or UAS. Coverage has Line of Sight to 100 kilometers\n\nField Validation\nEarly iteration deployed to small Forward Operating Bases in Afghanistan \n\nTechnology Maturity (TRL)\nTRL 9. Live deployment. \n\nStrategic Advantage\nMature design developed over 15 plus years. \n\nGo-to-Market Access\nDeveloped under SBIR, followed by Army Rapid Equipping Force contracts, and contracts from Lockheed and others. Currently marketing to Army C5ISR Center, NATO allies. \n\nDual-Use Potential\nHomeland security border control, remote area security (mines, refinery, etc.) Post disaster communication\n\nTeam\nProject manager, Mike Rogers, retired USAF LTC. Over 50 years R and and development experience. \n\nCompetitive Landscape\nSomewhat similar systems produced by Israel and other allies. \n\nPrimary User\nArmy Brigade and above for distributed Command Posts being developed. Missions for C3, electronic warfare, intelligence collection, surveillance. \n\nUser-Critical Problem\nCommand posts are targeted by enemy reconnaissance systems and will be attacked in peer conflict. Only by dispersal and concealment can they survive, requiring long range, mobile communications. This requires lifting payloads hundreds of meters to obtain long Line of Sight and long duration operation.",
+      "problemStatement": "In peer conflict Forward deployed units require low cost, survivable, and mobile systems for 24/7 wide area Surveillance, C3, Electronic Warfare, and Counter-UAS capability.",
       "synopsisSections": {
         "problem": "In peer conflict Forward deployed units require low cost, survivable, and mobile systems for 24/7 wide area Surveillance, C3, Electronic Warfare, and Counter-UAS capability.",
         "solution": "CUVs Expeditionary Aerostat System uses the a tethered blimp combining helium and wind lift.  Small sizes operate in high wind, allowing small mobile systems. EAS aerostats are mobile, air transportable, minimum manpower and low cost. It has lower air transport, logistics and manpower requirements than aircraft, or UAS. Coverage has Line of Sight to 100 kilometers",
@@ -396,8 +397,7 @@
         "competitiveLandscape": "Somewhat similar systems produced by Israel and other allies.",
         "primaryUser": "Army Brigade and above for distributed Command Posts being developed. Missions for C3, electronic warfare, intelligence collection, surveillance.",
         "userCriticalProblem": "Command posts are targeted by enemy reconnaissance systems and will be attacked in peer conflict. Only by dispersal and concealment can they survive, requiring long range, mobile communications. This requires lifting payloads hundreds of meters to obtain long Line of Sight and long duration operation."
-      },
-      "problemStatement": "In peer conflict Forward deployed units require low cost, survivable, and mobile systems for 24/7 wide area Surveillance, C3, Electronic Warfare, and Counter-UAS capability."
+      }
     },
     {
       "id": "cmknqigjg000ls601ddyz9tqo",
@@ -441,6 +441,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nsUAS are the deadliest weapon on the modern battlefield and increasingly impervious to EW and other non-kinetic defeat methods. \n\nSolution\nA low cost, mini-CUAS AI Rocket Interceptor designed to kinetically defeat Group 1 & 2 sUAS. Interceptor leverages COTS components and on board edge AI for autonomous targeting & engagement without relying on GPS or RF emissions with a modular payload capability.\n\nField Validation\nPre-Field\n\nTechnology Maturity (TRL)\nTRL 5, prototyping and 10 non-field flight tests with core technologies demonstrated.\n\nStrategic Advantage\nTiming edge as well as team experience in developing COTS based missile enabling ultra low cost, currently integrating with unmanned platforms.\n\nGo-to-Market Access\nApplied for Direct to Phase II Open Topic SBIR with letter of support from AFWERX. Working with DIU OnRamp Hub and in discussion with Army DEVCOM.\n\nDual-Use Potential\nCan have a modular payload including a low collateral defeat payload to protect critical civilian infrastructure.\n\nTeam\nCo-Founder, EE, 9 years defense experience, CUAS/CIED/EW/Hypersonic/Missile dev & test. Co-founder, Prior venture backed startup founder/CEO $92m raised, $100m revenue, multiple patents. Engineers formerly from RTX, Northrup Grumman, Hyper Giant, Diligent Robotics.\n\nCompetitive Landscape\nStartups and incumbents are focused on short range (gun based) kinetic defeat solutions as well as expensive, longer range interceptors. We target sUAS in the range between guns and existing, expensive, longer range systems with an ultra low cost solution.\n\nPrimary User\nInfantry, security forces, and any other combat role that could be vulnerable to sUAS attacks.\n\nUser-Critical Problem\nOutside of extremely short range engagements, there is no reliable way for individual infantry units to kinetically defeat individual or swarms of sUAS.",
+      "problemStatement": "sUAS are the deadliest weapon on the modern battlefield and increasingly impervious to EW and other non-kinetic defeat methods.",
       "synopsisSections": {
         "problem": "sUAS are the deadliest weapon on the modern battlefield and increasingly impervious to EW and other non-kinetic defeat methods.",
         "solution": "A low cost, mini-CUAS AI Rocket Interceptor designed to kinetically defeat Group 1 & 2 sUAS. Interceptor leverages COTS components and on board edge AI for autonomous targeting & engagement without relying on GPS or RF emissions with a modular payload capability.",
@@ -453,8 +454,7 @@
         "competitiveLandscape": "Startups and incumbents are focused on short range (gun based) kinetic defeat solutions as well as expensive, longer range interceptors. We target sUAS in the range between guns and existing, expensive, longer range systems with an ultra low cost solution.",
         "primaryUser": "Infantry, security forces, and any other combat role that could be vulnerable to sUAS attacks.",
         "userCriticalProblem": "Outside of extremely short range engagements, there is no reliable way for individual infantry units to kinetically defeat individual or swarms of sUAS."
-      },
-      "problemStatement": "sUAS are the deadliest weapon on the modern battlefield and increasingly impervious to EW and other non-kinetic defeat methods."
+      }
     },
     {
       "id": "cmknqijw5002ks601tytu0k91",
@@ -476,6 +476,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\n\nTeam members without a radio so they have to use voice and hand signals to communicate. \nSolution\n\nThe RAP (Radio Access Point) is a low-SWAP module that attaches to the RED side of tactical radio (117, 163, 167, 148, 152 etc.) and extends radio network 1300 feet in range so that operators can connect via their smartphone EUDs/ATAK. The MTR (Miniature Tactical Router) is a low-SWAP module that attaches on the BLK side of a tactical radio (117, 163, 167 etc) and provides a VPN connection to SATCOM (Iridium, BGAN, StarLink) terminal or LTE/5G cellular device for BLOS comms.\nField Validation\n\nRAP has been extensively tested/evaluated by USMC and NIWC. The MTR for 117G radio is deployed by Netherlands and German SoF\nTechnology Maturity (TRL)\n[State your current TRL. Cite evidence: lab demo, prototyping, field trials, live deployment.]\nRAP is at TRL 8, MTR-117 is at TRL 9 and MTR-MM is TRL 7\nStrategic Advantage\n\nRAP is NSA certified for Tactical CSfC \nGo-to-Market Access\n\nResponding to BAAs CSOs, and RFIs, collaborating with prime contractors and trusted integrators. RAP and MTR are on the NASA SEWP IDIQ and Army's CHS-6 catalog\nDual-Use Potential\n\nNone\nTeam\n\nOur team has electrical, mechanical, software engineers with over 25 years of experience C4 system design and development.\nCompetitive Landscape\n\nThe RAP is the only low-SWAP product on the NSA's CSfC Components List for Tactical Capability solutions \nPrimary User\n[Be specific — not “DoD,” but “intel analyst,” “JTAC,” or “fleet maintenance lead.”]\nDismount soldier/Marine/airman, TACP operator, SoF operator, coalition partner\nUser-Critical Problem\n[Translate strategic pain into the user's daily operational friction.]",
+      "problemStatement": "Team members without a radio so they have to use voice and hand signals to communicate.",
       "synopsisSections": {
         "problem": "Team members without a radio so they have to use voice and hand signals to communicate.",
         "solution": "The RAP (Radio Access Point) is a low-SWAP module that attaches to the RED side of tactical radio (117, 163, 167, 148, 152 etc.) and extends radio network 1300 feet in range so that operators can connect via their smartphone EUDs/ATAK. The MTR (Miniature Tactical Router) is a low-SWAP module that attaches on the BLK side of a tactical radio (117, 163, 167 etc) and provides a VPN connection to SATCOM (Iridium, BGAN, StarLink) terminal or LTE/5G cellular device for BLOS comms.",
@@ -488,8 +489,7 @@
         "competitiveLandscape": "The RAP is the only low-SWAP product on the NSA's CSfC Components List for Tactical Capability solutions",
         "primaryUser": "[Be specific — not “DoD,” but “intel analyst,” “JTAC,” or “fleet maintenance lead.”]\nDismount soldier/Marine/airman, TACP operator, SoF operator, coalition partner",
         "userCriticalProblem": "[Translate strategic pain into the user's daily operational friction.]"
-      },
-      "problemStatement": "Team members without a radio so they have to use voice and hand signals to communicate."
+      }
     },
     {
       "id": "cmknqigoi000os601qaisvqp6",
@@ -533,6 +533,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nDelivering software to the edge and updating it on demand while meeting ATO requirements is nearly impossible\n\nSolution\nUDS integrates apps into a secure/compliant platform. UDS Tactical Edge brings that platform to edge systems and makes it easy for non-technical warfighters to make software updates.\n\nField Validation\nUDS is in use in many DoD systems, including AF Defensive Cyber and Navy Project Blue. UDS Tactical Edge has been proven on multiple fighter platforms and C-17s.\n\nTRL\nUDS is TRL 8 - Fully integrated in a pre-production government system\nUDS Tactical Edge is TRL 7 - Prototype demonstrated in operational environment\n\nStrategic Advantage\nWhile core parts of UDS are open source to avoid vendor lock, our ability to use and implement UDS is the best in the world. We also employ maintainers of open-source projects that are crucial to DoD operations, such as Kubernetes.\n\nGo-to-Market Access\nGSA, SBIR, Tradewinds, Platform One Marketplace, and direct awards\n\nDual-Use Potential\nAny regulated market can benefit from UDS\n\nTeam\nMultiple from Air Force software factories, including Rob Slaughter and Jeff McCoy\nMaintainers for key open source products, including Kubernetes\n\nCompetitive Landscape\nOthers provide platforms to accelerate ATOs. No one else extends their platforms to edge environments.\n\nPrimary User\nFor edge systems, maintainers and operators can use UDS Tactical Edge mobile app to deploy software. Weapon system SPOs will maintain the authorized repo of software for deployment.\n\nUser-Critical Problem\nSoftware is the core of every weapon system and updating it quickly is key to our strategic advantage. Today updates take up to a year and millions of dollars. We make that cheap, fast, and repeatable without requiring technical expertise in the field.",
+      "problemStatement": "Delivering software to the edge and updating it on demand while meeting ATO requirements is nearly impossible",
       "synopsisSections": {
         "problem": "Delivering software to the edge and updating it on demand while meeting ATO requirements is nearly impossible",
         "solution": "UDS integrates apps into a secure/compliant platform. UDS Tactical Edge brings that platform to edge systems and makes it easy for non-technical warfighters to make software updates.",
@@ -545,8 +546,7 @@
         "competitiveLandscape": "Others provide platforms to accelerate ATOs. No one else extends their platforms to edge environments.",
         "primaryUser": "For edge systems, maintainers and operators can use UDS Tactical Edge mobile app to deploy software. Weapon system SPOs will maintain the authorized repo of software for deployment.",
         "userCriticalProblem": "Software is the core of every weapon system and updating it quickly is key to our strategic advantage. Today updates take up to a year and millions of dollars. We make that cheap, fast, and repeatable without requiring technical expertise in the field."
-      },
-      "problemStatement": "Delivering software to the edge and updating it on demand while meeting ATO requirements is nearly impossible"
+      }
     },
     {
       "id": "cmknqiimh001ts601jyn095ug",
@@ -568,6 +568,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nUnmanned operations are fragmented. Air, land, and maritime platform often requires its own ground control system (GCS), creating training burdens, poor interoperability, and mission delays. In contested or denied environments, fragile communications and non-resilient networks increase operational risk.\n\nSolution\nDesert Rotor provides a single, interoperable GCS for all unmanned assets with redundant mesh networking and integrated 5G/SATCOM for resilient beyond-line-of-sight control. Currently advancing full multi-domain operations (MDO) capability.\n\nField Validation\n550+ GCS deployed globally since 2020 with U.S. and allied defense and commercial operators. Proven in rugged environments with near‑zero downtime.\n\nTechnology Maturity\nTRL 9 - Operationally proven hardware/software in production and fielded worldwide. Next-gen hardware in final pre-production.\n\nStrategic Advantage\nProprietary cross‑platform HID/GCS stack independent of Windows/Linux/Android, patented integration workflows, unmatched interoperability, and 5+ years of deployment know‑how.\n\nGo‑to‑Market\nDirect DoD access (Army, Navy, DLA), contract vehicle companies, D2P2 SBIR awardee, expanding via SWMAC, client resellers\n\nDual‑Use\nEnergy, mining, environmental monitoring, disaster response, heavy‑lift, high‑altitude any robust unmanned control requirement.\n\nTeam\nDebin Ray (CEO), Aaron Frank (CFO), Joe Burch (Principal Engineer), James Roe (VP Defense), Marc Chesley (Software Advisor).\n\nCompetitive Landscape\nCompeting with Tomahawk Robotics, UxV Technologies, Parry Labs, Mobilicom. Desert Rotor offers true platform‑agnostic control and MDO‑ready integration others lack.\n\nPrimary User\nFrontline operators: ISR teams, C‑UAS crews, unmanned pilots. \n\nUser‑Critical Problem\nMultiple incompatible controllers and fragile comms slow missions, increase cognitive load, and limit operational flexibility",
+      "problemStatement": "Unmanned operations are fragmented. Air, land, and maritime platform often requires its own ground control system (GCS), creating training burdens, poor interoperability, and mission delays. In contested or denied environments, fragile communications and non-resilient networks increase operational risk.",
       "synopsisSections": {
         "problem": "Unmanned operations are fragmented. Air, land, and maritime platform often requires its own ground control system (GCS), creating training burdens, poor interoperability, and mission delays. In contested or denied environments, fragile communications and non-resilient networks increase operational risk.",
         "solution": "Desert Rotor provides a single, interoperable GCS for all unmanned assets with redundant mesh networking and integrated 5G/SATCOM for resilient beyond-line-of-sight control. Currently advancing full multi-domain operations (MDO) capability.",
@@ -577,8 +578,7 @@
         "team": "Debin Ray (CEO), Aaron Frank (CFO), Joe Burch (Principal Engineer), James Roe (VP Defense), Marc Chesley (Software Advisor).",
         "competitiveLandscape": "Competing with Tomahawk Robotics, UxV Technologies, Parry Labs, Mobilicom. Desert Rotor offers true platform‑agnostic control and MDO‑ready integration others lack.",
         "primaryUser": "Frontline operators: ISR teams, C‑UAS crews, unmanned pilots. \n\nUser‑Critical Problem\nMultiple incompatible controllers and fragile comms slow missions, increase cognitive load, and limit operational flexibility"
-      },
-      "problemStatement": "Unmanned operations are fragmented. Air, land, and maritime platform often requires its own ground control system (GCS), creating training burdens, poor interoperability, and mission delays. In contested or denied environments, fragile communications and non-resilient networks increase operational risk."
+      }
     },
     {
       "id": "cmknqikz20037s601si3id573",
@@ -688,6 +688,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nWarfighters and mission planners face friction aligning personnel and resources to mission needs. Across flight, cyber, and logistics units, manual scheduling degrades readiness, misallocates talent, burns out teams, and introduces operational risk.\n\nSolution\nBalance Scheduler is an AI platform that delivers optimized personnel and resource schedules in minutes—up to 90% faster than legacy tools. It automates workflows, adapts to mission constraints, and accounts for certifications and training, freeing skilled talent for higher-value work.\n\nField Validation\nUsed in U.S. civilian healthcare and SPACECOM/JCO; now adapting (SBIR Phase II) for Space Force. Prior SBIRs supported UAV and missileer planning.\n\nTRL\nTRL 7 — Commercially deployed with active defense prototyping.\n\nStrategic Advantage\nProprietary optimization engine for constraint-heavy ops. API-first, integration-ready, and adaptable—no data lock-in.\n\nGo-to-Market\nVia past SBIRS (1-3), direct contracting, OTA, consortia (DIBC, NSTXL, SpEC), and partnerships.\n\nDual-Use\nRelevant in healthcare, logistics, energy, and more—anywhere resource agility matters.\n\nTeam\nFormer USAF officers and technology ops experts with deep experience (gov and commercial) in AI, scheduling, and defense tech delivery. Includes PhD engineers, MIT-trained data scientists, and former leaders in federal health and cyber innovation.\n\nCompetitive Landscape\nPEX, Excel, and Puckboard lack adaptability. Duality offers scalable, flexible AI optimization built for defense operations.\n\nPrimary User\nFront-line schedulers and ops planners—plus CCs, readiness shops, and others needing visibility into personnel and asset availability.\n\nUser-Critical Problem\n“My LIFE is scheduling now. Every change costs time, morale, and mission readiness.”",
+      "problemStatement": "Warfighters and mission planners face friction aligning personnel and resources to mission needs. Across flight, cyber, and logistics units, manual scheduling degrades readiness, misallocates talent, burns out teams, and introduces operational risk.",
       "synopsisSections": {
         "problem": "Warfighters and mission planners face friction aligning personnel and resources to mission needs. Across flight, cyber, and logistics units, manual scheduling degrades readiness, misallocates talent, burns out teams, and introduces operational risk.",
         "solution": "Balance Scheduler is an AI platform that delivers optimized personnel and resource schedules in minutes—up to 90% faster than legacy tools. It automates workflows, adapts to mission constraints, and accounts for certifications and training, freeing skilled talent for higher-value work.",
@@ -700,8 +701,7 @@
         "competitiveLandscape": "PEX, Excel, and Puckboard lack adaptability. Duality offers scalable, flexible AI optimization built for defense operations.",
         "primaryUser": "Front-line schedulers and ops planners—plus CCs, readiness shops, and others needing visibility into personnel and asset availability.",
         "userCriticalProblem": "“My LIFE is scheduling now. Every change costs time, morale, and mission readiness.”"
-      },
-      "problemStatement": "Warfighters and mission planners face friction aligning personnel and resources to mission needs. Across flight, cyber, and logistics units, manual scheduling degrades readiness, misallocates talent, burns out teams, and introduces operational risk."
+      }
     },
     {
       "id": "cmknqii1u001hs6019pj0q3xv",
@@ -723,6 +723,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nUnits burn critical hours on mapping, monitoring OSINT feeds, conducting MDMP, and checking doctrine from SOPs - in the fight this will often need to be offline and in a contested, high OPTEMP environment.\n\nSolution\nWarmind is a hybrid cloud / air-gappable AI platform that unifies geospatial analysis, OSINT ingestion, S1 / S2 / S3 artifact generation including MDMP products, and COP export into one portable system.\n\nField Validation\nA prototype system has been tested with 19th SFG(A) in force on force exercises leading to a reported 400% acceleration in planning (orders, WARNO production and AAR synthesis). Multiple units that have ordered our system for purchase. Our unclassified open beta is also live now at beta.dunedainsystems.com with hundreds of monthly active users.\n\nTRL\nTRL 6 – Demonstrated prototype in real exercises and lab integration with TAK/COP tools.\n\nStrategic Advantage\nDeep doctrinal integration, modular unit and user-specific data retrieval, proprietary agent orchestration pipeline finetuned on Army data and built specifically for the Warfighter.\n\nGo-to-Market\nGPC-purchasable Warmind Laptops\n\nTeam\n-Mack Ohlinger, CEO: West Point ’15, LBS MBA ’22, ex-Army Captain\n-Matt Kane, CTO: West Point '15, Johns Hopkins MSE, former Signal Officer\n\nCompetitive Landscape\nUnlike Camo GPT, Warmind is fully air-gapped and offers end-to-end agent workflows plus a flexible retrieval database enabling persistent unit and user memory enabling superior knowledge management and workflow outputs.\n\nPrimary User\nS3 planners and S2 intel analysts who need rapid COP creation, rapid and accurate orders drafting and route planning in DDIL environments.\n\nUser-Critical Impact\nWarmind delivers a ready-to-use operational artifacts in minutes, replacing fragmented tools and laborious manual staff-work associated with COP generation, staff work and other MDMP tasks.",
+      "problemStatement": "Units burn critical hours on mapping, monitoring OSINT feeds, conducting MDMP, and checking doctrine from SOPs - in the fight this will often need to be offline and in a contested, high OPTEMP environment.",
       "synopsisSections": {
         "problem": "Units burn critical hours on mapping, monitoring OSINT feeds, conducting MDMP, and checking doctrine from SOPs - in the fight this will often need to be offline and in a contested, high OPTEMP environment.",
         "solution": "Warmind is a hybrid cloud / air-gappable AI platform that unifies geospatial analysis, OSINT ingestion, S1 / S2 / S3 artifact generation including MDMP products, and COP export into one portable system.",
@@ -733,8 +734,7 @@
         "team": "-Mack Ohlinger, CEO: West Point ’15, LBS MBA ’22, ex-Army Captain\n-Matt Kane, CTO: West Point '15, Johns Hopkins MSE, former Signal Officer",
         "competitiveLandscape": "Unlike Camo GPT, Warmind is fully air-gapped and offers end-to-end agent workflows plus a flexible retrieval database enabling persistent unit and user memory enabling superior knowledge management and workflow outputs.",
         "primaryUser": "S3 planners and S2 intel analysts who need rapid COP creation, rapid and accurate orders drafting and route planning in DDIL environments.\n\nUser-Critical Impact\nWarmind delivers a ready-to-use operational artifacts in minutes, replacing fragmented tools and laborious manual staff-work associated with COP generation, staff work and other MDMP tasks."
-      },
-      "problemStatement": "Units burn critical hours on mapping, monitoring OSINT feeds, conducting MDMP, and checking doctrine from SOPs - in the fight this will often need to be offline and in a contested, high OPTEMP environment."
+      }
     },
     {
       "id": "cmknqih920010s6011saxnyd8",
@@ -805,6 +805,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nDoD personnel rely on outdated systems like DTS and Space-A Flights under TRANSCOM’s Air Mobility Command. Modernization is essential to improve air logistics.\nSolution \nEvoLux offers an air charter marketplace and reservation system that distributes VTOL and fixed-wing aircraft availability in real & future time with an intuitive UI. We propose integrating into DTS and customizing our SaaS platform to enhance Space-A flight management. Additionally, we can offer our existing commercial platform through MWR programs, giving service members & families access to discounted flights\nField Validation\nNow on version 7, EvoLux has iterated since 2014. We launched SkyShare reservations with Rolls-Royce at five track events (2015–2018), scaling to 18 flights/day. We've since expanded to include fixed-wing operators & distribute empty legs. We're cash flow positive & preparing for Series A financing to scale B2C and launch our B2B SaaS\nTechnology Maturity\nOur platform is globally deployed, but currently only marketed in the U.S.\nStrategic Advantage\nWe've built the most comprehensive vtol & fixed-wing marketplace. While others replicate features, our platform remains unmatched\nGo-to-Market\nWe seek to meet w/ the Small Business Programs Office, AFWERX, and TRANSCOM's Defense Innovation Unit to demo, align with an RFP, or explore a direct contract\nDual-Use Potential\nDoD fleets benefit from the SaaS platform for logistics, while personnel use the commercial app off-duty\nTeam\nFounder/CEO Raymond Leavitt (Sikorsky winner), CIO Matt Lally, Josh Drabik (Marketing). Advisory Board: Scott Ashton, Shaan Bhanji, Dragos Dumitrascu\nCompetitors\nBlade, VistaJet, XOJet, JetSuiteX, WheelsUp. EvoLux is the only FAA-compliant social-reservation experience for all mission-specific aircraft",
+      "problemStatement": "DoD personnel rely on outdated systems like DTS and Space-A Flights under TRANSCOM’s Air Mobility Command. Modernization is essential to improve air logistics.",
       "synopsisSections": {
         "problem": "DoD personnel rely on outdated systems like DTS and Space-A Flights under TRANSCOM’s Air Mobility Command. Modernization is essential to improve air logistics.",
         "solution": "EvoLux offers an air charter marketplace and reservation system that distributes VTOL and fixed-wing aircraft availability in real & future time with an intuitive UI. We propose integrating into DTS and customizing our SaaS platform to enhance Space-A flight management. Additionally, we can offer our existing commercial platform through MWR programs, giving service members & families access to discounted flights",
@@ -814,8 +815,7 @@
         "goToMarketAccess": "We seek to meet w/ the Small Business Programs Office, AFWERX, and TRANSCOM's Defense Innovation Unit to demo, align with an RFP, or explore a direct contract",
         "dualUsePotential": "DoD fleets benefit from the SaaS platform for logistics, while personnel use the commercial app off-duty",
         "team": "Founder/CEO Raymond Leavitt (Sikorsky winner), CIO Matt Lally, Josh Drabik (Marketing). Advisory Board: Scott Ashton, Shaan Bhanji, Dragos Dumitrascu\nCompetitors\nBlade, VistaJet, XOJet, JetSuiteX, WheelsUp. EvoLux is the only FAA-compliant social-reservation experience for all mission-specific aircraft"
-      },
-      "problemStatement": "DoD personnel rely on outdated systems like DTS and Space-A Flights under TRANSCOM’s Air Mobility Command. Modernization is essential to improve air logistics."
+      }
     },
     {
       "id": "cmknqij6u0025s601l38bio5u",
@@ -837,6 +837,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nCritical assets across the military degrade silently from corrosion, fatigue, and thermal stress—causing unplanned failures, safety risks, and billions in maintenance costs due to a lack of real-time structural visibility.\n\nSolution\nFibrX provides real-time structural health monitoring using fiber optics and AI to detect corrosion, strain, and thermal anomalies before failure occurs.\n\nField Validation\nPre-field\n\nTechnology Maturity (TRL)\nCurrently at TRL 4 — validated in a lab environment with a full system prototype, and integration into relevant platforms scheduled for Q1 2026 field testing.\n\nStrategic Advantage\nPartially exclusive U.S. Navy license\n\nGo-to-Market Access\nEngaged through SBIR (NASA, AFWERX), FedTech, NAVSEA, and direct with defense primes and agencies via CRADA and pilot programs.\n\nDual-Use Potential\nHigh-impact in energy (offshore wind, nuclear), aerospace (MRO), semiconductors (cleanroom monitoring), EVs, and infrastructure (bridges, water systems). Total addressable market exceeds $3.9 trillion, including $2.5T in global corrosion costs alone (NACE).\n\nTeam\nFibrX is led by Kamel Greene, a former DOE national security contractor and deep tech founder, alongside Michael Cupples, a 30-year Raytheon veteran in 6DOF simulations and aerospace systems. The team includes talent from NASA, SAIC, MPOs, and top academic labs, with deep expertise in sensing, AI, and government infrastructure.\n\nCompetitive Landscape\nLuna Innovations offers expensive, bulky systems; startups focus on niche sensor types. FibrX delivers a lightweight, low-SWaP, cloud-ready solution with multi-domain deployment flexibility.\n\nPrimary User\nFleet maintenance leads, aerospace MRO teams, and sustainment commanders overseeing high-value, high-risk platforms.\n\nUser-Critical Problem\nThey can’t see structural failures coming—leading to mission delays, asset loss, and safety risks.",
+      "problemStatement": "Critical assets across the military degrade silently from corrosion, fatigue, and thermal stress—causing unplanned failures, safety risks, and billions in maintenance costs due to a lack of real-time structural visibility.",
       "synopsisSections": {
         "problem": "Critical assets across the military degrade silently from corrosion, fatigue, and thermal stress—causing unplanned failures, safety risks, and billions in maintenance costs due to a lack of real-time structural visibility.",
         "solution": "FibrX provides real-time structural health monitoring using fiber optics and AI to detect corrosion, strain, and thermal anomalies before failure occurs.",
@@ -849,8 +850,7 @@
         "competitiveLandscape": "Luna Innovations offers expensive, bulky systems; startups focus on niche sensor types. FibrX delivers a lightweight, low-SWaP, cloud-ready solution with multi-domain deployment flexibility.",
         "primaryUser": "Fleet maintenance leads, aerospace MRO teams, and sustainment commanders overseeing high-value, high-risk platforms.",
         "userCriticalProblem": "They can’t see structural failures coming—leading to mission delays, asset loss, and safety risks."
-      },
-      "problemStatement": "Critical assets across the military degrade silently from corrosion, fatigue, and thermal stress—causing unplanned failures, safety risks, and billions in maintenance costs due to a lack of real-time structural visibility."
+      }
     },
     {
       "id": "cmknqih3z000xs601yko35l2g",
@@ -872,6 +872,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nWe are tackling the escalating threat of AI-powered cyberattacks, including phishing, business email compromise (BEC), social engineering scams, and zero-day vulnerabilities. These attack methods, often deployed by sophisticated state-backed actors, are designed to breach and disrupt mission-critical operations in both public and private sector systems. Legacy cybersecurity tools are increasingly ineffective against these evolving threats, putting sensitive data, operations, and financial assets at high risk.\n\nSolution\nOur platform leverages advanced artificial intelligence and machine learning algorithms to detect, flag, and mitigate threats across communication channels in real time. \n\nField Validation\nOur technology is currently live and being deployed across the United States, with ongoing tests in collaboration with several small and mid-sized enterprises (SMEs).\n\nTechnology Maturity\nWe are in live deployment. Organizations can access the enterprise-grade version at https://www.getflagged.net\n\nStrategic Advantage\n-Exclusive access to data\n-In-house AI/ML expertise\n-First-mover in AI-native cyber threat\nGo-to-Market Access\nPartnerships\nDual-Use Potential\nOur solution has broad applications in finance, energy, logistics, technology, and defense sectors. With $55.5B lost to cybercrime in the U.S. alone in 2024, the urgency is clear.\n\nTeam\nLed by  Professor Kanayo Ogwu (CEO) and Professor Mohsen Moslehpour (CTO), the team brings experience from Meta, Cruise, Yahoo, AOL, and academia, supported by cybersecurity engineers and data scientists.\n\nUsers\nPrimary users include CISOs, CIOs, ITPSOs, and cyber command centers  facing real-time cyber risk.",
+      "problemStatement": "We are tackling the escalating threat of AI-powered cyberattacks, including phishing, business email compromise (BEC), social engineering scams, and zero-day vulnerabilities. These attack methods, often deployed by sophisticated state-backed actors, are designed to breach and disrupt mission-critical operations in both public and private sector systems. Legacy cybersecurity tools are increasingly ineffective against these evolving threats, putting sensitive data, operations, and financial assets at high risk.",
       "synopsisSections": {
         "problem": "We are tackling the escalating threat of AI-powered cyberattacks, including phishing, business email compromise (BEC), social engineering scams, and zero-day vulnerabilities. These attack methods, often deployed by sophisticated state-backed actors, are designed to breach and disrupt mission-critical operations in both public and private sector systems. Legacy cybersecurity tools are increasingly ineffective against these evolving threats, putting sensitive data, operations, and financial assets at high risk.",
         "solution": "Our platform leverages advanced artificial intelligence and machine learning algorithms to detect, flag, and mitigate threats across communication channels in real time.",
@@ -881,8 +882,7 @@
         "goToMarketAccess": "Partnerships",
         "dualUsePotential": "Our solution has broad applications in finance, energy, logistics, technology, and defense sectors. With $55.5B lost to cybercrime in the U.S. alone in 2024, the urgency is clear.",
         "team": "Led by  Professor Kanayo Ogwu (CEO) and Professor Mohsen Moslehpour (CTO), the team brings experience from Meta, Cruise, Yahoo, AOL, and academia, supported by cybersecurity engineers and data scientists.\n\nUsers\nPrimary users include CISOs, CIOs, ITPSOs, and cyber command centers  facing real-time cyber risk."
-      },
-      "problemStatement": "We are tackling the escalating threat of AI-powered cyberattacks, including phishing, business email compromise (BEC), social engineering scams, and zero-day vulnerabilities. These attack methods, often deployed by sophisticated state-backed actors, are designed to breach and disrupt mission-critical operations in both public and private sector systems. Legacy cybersecurity tools are increasingly ineffective against these evolving threats, putting sensitive data, operations, and financial assets at high risk."
+      }
     },
     {
       "id": "cmknqijnp002fs601vf8drml2",
@@ -904,6 +904,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nToday's logisticians suffer from fragmented logistics common operating pictures, inaccurate demand forecasting, and highly manual sustainment planning, hobbling our ability to make decisions at the speed of relevance to large scale combat.\n\nSolution\nNavigator is an AI decision platform that includes an intuitive logistics common operating picture, a demand forecasting module and a resupply course of action generation engine.\n\nField Validation\nFielding across Army units in 2025.\n\nTechnology Maturity (TRL)\nTRL 6 forecasting achieving TRL 7 by the end of 2025 after several field training exercises.\n\nStrategic Advantage\nOur technology is designed to continuously improve with use, creating network effects. Our team includes several experienced defense tech leaders. We maintain a network of retired military logisticians who inform every aspect of development.\n\nGo-to-Market Access\nCurrently have a SBIR and corporate partnerships with several primes\n\nDual-Use Potential\nWe made our first commercial sale for logistics decision support in emergency response.\n\nTeam\nCo-Founder/CEO - Formerly Scale AI federal  leader and Palantir engineer.\nCo-Founder/CTO - Pioneer of drone delivery, including standing up Amazon Prime Air.\nCo-Founder/CPO - Founded a dual-use logistics tech company that exited via acquisition\n\nCompetitive Landscape\nWithin the Army, many units have seen many solutions and assess Gallatin as the strongest.\n\nPrimary User\nLogistics cells of tactical through theater HQs (S4, G4, A4, J4) and planners within logistics units (AF LRS', Army TSC's, etc.). We have two distinct product areas, segmented  by tactical logistics and theater logistics.\n\nUser-Critical Problem\nToday’s logistics workflows will not scale to meet the demands of near-peer conflict.",
+      "problemStatement": "Today's logisticians suffer from fragmented logistics common operating pictures, inaccurate demand forecasting, and highly manual sustainment planning, hobbling our ability to make decisions at the speed of relevance to large scale combat.",
       "synopsisSections": {
         "problem": "Today's logisticians suffer from fragmented logistics common operating pictures, inaccurate demand forecasting, and highly manual sustainment planning, hobbling our ability to make decisions at the speed of relevance to large scale combat.",
         "solution": "Navigator is an AI decision platform that includes an intuitive logistics common operating picture, a demand forecasting module and a resupply course of action generation engine.",
@@ -916,8 +917,7 @@
         "competitiveLandscape": "Within the Army, many units have seen many solutions and assess Gallatin as the strongest.",
         "primaryUser": "Logistics cells of tactical through theater HQs (S4, G4, A4, J4) and planners within logistics units (AF LRS', Army TSC's, etc.). We have two distinct product areas, segmented  by tactical logistics and theater logistics.",
         "userCriticalProblem": "Today’s logistics workflows will not scale to meet the demands of near-peer conflict."
-      },
-      "problemStatement": "Today's logisticians suffer from fragmented logistics common operating pictures, inaccurate demand forecasting, and highly manual sustainment planning, hobbling our ability to make decisions at the speed of relevance to large scale combat."
+      }
     },
     {
       "id": "cmknqii8l001ls601a45aqxsi",
@@ -939,6 +939,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nCurrent IP-based protocol TCP fails to meet the performance, latency, and reliability needs of modern mission-critical, distributed applications in wide-area networks (WANs). As AI, autonomous systems, and machine-to-machine operations scale, the inability to transfer large data volumes quickly and reliably across contested WANs creates strategic blind spots and operational risk.\nSolution\na software-based, network-agnostic data transport solution with 10x throughput,10% latency of TCP/IP over existing WANs. Built for DDIL environments, it also supports enhanced security, LPD/LPI, and EMS signature management when integrated with network planning.\nField Validation\nBeing validated through lab emulation and real-world testing with government agencies, defense primes, and over 10 PoC with commercial partners. Actively engaged in four DoD SBIRs. Finalists in Army xTechSearch & ONR GlobalX. \nTechnology Maturity\nTRL 6.\nStrategic Advantage\nWith over 90 years of combined experience, Genesis Codes owns proprietary algorithms for compression, fragmentation, and error correction. The open, modular architecture enables seamless integration. Our deep IP portfolio and trade secrets create high barriers to entry.\nGo-to-Market\nOur GTM strategy centers on partnerships, gov via SBIRs, Tier-1 defense primes, and commercial PoCs across various industries.\nDual-Use Potential\nBeyond defense, commercial usage in energy, autonomy, edge-cloud, AI, finance, and satellite comm.\nTeam\nEngineers and scientists from academia and top F500 firms, with technology, engineering, business, and entrepreneurship.\nCompetitive Landscape\nCisco, IBM, AWS offer partial solutions focused on normal networks. We stand apart with unique strength in DDIL.\nPrimary User: \nMilitary C5ISR",
+      "problemStatement": "Current IP-based protocol TCP fails to meet the performance, latency, and reliability needs of modern mission-critical, distributed applications in wide-area networks (WANs). As AI, autonomous systems, and machine-to-machine operations scale, the inability to transfer large data volumes quickly and reliably across contested WANs creates strategic blind spots and operational risk.",
       "synopsisSections": {
         "problem": "Current IP-based protocol TCP fails to meet the performance, latency, and reliability needs of modern mission-critical, distributed applications in wide-area networks (WANs). As AI, autonomous systems, and machine-to-machine operations scale, the inability to transfer large data volumes quickly and reliably across contested WANs creates strategic blind spots and operational risk.",
         "solution": "a software-based, network-agnostic data transport solution with 10x throughput,10% latency of TCP/IP over existing WANs. Built for DDIL environments, it also supports enhanced security, LPD/LPI, and EMS signature management when integrated with network planning.",
@@ -949,8 +950,7 @@
         "dualUsePotential": "Beyond defense, commercial usage in energy, autonomy, edge-cloud, AI, finance, and satellite comm.",
         "team": "Engineers and scientists from academia and top F500 firms, with technology, engineering, business, and entrepreneurship.",
         "competitiveLandscape": "Cisco, IBM, AWS offer partial solutions focused on normal networks. We stand apart with unique strength in DDIL.\nPrimary User: \nMilitary C5ISR"
-      },
-      "problemStatement": "Current IP-based protocol TCP fails to meet the performance, latency, and reliability needs of modern mission-critical, distributed applications in wide-area networks (WANs). As AI, autonomous systems, and machine-to-machine operations scale, the inability to transfer large data volumes quickly and reliably across contested WANs creates strategic blind spots and operational risk."
+      }
     },
     {
       "id": "cmknqiikt001ss601snjlozct",
@@ -972,6 +972,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nArmy, Air Force and Navy network don't talk to each other. \n\n“Each of the services has systems to maintain situational awareness. Getting them to integrate and talk together, how the procedures [and] policies that different services use, when to display what, was really the problem.” -- Gen. John Murray (Commanding General, Army Futures Command)\n\nSolution\nAdvanced Collaboration Enterprise Services (ACES) is an SBIR technology that provides an \"I see what you see\" experience that allows for many-to-many collaboration over disparate networks.  \n\nField Validation\n- Deployed to TS/SCI facility (NRO NROC)\n- Completed 2xMUAs and JCTD \n\nDuring the AWACS MUA, the Air Force documented that ACES reduced the time it took for ABMs to perform collaborative tasks by 20%. \n\nTechnology Maturity (TRL)\nTRL 9. Can be deployed to INDOPACOM immediately. \n\nStrategic Advantage\nAttempts to reverse engineer ACES over the last 10 years have failed. Not many companies are involved in multi-domain collaborations.\n\nGo-to-Market Access\nWe've leveraged the AFWERX and SBIR Phase III contracts. Currently, on a 5-year/50 million SBIR Phase III contract with the IRS.\n \nDual-Use Potential\nACES is a good fit for any firms that requires many-to-many collaboration, distributed operations and distributed training.  \nTeam\nChief Engineer Klee Dienes: \n- MIT Software Engineer\n- developed the prototype for the iPHONE\n- MEDVAC Pilot and Cyber Officer \n\nCompetitive Landscape\nTEG and Creston do something similar, but are years behind ACES.\n \nPrimary User\nThe capabilities were developed via the SBIR program to connect the AOC/CRC with ABMs in the AWACS.  \n\nUser-Critical Problem\nThere is a lot of friction during collaboration between different networks. ACES reduces this friction by 20%. (See the ACES MUA)",
+      "problemStatement": "Army, Air Force and Navy network don't talk to each other. \n\n“Each of the services has systems to maintain situational awareness. Getting them to integrate and talk together, how the procedures [and] policies that different services use, when to display what, was really the problem.” -- Gen. John Murray (Commanding General, Army Futures Command)",
       "synopsisSections": {
         "problem": "Army, Air Force and Navy network don't talk to each other. \n\n“Each of the services has systems to maintain situational awareness. Getting them to integrate and talk together, how the procedures [and] policies that different services use, when to display what, was really the problem.” -- Gen. John Murray (Commanding General, Army Futures Command)",
         "solution": "Advanced Collaboration Enterprise Services (ACES) is an SBIR technology that provides an \"I see what you see\" experience that allows for many-to-many collaboration over disparate networks.",
@@ -984,8 +985,7 @@
         "competitiveLandscape": "TEG and Creston do something similar, but are years behind ACES.",
         "primaryUser": "The capabilities were developed via the SBIR program to connect the AOC/CRC with ABMs in the AWACS.",
         "userCriticalProblem": "There is a lot of friction during collaboration between different networks. ACES reduces this friction by 20%. (See the ACES MUA)"
-      },
-      "problemStatement": "Army, Air Force and Navy network don't talk to each other. \n\n“Each of the services has systems to maintain situational awareness. Getting them to integrate and talk together, how the procedures [and] policies that different services use, when to display what, was really the problem.” -- Gen. John Murray (Commanding General, Army Futures Command)"
+      }
     },
     {
       "id": "cmknqiio5001us601axqyn4vc",
@@ -1007,6 +1007,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nExpeditionary Energy, particularly 15-60KW AMMPS generators in a contested logistics environment such as INDOPACOM can suffer from environmental induced failures, parts shortages, and fuel resupply disruptions.  Without continuous commercial grade power, modern military missions and the personnel that execute them are put in jeopardy.\n\nSolution\nWith hot plug-and-play capability, we can seamlessly insert our high powered microgrid with an optimized dual-axis solar array between existing AMMPS generators and their loads to minimize run time and fuel consumption while also sustaining power during unplanned fuel shortages.\n\nField Validation\nPrototype field tested at Tyndall AFB AFCEC (9700 Site).\n\nTechnology Maturity (TRL)\nTRL = 7 (Tyndall AFCEC field prototype demonstration).\n\nStrategic Advantage\n2x U.S. Patents Issued and 1x Pending; Trade Secrets; Integration depth.\n\nGo-to-Market Access\n2024 NSIN Expeditionary Energy Challenge Finalist (Sponsor = 15th SPSS).\n\nDual-Use Potential\nAgrivoltaics (solar and and agriculture/livestock) – \n$200K – DOE Phase I SBIR\n$1.15M – DOE Phase II SBIR\n$1.08M - USDA sponsored 122KWp World’s 1st In-pen Cattle Agrivoltaics at a Kansas Feedlot\n\nTeam\nJames McKinion (CEO/Founder) - Startups (Netspeed, CacheIQ), Tracor - Flight Test Engineer MQM-107E Drone. Fortune 500 - Cisco Systems, NetApp, Keysight.\n\nZach Hudnall - Design Engineer\n\nCompetitive Landscape\nBoxPower, Southern Beams Builds, Sesame Solar, Beam Global – do not have a foldable, transportable dual-axis array or microgrid architecture that can allow “man-in-the-middle” insertion between generators and loads. \n\nPrimary User\nElectrical Power Production Specialist.\n\nUser-Critical Problem\nNo power = no comms, no edge compute, no environmental conveniences.",
+      "problemStatement": "Expeditionary Energy, particularly 15-60KW AMMPS generators in a contested logistics environment such as INDOPACOM can suffer from environmental induced failures, parts shortages, and fuel resupply disruptions.  Without continuous commercial grade power, modern military missions and the personnel that execute them are put in jeopardy.",
       "synopsisSections": {
         "problem": "Expeditionary Energy, particularly 15-60KW AMMPS generators in a contested logistics environment such as INDOPACOM can suffer from environmental induced failures, parts shortages, and fuel resupply disruptions.  Without continuous commercial grade power, modern military missions and the personnel that execute them are put in jeopardy.",
         "solution": "With hot plug-and-play capability, we can seamlessly insert our high powered microgrid with an optimized dual-axis solar array between existing AMMPS generators and their loads to minimize run time and fuel consumption while also sustaining power during unplanned fuel shortages.",
@@ -1019,8 +1020,7 @@
         "competitiveLandscape": "BoxPower, Southern Beams Builds, Sesame Solar, Beam Global – do not have a foldable, transportable dual-axis array or microgrid architecture that can allow “man-in-the-middle” insertion between generators and loads.",
         "primaryUser": "Electrical Power Production Specialist.",
         "userCriticalProblem": "No power = no comms, no edge compute, no environmental conveniences."
-      },
-      "problemStatement": "Expeditionary Energy, particularly 15-60KW AMMPS generators in a contested logistics environment such as INDOPACOM can suffer from environmental induced failures, parts shortages, and fuel resupply disruptions.  Without continuous commercial grade power, modern military missions and the personnel that execute them are put in jeopardy."
+      }
     },
     {
       "id": "cmknqiiuv001ys601p9y1mt3e",
@@ -1108,6 +1108,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nIncreasing the capabilities of vehicles (satellites, hypersonics, UAVS, missile systems) by reducing the pressurized fuel storage weight, while providing more usable fuel storage space in the same footprint (or reducing the tank size).\nSolution\nInfinite Composites pressure vessels eliminate the metallic or plastic liner in composites overwrapped pressure vessels.\nField Validation\nCustomers under NDA. Tanks have been delivered for launch vehicles, lunar landers, torpedoes, satellites, & UAVs. Flight heritage in the categories of satellites, hypersonic aircraft, & hydrogen aircraft.\nTechnology Maturity\nTRL 9- hypersonic flight, space flight propulsion\nTRL 7 - comfortable tanks\nTRL 6- cryogenic storage systems\nStrategic Advantage\n1 or 3 US companies that make this type of vessel. It's patented. Critical parts, such as specific material formulations, are confidential. \nGo-to-Market Access\nContracts with tier 1, or below prime contractors. Been awarded & completed SBIRs with the Army, NASA, & NSF. Been awarded by AFWERX & received signed MOUs from various labs & airwings.\nDual-Use Potential\nTechnology started in commercial natural gas vehicles & ground fueling storage. We've contracted with Formula1, BAJA racing, & Disney.\nTeam\nMatt Villarreal & Michael Tate co-founded the company & have run it for 15 years. Jared Cuneo, Principal Engineer, former Chief of Structures at Firefly Space, & worked at Virgin Galactic. The team is heavy (50%) engineering.\nTwo direct competitors & numerous indirect competitors. Legacy indirect competitors include Northup Grumman & Raytheon.\nPrimary User\nDevCom, Air Mobility Command, 375th AMW, 27 SOMXO, AFSOC, NasPax\nUser-Critical Problem\nMissiles fly further/faster, UAVs fly longer & carry more payload, satellites stay in orbit longer.",
+      "problemStatement": "Increasing the capabilities of vehicles (satellites, hypersonics, UAVS, missile systems) by reducing the pressurized fuel storage weight, while providing more usable fuel storage space in the same footprint (or reducing the tank size).",
       "synopsisSections": {
         "problem": "Increasing the capabilities of vehicles (satellites, hypersonics, UAVS, missile systems) by reducing the pressurized fuel storage weight, while providing more usable fuel storage space in the same footprint (or reducing the tank size).",
         "solution": "Infinite Composites pressure vessels eliminate the metallic or plastic liner in composites overwrapped pressure vessels.",
@@ -1119,8 +1120,7 @@
         "team": "Matt Villarreal & Michael Tate co-founded the company & have run it for 15 years. Jared Cuneo, Principal Engineer, former Chief of Structures at Firefly Space, & worked at Virgin Galactic. The team is heavy (50%) engineering.\nTwo direct competitors & numerous indirect competitors. Legacy indirect competitors include Northup Grumman & Raytheon.",
         "primaryUser": "DevCom, Air Mobility Command, 375th AMW, 27 SOMXO, AFSOC, NasPax",
         "userCriticalProblem": "Missiles fly further/faster, UAVs fly longer & carry more payload, satellites stay in orbit longer."
-      },
-      "problemStatement": "Increasing the capabilities of vehicles (satellites, hypersonics, UAVS, missile systems) by reducing the pressurized fuel storage weight, while providing more usable fuel storage space in the same footprint (or reducing the tank size)."
+      }
     },
     {
       "id": "cmknqifnb0002s6010awbu35j",
@@ -1142,6 +1142,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nThe Software Development Life Cycle (SDLC) is highly manual, resulting in inefficiencies, high costs, and long delivery times. This inefficiency leads to $2.6T in expenses tied to unfulfilled stakeholder needs, quality issues, and incomplete software (SW) projects.\nSolution\nOur platform automates the SDLC, covering discovery, design, code generation, quality assurance, and deployment by dynamically generating outcomes that typically require manual effort from SDLC pros.\nField Validation\nOur product is launching on 8/4/25, targeting nearly 1,000 SDLC professionals on our waiting list across many industries.\nTRL\nTRL is ~3. We are set to begin our first Phase I SBIR with the DoD CDAO to support their Gen AI initiatives to enhance the SW development (dev) processes.\nStrategic Advantage\n•\tUnique SDLC data allowing users to produce superior SDLC content\n•\tIntegration of SDLC tools producing dynamically generated content in them\n•\tAutomation of all SDLC activities.\nGTM\nWe will soon commence our first Phase I SBIR with the DoD CDAO, marking our entry into defense and informing our future strategies.\nDual-Use Potential\nOur primary focus is on commercial sector technology firms engaged in custom SW dev.\nTeam\n•\tNoel Wilson, CEO & Founder: 28 years in SW dev and GTM\n•\tRyan Riley, Strategic Advisor for Defense: Retired Air Force Lt. Colonel\n•\tThe Team: 100+ years in SW dev\nCompetitive Landscape\nInteligenic operates in a competitive SDLC automation market, including large and small players such as OpenAI, Microsoft, and Cursor.\nPrimary User\nSW engineers working in units such as the Army Software Factory and Air Force Software Engineering Groups.\nUser Critical Problem\nUsers face excessive time and effort in SW creation, often lacking the necessary expertise to complete tasks effectively.",
+      "problemStatement": "The Software Development Life Cycle (SDLC) is highly manual, resulting in inefficiencies, high costs, and long delivery times. This inefficiency leads to $2.6T in expenses tied to unfulfilled stakeholder needs, quality issues, and incomplete software (SW) projects.",
       "synopsisSections": {
         "problem": "The Software Development Life Cycle (SDLC) is highly manual, resulting in inefficiencies, high costs, and long delivery times. This inefficiency leads to $2.6T in expenses tied to unfulfilled stakeholder needs, quality issues, and incomplete software (SW) projects.",
         "solution": "Our platform automates the SDLC, covering discovery, design, code generation, quality assurance, and deployment by dynamically generating outcomes that typically require manual effort from SDLC pros.",
@@ -1153,8 +1154,7 @@
         "competitiveLandscape": "Inteligenic operates in a competitive SDLC automation market, including large and small players such as OpenAI, Microsoft, and Cursor.",
         "primaryUser": "SW engineers working in units such as the Army Software Factory and Air Force Software Engineering Groups.",
         "userCriticalProblem": "Users face excessive time and effort in SW creation, often lacking the necessary expertise to complete tasks effectively."
-      },
-      "problemStatement": "The Software Development Life Cycle (SDLC) is highly manual, resulting in inefficiencies, high costs, and long delivery times. This inefficiency leads to $2.6T in expenses tied to unfulfilled stakeholder needs, quality issues, and incomplete software (SW) projects."
+      }
     },
     {
       "id": "cmknqiki0002xs601vixb6ulu",
@@ -1176,6 +1176,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nSocial Engineering still accounts for 98% of all cyber attacks, AI makes these attacks more effective.\n\nSolution\nOur solution uses detection models to stop or flag social engineering attempts, and our models work with email, sms, or voice personas. Our offensive models can hold conversations, continue to pry for information or deliver a payload, and can communicate with other personas to share information to adapt.\n\nField Validation\nWe are working with the Air Force Academy to validate multi-lingual models, and mission partners in the DoD.\n\nTechnology Maturity (TRL)\nTRL 6 - We are commercially available today, with a prototype on DoD networks.\n\nStrategic Advantage\nOur models continuously improve through red-team vs blue-team simulation loops, and the only platform that using darkweb data to utilize the same data that malicious actors use.\n\nGo-to-Market Access\nWe currently are finishing up a Phase 2 STTR and TACFI with AFWERX.\n\nDual-Use Potential\nJericho provides defensive models and training to customers in the financial, health, and insurance sectors.\n\nTeam\nCEO: Sage Wohns - Former CEO of Agolo\nCTO: Dan Chyan - CSSP, seasoned CTO\nPM: Keith Perez - Former CIO at Naval Health Clinic Charleston\nFed Tech Lead: Tony Giaimo - Former Cyber Warfare Officer (17S)\n\nCompetitive Landscape\nMicrosoft and proof-point provide some level of email security, but they don't cover sms, voice, and deepfake attack avenues.\n\nPrimary User\nDefense models used by comm squadron technicians at base comms and air operations centers.\nOffensive models used by initial access cyber mission teams and information warfare officers\n\nUser-Critical Problem\nCMT operators don't have the resources to carry out successful multi-channel campaigns, especially not in adversaries native languages.",
+      "problemStatement": "Social Engineering still accounts for 98% of all cyber attacks, AI makes these attacks more effective.",
       "synopsisSections": {
         "problem": "Social Engineering still accounts for 98% of all cyber attacks, AI makes these attacks more effective.",
         "solution": "Our solution uses detection models to stop or flag social engineering attempts, and our models work with email, sms, or voice personas. Our offensive models can hold conversations, continue to pry for information or deliver a payload, and can communicate with other personas to share information to adapt.",
@@ -1188,8 +1189,7 @@
         "competitiveLandscape": "Microsoft and proof-point provide some level of email security, but they don't cover sms, voice, and deepfake attack avenues.",
         "primaryUser": "Defense models used by comm squadron technicians at base comms and air operations centers.\nOffensive models used by initial access cyber mission teams and information warfare officers",
         "userCriticalProblem": "CMT operators don't have the resources to carry out successful multi-channel campaigns, especially not in adversaries native languages."
-      },
-      "problemStatement": "Social Engineering still accounts for 98% of all cyber attacks, AI makes these attacks more effective."
+      }
     },
     {
       "id": "cmknqii58001js601vxwdj17a",
@@ -1211,6 +1211,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nsUAS are a lethal tactical problem that are also strategic defeat threat. Warfighters, assets and infrastructure are vulnerable to asymmetric attack & lack the capability to defend themselves\n\nSolution\nKinetic, hard-kill point defense for individuals, vehicles & assets to defend from sUAS and FPVs\n\nField Validation\nTested by 3/75 Ranger BN 1JUL, testing with USAFE 8OCT. \n\nTRL\nTRL 6. Tested in a relevant environment, subsystems and total system.\n\nStrategic Advantage\nBuild and integrate hardware, software, and munitions systems, tailor them better than competitors only working one piece of the puzzle. 2 patents plus 1 pending.\n\nGo-to-Market Access\nCustomers & end-users with identified pain point. Demonstrations (USAFE, AFSOC), CRADA development (DEVCOM, RAID), exercises (Cobra Gold 26), SBIR D2P2 submitted, submissions for AAL CLPS RFP. \n\nDual-Use Potential\nInfrastructure, energy, and large gatherings vulnerable to UAS and aware of their vulnerability. \n\nTeam\nDane Pigott - CEO - Army Reserve CPT, 3rd time founder, provided fires for JSOC, CJSOTF\nWestin Pigott - CTO - Built and ran engineering teams from 2-100, built software systems with >$1bil ARR, 3rd time founder, MIS Purdue University\nMike Chase - COO - Multi-exit founder and operations builder. Developed SOF cWMD technologies. Built multiple teams to 9 figure exits\nMike Blout - Head of Business Development - Retired AF Combat Controller. Special Warfare Prep Course Superintendent, AF Dive School Superintendent, business development experience across SOF and conventional\n\nCompetitive Landscape\nACS, Zeromark, Anduril. We protect everything & everyone they don't\n\nPrimary User\nSec For, Raven, SOF, infantry\n\nUser-Critical Problem\nFailure to defend against sUAS will result in mission failure and death",
+      "problemStatement": "sUAS are a lethal tactical problem that are also strategic defeat threat. Warfighters, assets and infrastructure are vulnerable to asymmetric attack & lack the capability to defend themselves",
       "synopsisSections": {
         "problem": "sUAS are a lethal tactical problem that are also strategic defeat threat. Warfighters, assets and infrastructure are vulnerable to asymmetric attack & lack the capability to defend themselves",
         "solution": "Kinetic, hard-kill point defense for individuals, vehicles & assets to defend from sUAS and FPVs",
@@ -1223,8 +1224,7 @@
         "competitiveLandscape": "ACS, Zeromark, Anduril. We protect everything & everyone they don't",
         "primaryUser": "Sec For, Raven, SOF, infantry",
         "userCriticalProblem": "Failure to defend against sUAS will result in mission failure and deathw"
-      },
-      "problemStatement": "sUAS are a lethal tactical problem that are also strategic defeat threat. Warfighters, assets and infrastructure are vulnerable to asymmetric attack & lack the capability to defend themselves"
+      }
     },
     {
       "id": "cmknqifqo0004s601gt6h3oky",
@@ -1312,6 +1312,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\n\nAttrition of distance.  Transporting missions specific payloads and cargo long distances over oceans is a massive challenge, especially if needed to be done fast.    \n\nSolution\n\nWe are building remote operated semi-autonomous Ground Effect Vehicles (GEVs) to provide long range high-speed transport of equipment and cargo across oceans while being able to takeoff and land on the water.  \n\nField Validation\n\nPre-field \n\nTechnology Maturity (TRL)\n\nTRL 4 - Building our first flying prototype \n\nStrategic Advantage\n\nWe are building large size, complex to design, flying machines used in a marine environment.  Everything about what we are doing is hard and expensive.  Us being one of the first players in this space will give us a massive head start in the long run.  \n\nGo-to-Market Access\n\nSBIR/STTRs to start followed by pursuing DIU and direct contracts with Navy, Marines, and SOCOM.  \n\nDual-Use Potential\n[Where does this extend commercially? Highlight urgent markets: energy, logistics, AI safety, etc.]\n\nInterisland cargo transport and carrying inspection drones to offshore installations like wind turbines and oil & gas.  Larger versions long term can do transoceanic heavy cargo transport.\n\nTeam\n\nRiley Knox (CEO) - Mechanical Engineer, 2nd time founder\nScott Rewerts (CTO) - Aerospace Engineer, Head of Aerodynamics at Honda Jet, Head of Aerodynamics at Eclipse Aviation, Head of Flight Sciences at Radia (https://radia.com/)\n\nCompetitive Landscape\n\nRegent & Poseidon Aerospace\n \nPrimary User\n\nNavy, Marines, and SOCOM using our GEVs for ISR, ASW, E Warfare, Tactical Resupply, & CUAS.  \n\nUser-Critical Problem\n\nCommanders can send GEVs to patrol dangerous remote areas areas with no risk to pilots.    Special Forces in need of resupply will be able to have 1000lbs of equipment delivered to remote islands at aircraft speeds.",
+      "problemStatement": "Attrition of distance.  Transporting missions specific payloads and cargo long distances over oceans is a massive challenge, especially if needed to be done fast.",
       "synopsisSections": {
         "problem": "Attrition of distance.  Transporting missions specific payloads and cargo long distances over oceans is a massive challenge, especially if needed to be done fast.",
         "solution": "We are building remote operated semi-autonomous Ground Effect Vehicles (GEVs) to provide long range high-speed transport of equipment and cargo across oceans while being able to takeoff and land on the water.",
@@ -1324,8 +1325,7 @@
         "competitiveLandscape": "Regent & Poseidon Aerospace",
         "primaryUser": "Navy, Marines, and SOCOM using our GEVs for ISR, ASW, E Warfare, Tactical Resupply, & CUAS.",
         "userCriticalProblem": "Commanders can send GEVs to patrol dangerous remote areas areas with no risk to pilots.    Special Forces in need of resupply will be able to have 1000lbs of equipment delivered to remote islands at aircraft speeds."
-      },
-      "problemStatement": "Attrition of distance.  Transporting missions specific payloads and cargo long distances over oceans is a massive challenge, especially if needed to be done fast."
+      }
     },
     {
       "id": "cmknqijr4002hs601pwyiccui",
@@ -1347,6 +1347,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nThe DoD faces a shortfall of 28,000+ cyber professionals — a direct threat to U.S. military readiness. Critical missions, networks, and weapon systems are exposed. Without trained defenders, adversaries can breach systems faster than we can fill vacancies. This is no longer a hiring issue — it's a national defense emergency.\n\nSolution\nLionfish trains college students in CMMC/CCP, deploys them to help DoD contractors meet compliance, then transitions them into DoD cyber roles — closing the talent gap and securing the supply chain.\n\nField Validation\nPilot at Ball State and Production currently at Northern Virginia Community College. Students completed CCP certification and will support live CMMC compliance projects for DoD contractors.\n\nTechnology Maturity\nTRL 7–8: Platform and model actively used. Students perform real documentation, control implementation, and walk-throughs.\n\nStrategic Advantage\nPatent-pending AI training, GRC platform, community talent pipeline, and “By, With, and Through” deployment — unmatched in scope and integration.\n\nGo-to-Market Access\nUniversity pipelines, primes, DIU, AFCEA, and outreach to USINDOPACOM J6/J8 and DoD cyber workforce leads.\n\nDual-Use Potential\nExpandable to energy, healthcare, education, and critical infrastructure.\n\nTeam\nJeremy Miller (Green Beret, IBJ Tech Exec), Dr. Diane Janosek (former NSA exec), Dr. Shadi Jawhar (CTO).\n\nCompetitive Edge\nOthers offer tools. Lionfish offers both tools and builds the people who defend the nation.\n\nPrimary Users\nUSINDOPACOM J6/J8, cyber workforce PMs, supply chain officers, and student Cyber Sentinels™.",
+      "problemStatement": "The DoD faces a shortfall of 28,000+ cyber professionals — a direct threat to U.S. military readiness. Critical missions, networks, and weapon systems are exposed. Without trained defenders, adversaries can breach systems faster than we can fill vacancies. This is no longer a hiring issue — it's a national defense emergency.",
       "synopsisSections": {
         "problem": "The DoD faces a shortfall of 28,000+ cyber professionals — a direct threat to U.S. military readiness. Critical missions, networks, and weapon systems are exposed. Without trained defenders, adversaries can breach systems faster than we can fill vacancies. This is no longer a hiring issue — it's a national defense emergency.",
         "solution": "Lionfish trains college students in CMMC/CCP, deploys them to help DoD contractors meet compliance, then transitions them into DoD cyber roles — closing the talent gap and securing the supply chain.",
@@ -1357,8 +1358,7 @@
         "dualUsePotential": "Expandable to energy, healthcare, education, and critical infrastructure.",
         "team": "Jeremy Miller (Green Beret, IBJ Tech Exec), Dr. Diane Janosek (former NSA exec), Dr. Shadi Jawhar (CTO).\n\nCompetitive Edge\nOthers offer tools. Lionfish offers both tools and builds the people who defend the nation.",
         "primaryUser": "USINDOPACOM J6/J8, cyber workforce PMs, supply chain officers, and student Cyber Sentinels™."
-      },
-      "problemStatement": "The DoD faces a shortfall of 28,000+ cyber professionals — a direct threat to U.S. military readiness. Critical missions, networks, and weapon systems are exposed. Without trained defenders, adversaries can breach systems faster than we can fill vacancies. This is no longer a hiring issue — it's a national defense emergency."
+      }
     },
     {
       "id": "cmknqig2n000bs601o2vfh174",
@@ -1380,6 +1380,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nAI-generated deepfakes have breached military and diplomatic systems by mimicking trusted voices and faces. Static biometrics—face, voice, fingerprint—can be cloned or leaked. \n\nSolution\nLymbic’s Neuroprint uses brainwave signals (EEG) to verify identity in real time. By triggering neural responses (e.g., P300, SSVEP), we authenticate users with non-observable, live-only signals—impossible to spoof or replay.\n\nField Validation\nPre-field. Lab-tested on consumer EEG devices (e.g., Muse 2, BrainBit), achieving 84.2% accuracy and 93.5% specificity. Letters of intent from BrainBit, UltraPCS, and Idun Technologies.\n\nTechnology Maturity (TRL)\nTRL 4. Validated neural challenge-response authentication protocol using evoked EEG signals. \n\nStrategic Advantage\nEvoked-signal protocol + cryptographic unlock pipeline. IP pending. Access to proprietary brainprint datasets. Competitors lack zero-knowledge EEG frameworks or live-signal detection capability.\n\nGo-to-Market Access\nEngaging SBIR, AFWERX, and DIU. Registered with SAM.gov. Early contact with SOCOM, JSOC, and defense primes through OODAloop, Black Hat, and SCSP networks.\n\nDual-Use Potential\nNeuroprint extends to secure wearables (AR/VR headsets, earbuds), AI safety (identity-linked model access), and continuous identity verification in fintech and healthcare.\n\nTeam\nNathaniel Rose, ex-Circle ML engineer, Imperial neurotech alum. Advised by ex-DARPA PMs and cybersecurity leads from Microsoft and Harvard.\n\nCompetitive Landscape\nTraditional biometrics are cloneable. We’re the first to fuse evoked EEG with cryptographic authentication.\n\nPrimary User\nSOCOM operators, UAV pilots, and cyber personnel accessing classified systems.\n\nUser-Critical Problem\nCurrent MFA fails under duress. Users can’t prove they’re present or human. Neuroprint verifies identity continuously—even mid-mission.",
+      "problemStatement": "AI-generated deepfakes have breached military and diplomatic systems by mimicking trusted voices and faces. Static biometrics—face, voice, fingerprint—can be cloned or leaked.",
       "synopsisSections": {
         "problem": "AI-generated deepfakes have breached military and diplomatic systems by mimicking trusted voices and faces. Static biometrics—face, voice, fingerprint—can be cloned or leaked.",
         "solution": "Lymbic’s Neuroprint uses brainwave signals (EEG) to verify identity in real time. By triggering neural responses (e.g., P300, SSVEP), we authenticate users with non-observable, live-only signals—impossible to spoof or replay.",
@@ -1392,8 +1393,7 @@
         "competitiveLandscape": "Traditional biometrics are cloneable. We’re the first to fuse evoked EEG with cryptographic authentication.",
         "primaryUser": "SOCOM operators, UAV pilots, and cyber personnel accessing classified systems.",
         "userCriticalProblem": "Current MFA fails under duress. Users can’t prove they’re present or human. Neuroprint verifies identity continuously—even mid-mission."
-      },
-      "problemStatement": "AI-generated deepfakes have breached military and diplomatic systems by mimicking trusted voices and faces. Static biometrics—face, voice, fingerprint—can be cloned or leaked."
+      }
     },
     {
       "id": "cmknqigx7000ts601ajlm61og",
@@ -1437,6 +1437,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nWarfighters rely on electric motors and generators, but these often fail from bearing wear, oil breakdown, and shock — especially in harsh or denied environments. Failures reduce uptime, raise logistics, and weaken energy resilience.\n\nSolution\nMotibera makes compact levitating motors \"Motibera Halo\" that remove friction, wear, and oil using magnetic forces — enabling reliable, maintenance-free operation in austere conditions.\n\nField Validation\nPre-field. Lab demos and prototypes validated magnetic stabilization under varying load and speed.\n\nTechnology Maturity (TRL)\nTRL 3–4. Core subsystems, including magnetic suspension with multi-DOF control, are validated. Advancing toward integrated MIL-spec prototypes.\n\nStrategic Advantage\nOur motor combines levitation and drive in one unit, reducing parts and volume. Unlike bolt-on systems, it’s compact, oil-free, and scalable. We hold foundational IP (patent pending) and are developing proprietary controls and TEA models.\n\nGo-to-Market Access\nPursuing AFWERX Phase I and exploring DIU. Targeting DoD integrator partners.\n\nDual-Use Potential\nAlso fits HVAC, energy, and mobility — ideal for oil-free chillers, drones, and industrial drives.\n\nTeam\nLed by an Activate Fellow (PhD) with expertise in motor design, control, and power electronics.\n\nCompetitive Landscape\nLegacy systems are bulky, costly, or underpowered. Incumbents use passive or bolt-on mag bearings. We’re building a unified, low-cost, maintenance-free motor from scratch.\n\nPrimary User\nElectrification leads, expeditionary power PMs, and planners for austere HVAC, drones, and mobile power — also relevant to unmanned logistics and tactical energy teams.\n\nUser-Critical Problem\nDeployed systems need frequent bearing and oil maintenance, raising risk and downtime. Our motors eliminate this — extending missions, cutting resupply, and improving uptime.",
+      "problemStatement": "Warfighters rely on electric motors and generators, but these often fail from bearing wear, oil breakdown, and shock — especially in harsh or denied environments. Failures reduce uptime, raise logistics, and weaken energy resilience.",
       "synopsisSections": {
         "problem": "Warfighters rely on electric motors and generators, but these often fail from bearing wear, oil breakdown, and shock — especially in harsh or denied environments. Failures reduce uptime, raise logistics, and weaken energy resilience.",
         "solution": "Motibera makes compact levitating motors \"Motibera Halo\" that remove friction, wear, and oil using magnetic forces — enabling reliable, maintenance-free operation in austere conditions.",
@@ -1449,8 +1450,7 @@
         "competitiveLandscape": "Legacy systems are bulky, costly, or underpowered. Incumbents use passive or bolt-on mag bearings. We’re building a unified, low-cost, maintenance-free motor from scratch.",
         "primaryUser": "Electrification leads, expeditionary power PMs, and planners for austere HVAC, drones, and mobile power — also relevant to unmanned logistics and tactical energy teams.",
         "userCriticalProblem": "Deployed systems need frequent bearing and oil maintenance, raising risk and downtime. Our motors eliminate this — extending missions, cutting resupply, and improving uptime."
-      },
-      "problemStatement": "Warfighters rely on electric motors and generators, but these often fail from bearing wear, oil breakdown, and shock — especially in harsh or denied environments. Failures reduce uptime, raise logistics, and weaken energy resilience."
+      }
     },
     {
       "id": "cmknqikxd0036s601ys1yl074",
@@ -1494,6 +1494,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nMission teams in distributed, contested, hybrid, or classified environments lack real-time, enriched cyber visibility—causing delayed threat detection, analyst overload, and degraded mission assurance.\nSolution\nWraith is a cloud-native telemetry fusion and enrichment platform delivering mission-critical insights in disconnected, denied, hybrid, and distributed environments.\nField Validation\nDeployed with the Air National Guard, supporting two Cyber Protection Teams (CPTs).\nTechnology Maturity (TRL)\nTRL 7 — Operational in DoD, including JWICS/SIPR, supporting ANG CPT missions.\nStrategic Advantage\nLeverages NetCentrics’ classified access to ingest unique telemetry, integrates with Sentinel and Splunk, and operates where traditional tools fail—disconnected and multi-domain.\nGo-to-Market Access\nDIU via SigmaBlox, NetCentrics IDIQs (DISA, INDOPACOM, USCG, VA), SBIR, and SOC/SOAR roles.\nDual-Use Potential\nEnergy (OT/ICS telemetry), Logistics (contested edge), and AI Safety (model monitoring).\nTeam\nKenny Cushing (CEO), Steve Wieland (CTO), Ashish Francis (VP Data/AI), Brian Dutcher (Chief Architect), plus Chaney, Long, Fecteau, Nalls—experts from USAF, Guard, USCYBERCOM, OSD R&E, and Intel.\nCompetitive Landscape\nUnlike Vectra, MixMode, Leidos, or Booz Allen, Wraith spans classification levels (NIPR/SIPR/JWICS), functions offline, and enriches telemetry pre-SIEM/SOAR.\nPrimary User\nCyber analysts, SOC leads, and operators in classified/multi-domain ops.\nUser-Critical Problem\nAnalysts face siloed, noisy telemetry and offline gaps. Wraith fuses reliable insights across cloud and on-prem—without persistent connectivity.",
+      "problemStatement": "Mission teams in distributed, contested, hybrid, or classified environments lack real-time, enriched cyber visibility—causing delayed threat detection, analyst overload, and degraded mission assurance.",
       "synopsisSections": {
         "problem": "Mission teams in distributed, contested, hybrid, or classified environments lack real-time, enriched cyber visibility—causing delayed threat detection, analyst overload, and degraded mission assurance.",
         "solution": "Wraith is a cloud-native telemetry fusion and enrichment platform delivering mission-critical insights in disconnected, denied, hybrid, and distributed environments.",
@@ -1506,8 +1507,7 @@
         "competitiveLandscape": "Unlike Vectra, MixMode, Leidos, or Booz Allen, Wraith spans classification levels (NIPR/SIPR/JWICS), functions offline, and enriches telemetry pre-SIEM/SOAR.",
         "primaryUser": "Cyber analysts, SOC leads, and operators in classified/multi-domain ops.",
         "userCriticalProblem": "Analysts face siloed, noisy telemetry and offline gaps. Wraith fuses reliable insights across cloud and on-prem—without persistent connectivity."
-      },
-      "problemStatement": "Mission teams in distributed, contested, hybrid, or classified environments lack real-time, enriched cyber visibility—causing delayed threat detection, analyst overload, and degraded mission assurance."
+      }
     },
     {
       "id": "cmknqigq7000ps6018y41gzl5",
@@ -1529,6 +1529,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nOverWatch Locator (OWL) was initially designed for firefighters operating in the austere fire conditions inside structures such as high thermal temperatures, zero visibility from smoke, structural collapse, etc. \n\nSolution\nOWL is a deployable 3D interior tracking system designed around ultra wideband (UWB) to dramatically reduce the number of deaths/severe injuries across the community by reducing the exposure of firefighters through decreasing search & rescue time from minutes to seconds.\n\nField Validation\nField tested multiple times. Full scale tech demonstrated October 2023.\n\nTech Maturity (TRL)\nTRL 6\n\nStrategic Advantage\nThe tracking tech that powers OWL is a first of its kind deployable 3D tracking system. Patented in: USA (3 issued, 1 pending), Canada (1 issued), European Union (1 pending).\n\nGo-to-Market Access\nAFWERX, AFRL, DHS S&T.\n\nDual-Use Potential\nFrom the beginning, OWL has been designed to meet or exceed MIL SPEC to allow for use in DoD with no changes to the tech.\n\nTeam\nPhil Taber is a 22-year USAF combat veteran, USAF Weapons School Graduate (Top Gun), squadron commander, operational test evaluator and was inducted into the USAF Safety Hall of Fame. \n\nCompetitive Landscape\nThe primary competitor in the market space is Ascent Integrated Tech and uses an iPhone 16 \"Find My Phone\" style app for tracking. Does not work in high thermal temperatures environments.\n\nPrimary User\nFirst Responders (firefighters, law enforcement), Small Teams (SOF, FBI HRT, SWAT, JTAC, etc.), Ships (interior/exterior), Underground Facilities (Blue Personnel Tracking), Subterrain Ops (UGF and tunnel complexes), hospitals, etc.\n\nUser-Critical Problem\nInterior tracking is the Holy Grail is firefighting tech and is desperately needed save lives and reduce severe injuries.",
+      "problemStatement": "OverWatch Locator (OWL) was initially designed for firefighters operating in the austere fire conditions inside structures such as high thermal temperatures, zero visibility from smoke, structural collapse, etc.",
       "synopsisSections": {
         "problem": "OverWatch Locator (OWL) was initially designed for firefighters operating in the austere fire conditions inside structures such as high thermal temperatures, zero visibility from smoke, structural collapse, etc.",
         "solution": "OWL is a deployable 3D interior tracking system designed around ultra wideband (UWB) to dramatically reduce the number of deaths/severe injuries across the community by reducing the exposure of firefighters through decreasing search & rescue time from minutes to seconds.",
@@ -1540,8 +1541,7 @@
         "competitiveLandscape": "The primary competitor in the market space is Ascent Integrated Tech and uses an iPhone 16 \"Find My Phone\" style app for tracking. Does not work in high thermal temperatures environments.",
         "primaryUser": "First Responders (firefighters, law enforcement), Small Teams (SOF, FBI HRT, SWAT, JTAC, etc.), Ships (interior/exterior), Underground Facilities (Blue Personnel Tracking), Subterrain Ops (UGF and tunnel complexes), hospitals, etc.",
         "userCriticalProblem": "Interior tracking is the Holy Grail is firefighting tech and is desperately needed save lives and reduce severe injuries."
-      },
-      "problemStatement": "OverWatch Locator (OWL) was initially designed for firefighters operating in the austere fire conditions inside structures such as high thermal temperatures, zero visibility from smoke, structural collapse, etc."
+      }
     },
     {
       "id": "cmknqikcy002us601xbab8ojk",
@@ -1629,6 +1629,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nWarfighters face detection risks from battlefield laser sensors. Multi-sensor solutions are bulky, complex, and computationally intensive.\n\nSolution\nWe integrate camera features with multiple active sensors into a compact package, delivering image and depth mapping, as well as surface and material classification and identification.\n\nField Validation\nWe have been testing passive ranging with Softwerx and threat detection and ballistics with PEO Soldier..\n\nTechnology Maturity (TRL)\nOur sensor is TRL9 and the device package is at TRL 7.\n\nStrategic Advantage\nWe own 11 patents on technology for optically measuring electromagnetic waves and hold trade secrets on processing sensor output. The tech, developed over 25 years by our founder and CEO, is proprietary.\n\nGo-to-Market Access\nWe currently active in several synergistic phase 1 and phase 2 SBIR programs.  We also have a PEO STRI contract for a program of record.  \n\nDual-Use Potential\nWe have several industrial customers funding our custom R&D and devices across sectors like industrial inspection, surveillance, security, and drone GIS. We're urgently targeting markets where we can replace LiDAR, as it demands high computational power and lacks complete image capture.\n\nTeam\nBlair Barbour - ceo, inventor of spatial phase imaging and 11 related patents\nDave Truch - cto, seasoned professional from BP who led their innovation teams\n\nCompetitive Landscape\nNo one has been able to combine our feature set passively.\n\nPrimary User\nWarfighters\n\nUser-Critical Problem\nRanging and accessing threats passively.",
+      "problemStatement": "Warfighters face detection risks from battlefield laser sensors. Multi-sensor solutions are bulky, complex, and computationally intensive.",
       "synopsisSections": {
         "problem": "Warfighters face detection risks from battlefield laser sensors. Multi-sensor solutions are bulky, complex, and computationally intensive.",
         "solution": "We integrate camera features with multiple active sensors into a compact package, delivering image and depth mapping, as well as surface and material classification and identification.",
@@ -1641,8 +1642,7 @@
         "competitiveLandscape": "No one has been able to combine our feature set passively.",
         "primaryUser": "Warfighters",
         "userCriticalProblem": "Ranging and accessing threats passively."
-      },
-      "problemStatement": "Warfighters face detection risks from battlefield laser sensors. Multi-sensor solutions are bulky, complex, and computationally intensive."
+      }
     },
     {
       "id": "cmknqik14002ns601i359v8fd",
@@ -1664,6 +1664,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nIn future conflicts, dominance will be determined by control of the battlespace above national borders—including air and orbital domains. A nation that cannot secure and command the space above its territory surrenders a critical element of its sovereignty and strategic defense. It no longer controls it's fate. \n\nSolution\nWe are building the ability to project force at vast distances instantaneously using high-energy lasers in space. \n\nField Validation\nPre-Field\n\nTechnology Maturity (TRL)\nWe are currently at TRL 5. We have fully built a flatsat in the lab. Tested in various simulated environments. \n\nStrategic Advantage\nThis is hard to copy for a few reasons. We have IP and are quickly growing our portfolio. We also have unique \n\nGo-to-Market Access\nSBIRs, sponsored for a STRATFI, and we have commercial contracts already. \n\nDual-Use Potential\nYes. Our commercial focuses are remote power, space situational awareness, and communications in orbit. \n\nTeam\nKarl Stedman - I build things. Self-taught. Been through hell to get here. \nStuart Volkow - DOD Analyst turned CubeSat and high-altitude balloon project manager. \nJohn Stanford - Was the CTO of Ubiquiti Networks from 100k to over a 1B in sales and through the IPO. \n\nCompetitive Landscape\nOfficially, no one. Unofficially - I expect competition from Anduril, Raytheon, and a couple of startups. \n\nPrimary User\nSpace Force - Delta 9, Delta 3\nGolden Dome operators. TBD\n\nUser-Critical Problem\nU.S. satellites are highly exposed in today’s contested space environment. While our forces depend on space-based assets for communications, navigation, targeting, and ISR, most satellites were not built for wartime conditions. They are predictable, undefended, and easy targets.",
+      "problemStatement": "In future conflicts, dominance will be determined by control of the battlespace above national borders—including air and orbital domains. A nation that cannot secure and command the space above its territory surrenders a critical element of its sovereignty and strategic defense. It no longer controls it's fate.",
       "synopsisSections": {
         "problem": "In future conflicts, dominance will be determined by control of the battlespace above national borders—including air and orbital domains. A nation that cannot secure and command the space above its territory surrenders a critical element of its sovereignty and strategic defense. It no longer controls it's fate.",
         "solution": "We are building the ability to project force at vast distances instantaneously using high-energy lasers in space.",
@@ -1676,8 +1677,7 @@
         "competitiveLandscape": "Officially, no one. Unofficially - I expect competition from Anduril, Raytheon, and a couple of startups.",
         "primaryUser": "Space Force - Delta 9, Delta 3\nGolden Dome operators. TBD",
         "userCriticalProblem": "U.S. satellites are highly exposed in today’s contested space environment. While our forces depend on space-based assets for communications, navigation, targeting, and ISR, most satellites were not built for wartime conditions. They are predictable, undefended, and easy targets."
-      },
-      "problemStatement": "In future conflicts, dominance will be determined by control of the battlespace above national borders—including air and orbital domains. A nation that cannot secure and command the space above its territory surrenders a critical element of its sovereignty and strategic defense. It no longer controls it's fate."
+      }
     },
     {
       "id": "cmknqik9k002ss601dz0fbt0f",
@@ -1699,6 +1699,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nAny warfighter making decisions within a large combinatorial situation...and most military decisions involve large combinatorial situations...is either lucky or wrong.  This is because no classical tool exists for delivering complex multi-variate solutions in real-time.\n\nSolution\nOur desktop-based, quantum optimization interface replaces spreadsheet (or even whiteboard) heuristics, estimations, approximations and guesses.\n\nField Validation\nOur technology is Phase III and in production operation with AFMC.\n\nTechnology Maturity (TRL)\nTRL9 (in use for AFMC at Tinker AFB).\n\nStrategic Advantage\nPatented\n\nGo-to-Market Access\n5 SBIR/STTR\n\nDual-Use Potential\nWe have commercial interest. We have 1 prime partner.  \n\nTeam\nWe have 2 of the nation's top physicists, 1 active-duty AF physicist (TDY) and several Purdue University top Computer Scientist programmers.\n\nCompetitive Landscape\nThere are 3 other US-based SBC's that are delivering quantum software.   However, we are the leader in the DoD space and the only company to have quantum software in (non-R&D) production.\n\nPrimary User\nInventory managers and battle managers\n\nUser-Critical Problem\nAnyone that needs to prioritize multiple choices across multiple constrains can leverage our technology.",
+      "problemStatement": "Any warfighter making decisions within a large combinatorial situation...and most military decisions involve large combinatorial situations...is either lucky or wrong.  This is because no classical tool exists for delivering complex multi-variate solutions in real-time.",
       "synopsisSections": {
         "problem": "Any warfighter making decisions within a large combinatorial situation...and most military decisions involve large combinatorial situations...is either lucky or wrong.  This is because no classical tool exists for delivering complex multi-variate solutions in real-time.",
         "solution": "Our desktop-based, quantum optimization interface replaces spreadsheet (or even whiteboard) heuristics, estimations, approximations and guesses.",
@@ -1711,8 +1712,7 @@
         "competitiveLandscape": "There are 3 other US-based SBC's that are delivering quantum software.   However, we are the leader in the DoD space and the only company to have quantum software in (non-R&D) production.",
         "primaryUser": "Inventory managers and battle managers",
         "userCriticalProblem": "Anyone that needs to prioritize multiple choices across multiple constrains can leverage our technology."
-      },
-      "problemStatement": "Any warfighter making decisions within a large combinatorial situation...and most military decisions involve large combinatorial situations...is either lucky or wrong.  This is because no classical tool exists for delivering complex multi-variate solutions in real-time."
+      }
     },
     {
       "id": "cmknqig60000ds60114h9kohz",
@@ -1756,6 +1756,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nIn 2025 mission capable rates for aircraft fell to their lowest in recent memory: 62%\n\nA surprising contributor to this was paper. Not even physical paper, but its digital counterparts like PDFs. Despite being digital, the knowledge in the diagrams, tables, charts and instructions within are still not easily accessible from software systems.\n\nSolution\nRedshred provides an API-first document AI platform for digital transformation and data readiness.  that lets you dial in exactly what you need from these documents and turn it into the structured data you need to power downstream applications.  Redshred lets you treat your documents as a database.\n\nField Validation\nCommercial customers; Air Mobility Command; DAF Rapid Sustainment Office; USMC PM AAA; Navy FRCSW\n\nTechnology Maturity (TRL)\nTRL 7+\n\nStrategic Advantage\nPatents and patents pending; subject matter expertise in aviation maintenance.\n\nGo-to-Market Access\nSBIRs including AFWERX, DARPA, Navy, and Army and is on the RO-MAC IDIQ and Tradewinds.\n\nDual-Use Potential\nCommercial MRO and engineering; digital transformation across an array of industries\n\nTeam\nRedshred's founders have run multiple businesses and have a diverse past including prior startup engineering experience at Sourcefire.  Team includes multiple PhDs, software engineers, and data scientists as well as maintenance subject matter experts.\n\nCompetitive Landscape\nManual conversion, bespoke software development, OCR companies and general purpose LLMs like ChatGPT.  Redshred’s unique advantage is choreographing many layers of AI, synthesizing their results, and providing a database-like interface via APIs.\n\nPrimary User\nMaintainers and engineers.\n\nUser-Critical Problem\nModernized access to tech data supporting maintenance training and operations.",
+      "problemStatement": "In 2025 mission capable rates for aircraft fell to their lowest in recent memory: 62%\n\nA surprising contributor to this was paper. Not even physical paper, but its digital counterparts like PDFs. Despite being digital, the knowledge in the diagrams, tables, charts and instructions within are still not easily accessible from software systems.",
       "synopsisSections": {
         "problem": "In 2025 mission capable rates for aircraft fell to their lowest in recent memory: 62%\n\nA surprising contributor to this was paper. Not even physical paper, but its digital counterparts like PDFs. Despite being digital, the knowledge in the diagrams, tables, charts and instructions within are still not easily accessible from software systems.",
         "solution": "Redshred provides an API-first document AI platform for digital transformation and data readiness.  that lets you dial in exactly what you need from these documents and turn it into the structured data you need to power downstream applications.  Redshred lets you treat your documents as a database.",
@@ -1768,8 +1769,7 @@
         "competitiveLandscape": "Manual conversion, bespoke software development, OCR companies and general purpose LLMs like ChatGPT.  Redshred’s unique advantage is choreographing many layers of AI, synthesizing their results, and providing a database-like interface via APIs.",
         "primaryUser": "Maintainers and engineers.",
         "userCriticalProblem": "Modernized access to tech data supporting maintenance training and operations."
-      },
-      "problemStatement": "In 2025 mission capable rates for aircraft fell to their lowest in recent memory: 62%\n\nA surprising contributor to this was paper. Not even physical paper, but its digital counterparts like PDFs. Despite being digital, the knowledge in the diagrams, tables, charts and instructions within are still not easily accessible from software systems."
+      }
     },
     {
       "id": "cmknqikqd0032s601fc6zpotf",
@@ -1791,6 +1791,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nRelay Nexus addresses the critical limitations and exposure in underwater communication and navigation currently faced by both private and military sectors\n\nSolution\nA laser communication system capable of transmitting a bi-directional beam using adaptive optics and an algorithm to correct alignment of the beam. \n\nField Validation\nInitial testing done at China Lake California Optics Team at Naval Air Warfare Weapons Division. Additional research partner established at University of Central Florida CREOL for extension of signal transference. \n\nTechnology Maturity (TRL)\nTRL 4 lab demonstration with use of adaptive optics successfully captured reflected signal, proving a bi-directional signal, also completed detection signatures from an underwater objects. \n\nStrategic Advantage\nUse of specific lasers allows for frequency dithering and frequency-hopping, which can make laser communications harder to detect/intercept, offering low probability of detection/intercept. \n\nGo-to-Market Access\nDHS, NAVSEA\n\nDual-Use Potential\nThe technology establishes tetherless signal transference enabling wireless comms for subsurface vehicles to transmit signals through bi-directional lasers without surfacing.\n\nTeam\nAri Candelier (CEO)\nIvan Divliansky (Research and Development) \nNicholas Guilbeault (CTO)\nZain Shams (Managing Director)\n\nPotential competitors include HydroNet, LumaX, but RelayNexus is in a unique position with the use of laser optics as primary communication channel. \n\nPrimary User\nDual-Use Remotely Operated Vehicles working with government contracts related to mine hunting and coastal security. \n\nUser-Critical Problem\nExposure to adversaries when using acoustics (even when encrypted) in contested environments increases risks of possible loss of life and technology. Also, use of tethered systems limit distance and mobility.",
+      "problemStatement": "Relay Nexus addresses the critical limitations and exposure in underwater communication and navigation currently faced by both private and military sectors",
       "synopsisSections": {
         "problem": "Relay Nexus addresses the critical limitations and exposure in underwater communication and navigation currently faced by both private and military sectors",
         "solution": "A laser communication system capable of transmitting a bi-directional beam using adaptive optics and an algorithm to correct alignment of the beam.",
@@ -1802,8 +1803,7 @@
         "team": "Ari Candelier (CEO)\nIvan Divliansky (Research and Development) \nNicholas Guilbeault (CTO)\nZain Shams (Managing Director)\n\nPotential competitors include HydroNet, LumaX, but RelayNexus is in a unique position with the use of laser optics as primary communication channel.",
         "primaryUser": "Dual-Use Remotely Operated Vehicles working with government contracts related to mine hunting and coastal security.",
         "userCriticalProblem": "Exposure to adversaries when using acoustics (even when encrypted) in contested environments increases risks of possible loss of life and technology. Also, use of tethered systems limit distance and mobility."
-      },
-      "problemStatement": "Relay Nexus addresses the critical limitations and exposure in underwater communication and navigation currently faced by both private and military sectors"
+      }
     },
     {
       "id": "cmknqijiq002cs60124k3vc59",
@@ -1847,6 +1847,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nWarfighters are forced to rely on underperforming batteries and fragmented energy infrastructure. This results in logistics complexity and increased exposure to threats from both the enemy and the elements.\n\nSolution\nStratos Battery Pack: a modular, ruggedized, and safety-enhanced energy solution designed for seamless platform and system integration. Safire platforms include mobile energy storage trailers, renewable microgrid energy storage, electric dirt bikes, and extreme cold weather unmanned robotics. Stratos packs collect real-time battery data—feed it into SafireEOS, our advanced energy operating system. This data layer empowers real-time decision making and AI-driven logistics modeling to prevent failures and enhance operational readiness.\n\nField Validation\nStratos battery pack and electric dirt bike tested by 3 ASOS in field environment. Mobile and stationary storage prototypes at pre-field levels.\n\nTechnology Maturity (TRL)\nTRL 7 for key products through user field testing.\n\nStrategic Advantage\nBattery cell and pack safety IP, power electronics IP with exclusive data acess. \n\nGo-to-Market Access\nAFWERX SBIRs, TACFI, and OTA contract.\n\nDual-Use Potential\nEnergy, energy management, and electric vehicles / UxVs.\n\nTeam\nSafire is a team of experts in materials science, battery engineering, and systems integration from organizations such as Palantir, Tesla, and SOCOM.\n\nCompetitive Landscape\nOther companies solving this problem use outdated battery chemistries, limited safety features, and lack electronics intelligence\n\nPrimary User\nJTACs, CCTs, tactical operators, force protection, maintenance, expeditionary airfield establishment.\n\nUser-Critical Problem\nMore widespread and modular access to higher performing energy systems enables Agile Combat Employment.",
+      "problemStatement": "Warfighters are forced to rely on underperforming batteries and fragmented energy infrastructure. This results in logistics complexity and increased exposure to threats from both the enemy and the elements.",
       "synopsisSections": {
         "problem": "Warfighters are forced to rely on underperforming batteries and fragmented energy infrastructure. This results in logistics complexity and increased exposure to threats from both the enemy and the elements.",
         "solution": "Stratos Battery Pack: a modular, ruggedized, and safety-enhanced energy solution designed for seamless platform and system integration. Safire platforms include mobile energy storage trailers, renewable microgrid energy storage, electric dirt bikes, and extreme cold weather unmanned robotics. Stratos packs collect real-time battery data—feed it into SafireEOS, our advanced energy operating system. This data layer empowers real-time decision making and AI-driven logistics modeling to prevent failures and enhance operational readiness.",
@@ -1859,8 +1860,7 @@
         "competitiveLandscape": "Other companies solving this problem use outdated battery chemistries, limited safety features, and lack electronics intelligence",
         "primaryUser": "JTACs, CCTs, tactical operators, force protection, maintenance, expeditionary airfield establishment.",
         "userCriticalProblem": "More widespread and modular access to higher performing energy systems enables Agile Combat Employment."
-      },
-      "problemStatement": "Warfighters are forced to rely on underperforming batteries and fragmented energy infrastructure. This results in logistics complexity and increased exposure to threats from both the enemy and the elements."
+      }
     },
     {
       "id": "cmknqikn10030s601tyqe40xs",
@@ -1882,6 +1882,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nThousands of military parts are candidates for transition to additive manufacturing, due to obsolescence or excessive lead times.  The main obstacle is qualifying the AM process.\n\nSolution\nDigitalClone physics-based modeling framework predicts the fatigue life performance of metals – and when integrated with AM machines enables layer-by-layer monitoring that can autonomously detect and correct defects to ensure part fatigue life and accelerate qualification.\n\nField Validation\nSBIR Phase II (NASA JPL), SBIR Phase II (US Army DEVCOM AvMC), ongoing SBIR Phase II (AFWERX)\n\nTechnology Maturity (TRL)\nTRL 6 (results from Army Ph II:  25% less defects, 60% longer fatigue life vs parts printed in traditional AM process)\n\nStrategic Advantage\nFatigue modeling relies on patented component life prediction (CLP) technology\n\nGo-to-Market Access\nAwarded 5-yr/$9M SBIR Phase III IDIQ (2023) from US Army Futures Command DEVCOM AvMC for DigitalClone enhancements\nAccess to Amazon Migration Acceleration Program (private cost-share up to $10M)\n\nDual-Use Potential\nAutomotive, Civil Aerospace, Energy, Industrial Equipment\n\nTeam\nJason Rios (Defense lead, USMA grad, MBA, former Honeywell)\nDr Nathan Bolander (CTO, PhD Purdue University)\nDr Behrooz Jalalahmadi (Additive Manufacturing VP, PhD Purdue University)\nDr Guru Madireddy (Additive Manufacturing Scientist, PhD Univ of Nebraska-Lincoln, formerly at Oak Ridge National Lab)\n\nCompetitive Landscape\nAM machine manufacturers are able to monitor the print process, but no capability to autonomously detect and correct defects to ensure part fatigue life.\n\nPrimary User\nEngineers (qualification) and DoD AM machine operators (printing)\n\nUser-Critical Problem\nLack of access to qualified AM parts magnifies part availability issues",
+      "problemStatement": "Thousands of military parts are candidates for transition to additive manufacturing, due to obsolescence or excessive lead times.  The main obstacle is qualifying the AM process.",
       "synopsisSections": {
         "problem": "Thousands of military parts are candidates for transition to additive manufacturing, due to obsolescence or excessive lead times.  The main obstacle is qualifying the AM process.",
         "solution": "DigitalClone physics-based modeling framework predicts the fatigue life performance of metals – and when integrated with AM machines enables layer-by-layer monitoring that can autonomously detect and correct defects to ensure part fatigue life and accelerate qualification.",
@@ -1894,8 +1895,7 @@
         "competitiveLandscape": "AM machine manufacturers are able to monitor the print process, but no capability to autonomously detect and correct defects to ensure part fatigue life.",
         "primaryUser": "Engineers (qualification) and DoD AM machine operators (printing)",
         "userCriticalProblem": "Lack of access to qualified AM parts magnifies part availability issues"
-      },
-      "problemStatement": "Thousands of military parts are candidates for transition to additive manufacturing, due to obsolescence or excessive lead times.  The main obstacle is qualifying the AM process."
+      }
     },
     {
       "id": "cmknqij3a0023s601ue2ejg2k",
@@ -1917,6 +1917,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Sheridan Technologies is an agile engineering firm with a proven DoD track record, making systems smarter, from software to hardware.\n\nProblem\nWarfighters in GPS-denied, RF-contested areas lack autonomous ISR and counter-UAS capabilities without satellites or remote pilots.\n\nSolution\nMAIO (Modular AI Overwatch) is an edge-AI sensor-fusion module that detects, tracks, and intercepts threats without GPS or comms. It guides ISR drones, powers munitions, and upgrades legacy systems. Fusing EO/IR, LiDAR, acoustic, passive RF, MAIO eliminates false positives for fire-and-forget targeting with zero RF emissions. \n\nField Validation\n360° tracking and live-fire intercepts on quadrotors and 70 mm missiles in GPS-denied environments. Tests show 85% UAS kill rates.\n\nTechnology Maturity (TRL)\nTRL-7: Prototype proven in GPS-denied, live-fire, sensor-fusion tests.\n\nStrategic Advantage\nConsensus AI (no false positives); edge-optimized (<30 W, no radios/satellites); modular open standards; unique EO/IR, LiDAR, RF & acoustic fusion.\n\nGo-to-Market Access\nSelf-funded via DoD contracts; in SBIR/xTech; using demos for R\\&D; embedding in UAV/C-UAS; building loitering ISR UAV.\n\nDual-Use Potential\nPerimeter defense & surveillance; SWAT/military clearing: autonomous room mapping & threat location.\n\nTeam\nJames Sheridan, CEO & architect, 10+ years in avionics (F-35, guided missiles);\nRobert Briody, EE, 30+ years in Aerospace & Defense (Collins, Raytheon, Ball Aerospace).\n\nCompetitive Landscape\nStartups like Anduril rely on GPS/RF emitters; primes (L3Harris, Raytheon) use bulky, satellite-dependent kits.\n\nPrimary User\nTactical ISR teams, C-UAS operators, and small-unit leaders needing rapid detection & response.\n\nUser-Critical Problem\nOperators juggle sensor feeds, jammed GPS, and remote pilots, causing delays and missed targets. MAIO removes latency and lets them focus on mission decisions.",
+      "problemStatement": "Warfighters in GPS-denied, RF-contested areas lack autonomous ISR and counter-UAS capabilities without satellites or remote pilots.",
       "synopsisSections": {
         "problem": "Warfighters in GPS-denied, RF-contested areas lack autonomous ISR and counter-UAS capabilities without satellites or remote pilots.",
         "solution": "MAIO (Modular AI Overwatch) is an edge-AI sensor-fusion module that detects, tracks, and intercepts threats without GPS or comms. It guides ISR drones, powers munitions, and upgrades legacy systems. Fusing EO/IR, LiDAR, acoustic, passive RF, MAIO eliminates false positives for fire-and-forget targeting with zero RF emissions.",
@@ -1929,8 +1930,7 @@
         "competitiveLandscape": "Startups like Anduril rely on GPS/RF emitters; primes (L3Harris, Raytheon) use bulky, satellite-dependent kits.",
         "primaryUser": "Tactical ISR teams, C-UAS operators, and small-unit leaders needing rapid detection & response.",
         "userCriticalProblem": "Operators juggle sensor feeds, jammed GPS, and remote pilots, causing delays and missed targets. MAIO removes latency and lets them focus on mission decisions."
-      },
-      "problemStatement": "Warfighters in GPS-denied, RF-contested areas lack autonomous ISR and counter-UAS capabilities without satellites or remote pilots."
+      }
     },
     {
       "id": "cmknqigef000is601kuyq0hpv",
@@ -1953,25 +1953,6 @@
       "pipelineStage": "alumni",
       "description": "Problem: Loss of GPS or signal makes precise, real-time positioning for vehicles or devices impossible in mission-critical operations.\n\nSolution: Pathfinder delivers meter-level absolute position using computer vision and precomputed satellite data, no GPS needed. In areas with no discernible terrain features, Pathfinder leverages visual odometry and IMU for temporary relative localization until Pathfinder can recognize discernible terrain features. \n\nField Validation: Tested with the US Air Force, NASA, Army, BAE Systems, Kearfott, Isuzu; tested in 40+ global regions and live commercial/military projects.\n\nTechnology Maturity (TRL): TRL 7; multiple field trials, real-world deployments with often centimeter accuracy and commercial programs.\n\nStrategic Advantage: Proprietary algorithms, global dataset integration, sensor-agnostic fusion, extensive field testing, and rapid deployment pipeline.\n\nGo-to-Market Access: Secured contracts via AFWERX, NASA, direct sales to primes (BAE Systems, Kearfott), and commercial customers (e.g. Isuzu).\n\nDual-Use Potential: Used in defense, logistics, fleet, disaster response, autonomous mobility, aerospace, and AI safety across industries.\n\nTeam: Founder: Kanwar Singh (CEO & Army Captain), Dr. Rajeev Surati (R&D, ex-MIT), team from Harvard, Microsoft, Fidelity & other organizations.\n\nCompetitive Landscape: Incumbents across magnetic, IMU and quantum (GPS/Alt-PNT); Pathfinder offers real-time, sensor-agnostic and multi-modal absolute and relative localization by leveraging leverages cameras and IMUs. \n\nPrimary User: Pilots, drone operators, fleet leads, JTACs, vehicle operators, and logistics coordinators.\n\nUser-Critical Problem: Operators cannot trust GPS in denied/jammed settings, leading to mission failures, and life/death situations.",
       "synopsisRaw": "Problem: Loss of GPS or signal makes precise, real-time positioning for vehicles or devices impossible in mission-critical operations.\n\nSolution: Pathfinder delivers meter-level absolute position using computer vision and precomputed satellite data, no GPS needed. In areas with no discernible terrain features, Pathfinder leverages visual odometry and IMU for temporary relative localization until Pathfinder can recognize discernible terrain features. \n\nField Validation: Tested with the US Air Force, NASA, Army, BAE Systems, Kearfott, Isuzu; tested in 40+ global regions and live commercial/military projects.\n\nTechnology Maturity (TRL): TRL 7; multiple field trials, real-world deployments with often centimeter accuracy and commercial programs.\n\nStrategic Advantage: Proprietary algorithms, global dataset integration, sensor-agnostic fusion, extensive field testing, and rapid deployment pipeline.\n\nGo-to-Market Access: Secured contracts via AFWERX, NASA, direct sales to primes (BAE Systems, Kearfott), and commercial customers (e.g. Isuzu).\n\nDual-Use Potential: Used in defense, logistics, fleet, disaster response, autonomous mobility, aerospace, and AI safety across industries.\n\nTeam: Founder: Kanwar Singh (CEO & Army Captain), Dr. Rajeev Surati (R&D, ex-MIT), team from Harvard, Microsoft, Fidelity & other organizations.\n\nCompetitive Landscape: Incumbents across magnetic, IMU and quantum (GPS/Alt-PNT); Pathfinder offers real-time, sensor-agnostic and multi-modal absolute and relative localization by leveraging leverages cameras and IMUs. \n\nPrimary User: Pilots, drone operators, fleet leads, JTACs, vehicle operators, and logistics coordinators.\n\nUser-Critical Problem: Operators cannot trust GPS in denied/jammed settings, leading to mission failures, and life/death situations."
-    },
-    {
-      "id": "cmknqigcr000hs601wmima51k",
-      "name": "Smarterreality Company",
-      "productName": "Smarter Reality",
-      "website": null,
-      "cfImageId": null,
-      "location": null,
-      "missionArea": "Planning",
-      "warfareDomain": "Air, Land, Sea",
-      "trlLevel": 0,
-      "technicalMaturity": "Prototype",
-      "teamSize": null,
-      "cohort": "Cohort 25-1",
-      "cohortId": "25-1",
-      "cohortLabel": "Cohort 25-1",
-      "tulsaAttended": "Attended",
-      "pipelineStage": "alumni",
-      "description": "Smarterreality Company builds Smarter Reality, a technology capability for Planning missions. Its work is relevant to the Air, Land, Sea domain."
     },
     {
       "id": "cmknqighr000ks601ph0bsfsb",
@@ -2015,6 +1996,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nRegulated, multiparty workflows (procurement, IP diligence) create cognitive load, rework, and opaque handoffs. Policy shifts outrun templates; rationale buried in email. Cycles stretch; fielding slips.\n\nSolution\nStarcycle is an AI-first, human-in-the-loop platform that turns policy into in-flow guardrails using a policy-aware KG and OODA loops—delivering first-pass packages, explainable decisions, and automated handoffs. Modular extension: Defense OS.\n\nField Validation\nProduction deployment in fintech on the same engine. Defense: operational prototypes for procurement and IP/patent diligence; pre-production on-prem/air-gapped builds available.\n\nTechnology Maturity (TRL)\nCore engine: production-proven (commercial). Defense OS: TRL 5–6. Next: limited deployment with a program office in a relevant DoD environment (toward TRL-7).\n\nStrategic Advantage\nExplainable-by-design with chain-of-custody; composable OODA atoms; versioned FAR/DFARS/ITAR/EAR; IBM & Red Hat deployments (gov clouds, on-prem, HPC); playbooks from fintech.\n\nGo-to-Market Access\nAFWERX/SBIR/DIU; primes; direct program offices; SigmaBlox.\n\nDual-Use Potential\nCPA SaaS (Q3 2025); public-sector procurement; private equity; utilities/critical infra; healthcare; enterprise GRC.\n\nTeam\nLuke Schantz (CTO), Jaclyn Sui (CEO), and founding engineers in HITL/KG automation; IBM & Red Hat ecosystem.\n\nCompetitive Landscape\nGovCon suites, RPA, and data platforms solve slices. Starcycle unifies KG + OODA + HITL for first-pass, auditable packages; deployable on-prem/air-gapped.\n\nPrimary User\nContracting specialists/KOs, PMO leads, capture managers; legal/compliance analysts.\n\nUser-Critical Problem\nNeed real-time validation, remediation, and logged custody to hit first-pass approvals and predictable timelines.",
+      "problemStatement": "Regulated, multiparty workflows (procurement, IP diligence) create cognitive load, rework, and opaque handoffs. Policy shifts outrun templates; rationale buried in email. Cycles stretch; fielding slips.",
       "synopsisSections": {
         "problem": "Regulated, multiparty workflows (procurement, IP diligence) create cognitive load, rework, and opaque handoffs. Policy shifts outrun templates; rationale buried in email. Cycles stretch; fielding slips.",
         "solution": "Starcycle is an AI-first, human-in-the-loop platform that turns policy into in-flow guardrails using a policy-aware KG and OODA loops—delivering first-pass packages, explainable decisions, and automated handoffs. Modular extension: Defense OS.",
@@ -2027,8 +2009,7 @@
         "competitiveLandscape": "GovCon suites, RPA, and data platforms solve slices. Starcycle unifies KG + OODA + HITL for first-pass, auditable packages; deployable on-prem/air-gapped.",
         "primaryUser": "Contracting specialists/KOs, PMO leads, capture managers; legal/compliance analysts.",
         "userCriticalProblem": "Need real-time validation, remediation, and logged custody to hit first-pass approvals and predictable timelines."
-      },
-      "problemStatement": "Regulated, multiparty workflows (procurement, IP diligence) create cognitive load, rework, and opaque handoffs. Policy shifts outrun templates; rationale buried in email. Cycles stretch; fielding slips."
+      }
     },
     {
       "id": "cmknqifiv0000s601bxt7lmke",
@@ -2050,6 +2031,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nTraditional airfield inspections takes >8 hours; modern 3D laser scanning reduces capture to <1 hour. Yet LiDAR data remain difficult to access due to fragmented storage and outdated desktop software, delaying time-sensitive decisions in airfield recovery, terrain, and infrastructure assessments\n\nSolution\nStitch3D is a cloud-native platform making 3D geospatial data usable on the web. Upload, visualize, analyze, and collaborate on 3D data with up to 50 users in real time, streamlining terrain workflows for faster, mission-critical decisions\n\nField Validation\nField-tested with 6 CES, 627 CES, and 628 CES. At JBLM, 627 CES used Stitch3D to share 1,000+ acres of drone LiDAR vegetation obstruction data with AMC A4, TERPS, 62 OSS, AFCEC, and the Army DPW\n\nTechnology Maturity (TRL)\nTRL 9. Commercial launch Jan 2024; MRR growing 25% MoM\n\nStrategic Advantage\nOur proprietary pipeline converts any LiDAR format into universal web format. Integrated hosting, visualization, and analysis tools in a powerful yet simple UI\n\nGo-to-Market Access\n7 total SBIR/STTR; signed MFR/LOS from 627 CES, 628 ABW, and AFCEC command leadership\n\nDual-Use Potential\nStitch3D serves 1,000+ commercial drone service providers across construction, utilities, and real estate\n\nTeam\nClark Yuan, CEO - former US Army intel officer. USMA Engineering; MIT and Harvard MBA/MPA\nJeff Jakinovich, CTO - former senior software engineer at Bosch\n\nCompetitive Landscape\nUnlike ESRI and DroneDeploy, Stitch3D is cloud-native, intuitive, and LiDAR-capable at scale\n\nPrimary User\nGeoMobility Coordinator, AMC/A4C; Geospatial Integration Manager, AFCEC/CBFG; PACAF Geospatial Integration Officer (GIO)\n\nUser-Critical Problem\nManual inspections strain CE teams. 3D models cut time, boost risk visibility, and optimize manpower",
+      "problemStatement": "Traditional airfield inspections takes >8 hours; modern 3D laser scanning reduces capture to <1 hour. Yet LiDAR data remain difficult to access due to fragmented storage and outdated desktop software, delaying time-sensitive decisions in airfield recovery, terrain, and infrastructure assessments",
       "synopsisSections": {
         "problem": "Traditional airfield inspections takes >8 hours; modern 3D laser scanning reduces capture to <1 hour. Yet LiDAR data remain difficult to access due to fragmented storage and outdated desktop software, delaying time-sensitive decisions in airfield recovery, terrain, and infrastructure assessments",
         "solution": "Stitch3D is a cloud-native platform making 3D geospatial data usable on the web. Upload, visualize, analyze, and collaborate on 3D data with up to 50 users in real time, streamlining terrain workflows for faster, mission-critical decisions",
@@ -2062,8 +2044,7 @@
         "competitiveLandscape": "Unlike ESRI and DroneDeploy, Stitch3D is cloud-native, intuitive, and LiDAR-capable at scale",
         "primaryUser": "GeoMobility Coordinator, AMC/A4C; Geospatial Integration Manager, AFCEC/CBFG; PACAF Geospatial Integration Officer (GIO)",
         "userCriticalProblem": "Manual inspections strain CE teams. 3D models cut time, boost risk visibility, and optimize manpower"
-      },
-      "problemStatement": "Traditional airfield inspections takes >8 hours; modern 3D laser scanning reduces capture to <1 hour. Yet LiDAR data remain difficult to access due to fragmented storage and outdated desktop software, delaying time-sensitive decisions in airfield recovery, terrain, and infrastructure assessments"
+      }
     },
     {
       "id": "cmknqijab0027s601ketoy83l",
@@ -2107,6 +2088,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nCurrent robotics program are too expensive, too fragile, and the form factor isn’t conducive to human-machine integration.\n\nSolution\nOur solution combines an AI software C2 layer with small, attritable UGVs to carry modular payloads in heterogenous swarms.\n\nField Validation\nProject Convergence, SOCOM TE, Northern Strike, Thunder Strike, SMEx, Uncrewed Triple Challenge, Army xTechOverwatch, and others\n\nTechnology Maturity (TRL)\n5-6, self-evaluated at demos in relevant operational conditions\n\nStrategic Advantage\nCreating immediate and safe human-machine integration to experiment payloads with maneuver units, informing DOTMLPF / TTP formation around robotics. Urgent use cases include C-UAS, EW, ISR, MILDEC, and kinetic terrain shaping.\n\nGo-to-Market Access\nWe have funding through innovation arms and certain program offices, and are also selling to defense primes.\n\nDual-Use Potential\nPHYSEC\n\nTeam\nStephen Houghton, CEO; former COO of Embark Trucks, VP at GM Cruise, VP Amazon Zoox, McKinsey, Harvard, Stanford, USMC\nDrew Watson, CTO; former product ops Embark, NASA JPL, CIA robotics\n\nCompetitive Landscape\nMost competitors have larger form factors. Other small UGV makers have constrained use cases. \n\nPrimary User\nManeuver ground units (FORSCOM, SOCOM)\n\nUser-Critical Problem\nHumans are needlessly exposed to danger / risk best assumed by robots; they are mission-constrained with strained sensor-to-shooter loop.",
+      "problemStatement": "Current robotics program are too expensive, too fragile, and the form factor isn’t conducive to human-machine integration.",
       "synopsisSections": {
         "problem": "Current robotics program are too expensive, too fragile, and the form factor isn’t conducive to human-machine integration.",
         "solution": "Our solution combines an AI software C2 layer with small, attritable UGVs to carry modular payloads in heterogenous swarms.",
@@ -2119,8 +2101,7 @@
         "competitiveLandscape": "Most competitors have larger form factors. Other small UGV makers have constrained use cases.",
         "primaryUser": "Maneuver ground units (FORSCOM, SOCOM)",
         "userCriticalProblem": "Humans are needlessly exposed to danger / risk best assumed by robots; they are mission-constrained with strained sensor-to-shooter loop."
-      },
-      "problemStatement": "Current robotics program are too expensive, too fragile, and the form factor isn’t conducive to human-machine integration."
+      }
     },
     {
       "id": "cmknqiice001ns601vebgh1pr",
@@ -2142,6 +2123,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nAircraft readiness is critical to the DoD vision of a lethal, resilient, and adaptable force. Yet, legacy maintenance systems and outdated processes overburden maintainers and fail to deliver real-time, actionable data - directly impacting aircraft availability and National Defense Strategy readiness.\n\nSolution\nSynapseMX is a real-time workflow platform purpose-built for maintainers and QA teams. Using automation and AI, it increases aircraft availability and ensures QA compliance.\n\nTRL & Validation\n- TRL: 6\n- AFWERX CSO SBIR Phase I\n- Adapted by 164th & 189th AWs (Phase III)\n- QA capability with NGB/A4M (Phase II)\n- NGB/A4: Fielding in FY26 to 4 Wings via APB\n- AFRC/A4: Fielding in FY26 via ARCWERX\n\nStrategic Advantage\n- Exclusive data access via ANG/A4M partnership\n- First-mover timing edge: purpose-built maintenance/QA execution\n- Building towards deep integrations (i.e BLADE, etc)\n- Developed by seasoned maintenance professionals\n\nGo-to-Market Access\n- NGB/A4M connecting us to peers @ AMC, ACC, AFRC, HAF\n- RSO MAC IDIQ\n\nDual-Use Potential\n- Commercial airlines, 3rd-party MROs\n- Maritime, fleet, and other high CapEx sectors\n\nTeam\n- Shane Ballman: Head of maintenance innovation @ AirTran, core integration team w/ Southwest Airlines for FAA single operating certificate\n- Katerina Barilov: UC Berkeley MBA, ex-Goldman Sachs aviation banker\n\nCompetitive Landscape\n- LITE (via RSO), AIRS (Beacon), AireXpert, Beacon (Embraer-X)\n- We’re different: purpose-built for Situational Awareness, Aircraft Availability, and QA compliance.\n\nPrimary Users\nWork centers, Maintenance Control, Pro Supers, QA, MXG/CCs\n\nUser-Critical Problem\nDisconnected systems and manual workflows erode morale, bury teams in inefficiency, and fail to deliver the data needed to meet mission readiness.",
+      "problemStatement": "Aircraft readiness is critical to the DoD vision of a lethal, resilient, and adaptable force. Yet, legacy maintenance systems and outdated processes overburden maintainers and fail to deliver real-time, actionable data - directly impacting aircraft availability and National Defense Strategy readiness.",
       "synopsisSections": {
         "problem": "Aircraft readiness is critical to the DoD vision of a lethal, resilient, and adaptable force. Yet, legacy maintenance systems and outdated processes overburden maintainers and fail to deliver real-time, actionable data - directly impacting aircraft availability and National Defense Strategy readiness.",
         "solution": "SynapseMX is a real-time workflow platform purpose-built for maintainers and QA teams. Using automation and AI, it increases aircraft availability and ensures QA compliance.\n\nTRL & Validation\n- TRL: 6\n- AFWERX CSO SBIR Phase I\n- Adapted by 164th & 189th AWs (Phase III)\n- QA capability with NGB/A4M (Phase II)\n- NGB/A4: Fielding in FY26 to 4 Wings via APB\n- AFRC/A4: Fielding in FY26 via ARCWERX",
@@ -2152,28 +2134,7 @@
         "competitiveLandscape": "- LITE (via RSO), AIRS (Beacon), AireXpert, Beacon (Embraer-X)\n- We’re different: purpose-built for Situational Awareness, Aircraft Availability, and QA compliance.",
         "primaryUser": "Work centers, Maintenance Control, Pro Supers, QA, MXG/CCs",
         "userCriticalProblem": "Disconnected systems and manual workflows erode morale, bury teams in inefficiency, and fail to deliver the data needed to meet mission readiness."
-      },
-      "problemStatement": "Aircraft readiness is critical to the DoD vision of a lethal, resilient, and adaptable force. Yet, legacy maintenance systems and outdated processes overburden maintainers and fail to deliver real-time, actionable data - directly impacting aircraft availability and National Defense Strategy readiness."
-    },
-    {
-      "id": "cmknqikgc002ws6013t7oo2eh",
-      "name": "Thefraclexgroup Company",
-      "productName": "Thefraclexgroup",
-      "website": null,
-      "cfImageId": null,
-      "location": null,
-      "missionArea": null,
-      "warfareDomain": "Air",
-      "trlLevel": 0,
-      "technicalMaturity": "Prototype",
-      "teamSize": null,
-      "productType": "Software",
-      "cohort": "Cohort 25-1",
-      "cohortId": "25-1",
-      "cohortLabel": "Cohort 25-1",
-      "tulsaAttended": "Attended",
-      "pipelineStage": "alumni",
-      "description": "Thefraclexgroup Company builds Thefraclexgroup, a technology capability for national security missions. Its work is relevant to the Air domain."
+      }
     },
     {
       "id": "cmkodchbp0000s601rtuy34gc",
@@ -2296,26 +2257,6 @@
       "synopsisRaw": "MARINER-SIM (Maritime Advanced RF Training Simulator)\nProblem: SOF and naval operators face mission-critical communication failures during maritime ops due to atmospheric ducting and sea-state interference that current training doesn't address.\n\nSolution: MARINER-SIM simulates real-time maritime RF propagation effects, teaching operators to recognize and adapt to ocean-specific communication challenges through immersive training.\nStatus: TRL 3 - Feasibility complete, ready to prototype. Pre-field validation phase.\nStrategic Advantage: First to adapt validated AREPS algorithms for operator training; requires deep RF engineering and maritime environmental modeling expertise.\nMarket: Pursuing SOCOM/Navy contracts, SBIRs, BAAs. Dual-use: offshore energy/shipping operations face identical RF challenges.\n\nTeam:\nMarryam Chaudhry, PI - XR2LEAD CEO, 20+ years AI-driven defense simulation/VR training. NATO-DIANA mentor, led SOCOM SBIR projects, 2023 STTR AEROD with Georgia Tech GTRI.\nFred McWilliams - MIT Lincoln Labs, 20+ years maritime training simulators/RF propagation systems.\nRon Dahlgren - Senior software engineer, M&S/AI expert, former 82nd Airborne with RF ops experience.\nDr. Alexandra Steiner - 20+ years Instructional Systems Design, Navy training specialization.\nJames Casey - GMU Professor, 18+ years serious games/AR military trainers.\nDr. Sang Nam - 17+ years AR/VR defense, Nam ER Technology founder, Army ITES-SW2 contractor.\n\nCompetition: No direct maritime-specific RF training competitors; existing solutions focus on equipment operation, not environmental physics.\nUsers: Naval communications operators, SOF coastal reconnaissance teams.\nCore Issue: Operators reactively troubleshoot communication failures during missions instead of understanding predictable maritime RF behavior patterns."
     },
     {
-      "id": "cmknqih0m000vs601d7hseset",
-      "name": "Xvector Company",
-      "productName": "Xvector",
-      "website": null,
-      "cfImageId": null,
-      "location": null,
-      "missionArea": null,
-      "warfareDomain": null,
-      "trlLevel": 0,
-      "technicalMaturity": "Prototype",
-      "teamSize": null,
-      "productType": "Software",
-      "cohort": "Cohort 25-1",
-      "cohortId": "25-1",
-      "cohortLabel": "Cohort 25-1",
-      "tulsaAttended": "Attended",
-      "pipelineStage": "alumni",
-      "description": "Xvector Company builds Xvector, a technology capability for national security missions."
-    },
-    {
       "id": "cmknqii05001gs6013hq3tyut",
       "name": "Zephr.xyz Inc.",
       "productName": "Zephr",
@@ -2335,6 +2276,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nJamming and spoofing attacks challenges PNT across the globe. T-ROK systems are expensive, large profile (targets) that need a lot of bandwidth to network. \n\nSolution\nZephr has built a capability to use smartphones (TAK devices) to create a sensor network to map areas of jamming/spoofing impact and geolocate emitters for targeting. It can run locally or networked.\n\nField Validation\nThe Zephr system has been extensively tested against jamming in Ukraine as well as teleportation/push spoofers in Israel. The team will be testing at APEX, Jammertest and UK NAVWAR.\n\nTechnology Maturity (TRL)\nTRL 7\n \nStrategic Advantage\nZephr uses the cheap omni-directional smartphone antennas to determine directionality + magnitude of jamming/spoofing attacks. Our multi-receiver networking capability fuses data into a COP. Patents 12,038,513, 12,061,268, 12,117,533\n\nGo-to-Market Access\nThe team has a D2P2 SBIR with AFRL to integrate with TAK. We've also worked with the NSIN Propel program, attending exercises above and partnered with TAG the MGUE prime. \n\nDual-Use Potential\nZephr's commercial positioning system and AI navigation for smartphones is being piloted by Honda, Suzuki, Meta, Grab, Uber, Overture, Ericsson, Rx Networks, Amazon and Samsung\n\nTeam\nThe Zephr team has built three previous startup in the geospatial domain with exits to ESRI, Maxar and Snapchat. The team is over 50% PhD's. \n\nCompetitive Landscape\nThe legacy T-ROK systems are sold by Thales/BAE - Zephr is cheaper, low profile, low weight, low bandwidth and integrates with TAK.\n\nPrimary User\nTAK users in contested environments - specifically CEWOs in SOCOM, Army, AFSOC\n\nUser-Critical Problem\nYour TAK device is being jammed or spoofed and you want to either target the emitter or maneuver around the impacted area.",
+      "problemStatement": "Jamming and spoofing attacks challenges PNT across the globe. T-ROK systems are expensive, large profile (targets) that need a lot of bandwidth to network.",
       "synopsisSections": {
         "problem": "Jamming and spoofing attacks challenges PNT across the globe. T-ROK systems are expensive, large profile (targets) that need a lot of bandwidth to network.",
         "solution": "Zephr has built a capability to use smartphones (TAK devices) to create a sensor network to map areas of jamming/spoofing impact and geolocate emitters for targeting. It can run locally or networked.",
@@ -2347,8 +2289,7 @@
         "competitiveLandscape": "The legacy T-ROK systems are sold by Thales/BAE - Zephr is cheaper, low profile, low weight, low bandwidth and integrates with TAK.",
         "primaryUser": "TAK users in contested environments - specifically CEWOs in SOCOM, Army, AFSOC",
         "userCriticalProblem": "Your TAK device is being jammed or spoofed and you want to either target the emitter or maneuver around the impacted area."
-      },
-      "problemStatement": "Jamming and spoofing attacks challenges PNT across the globe. T-ROK systems are expensive, large profile (targets) that need a lot of bandwidth to network."
+      }
     },
     {
       "id": "cmknqij1k0022s601orolvse3",
@@ -2370,6 +2311,7 @@
       "tulsaAttended": "Attended",
       "pipelineStage": "alumni",
       "description": "Problem\nWe dominate in the air and at sea — but on the ground, $500 drones outmaneuver warfighters still aiming by hand. In close combat, even elite shooters miss — and that’s where we lose the advantage.\n\nSolution\nZeroMark adds real-time auto-aiming to rifles and weapon stations, physically steering the weapon like a gimbal so shooters stay on target — without changing how they operate or when they fire.\n\nField Validation\nLive-fire validated at TREX 25, L-SHORAD, and Red Sands Hard Kill.\n\nTechnology Maturity (TRL)\nTRL 7 — integrated into fielded weapons and proven on rifles, crew-served platforms, and vehicle-mounted systems in live-fire conditions.\n\nStrategic Advantage\nZeroMark requires no change to doctrine or behavior. Operators aim and fire as always. Our dataset enables real-time target segmentation — hitting motors, batteries, or electronics for maximum kill probability. No other system combines human-in-the-loop control with automated precision.\n\nGo-to-Market Access\nEngaged via AFWERX SBIR Phase III, JUON deployments, and OTs. Active with SOCOM, AFSOC, NSWC, and allied MODs. Integrating with primes on RWS and mobile C-UAS platforms.\n\nDual-Use Potential\nLaw enforcement, VIP security, infrastructure defense, and hunting safety — anywhere precise firearm use under pressure is critical.\n\nTeam\nFounded by MongoDB’s former CISO. Team includes Tier 1 operators, ex-Meta and Google AI leads, and BD leaders from Anduril. Tactical depth meets technical execution.\n\nCompetitive Landscape\nSmart Shooter gates the trigger. ZeroMark moves the weapon. We deliver physical auto-aiming with the shooter in control.\n\nPrimary User\nDismounted gunners & crew-served teams responsible for drone defeat and force protection.\n\nUser-Critical Problem\nWhen drones appear, gunners have seconds to aim and shoot. Under stress, they miss. ZeroMark keeps them locked on target and alive.",
+      "problemStatement": "We dominate in the air and at sea — but on the ground, $500 drones outmaneuver warfighters still aiming by hand. In close combat, even elite shooters miss — and that’s where we lose the advantage.",
       "synopsisSections": {
         "problem": "We dominate in the air and at sea — but on the ground, $500 drones outmaneuver warfighters still aiming by hand. In close combat, even elite shooters miss — and that’s where we lose the advantage.",
         "solution": "ZeroMark adds real-time auto-aiming to rifles and weapon stations, physically steering the weapon like a gimbal so shooters stay on target — without changing how they operate or when they fire.",
@@ -2382,12 +2324,11 @@
         "competitiveLandscape": "Smart Shooter gates the trigger. ZeroMark moves the weapon. We deliver physical auto-aiming with the shooter in control.",
         "primaryUser": "Dismounted gunners & crew-served teams responsible for drone defeat and force protection.",
         "userCriticalProblem": "When drones appear, gunners have seconds to aim and shoot. Under stress, they miss. ZeroMark keeps them locked on target and alive."
-      },
-      "problemStatement": "We dominate in the air and at sea — but on the ground, $500 drones outmaneuver warfighters still aiming by hand. In close combat, even elite shooters miss — and that’s where we lose the advantage."
+      }
     }
   ],
   "pagination": {
-    "total": 83,
+    "total": 80,
     "limit": 100,
     "offset": 0,
     "hasMore": false
@@ -2458,14 +2399,14 @@
   },
   "metadata": {
     "fetchedAt": "2026-08-05T19:45:00.416Z",
-    "buildAt": "2026-08-05T19:45:00.417Z",
-    "source": "api",
-    "apiBase": "https://api.sigmablox.com",
-    "publicSanitizedAt": "2026-08-08T03:34:25.289Z",
+    "buildAt": "2026-08-22T09:20:08.783Z",
+    "source": "cache",
+    "apiBase": "https://www.sigmablox.com",
+    "publicSanitizedAt": "2026-08-22T09:25:37.123Z",
     "publicPrivacyModel": "rich-public-profile",
     "restrictedFieldCount": 19,
     "publicAudience": "cohort-competitors",
-    "enrichedAt": "2026-08-08T03:34:25.287Z",
+    "enrichedAt": "2026-08-22T09:25:37.119Z",
     "enrichmentSources": [
       "scripts/data/company-enrichment.json"
     ]
