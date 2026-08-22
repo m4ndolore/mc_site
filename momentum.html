@@ -67,7 +67,19 @@
             <div class="ledger__cell-label">Builder Companies</div>
             <div class="ledger__cell-value" data-field="company-count">—</div>
           </div>
+          <div class="ledger__cell">
+            <div class="ledger__cell-label">Voices</div>
+            <div class="ledger__cell-value" data-field="voice-count">—</div>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <!-- What's next — forward-looking, hides itself when nothing is scheduled -->
+    <section class="ledger__upcoming" id="ledger-upcoming" hidden>
+      <div class="container">
+        <h2 class="ledger__section-title">What's Next</h2>
+        <div class="ledger__upcoming-list" id="ledger-upcoming-list"></div>
       </div>
     </section>
 
@@ -76,6 +88,23 @@
       <div class="container">
         <div class="ledger__filters" id="ledger-filters" role="group" aria-label="Filter entries by type"></div>
         <div class="ledger__feed" id="ledger-feed" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Voices — direct feedback, same quotes as the homepage testimonials -->
+    <section class="ledger__voices">
+      <div class="container">
+        <h2 class="ledger__section-title">Voices</h2>
+        <p class="ledger__section-sub">Direct feedback from operators, mentors, and founders who've worked with us.</p>
+        <div class="ledger__voices-grid" id="ledger-voices"></div>
+      </div>
+    </section>
+
+    <!-- Media — podcast/video appearances, hides itself when empty -->
+    <section class="ledger__media" id="ledger-media-section" hidden>
+      <div class="container">
+        <h2 class="ledger__section-title">In Their Own Words</h2>
+        <div class="ledger__media-row" id="ledger-media-row"></div>
       </div>
     </section>
 
@@ -90,6 +119,11 @@
             Traction evidence goes stale the moment it ships in a deck. This ledger does the opposite —
             every dated entry makes it more credible. Partners, primes, and program offices get one link
             that is always current. Working with a builder who should have one of these?
+          </p>
+          <p class="ledger__panel-desc">
+            Featured entries are ours — written and owned by Merge Combinator. Compact, muted entries are
+            reshares: a builder's own news, press coverage, or a partner update we're pointing at, always
+            linked back to the original source.
           </p>
           <a href="/access" class="ledger__panel-cta">
             Request Access

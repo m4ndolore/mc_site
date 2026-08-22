@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "description": "Direct feedback from operators, mentors, and founders who've worked with Merge Combinator. Source of truth is the homepage testimonials section (index.html#feedback) — these are the same quotes, already published and cleared for public use. Rendered as the Voices wall on /momentum.",
+    "note": "Add new quotes here first, then mirror into index.html#feedback (or vice versa) — keep the two in sync by hand for now."
+  },
+  "voices": [
+    {
+      "quote": "I have never seen a similar level of interactivity with incoming systems entrepreneurs or companies. This environment absolutely changed our interactions and the openness allowed us to talk with all of the groups in the same fashion which kept the level playing field from an acquisition standpoint.",
+      "name": "Deputy Commander",
+      "role": "PACAF 613th Air Operations Center"
+    },
+    {
+      "quote": "This week was actually emotional for me. Many of the events I have attended have had good folks there, with good intentions, but this was different. It was like an absolute calling. The static was gone and what was left was pure.",
+      "name": "Art Trevethan",
+      "role": "Ringmaster, Acceleration Reach Transition"
+    },
+    {
+      "quote": "You and your team did an amazing job in Oklahoma, and I made significant changes to my company after returning. We recently won a contract. Learning to pitch our solution in a more clear way helped with these. That insight was invaluable, and I could not have implemented without your help.",
+      "name": "Jim Connors",
+      "role": "Founder, DigitalCM"
+    },
+    {
+      "quote": "This was, debatably, the most fulfilling week of my professional career. There are already a ton of conversations happening around partnerships, next steps, follow-ups, and emails.",
+      "name": "Wes Bergmann",
+      "role": "Lead Investor, BetaBlox"
+    },
+    {
+      "quote": "It's an outstanding biz accelerator program unlike anything I've ever seen. I've been a coach and mentor for a number of programs in the US and AUS. But nothing quite like the week I just had.",
+      "name": "Catherine Bair",
+      "role": "Coach & Mentor, US/AUS Defense Programs"
+    },
+    {
+      "quote": "The results of the trip far exceeded our expectations: invitations to several PACAF exercises, sponsorship for IATT for our capability, advocacy for ACES to be considered during the PACAF C2 Working, and many conversations about contracting.",
+      "name": "Josh VanBuskirk",
+      "role": "Hadron"
+    },
+    {
+      "quote": "Thank you for hosting SigmaBlox last week. I've been talking it up around my network as something every defense and dual-use founder should be looking forward to next year.",
+      "name": "Emma Bates",
+      "role": "Founder, Defense/Dual-Use"
+    }
+  ]
+}
