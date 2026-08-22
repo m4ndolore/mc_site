@@ -1,1 +1,0 @@
-https://nocodexport.com/tools/framer-to-html?export=https%3A%2F%2Fimportant-strategists-917012.framer.app
