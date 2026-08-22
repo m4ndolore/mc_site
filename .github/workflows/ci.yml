@@ -40,6 +40,14 @@ jobs:
           MC_REQUIRE_LIVE_SEED: '1'
         run: npm run build
 
+      # After the build, so it checks the feed that was just seeded live rather
+      # than the snapshot committed in the repo. Every /companies/{slug} URL is
+      # named by toSlug(company.name); if upstream changes how a company is
+      # spelled, the page regenerates under a new name, the old file lingers and
+      # keeps serving stale content, and nothing else in this build notices.
+      - name: Verify company page slugs
+        run: npm run verify:slugs
+
       - name: Enforce performance budgets
         run: npm run check:performance
 

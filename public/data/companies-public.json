@@ -1,8 +1,8 @@
 {
   "_meta": {
     "description": "Public directory of defense technology companies evaluated by Merge Combinator. Machine-readable export — see https://mergecombinator.com/builders for the full directory.",
-    "exported": "2026-08-08",
-    "count": 83,
+    "exported": "2026-08-22",
+    "count": 80,
     "fields": "Public classification data only. Contact information, financials, scores, badges, and internal IDs are excluded.",
     "license": "This data is provided for informational purposes. See https://mergecombinator.com/terms for usage terms."
   },
@@ -1080,22 +1080,6 @@
       "description": "Problem: Loss of GPS or signal makes precise, real-time positioning for vehicles or devices impossible in mission-critical operations.\n\nSolution: Pathfinder delivers meter-level absolute position using computer vision and precomputed satellite data, no GPS needed. In areas with no discernible terrain features, Pathfinder leverages visual odometry and IMU for temporary relative localization until Pathfinder can recognize discernible terrain features. \n\nField Validation: Tested with the US Air Force, NASA, Army, BAE Systems, Kearfott, Isuzu; tested in 40+ global regions and live commercial/military projects.\n\nTechnology Maturity (TRL): TRL 7; multiple field trials, real-world deployments with often centimeter accuracy and commercial programs.\n\nStrategic Advantage: Proprietary algorithms, global dataset integration, sensor-agnostic fusion, extensive field testing, and rapid deployment pipeline.\n\nGo-to-Market Access: Secured contracts via AFWERX, NASA, direct sales to primes (BAE Systems, Kearfott), and commercial customers (e.g. Isuzu).\n\nDual-Use Potential: Used in defense, logistics, fleet, disaster response, autonomous mobility, aerospace, and AI safety across industries.\n\nTeam: Founder: Kanwar Singh (CEO & Army Captain), Dr. Rajeev Surati (R&D, ex-MIT), team from Harvard, Microsoft, Fidelity & other organizations.\n\nCompetitive Landscape: Incumbents across magnetic, IMU and quantum (GPS/Alt-PNT); Pathfinder offers real-time, sensor-agnostic and multi-modal absolute and relative localization by leveraging leverages cameras and IMUs. \n\nPrimary User: Pilots, drone operators, fleet leads, JTACs, vehicle operators, and logistics coordinators.\n\nUser-Critical Problem: Operators cannot trust GPS in denied/jammed settings, leading to mission failures, and life/death situations."
     },
     {
-      "name": "Smarterreality Company",
-      "productName": "Smarter Reality",
-      "website": null,
-      "missionArea": "Planning",
-      "warfareDomain": "Air, Land, Sea",
-      "trlLevel": null,
-      "technicalMaturity": "Prototype",
-      "fundingStage": null,
-      "teamSize": null,
-      "productType": null,
-      "technologyArea": null,
-      "pipelineStage": "alumni",
-      "cohortLabel": "Cohort 25-1",
-      "description": "Smarterreality Company builds Smarter Reality, a technology capability for Planning missions. Its work is relevant to the Air, Land, Sea domain."
-    },
-    {
       "name": "Spectrum Defense Systems",
       "productName": "Dynamic Radio Emulator System (DRES)",
       "website": "https://www.linkedin.com/company/spectrum-defense-systems/",
@@ -1192,22 +1176,6 @@
       "description": "Problem\nAircraft readiness is critical to the DoD vision of a lethal, resilient, and adaptable force. Yet, legacy maintenance systems and outdated processes overburden maintainers and fail to deliver real-time, actionable data - directly impacting aircraft availability and National Defense Strategy readiness.\n\nSolution\nSynapseMX is a real-time workflow platform purpose-built for maintainers and QA teams. Using automation and AI, it increases aircraft availability and ensures QA compliance.\n\nTRL & Validation\n- TRL: 6\n- AFWERX CSO SBIR Phase I\n- Adapted by 164th & 189th AWs (Phase III)\n- QA capability with NGB/A4M (Phase II)\n- NGB/A4: Fielding in FY26 to 4 Wings via APB\n- AFRC/A4: Fielding in FY26 via ARCWERX\n\nStrategic Advantage\n- Exclusive data access via ANG/A4M partnership\n- First-mover timing edge: purpose-built maintenance/QA execution\n- Building towards deep integrations (i.e BLADE, etc)\n- Developed by seasoned maintenance professionals\n\nGo-to-Market Access\n- NGB/A4M connecting us to peers @ AMC, ACC, AFRC, HAF\n- RSO MAC IDIQ\n\nDual-Use Potential\n- Commercial airlines, 3rd-party MROs\n- Maritime, fleet, and other high CapEx sectors\n\nTeam\n- Shane Ballman: Head of maintenance innovation @ AirTran, core integration team w/ Southwest Airlines for FAA single operating certificate\n- Katerina Barilov: UC Berkeley MBA, ex-Goldman Sachs aviation banker\n\nCompetitive Landscape\n- LITE (via RSO), AIRS (Beacon), AireXpert, Beacon (Embraer-X)\n- We’re different: purpose-built for Situational Awareness, Aircraft Availability, and QA compliance.\n\nPrimary Users\nWork centers, Maintenance Control, Pro Supers, QA, MXG/CCs\n\nUser-Critical Problem\nDisconnected systems and manual workflows erode morale, bury teams in inefficiency, and fail to deliver the data needed to meet mission readiness."
     },
     {
-      "name": "Thefraclexgroup Company",
-      "productName": "Thefraclexgroup",
-      "website": null,
-      "missionArea": null,
-      "warfareDomain": "Air",
-      "trlLevel": null,
-      "technicalMaturity": "Prototype",
-      "fundingStage": null,
-      "teamSize": null,
-      "productType": "Software",
-      "technologyArea": null,
-      "pipelineStage": "alumni",
-      "cohortLabel": "Cohort 25-1",
-      "description": "Thefraclexgroup Company builds Thefraclexgroup, a technology capability for national security missions. Its work is relevant to the Air domain."
-    },
-    {
       "name": "Trackable Health AI",
       "productName": "Trackable Health AI",
       "website": "Https://trackablehealth.ai",
@@ -1286,22 +1254,6 @@
       "pipelineStage": "alumni",
       "cohortLabel": "Cohort 25-1",
       "description": "MARINER-SIM (Maritime Advanced RF Training Simulator)\nProblem: SOF and naval operators face mission-critical communication failures during maritime ops due to atmospheric ducting and sea-state interference that current training doesn't address.\n\nSolution: MARINER-SIM simulates real-time maritime RF propagation effects, teaching operators to recognize and adapt to ocean-specific communication challenges through immersive training.\nStatus: TRL 3 - Feasibility complete, ready to prototype. Pre-field validation phase.\nStrategic Advantage: First to adapt validated AREPS algorithms for operator training; requires deep RF engineering and maritime environmental modeling expertise.\nMarket: Pursuing SOCOM/Navy contracts, SBIRs, BAAs. Dual-use: offshore energy/shipping operations face identical RF challenges.\n\nTeam:\nMarryam Chaudhry, PI - XR2LEAD CEO, 20+ years AI-driven defense simulation/VR training. NATO-DIANA mentor, led SOCOM SBIR projects, 2023 STTR AEROD with Georgia Tech GTRI.\nFred McWilliams - MIT Lincoln Labs, 20+ years maritime training simulators/RF propagation systems.\nRon Dahlgren - Senior software engineer, M&S/AI expert, former 82nd Airborne with RF ops experience.\nDr. Alexandra Steiner - 20+ years Instructional Systems Design, Navy training specialization.\nJames Casey - GMU Professor, 18+ years serious games/AR military trainers.\nDr. Sang Nam - 17+ years AR/VR defense, Nam ER Technology founder, Army ITES-SW2 contractor.\n\nCompetition: No direct maritime-specific RF training competitors; existing solutions focus on equipment operation, not environmental physics.\nUsers: Naval communications operators, SOF coastal reconnaissance teams.\nCore Issue: Operators reactively troubleshoot communication failures during missions instead of understanding predictable maritime RF behavior patterns."
-    },
-    {
-      "name": "Xvector Company",
-      "productName": "Xvector",
-      "website": null,
-      "missionArea": null,
-      "warfareDomain": null,
-      "trlLevel": null,
-      "technicalMaturity": "Prototype",
-      "fundingStage": null,
-      "teamSize": null,
-      "productType": "Software",
-      "technologyArea": null,
-      "pipelineStage": "alumni",
-      "cohortLabel": "Cohort 25-1",
-      "description": "Xvector Company builds Xvector, a technology capability for national security missions."
     },
     {
       "name": "Zephr.xyz Inc.",
