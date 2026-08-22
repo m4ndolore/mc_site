@@ -187,7 +187,7 @@ function renderHighlights(entries) {
   const track = document.getElementById('ledger-highlights');
   if (!track) return;
 
-  entries.slice(0, 4).forEach((entry, index) => {
+  entries.filter((entry) => entry.featured !== false).slice(0, 4).forEach((entry, index) => {
     const isReshare = entry.origin === 'reshare';
     const href = isReshare ? entry.source_url : entry.link;
     const el = document.createElement(href ? 'a' : 'article');
@@ -258,8 +258,6 @@ async function init() {
     .sort((a, b) => b.date.localeCompare(a.date));
 
   setField('last-entry', entries.length ? relativeDays(entries[0].date) : '—');
-  setField('entry-count', String(entries.length));
-
   renderHighlights(entries);
   renderFilters(entries, (type) => renderFeed(entries, type));
   renderFeed(entries, null);
@@ -269,7 +267,7 @@ async function init() {
     .then((res) => res.json())
     .then((data) => {
       const count = data?._meta?.count || (data?.companies || []).length;
-      if (count) setField('company-count', String(count));
+      setField('company-count', `${Math.max(83, count || 0)}+`);
     })
     .catch(() => {});
 
