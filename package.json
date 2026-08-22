@@ -18,6 +18,7 @@
     "claims:classify": "node scripts/classify-claims.mjs",
     "claims:source-map": "node scripts/prepare-claim-source-map.mjs",
     "secrets:scan": "node scripts/scan-secrets.mjs",
+    "verify:slugs": "node scripts/verify-company-slugs.mjs",
     "recognition:promote": "node scripts/promote-recognition.mjs",
     "recognition:verify": "node scripts/promote-recognition.mjs --verify",
     "lint": "eslint js/ scripts/ cloudflare/*.js cloudflare/test-router.mjs --max-warnings=0",
