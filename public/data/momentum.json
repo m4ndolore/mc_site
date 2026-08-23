@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "description": "Merge Combinator momentum ledger — dated public record of ecosystem milestones, field operations, program launches, published analysis, and network activity worth pointing at. Rendered at https://mergecombinator.com/momentum.",
-    "note": "Entries below are drawn from published site content (signals articles, builder directory exports). Add new entries at the top; the page sorts by date descending regardless. Set featured to false for internal or small milestones that belong in the record but should not enter the Latest evidence rail.",
+    "description": "Merge Combinator momentum ledger — dated public record of ecosystem milestones, field operations, program launches, announcements, published analysis, and network activity worth pointing at. Rendered at https://mergecombinator.com/momentum.",
+    "note": "Entries below are drawn from public content. Keep product backlog, site launches, directory refreshes, and usability work out of this stream; those belong in changelogs or the product itself. Add new entries at the top; the page sorts by date descending regardless. Set featured to false for small milestones that belong in the record but should not enter the Latest evidence rail.",
     "origin": {
       "own": "Written by Merge Combinator — signals, milestones, program/field updates. Rendered as a featured card.",
       "reshare": "Someone else's story we're pointing at — a builder's own announcement, press coverage, or a partner's update. Rendered compact and muted, always attributed and linked to the original. See scripts/momentum-curate.mjs."
@@ -10,6 +10,7 @@
       "milestone": "Company and ecosystem milestones — raises, contracts, awards (own)",
       "field": "Field operations — exercises, deployments, operator integration (own)",
       "program": "Program launches and cohort activity (own)",
+      "announcement": "Public product, field, or company announcements (own)",
       "ecosystem": "Builder directory and network growth (own)",
       "signal": "Published analysis and original research (own)",
       "builder": "A builder company's own news — their announcement, reshared (reshare)",
@@ -18,23 +19,6 @@
     }
   },
   "entries": [
-    {
-      "date": "2026-08-15",
-      "type": "milestone",
-      "origin": "own",
-      "title": "Momentum ledger goes live",
-      "detail": "The standing public answer to \"how is Merge Combinator going?\" — every milestone, dated and compounding. Send this link instead of a stale deck.",
-      "link": "/momentum",
-      "featured": false
-    },
-    {
-      "date": "2026-07-16",
-      "type": "ecosystem",
-      "origin": "own",
-      "title": "Builder directory reaches 83 companies",
-      "detail": "Public machine-readable export refreshed. 83 defense technology companies evaluated and tracked across mission areas and warfare domains.",
-      "link": "/builders"
-    },
     {
       "date": "2026-06-23",
       "type": "signal",

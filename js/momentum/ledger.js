@@ -7,6 +7,7 @@ const TYPE_META = {
   milestone: { label: 'Milestone' },
   field: { label: 'Field Ops' },
   program: { label: 'Programs' },
+  announcement: { label: 'Announcements' },
   ecosystem: { label: 'Ecosystem' },
   signal: { label: 'Signals' },
   builder: { label: 'Builder News' },
