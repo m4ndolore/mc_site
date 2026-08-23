@@ -7,7 +7,7 @@
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="How is Merge Combinator going? The standing answer — a dated public ledger of ecosystem milestones, field operations, program launches, and published analysis.">
+  <meta name="description" content="How is Merge Combinator going? The outcomes, contracts, capital, field work, and builder momentum on the public record.">
   <!-- Prototype: noindex until the ledger format is validated -->
   <meta name="robots" content="noindex,nofollow">
   <link rel="canonical" href="https://mergecombinator.com/momentum">
@@ -46,23 +46,31 @@
           <span class="ledger__question ledger__question--end">going?</span>
         </h1>
         <p class="ledger__subtitle">A public record of outcomes, field work, and the builders moving forward.</p>
+        <div class="ledger__outcome-metrics" id="ledger-outcome-metrics" aria-label="Cohort outcome metrics">
+          <div class="ledger__outcome-metric"><span>1,500 → 83</span><small>evaluated / selected</small></div>
+          <div class="ledger__outcome-metric"><span>5 days</span><small>in person</small></div>
+          <div class="ledger__outcome-metric"><span>12</span><small>government sponsorships</small></div>
+          <div class="ledger__outcome-metric"><span>21</span><small>draft picks</small></div>
+          <div class="ledger__outcome-metric"><span>$250M</span><small>pipeline value</small></div>
+          <div class="ledger__outcome-metric"><span>$399M+</span><small>disclosed raises &amp; awards</small></div>
+        </div>
       </div>
     </header>
 
-    <section class="ledger__scoreboard" aria-label="Current momentum">
-      <div class="ledger__scoreboard-grid">
-        <p class="ledger__scoreboard-intro">Current signal.<br>No vanity metrics.</p>
-        <div class="ledger__metric">
-          <span class="ledger__metric-value" data-field="company-count">83+</span>
-          <span class="ledger__metric-label">builders tracked</span>
+    <section class="ledger__outcomes" aria-labelledby="ledger-outcomes-title">
+      <div class="ledger__outcomes-inner">
+        <div class="ledger__outcomes-header">
+          <p class="ledger__outcomes-kicker">// Strongest evidence</p>
+          <h2 id="ledger-outcomes-title">What happened next.</h2>
+          <p class="ledger__outcomes-deck">Twenty cohort companies moved from selection into contracts, capital, production, and deployment. Wins tracked through August 2026.</p>
         </div>
-        <div class="ledger__metric">
-          <span class="ledger__metric-value ledger__metric-value--status">Active</span>
-          <span class="ledger__metric-label">record updated <span data-field="last-entry">—</span></span>
-        </div>
-        <div class="ledger__metric">
-          <span class="ledger__metric-value" data-field="voice-count">—</span>
-          <span class="ledger__metric-label">voices on record</span>
+        <div class="ledger__outcomes-featured" id="ledger-outcomes-featured"></div>
+        <div class="ledger__outcomes-index">
+          <div class="ledger__outcomes-index-head">
+            <h3>More outcomes on record</h3>
+            <a href="https://www.sigmablox.com/outcomes/" target="_blank" rel="noopener noreferrer">Full sourced record <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="ledger__outcomes-list" id="ledger-outcomes-list"></div>
         </div>
       </div>
     </section>

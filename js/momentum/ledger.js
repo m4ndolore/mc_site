@@ -1,7 +1,6 @@
 /**
  * Momentum Ledger — renders /data/momentum.json as a reverse-chronological
- * public timeline with type filtering. Builder company count is
- * read live from the public directory export so the header never goes stale.
+ * public timeline with type filtering, plus the verified outcomes record.
  */
 
 const TYPE_META = {
@@ -37,14 +36,6 @@ function formatMonth(dateStr) {
 
 function formatYear(dateStr) {
   return parseDate(dateStr).getFullYear();
-}
-
-function relativeDays(dateStr) {
-  const days = Math.floor((Date.now() - parseDate(dateStr).getTime()) / 86400000);
-  if (days <= 0) return 'today';
-  if (days === 1) return 'yesterday';
-  if (days < 31) return `${days} days ago`;
-  return parseDate(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 function renderEntry(entry) {
@@ -126,6 +117,52 @@ function renderVoices(voices) {
       </${tag}>
     `;
   }).join('');
+}
+
+function renderOutcomeMetrics(metrics) {
+  const container = document.getElementById('ledger-outcome-metrics');
+  if (!container || !metrics.length) return;
+
+  container.innerHTML = metrics.map((metric) => `
+    <div class="ledger__outcome-metric">
+      <span>${metric.value}</span>
+      <small>${metric.label}</small>
+    </div>
+  `).join('');
+}
+
+function renderOutcomes(outcomes) {
+  const featuredContainer = document.getElementById('ledger-outcomes-featured');
+  const listContainer = document.getElementById('ledger-outcomes-list');
+  if (!featuredContainer || !listContainer) return;
+
+  const featured = outcomes.filter((outcome) => outcome.featured);
+  const remaining = outcomes.filter((outcome) => !outcome.featured);
+
+  featuredContainer.innerHTML = featured.map((outcome, index) => `
+    <a class="outcome-feature" href="${outcome.source_url}" target="_blank" rel="noopener noreferrer">
+      <span class="outcome-feature__number">${String(index + 1).padStart(2, '0')}</span>
+      <div class="outcome-feature__identity">
+        <span class="outcome-feature__scope">Cohort 25-1</span>
+        <h3>${outcome.company}</h3>
+        <p>${outcome.mission}</p>
+      </div>
+      <div class="outcome-feature__result">
+        <p class="outcome-feature__headline">${outcome.headline}</p>
+        <p class="outcome-feature__proof">${outcome.proof}</p>
+      </div>
+      <span class="outcome-feature__arrow">${EXTERNAL_SVG}</span>
+    </a>
+  `).join('');
+
+  listContainer.innerHTML = remaining.map((outcome) => `
+    <a class="outcome-index-item" href="${outcome.source_url}" target="_blank" rel="noopener noreferrer">
+      <span class="outcome-index-item__scope">${outcome.scope === 'network' ? 'MC network' : 'Cohort 25-1'}</span>
+      <strong>${outcome.company}</strong>
+      <span class="outcome-index-item__headline">${outcome.headline}</span>
+      <span class="outcome-index-item__arrow">${EXTERNAL_SVG}</span>
+    </a>
+  `).join('');
 }
 
 function renderUpcoming(events) {
@@ -237,11 +274,6 @@ function renderFilters(entries, onChange) {
   });
 }
 
-function setField(name, value) {
-  const el = document.querySelector(`[data-field="${name}"]`);
-  if (el) el.textContent = value;
-}
-
 async function init() {
   let momentum;
   try {
@@ -257,27 +289,21 @@ async function init() {
     .slice()
     .sort((a, b) => b.date.localeCompare(a.date));
 
-  setField('last-entry', entries.length ? relativeDays(entries[0].date) : '—');
   renderHighlights(entries);
   renderFilters(entries, (type) => renderFeed(entries, type));
   renderFeed(entries, null);
 
-  // Live builder count from the public directory export — non-blocking.
-  fetch('/data/companies-public.json')
+  fetch('/data/outcomes.json')
     .then((res) => res.json())
     .then((data) => {
-      const count = data?._meta?.count || (data?.companies || []).length;
-      setField('company-count', `${Math.max(83, count || 0)}+`);
+      renderOutcomeMetrics(data.metrics || []);
+      renderOutcomes(data.outcomes || []);
     })
     .catch(() => {});
 
   fetch('/data/voices.json')
     .then((res) => res.json())
-    .then((data) => {
-      const voices = data.voices || [];
-      setField('voice-count', String(voices.length));
-      renderVoices(voices);
-    })
+    .then((data) => renderVoices(data.voices || []))
     .catch(() => {});
 
   fetch('/data/outlook.json')

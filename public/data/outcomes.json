@@ -1,0 +1,201 @@
+{
+  "_meta": {
+    "description": "Curated public outcomes associated with SigmaBlox Cohort 25-1 and the broader Merge Combinator network.",
+    "source": "https://www.sigmablox.com/outcomes/",
+    "wins_tracked_through": "2026-08",
+    "updated": "2026-08-22",
+    "editorial_note": "Cohort outcomes and broader network outcomes are explicitly separated. Funding, awards, and deployments are described as subsequent evidence, not automatically attributed as caused by the Combine."
+  },
+  "metrics": [
+    { "value": "1,500 → 83", "label": "evaluated / selected" },
+    { "value": "5 days", "label": "in person" },
+    { "value": "12", "label": "government sponsorships" },
+    { "value": "21", "label": "draft picks" },
+    { "value": "$250M", "label": "pipeline value" },
+    { "value": "$399M+", "label": "disclosed raises & awards" }
+  ],
+  "outcomes": [
+    {
+      "company": "Nooks",
+      "mission": "Classified Infrastructure / Secure Workspaces",
+      "headline": "$146.8M DIU classified-infrastructure task",
+      "proof": "$146.8M DoW/WHS task | 4 years | SBIR Phase III IDIQ | $25M Series A with SAIC + Lockheed Martin",
+      "source_url": "https://orangeslices.ai/nooks-leverages-phase-iii-idiq-to-secure-147m-dow-whs-diu-ciaas-task/",
+      "scope": "cohort",
+      "featured": true
+    },
+    {
+      "company": "Defense Unicorns",
+      "mission": "Software Delivery / Air-Gapped & Edge Environments",
+      "headline": "$136M Series B at a $1B+ valuation",
+      "proof": "$136M Series B (Bain Capital) | $1B+ valuation | ~300% YoY adoption growth",
+      "source_url": "https://defenseunicorns.com/defense-unicorns-raises-136-million-series-b/",
+      "scope": "cohort",
+      "featured": true
+    },
+    {
+      "company": "Ulysses",
+      "mission": "Maritime Autonomy / Undersea ISR",
+      "headline": "$46M led by a16z American Dynamism",
+      "proof": "$46M raised | Booz Allen Ventures | Mako scaling to production",
+      "source_url": "https://www.defensedaily.com/autonomous-maritime-vessel-developer-ulysses-announces-46-million-in-funding/unmanned-systems/",
+      "scope": "cohort",
+      "featured": true
+    },
+    {
+      "company": "Pulse Space",
+      "mission": "Space / Laser Power Beaming & Orbital SSA",
+      "headline": "$40M Space Force contract — largest in company history",
+      "proof": "$40M U.S. Space Force | 29.7 kW at 1,000 km",
+      "source_url": "https://spacenews.com/space-force-awards-pulse-space-40-million-to-advance-laser-power-technology/",
+      "scope": "cohort",
+      "featured": true
+    },
+    {
+      "company": "Dunedain",
+      "mission": "C2 / AI Battle Management & Digital Staff",
+      "headline": "Live across all four services after DIU x INDOPACOM accelerator",
+      "proof": "IL5 compliant | DIU x INDOPACOM Blue Object | SO/LIC seed selection",
+      "source_url": "https://www.diu.mil/latest/finalists-selected-for-the-diu-blue-object-management-challenge",
+      "scope": "cohort",
+      "featured": true
+    },
+    {
+      "company": "Hadron Industries",
+      "mission": "C2 & Training / Immersive C5ISR",
+      "headline": "12 SBIR awards and ACES Phase III production",
+      "proof": "12 SBIR awards | ~$7.37M total | ACES Phase III production",
+      "source_url": "https://www.hadronindustries.com/sbir/",
+      "scope": "cohort",
+      "featured": true
+    },
+    {
+      "company": "Alitheon",
+      "mission": "Logistics / Physical Asset Authentication",
+      "headline": "$8M Series A1 co-led by eBay Ventures",
+      "proof": "$8M Series A1 | ~$1.5M federal contracts",
+      "source_url": "https://www.geekwire.com/2026/biometrics-for-things-alitheon-raises-8m-to-expand-its-optical-ai-tech-to-id-physical-objects/",
+      "scope": "cohort"
+    },
+    {
+      "company": "Gallatin AI",
+      "mission": "Logistics / Contested Resupply",
+      "headline": "Army PORTAL Direct-to-Phase-II SBIR",
+      "proof": "Army Applications Lab PORTAL D2P2 SBIR | $15M seed led by 8VC | Austin office",
+      "source_url": "https://www.prnewswire.com/news-releases/gallatin-ai-awarded-army-portal-contract-to-bring-predictive-logistics-to-contested-operations-302710753.html",
+      "scope": "cohort"
+    },
+    {
+      "company": "Swarmbotics AI",
+      "mission": "Force Protection / Attritable Ground Autonomy",
+      "headline": "Army contract for swarming ground robots with 1st Cavalry Division",
+      "proof": "U.S. Army contract | from xTechOverwatch | fielding through Jul 2027",
+      "source_url": "https://thedefensepost.com/2026/02/09/swarmbotics-us-army/",
+      "scope": "cohort"
+    },
+    {
+      "company": "ZeroMark",
+      "mission": "Joint Fires / Counter-UAS & Soldier Lethality",
+      "headline": "xTechPacific winner, mid-Mastermind in Honolulu",
+      "proof": "$7M seed | xTechPacific winner | strategic round | Apex in production",
+      "source_url": "https://www.stripes.com/branches/army/2025-09-12/xtech-army-innovation-zeromark-drone-19061238.html",
+      "scope": "cohort"
+    },
+    {
+      "company": "Intelligenic",
+      "mission": "Information / AI Software Development",
+      "headline": "Completed USAF SBIR Phase I",
+      "proof": "USAF SBIR Phase I complete (Aug 2026)",
+      "source_url": "https://intelligenic.ai/usaf-software-dev-sbir/",
+      "scope": "cohort"
+    },
+    {
+      "company": "Dev Technology Group",
+      "mission": "Information / Federal Software Modernization",
+      "headline": "Three federal awards in 2026",
+      "proof": "$3M USITC | NASA SEWP VI | $3M ICE follow-on",
+      "source_url": "https://devtechnology.com/blog/dev-technology-group-awarded-3m-usitc-hts-contract/",
+      "scope": "cohort"
+    },
+    {
+      "company": "AEROSENS",
+      "mission": "Logistics / In-Transit Visibility",
+      "headline": "AFWERX TACFI award announced at Farnborough",
+      "proof": "AFWERX TACFI | announced at Farnborough 2026",
+      "source_url": "https://www.zawya.com/en/press-release/companies-news/aerosens-receives-tacfi-award-from-the-u.s.-air-force-405672",
+      "scope": "cohort"
+    },
+    {
+      "company": "Infinite Composites",
+      "mission": "Joint Fires / Composite Pressure Vessels",
+      "headline": "Manufacturing expansion behind Army and NASA work",
+      "proof": "$1.6M Army SBIR II | $5.5M+ NASA lunar | May 2026 expansion",
+      "source_url": "https://www.compositesworld.com/news/infinite-composites-signs-16-million-us-army-contract-for-h2-tanks",
+      "scope": "cohort"
+    },
+    {
+      "company": "Mythos AI",
+      "mission": "C2 / Maritime Autonomy",
+      "headline": "Navy MUSV partnership at Sea-Air-Space 2026",
+      "proof": "Birdon America MOU (Navy MUSV) | OPT autonomy integration",
+      "source_url": "https://www.workboat.com/birdon-america-mythos-ai-team-on-navy-musv-opportunities",
+      "scope": "cohort"
+    },
+    {
+      "company": "Ultraview AI",
+      "mission": "Maintenance / Autonomous Aircraft Inspection",
+      "headline": "$3.5M SAFE and a paid Blue Origin demo",
+      "proof": "$3.5M SAFE (Mar 2026) | paid Blue Origin demo",
+      "source_url": "https://pitch.vc/companies/ultraview-ai",
+      "scope": "cohort"
+    },
+    {
+      "company": "Airtrek Robotics",
+      "mission": "Maintenance / Autonomous Airfield Safety",
+      "headline": "Air Force patent license for FOD detection",
+      "proof": "USAF partially exclusive patent license | FLITE pilot",
+      "source_url": "https://www.federalregister.gov/documents/2026/02/10/2026-02596/notice-of-intent-to-grant-a-partially-exclusive-patent-license",
+      "scope": "cohort"
+    },
+    {
+      "company": "Redshred",
+      "mission": "Maintenance / AI Document Intelligence",
+      "headline": "Four SBIRs and a DARPA Embedded Entrepreneur selection",
+      "proof": "DTRA STTR I | DLA SBIR I | Army SBIR I | DARPA EEI",
+      "source_url": "https://www.redshred.com/news/redshred-awarded-contract-by-defense-threat-reduction-agency-for-ai-powered-radiation-safety-technology",
+      "scope": "cohort"
+    },
+    {
+      "company": "Stitch3D",
+      "mission": "Intel / 3D Situational Awareness",
+      "headline": "$3.68M raised for 3D data collaboration",
+      "proof": "$3.68M raised (Sep 2025) | Air Force 3D situational awareness",
+      "source_url": "https://www.crunchbase.com/organization/stitch3d",
+      "scope": "cohort"
+    },
+    {
+      "company": "X-Hab 3D",
+      "mission": "Force Protection / Expeditionary Construction",
+      "headline": "DARPA exercised its Phase II third-year option",
+      "proof": "DARPA SBIR Phase II — third year exercised",
+      "source_url": "https://www.xhab3d.com/resources/news/darpa-extends-x-hab-3d-rd-contract-into-third-year",
+      "scope": "cohort"
+    },
+    {
+      "company": "Raft",
+      "mission": "Data & AI / Edge-to-Enterprise Mission Systems",
+      "headline": "$349M USSOCOM, $99M Army, and a $450M acquisition",
+      "proof": "$349M USSOCOM IDIQ | $99M Army IDIQ | $450M acquisition by Leonardo DRS",
+      "source_url": "https://www.prnewswire.com/news-releases/us-army-awards-raft-99m-enterprise-contract-to-accelerate-delivery-of-data-and-ai-capabilities-302855011.html",
+      "scope": "network"
+    },
+    {
+      "company": "Scale AI",
+      "mission": "AI for Planning & Decision Support",
+      "headline": "Thunderforge prime and a $500M CDAO ceiling",
+      "proof": "Started with a sub-$1M UFR into INDOPACOM | Thunderforge prime | $500M CDAO ceiling",
+      "source_url": "https://scale.com/blog/thunderforge-ai-for-american-defense",
+      "scope": "network"
+    }
+  ]
+}
