@@ -61,10 +61,10 @@
 .ledger__question {
   display: block;
   margin-bottom: 0.22em;
-  font-size: 0.24em;
+  font-size: clamp(12px, 1.6vw, 22px);
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: 0.26em;
+  line-height: 1.15;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
@@ -964,6 +964,7 @@ a.ledger-entry:hover .ledger-entry__card {
   .ledger__hero { min-height: 920px; padding-bottom: 28px; }
   .ledger__hero-grid { row-gap: 26px; }
   .ledger__title { font-size: clamp(48px, 15vw, 72px); }
+  .ledger__question { font-size: 12px; letter-spacing: 0.12em; }
   .ledger__brand { width: 100vw; height: 190px; margin-left: calc(-1 * var(--ledger-margin)); }
   .ledger__subtitle { grid-row: 2; }
   .ledger__outcome-metrics {
