@@ -64,3 +64,5 @@ Dark-native, Inter font, 2px radius. Tokens: `--blue` (#3b82f6), `--offwhite`, `
 - MCP `list_pages` ignores its `source` filter and caps at 100 rows, so it is NOT a
   reliable way to inspect a source. Use the CLI (`gbrain search --source <id>`,
   `gbrain sources status`) for anything you intend to trust.
+
+See [AGENTS.md](./AGENTS.md) for agent stack routing (ECC leads; gstack owns browser/deploy; superpowers owns planning).
