@@ -12,7 +12,10 @@ Primary domain: https://mergecombinator.com
 - The Combine: https://mergecombinator.com/programs/the-combine
 - FAQ: https://mergecombinator.com/faq
 - Knowledge: https://mergecombinator.com/knowledge
-- Founder Curriculum: https://mergecombinator.com/curriculum (guided five-stage learning path for defense tech founders, 33 curated resources)
+- Learn: https://mergecombinator.com/learn (front door to Launch, Knowledge, Signals, and Opportunities)
+- Launch: https://mergecombinator.com/launch (five-stage mission path for defense tech builders, 33 curated resources)
+- Momentum: https://mergecombinator.com/momentum (verified public-record outcomes)
+- Signals: https://mergecombinator.com/signals (MC analysis plus all-source intel)
 - Opportunities: https://mergecombinator.com/opportunities
 - SBIR Opportunities: https://mergecombinator.com/opportunities/sbir
 - STTR Opportunities: https://mergecombinator.com/opportunities/sttr

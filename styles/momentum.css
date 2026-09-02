@@ -897,6 +897,19 @@ a.ledger-entry:hover .ledger-entry__card {
 
 .ledger__manifesto-link span { float: right; }
 
+.ledger__manifesto-actions {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px;
+  margin-top: clamp(40px, 6vw, 80px);
+}
+
+.ledger__manifesto-actions .ledger__manifesto-link {
+  grid-column: auto;
+  margin-top: 0;
+}
+
 .ledger-footer {
   display: grid;
   grid-template-columns: 3fr 1fr;
@@ -952,7 +965,7 @@ a.ledger-entry:hover .ledger-entry__card {
   .ledger__body-grid { display: block; }
   .ledger__index { position: static; margin-bottom: 48px; }
   .ledger__index-copy { max-width: 440px; }
-  .ledger__manifesto-label, .ledger__manifesto-copy, .ledger__manifesto-link { grid-column: 1 / -1; }
+  .ledger__manifesto-label, .ledger__manifesto-copy, .ledger__manifesto-link, .ledger__manifesto-actions { grid-column: 1 / -1; }
   .ledger__section-grid { display: block; }
   .ledger__section-intro { margin-bottom: 48px; }
   .ledger__section-sub { max-width: 440px; }
@@ -1025,4 +1038,5 @@ a.ledger-entry:hover .ledger-entry__card {
   .ledger__manifesto { display: block; }
   .ledger__manifesto-copy { margin-top: 48px; }
   .ledger__manifesto-link { display: block; }
+  .ledger__manifesto-actions { grid-template-columns: 1fr; gap: 0; }
 }

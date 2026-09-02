@@ -999,9 +999,9 @@ function DoneScreen({ products, loginUrl, role, referralContext, intent }) {
           : "Check your email to finish setup. Your sandbox is being configured based on your selections."}
         {products.length > 0 && " We've noted your starting points."}
       </p>
-      <a href="/curriculum" class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}
+      <a href="/launch" class="onboarding__btn onboarding__btn--primary-full" style={{ display: "block", textAlign: "center", marginTop: 24 }}
         onClick={() => track("done_curriculum_click", { intent: intent || "none" })}>
-        Start your curriculum &rarr;
+        Start with Launch &rarr;
       </a>
       <p class="onboarding__done-body" style={{ marginTop: 8, fontSize: 13 }}>
         Staged to where you are \u2014 no account needed while your access is configured.

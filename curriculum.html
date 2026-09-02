@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="canonical" href="https://mergecombinator.com/launch">
+  <meta http-equiv="refresh" content="0; url=/launch">
   <script>
-    // FOUC prevention: apply theme before first paint (same as start.html)
-    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+    location.replace("/launch" + location.search + location.hash);
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="A guided five-stage curriculum for defense-tech founders: Preflight, Spot, Ready for Launch, Tension, Launch. 33 curated resources ordered by what moves you forward fastest.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-  <link rel="canonical" href="https://mergecombinator.com/curriculum">
+  <link rel="canonical" href="https://mergecombinator.com/launch">
   <meta property="og:title" content="Founder Curriculum — Merge Combinator">
   <meta property="og:description" content="A guided five-stage curriculum for defense-tech founders. Resources ordered by what moves you forward fastest.">
   <meta property="og:type" content="website">

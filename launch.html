@@ -6,18 +6,18 @@
     (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="The Defense Tech Toolkit. A structured path from idea to contract for founders building national security technology. Preflight through Launch.">
+  <meta name="description" content="From idea to adoption. A practical path to build what the mission needs.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://mergecombinator.com/launch">
 
   <meta property="og:title" content="Launch — Merge Combinator">
-  <meta property="og:description" content="From idea to contract. A structured path for defense tech founders.">
+  <meta property="og:description" content="From idea to adoption. A practical path to build what the mission needs.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="/assets/logowhite.png">
   <meta property="og:url" content="https://mergecombinator.com/launch">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Launch — Merge Combinator">
-  <meta name="twitter:description" content="From idea to contract. A structured path for defense tech founders.">
+  <meta name="twitter:description" content="From idea to adoption. A practical path to build what the mission needs.">
   <meta name="twitter:image" content="/assets/logowhite.png">
 
   <title>Launch — Merge Combinator</title>
@@ -33,95 +33,311 @@
   <link rel="stylesheet" href="styles/light-theme.css">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
+  <!-- LAUNCH:JSONLD:START -->
   <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Launch — Defense Tech Toolkit",
-    "url": "https://mergecombinator.com/launch",
-    "description": "A structured path from idea to contract for founders building national security technology.",
-    "isPartOf": {
-      "@type": "WebSite",
-      "name": "Merge Combinator",
-      "url": "https://mergecombinator.com"
-    }
-  }
-  </script>
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    "name": "From Idea to Contract: The Defense Tech Launch Sequence",
-    "description": "A structured path for defense technology founders, modeled on carrier flight-deck launch operations: Preflight, Spot, Ready for Launch, Tension, Launch.",
-    "url": "https://mergecombinator.com/launch",
-    "step": [
-      {
-        "@type": "HowToStep",
-        "name": "Preflight",
-        "text": "Learn how the system works before anything else. Who buys, how they buy, and where the money flows: contract types, the FAR, and the PPBE cycle."
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Spot",
-        "text": "Identify the mission problem you solve and the acquisition pathway that fits. Match your technology to active demand signals: SBIR topics, CSOs, OTAs, or direct engagement with problem sponsors."
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Ready for Launch",
-        "text": "Land your first contract vehicle. Get compliant, write proposals that win, and connect your solution to the acquisition system."
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Tension",
-        "text": "You won a contract and built the prototype. Build the relationships, evidence, and end-user demand that carry you across the valley of death to production."
-      },
-      {
-        "@type": "HowToStep",
-        "name": "Launch",
-        "text": "Go operational. Production contracts, follow-on awards, colors of money, partnerships, and the team that scales."
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "name": "Launch — Merge Combinator",
+      "url": "https://mergecombinator.com/launch",
+      "description": "A five-stage mission path for defense technology builders, from first orientation to operational scale.",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Merge Combinator",
+        "url": "https://mergecombinator.com"
       }
-    ]
-  }
+    },
+    {
+      "@type": "HowTo",
+      "name": "The Defense Tech Launch Sequence",
+      "url": "https://mergecombinator.com/launch",
+      "description": "Five stages from first orientation to operational scale: Preflight, Spot, Ready for Launch, Tension, and Launch.",
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "Preflight",
+          "text": "Skim once so you know what exists. Then come back when the acronym shows up in a real meeting. These references answer the first questions every founder hits: who buys, how they buy, and where the money flows.",
+          "url": "https://mergecombinator.com/launch#stage-preflight",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Contracting Cone",
+              "url": "https://aaf.dau.edu/aaf/contracting-cone/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "FAR for Startups",
+              "url": "https://www.acquisition.gov/browse/index/far"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Contract Types Explained",
+              "url": "https://www.waru.edu/tools/comparison-major-contract-types-chart"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Understanding PPBE",
+              "url": "https://acqnotes.com/acqnote/acquisitions/ppbe-overview"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "Signals Feed",
+              "url": "https://mergecombinator.com/signals"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "Defense Ecosystem Map"
+            }
+          ]
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "Spot",
+          "text": "Match your technology to demand that already exists: SBIR topics, CSOs, OTAs, or a problem sponsor with a real budget. These are the boards to check and the pathways to compare when you decide where to aim.",
+          "url": "https://mergecombinator.com/launch#stage-spot",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Finding Problem Sponsors",
+              "url": "https://www.h4d.us/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "AFWERX Engagement Pathways",
+              "url": "https://afwerx.com/divisions/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "DIU Commercial Solutions Opening",
+              "url": "https://www.diu.mil/work-with-us"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Other Transaction Authority Guide",
+              "url": "https://aaf.dau.edu/aaf/ot-guide/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "Opportunities Board",
+              "url": "https://mergecombinator.com/opportunities"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "SBIR Topic Search",
+              "url": "https://www.sbir.gov/topics"
+            },
+            {
+              "@type": "ListItem",
+              "position": 7,
+              "name": "Pricing Strategies for Government Contracts"
+            }
+          ]
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "Ready for Launch",
+          "text": "The paperwork stage. Proposals, CMMC, ITAR, CUI, clearances. None of it is fun and all of it gates contracts. Return to each reference when that gate is in front of you.",
+          "url": "https://mergecombinator.com/launch#stage-ready",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Phase I Proposal Guide",
+              "url": "https://www.sbir.gov/tutorials/preparing-proposal/tutorial-1"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "CMMC 2.0 Requirements",
+              "url": "https://dodcio.defense.gov/CMMC/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "ITAR Basics for Startups",
+              "url": "https://www.pmddtc.state.gov/ddtc_public/ddtc_public?id=ddtc_public_portal_itar_landing"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "CUI Marking Handbook",
+              "url": "https://www.archives.gov/files/cui/documents/20161206-cui-marking-handbook-v1-1-20190524.pdf"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "Security Clearance Process",
+              "url": "https://www.dcsa.mil/is/security-clearance-faqs/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "Proposal Writing Playbook"
+            }
+          ]
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "Tension",
+          "text": "The prototype worked and now the budget cycle is the enemy. These are the bridge programs, transition guides, and evidence frameworks to open when production feels far away. This stage is why founders bookmark this page.",
+          "url": "https://mergecombinator.com/launch#stage-tension",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Valley of Death Survival Guide",
+              "url": "https://mergecombinator.com/learn/read?src=/content/web_small.pdf"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "DON Phase III Guidebook",
+              "url": "https://www.navysbir.com/docs/DON-SBIR_STTR_Phase-III_Guidebook_V2-2020.pdf"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "APFIT: Procurement & Fielding Funds",
+              "url": "https://www.cto.mil/apfit/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "STRATFI / TACFI Bridge Funding",
+              "url": "https://afwerx.com/stratfi-tacfi/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "The Interceptor Math Is Broken",
+              "url": "https://mergecombinator.com/signals/interceptor-stockpile-crisis"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "Valley of Death Navigator"
+            },
+            {
+              "@type": "ListItem",
+              "position": 7,
+              "name": "Operator Validation Toolkit"
+            }
+          ]
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "Launch",
+          "text": "Production, follow-ons, teaming, and the team itself. The questions get bigger and rarer at this stage. Keep these references close; each one exists for a conversation you will eventually have.",
+          "url": "https://mergecombinator.com/launch#stage-launch",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Color of Money",
+              "url": "https://acqnotes.com/acqnote/acquisitions/color-of-money"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "From Combine to Series A: Ulysses",
+              "url": "https://mergecombinator.com/signals/ulysses-combine-to-series-a"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "The Army Is Rewriting How It Buys Technology",
+              "url": "https://mergecombinator.com/signals/army-rewriting-acquisition"
+            },
+            {
+              "@type": "ListItem",
+              "position": 4,
+              "name": "Prime & Subcontracting Rules",
+              "url": "https://www.sba.gov/federal-contracting/contracting-guide/prime-subcontracting"
+            },
+            {
+              "@type": "ListItem",
+              "position": 5,
+              "name": "The $16B Alignment Problem",
+              "url": "https://mergecombinator.com/signals/vc-defense-alignment-problem"
+            },
+            {
+              "@type": "ListItem",
+              "position": 6,
+              "name": "Production Contract Playbook"
+            },
+            {
+              "@type": "ListItem",
+              "position": 7,
+              "name": "Prime Teaming & Subcontractor Strategy"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
   </script>
+          <!-- LAUNCH:JSONLD:END -->
+
 </head>
 <body class="launch-page">
+  <a href="#launch-main" class="skip-link">Skip to main content</a>
   <div id="mc-navbar"></div>
 
   <!-- Hero -->
   <section class="launch-hero">
     <div class="container">
       <div class="launch-hero__content">
-        <span class="launch-hero__eyebrow">Defense Tech Toolkit</span>
-        <h1 class="launch-hero__title">From idea to contract.</h1>
-        <p class="launch-hero__subtitle">
-          Everything you need to build a defense technology company. Organized by stage, from first orientation to operational scale.
-        </p>
+        <span class="launch-hero__eyebrow">Mission</span>
+        <h1 class="launch-hero__title">From idea to adoption.</h1>
+        <p class="launch-hero__subtitle">Build what the mission needs.</p>
         <div class="launch-hero__actions">
-          <a href="/start" class="launch-triage">
-            <svg class="launch-triage__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 16v-4M12 8h.01"/>
-            </svg>
-            Overwhelmed? Click here to build a plan in 60 seconds and get started.
-          </a>
+          <button type="button" class="btn btn--primary" id="launchContinue" hidden>Continue where you left off</button>
+          <a href="/start" class="launch-triage" id="launchTriageLink">Build a 60-second plan</a>
         </div>
-        <p class="launch-hero__bookmark">
+        <button type="button" class="launch-bookmark" id="launchBookmark">
           <svg width="12" height="14" viewBox="0 0 12 14" fill="none" aria-hidden="true"><path d="M1 1h10v12l-5-3.5L1 13V1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-          Bookmark this page <kbd>&#8984;D</kbd>. You will not need it all today. The questions will come up, and this is where the answers stay.
-        </p>
+          <span id="launchBookmarkLabel" aria-live="polite">Bookmark this page</span>
+        </button>
+        <p class="launch-hero__bookmark-note">You will not need it all today.</p>
       </div>
     </div>
   </section>
 
   <!-- Stages -->
-  <section class="launch-stages">
+  <section class="launch-stages" id="launch-main">
     <div class="container">
+      <div class="launch-path-status" aria-live="polite">
+        <div class="launch-progress" id="launchProgress" aria-label="Launch path progress">
+          <span class="launch-progress__seg"></span><span class="launch-progress__seg"></span><span class="launch-progress__seg"></span><span class="launch-progress__seg"></span><span class="launch-progress__seg"></span>
+        </div>
+        <p class="launch-progress__label" id="launchProgressLabel">Five stages · 33 resources</p>
+      </div>
       <div class="launch-layout">
         <div class="launch-layout__main">
 
       <!-- Stage 1: Preflight -->
-      <div class="launch-stage" id="pre-flight">
+      <div class="launch-stage" id="pre-flight" data-stage-id="preflight" data-stage-index="0">
+        <span id="stage-preflight" class="launch-anchor-alias" aria-hidden="true"></span>
         <div class="launch-stage__header">
           <div class="launch-stage__number">01</div>
           <div>
@@ -147,50 +363,82 @@
           </svg>
         </figure>
         <div class="launch-resources">
-          <a href="https://aaf.dau.edu/aaf/contracting-cone/" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7v10M12 7v10M16 7v10"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Contracting Cone</p>
-              <p class="launch-resource__meta">The one-minute chart for &quot;which contract vehicle?&quot; From WarU, formerly DAU.</p>
-            </div>
-          </a>
-          <a href="https://www.acquisition.gov/browse/index/far" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">FAR for Startups</p>
-              <p class="launch-resource__meta">The rulebook contracting officers live by. Search it when a clause number lands in your inbox.</p>
-            </div>
-          </a>
-          <a href="https://www.waru.edu/tools/comparison-major-contract-types-chart" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Contract Types Explained</p>
-              <p class="launch-resource__meta">FFP, T&amp;M, CPFF, CPIF. Check before you agree; each type moves risk in a different direction.</p>
-            </div>
-          </a>
-          <a href="https://acqnotes.com/acqnote/acquisitions/ppbe-overview" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Understanding PPBE</p>
-              <p class="launch-resource__meta">Planning, Programming, Budgeting, and Execution cycle</p>
-            </div>
-          </a>
-          <a href="/signals" class="launch-resource">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Signals Feed</p>
-              <p class="launch-resource__meta">Live intel from Breaking Defense, ExecutiveGov, and Merge Combinator analysis</p>
-            </div>
-          </a>
-          <div class="launch-resource launch-resource--gated">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Defense Ecosystem Map</p>
-              <p class="launch-resource__meta">Interactive map of commands, agencies, and innovation units</p>
-              <p class="launch-resource__gate">Guild · Free</p>
-            </div>
+          <!-- LAUNCH:RESOURCES:preflight:START -->
+          <div class="launch-resource-wrap" data-resource-id="contracting-cone" data-stage-id="preflight">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Contracting Cone&quot; as explored"></button>
+            <a href="https://aaf.dau.edu/aaf/contracting-cone/" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Contracting Cone</p>
+                <p class="launch-resource__meta">The one-page chart that answers &#39;which contract vehicle?&#39; in about a minute. Open it whenever someone names a vehicle you don&#39;t recognize.</p>
+                <p class="launch-resource__details">WarU · 15 min · External</p>
+                
+              </div>
+            </a>
           </div>
+          <div class="launch-resource-wrap" data-resource-id="far-startups" data-stage-id="preflight">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;FAR for Startups&quot; as explored"></button>
+            <a href="https://www.acquisition.gov/browse/index/far" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">FAR for Startups</p>
+                <p class="launch-resource__meta">The rulebook every contracting officer lives by. You will never read it cover to cover. Search it when a clause number lands in your inbox.</p>
+                <p class="launch-resource__details">Acquisition.gov · 25 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="contract-types-explained" data-stage-id="preflight">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Contract Types Explained&quot; as explored"></button>
+            <a href="https://www.waru.edu/tools/comparison-major-contract-types-chart" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Contract Types Explained</p>
+                <p class="launch-resource__meta">FFP, T&amp;M, CPFF, CPIF. Check this before you agree to a contract type, because each one moves risk in a different direction.</p>
+                <p class="launch-resource__details">WarU · 20 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="ppbe-overview" data-stage-id="preflight">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Understanding PPBE&quot; as explored"></button>
+            <a href="https://acqnotes.com/acqnote/acquisitions/ppbe-overview" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Understanding PPBE</p>
+                <p class="launch-resource__meta">Why the money you need this year was decided two years ago. Ten minutes here explains most of the delays you will ever encounter.</p>
+                <p class="launch-resource__details">AcqNotes · 15 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="signals-feed" data-stage-id="preflight">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Signals Feed&quot; as explored"></button>
+            <a href="/signals" class="launch-resource">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Signals Feed</p>
+                <p class="launch-resource__meta">Live intel from Breaking Defense, ExecutiveGov, and Merge Combinator analysis. Scan it weekly; demand signals show up here before they show up in solicitations.</p>
+                <p class="launch-resource__details">5 min · Signal</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap launch-resource-wrap--gated" data-resource-id="ecosystem-map" data-stage-id="preflight">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Defense Ecosystem Map&quot; as explored"></button>
+            <a href="/access?context=builders&amp;source=launch-ecosystem-map" class="launch-resource launch-resource--gated">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Defense Ecosystem Map</p>
+                <p class="launch-resource__meta">Who sits where across commands, agencies, and innovation units. Pull it up before any meeting with an office you have not worked with.</p>
+                <p class="launch-resource__details">30 min · Defense Builders</p>
+                <p class="launch-resource__gate">Guild · Free</p>
+              </div>
+            </a>
+          </div>
+          <!-- LAUNCH:RESOURCES:preflight:END -->
         </div>
+        <div class="launch-stage__progress"><p class="launch-stage__count"></p><button type="button" class="btn btn--primary btn--small launch-advance" data-advance-from="preflight" hidden></button></div>
         <div class="launch-stage-cta">
           <a href="/access?context=founder&amp;source=launch-preflight" class="launch-stage-cta__card">
             Drowning in acronyms already? Ask us anything. No pitch deck required. &rarr;
@@ -199,7 +447,8 @@
       </div>
 
       <!-- Stage 2: Spot -->
-      <div class="launch-stage" id="spot">
+      <div class="launch-stage" id="spot" data-stage-id="spot" data-stage-index="1">
+        <span id="stage-spot" class="launch-anchor-alias" aria-hidden="true"></span>
         <div class="launch-stage__header">
           <div class="launch-stage__number">02</div>
           <div>
@@ -231,61 +480,99 @@
           </svg>
         </figure>
         <div class="launch-resources">
-          <a href="https://www.h4d.us/" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Finding Problem Sponsors</p>
-              <p class="launch-resource__meta">Find the person who owns your problem before you cold-email anyone with a .mil address. From Hacking for Defense.</p>
-            </div>
-          </a>
-          <a href="https://afwerx.com/divisions/" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">AFWERX Engagement Pathways</p>
-              <p class="launch-resource__meta">Air Force innovation pathways: Spark, Prime, and Ventures</p>
-            </div>
-          </a>
-          <a href="https://www.diu.mil/work-with-us" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">DIU Commercial Solutions Opening</p>
-              <p class="launch-resource__meta">How to engage Defense Innovation Unit through CSO process</p>
-            </div>
-          </a>
-          <a href="https://aaf.dau.edu/aaf/ot-guide/" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Other Transaction Authority Guide</p>
-              <p class="launch-resource__meta">What an OTA can do that a FAR contract cannot. Worth knowing before someone offers you one.</p>
-            </div>
-          </a>
-          <a href="/opportunities" class="launch-resource">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Opportunities Board</p>
-              <p class="launch-resource__meta">Live solicitations from SBIR, DARPA, DIU, SAM.gov, and more</p>
-            </div>
-          </a>
-          <a href="https://www.sbir.gov/topics" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">SBIR Topic Search</p>
-              <p class="launch-resource__meta">Find open SBIR/STTR topics across all federal agencies</p>
-            </div>
-          </a>
-          <div class="launch-resource launch-resource--gated">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Pricing Strategies for Government Contracts</p>
-              <p class="launch-resource__meta">How to structure pricing for FFP, T&amp;M, and CPFF contracts</p>
-              <p class="launch-resource__gate">Defense Builders</p>
-            </div>
+          <!-- LAUNCH:RESOURCES:spot:START -->
+          <div class="launch-resource-wrap" data-resource-id="problem-sponsor" data-stage-id="spot">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Finding Problem Sponsors&quot; as explored"></button>
+            <a href="https://www.h4d.us/" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Finding Problem Sponsors</p>
+                <p class="launch-resource__meta">How to find the person who owns your problem and has the standing to champion it. Read before you cold-email anyone with a .mil address.</p>
+                <p class="launch-resource__details">H4D · 20 min · External</p>
+                
+              </div>
+            </a>
           </div>
+          <div class="launch-resource-wrap" data-resource-id="afwerx-pathways" data-stage-id="spot">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;AFWERX Engagement Pathways&quot; as explored"></button>
+            <a href="https://afwerx.com/divisions/" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">AFWERX Engagement Pathways</p>
+                <p class="launch-resource__meta">Spark, Prime, and Ventures compared. Check which door fits before you knock on the Air Force.</p>
+                <p class="launch-resource__details">AFWERX · 15 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="diu-cso" data-stage-id="spot">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;DIU Commercial Solutions Opening&quot; as explored"></button>
+            <a href="https://www.diu.mil/work-with-us" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">DIU Commercial Solutions Opening</p>
+                <p class="launch-resource__meta">How DIU buys commercial technology. Read this if your product already sells in the private sector.</p>
+                <p class="launch-resource__details">DIU · 15 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="ota-guide" data-stage-id="spot">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Other Transaction Authority Guide&quot; as explored"></button>
+            <a href="https://aaf.dau.edu/aaf/ot-guide/" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Other Transaction Authority Guide</p>
+                <p class="launch-resource__meta">What an OTA can do that a FAR contract cannot. Worth knowing before someone offers you one.</p>
+                <p class="launch-resource__details">WarU · 20 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="opportunities-board" data-stage-id="spot">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Opportunities Board&quot; as explored"></button>
+            <a href="/opportunities" class="launch-resource">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Opportunities Board</p>
+                <p class="launch-resource__meta">Live solicitations from SBIR, DARPA, DIU, and SAM.gov in one feed. Check it the way you check the weather.</p>
+                <p class="launch-resource__details">5 min · Signal</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="sbir-topics" data-stage-id="spot">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;SBIR Topic Search&quot; as explored"></button>
+            <a href="https://www.sbir.gov/topics" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">SBIR Topic Search</p>
+                <p class="launch-resource__meta">Every open SBIR/STTR topic across the government. Search your keywords quarterly; topics recycle.</p>
+                <p class="launch-resource__details">SBIR.gov · 15 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap launch-resource-wrap--gated" data-resource-id="pricing-strategies" data-stage-id="spot">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Pricing Strategies for Government Contracts&quot; as explored"></button>
+            <a href="/access?context=builders&amp;source=launch-pricing-strategies" class="launch-resource launch-resource--gated">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Pricing Strategies for Government Contracts</p>
+                <p class="launch-resource__meta">How to price FFP, T&amp;M, and CPFF work without leaving money or margin behind. Open before you write a number in a proposal.</p>
+                <p class="launch-resource__details">25 min · Defense Builders</p>
+                <p class="launch-resource__gate">Defense Builders</p>
+              </div>
+            </a>
+          </div>
+          <!-- LAUNCH:RESOURCES:spot:END -->
         </div>
+        <div class="launch-stage__progress"><p class="launch-stage__count"></p><button type="button" class="btn btn--primary btn--small launch-advance" data-advance-from="spot" hidden></button></div>
       </div>
 
       <!-- Stage 3: Ready for Launch -->
-      <div class="launch-stage" id="hook-up">
+      <div class="launch-stage" id="hook-up" data-stage-id="ready" data-stage-index="2">
+        <span id="stage-ready" class="launch-anchor-alias" aria-hidden="true"></span>
         <div class="launch-stage__header">
           <div class="launch-stage__number">03</div>
           <div>
@@ -310,50 +597,82 @@
           </svg>
         </figure>
         <div class="launch-resources">
-          <a href="https://www.sbir.gov/tutorials/preparing-proposals/tutorial-1" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Phase I Proposal Guide</p>
-              <p class="launch-resource__meta">SBIR.gov official tutorial on writing winning proposals</p>
-            </div>
-          </a>
-          <a href="https://dodcio.defense.gov/CMMC/" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">CMMC 2.0 Requirements</p>
-              <p class="launch-resource__meta">Official DoD CMMC program overview and maturity levels</p>
-            </div>
-          </a>
-          <a href="https://www.pmddtc.state.gov/ddtc_public/ddtc_public?id=ddtc_public_portal_itar_landing" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">ITAR Basics for Startups</p>
-              <p class="launch-resource__meta">Is your technology export-controlled? Answer this before you demo to anyone foreign-owned.</p>
-            </div>
-          </a>
-          <a href="https://www.archives.gov/files/cui/documents/20161206-cui-marking-handbook-v1-1-20190524.pdf" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">CUI Marking Handbook</p>
-              <p class="launch-resource__meta">NARA guide to marking and handling Controlled Unclassified Information</p>
-            </div>
-          </a>
-          <a href="https://www.dcsa.mil/is/security-clearance-faqs/" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Security Clearance Process</p>
-              <p class="launch-resource__meta">DCSA FAQ on obtaining and maintaining clearances</p>
-            </div>
-          </a>
-          <div class="launch-resource launch-resource--gated">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Proposal Writing Playbook</p>
-              <p class="launch-resource__meta">Merge Combinator framework for structuring winning SBIR/OTA proposals</p>
-              <p class="launch-resource__gate">Defense Builders</p>
-            </div>
+          <!-- LAUNCH:RESOURCES:ready:START -->
+          <div class="launch-resource-wrap" data-resource-id="phase-1-guide" data-stage-id="ready">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Phase I Proposal Guide&quot; as explored"></button>
+            <a href="https://www.sbir.gov/tutorials/preparing-proposal/tutorial-1" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Phase I Proposal Guide</p>
+                <p class="launch-resource__meta">The official tutorial from the people who score your proposal. Read it the week before you write, not the night before you submit.</p>
+                <p class="launch-resource__details">SBIR.gov · 30 min · External</p>
+                
+              </div>
+            </a>
           </div>
+          <div class="launch-resource-wrap" data-resource-id="cmmc-2-0" data-stage-id="ready">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;CMMC 2.0 Requirements&quot; as explored"></button>
+            <a href="https://dodcio.defense.gov/CMMC/" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">CMMC 2.0 Requirements</p>
+                <p class="launch-resource__meta">Which maturity level your contracts will demand and what it takes to get there. Check early; remediation takes months.</p>
+                <p class="launch-resource__details">DoD CIO · 25 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="itar-basics" data-stage-id="ready">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;ITAR Basics for Startups&quot; as explored"></button>
+            <a href="https://www.pmddtc.state.gov/ddtc_public/ddtc_public?id=ddtc_public_portal_itar_landing" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">ITAR Basics for Startups</p>
+                <p class="launch-resource__meta">Whether your technology is export-controlled and what registration requires. Answer this before you demo to anyone foreign-owned.</p>
+                <p class="launch-resource__details">State Dept · 20 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="cui-handbook" data-stage-id="ready">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;CUI Marking Handbook&quot; as explored"></button>
+            <a href="https://www.archives.gov/files/cui/documents/20161206-cui-marking-handbook-v1-1-20190524.pdf" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">CUI Marking Handbook</p>
+                <p class="launch-resource__meta">How to mark and handle controlled unclassified information. Keep it open the first time a CUI document lands on your desk.</p>
+                <p class="launch-resource__details">NARA · 20 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="security-clearance" data-stage-id="ready">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Security Clearance Process&quot; as explored"></button>
+            <a href="https://www.dcsa.mil/is/security-clearance-faqs/" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Security Clearance Process</p>
+                <p class="launch-resource__meta">What clearances take, cost, and require of your people. Start here before you promise cleared staff in a proposal.</p>
+                <p class="launch-resource__details">DCSA · 15 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap launch-resource-wrap--gated" data-resource-id="proposal-playbook" data-stage-id="ready">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Proposal Writing Playbook&quot; as explored"></button>
+            <a href="/access?context=builders&amp;source=launch-proposal-playbook" class="launch-resource launch-resource--gated">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Proposal Writing Playbook</p>
+                <p class="launch-resource__meta">The Merge Combinator framework for structuring SBIR and OTA proposals that score. Use it as the outline for your next submission.</p>
+                <p class="launch-resource__details">45 min · Defense Builders</p>
+                <p class="launch-resource__gate">Defense Builders</p>
+              </div>
+            </a>
+          </div>
+          <!-- LAUNCH:RESOURCES:ready:END -->
         </div>
+        <div class="launch-stage__progress"><p class="launch-stage__count"></p><button type="button" class="btn btn--primary btn--small launch-advance" data-advance-from="ready" hidden></button></div>
         <div class="launch-stage-cta">
           <a href="/programs/the-combine" class="launch-stage-cta__card">
             Have a prototype operators should get their hands on? That is exactly what The Combine is for. &rarr;
@@ -362,7 +681,8 @@
       </div>
 
       <!-- Stage 4: Tension -->
-      <div class="launch-stage" id="tension">
+      <div class="launch-stage" id="tension" data-stage-id="tension" data-stage-index="3">
+        <span id="stage-tension" class="launch-anchor-alias" aria-hidden="true"></span>
         <div class="launch-stage__header">
           <div class="launch-stage__number">04</div>
           <div>
@@ -393,44 +713,94 @@
           </svg>
         </figure>
         <div class="launch-resources">
-          <a href="/learn/read?src=/content/web_small.pdf" class="launch-resource">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Valley of Death Survival Guide</p>
-              <p class="launch-resource__meta">John Ferry's 351-page playbook for the crossing. Search it by chapter when you hit the wall it names.</p>
-            </div>
-          </a>
-          <a href="https://www.navysbir.com/docs/DON-SBIR_STTR_Phase-III_Guidebook_V2-2020.pdf" target="_blank" rel="noopener" class="launch-resource launch-resource--external">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">DON Phase III Guidebook</p>
-              <p class="launch-resource__meta">Navy SBIR/STTR guide to transitioning funded work into production contracts</p>
-            </div>
-          </a>
-          <a href="/signals/interceptor-stockpile-crisis" class="launch-resource">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">The Interceptor Math Is Broken</p>
-              <p class="launch-resource__meta">Why affordable mass wins. Steal the framing for your own production story.</p>
-            </div>
-          </a>
-          <div class="launch-resource launch-resource--gated">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Valley of Death Navigator</p>
-              <p class="launch-resource__meta">Interactive decision framework for prototype-to-production transitions</p>
-              <p class="launch-resource__gate">Defense Builders</p>
-            </div>
+          <!-- LAUNCH:RESOURCES:tension:START -->
+          <div class="launch-resource-wrap" data-resource-id="valley-of-death" data-stage-id="tension">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Valley of Death Survival Guide&quot; as explored"></button>
+            <a href="/learn/read?src=/content/web_small.pdf" class="launch-resource">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Valley of Death Survival Guide</p>
+                <p class="launch-resource__meta">John Ferry&#39;s 351-page playbook for the crossing. Not a sit-down read. Search it by chapter when you hit the specific wall it names.</p>
+                <p class="launch-resource__details">180 min · Learn</p>
+                
+              </div>
+            </a>
           </div>
-          <div class="launch-resource launch-resource--gated">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Operator Validation Toolkit</p>
-              <p class="launch-resource__meta">Templates and frameworks for building warfighter evidence</p>
-              <p class="launch-resource__gate">Guild · Free</p>
-            </div>
+          <div class="launch-resource-wrap" data-resource-id="don-phase-3" data-stage-id="tension">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;DON Phase III Guidebook&quot; as explored"></button>
+            <a href="https://www.navysbir.com/docs/DON-SBIR_STTR_Phase-III_Guidebook_V2-2020.pdf" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">DON Phase III Guidebook</p>
+                <p class="launch-resource__meta">The Navy&#39;s own manual for converting funded work into production contracts. Cite it back to them when a contracting office hesitates.</p>
+                <p class="launch-resource__details">Navy SBIR · 40 min · External</p>
+                
+              </div>
+            </a>
           </div>
+          <div class="launch-resource-wrap" data-resource-id="apfit" data-stage-id="tension">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;APFIT: Procurement &amp; Fielding Funds&quot; as explored"></button>
+            <a href="https://www.cto.mil/apfit/" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">APFIT: Procurement &amp; Fielding Funds</p>
+                <p class="launch-resource__meta">Eight-figure OUSD(R&amp;E) money built to jump prototypes into procurement. Check the eligibility window every cycle; it moves.</p>
+                <p class="launch-resource__details">OUSD R&amp;E · 10 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="stratfi-tacfi" data-stage-id="tension">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;STRATFI / TACFI Bridge Funding&quot; as explored"></button>
+            <a href="https://afwerx.com/stratfi-tacfi/" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">STRATFI / TACFI Bridge Funding</p>
+                <p class="launch-resource__meta">AFWERX bridge funding that matches government dollars with private capital between Phase II and Phase III. Read before your Phase II ends, not after.</p>
+                <p class="launch-resource__details">AFWERX · 15 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="interceptor-analysis" data-stage-id="tension">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;The Interceptor Math Is Broken&quot; as explored"></button>
+            <a href="/signals/interceptor-stockpile-crisis" class="launch-resource">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">The Interceptor Math Is Broken</p>
+                <p class="launch-resource__meta">Merge Combinator analysis on why affordable mass wins. Steal the framing for your own production story.</p>
+                <p class="launch-resource__details">8 min · Signal</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap launch-resource-wrap--gated" data-resource-id="valley-navigator" data-stage-id="tension">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Valley of Death Navigator&quot; as explored"></button>
+            <a href="/access?context=builders&amp;source=launch-valley-navigator" class="launch-resource launch-resource--gated">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Valley of Death Navigator</p>
+                <p class="launch-resource__meta">An interactive decision framework for prototype-to-production transitions. Work through it when you are choosing between paths.</p>
+                <p class="launch-resource__details">60 min · Defense Builders</p>
+                <p class="launch-resource__gate">Defense Builders</p>
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap launch-resource-wrap--gated" data-resource-id="operator-validation" data-stage-id="tension">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Operator Validation Toolkit&quot; as explored"></button>
+            <a href="/access?context=builders&amp;source=launch-operator-validation" class="launch-resource launch-resource--gated">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Operator Validation Toolkit</p>
+                <p class="launch-resource__meta">Templates for turning operator enthusiasm into documented evidence a PM can cite. Use after every exercise and demo.</p>
+                <p class="launch-resource__details">45 min · Defense Builders</p>
+                <p class="launch-resource__gate">Guild · Free</p>
+              </div>
+            </a>
+          </div>
+          <!-- LAUNCH:RESOURCES:tension:END -->
         </div>
+        <div class="launch-stage__progress"><p class="launch-stage__count"></p><button type="button" class="btn btn--primary btn--small launch-advance" data-advance-from="tension" hidden></button></div>
         <div class="launch-stage-cta">
           <a href="/access?context=founder&amp;source=launch-tension" class="launch-stage-cta__card">
             Phase II ending with production nowhere in sight? Ask us what worked at exactly this point. &rarr;
@@ -439,7 +809,8 @@
       </div>
 
       <!-- Stage 5: Launch -->
-      <div class="launch-stage" id="launch-stage">
+      <div class="launch-stage" id="launch-stage" data-stage-id="launch" data-stage-index="4">
+        <span id="stage-launch" class="launch-anchor-alias" aria-hidden="true"></span>
         <div class="launch-stage__header">
           <div class="launch-stage__number">05</div>
           <div>
@@ -464,44 +835,94 @@
           </svg>
         </figure>
         <div class="launch-resources">
-          <a href="/signals/ulysses-combine-to-series-a" class="launch-resource">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">From Combine to Series A: Ulysses</p>
-              <p class="launch-resource__meta">Combine to Series A, documented. Show it to skeptical investors.</p>
-            </div>
-          </a>
-          <a href="/signals/vc-defense-alignment-problem" class="launch-resource">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">The $16B Alignment Problem</p>
-              <p class="launch-resource__meta">Can the system absorb the capital flowing in? Useful when your investors ask about the market.</p>
-            </div>
-          </a>
-          <a href="/signals/army-rewriting-acquisition" class="launch-resource">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">The Army Is Rewriting How It Buys Technology</p>
-              <p class="launch-resource__meta">Acquisition rebuilt around software velocity. Context for every Army conversation you will have this year.</p>
-            </div>
-          </a>
-          <div class="launch-resource launch-resource--gated">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Production Contract Playbook</p>
-              <p class="launch-resource__meta">Strategies for follow-on, sole-source justification, and teaming</p>
-              <p class="launch-resource__gate">Defense Builders</p>
-            </div>
+          <!-- LAUNCH:RESOURCES:launch:START -->
+          <div class="launch-resource-wrap" data-resource-id="color-of-money" data-stage-id="launch">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Color of Money&quot; as explored"></button>
+            <a href="https://acqnotes.com/acqnote/acquisitions/color-of-money" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Color of Money</p>
+                <p class="launch-resource__meta">Which appropriation can legally buy what you sell. Check it before every pilot conversation; the wrong color kills deals late.</p>
+                <p class="launch-resource__details">AcqNotes · 10 min · External</p>
+                
+              </div>
+            </a>
           </div>
-          <div class="launch-resource launch-resource--gated">
-            <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-            <div class="launch-resource__text">
-              <p class="launch-resource__title">Prime Teaming &amp; Subcontractor Strategy</p>
-              <p class="launch-resource__meta">How to structure partnerships that scale</p>
-              <p class="launch-resource__gate">Defense Builders</p>
-            </div>
+          <div class="launch-resource-wrap" data-resource-id="ulysses-case-study" data-stage-id="launch">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;From Combine to Series A: Ulysses&quot; as explored"></button>
+            <a href="/signals/ulysses-combine-to-series-a" class="launch-resource">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">From Combine to Series A: Ulysses</p>
+                <p class="launch-resource__meta">What operator-validated formation produced, from Combine to Series A. Show it to skeptical investors.</p>
+                <p class="launch-resource__details">10 min · Signal</p>
+                
+              </div>
+            </a>
           </div>
+          <div class="launch-resource-wrap" data-resource-id="army-acquisition" data-stage-id="launch">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;The Army Is Rewriting How It Buys Technology&quot; as explored"></button>
+            <a href="/signals/army-rewriting-acquisition" class="launch-resource">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">The Army Is Rewriting How It Buys Technology</p>
+                <p class="launch-resource__meta">Merge Combinator analysis of acquisition restructured around software velocity. Context for every Army conversation you will have this year.</p>
+                <p class="launch-resource__details">10 min · Signal</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="prime-subcontracting" data-stage-id="launch">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Prime &amp; Subcontracting Rules&quot; as explored"></button>
+            <a href="https://www.sba.gov/federal-contracting/contracting-guide/prime-subcontracting" class="launch-resource launch-resource--external" target="_blank" rel="noopener">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Prime &amp; Subcontracting Rules</p>
+                <p class="launch-resource__meta">The SBA rules on teaming, flow-down clauses, and subcontracting plans. Read before you sign anything a prime sends.</p>
+                <p class="launch-resource__details">SBA · 15 min · External</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap" data-resource-id="vc-alignment-problem" data-stage-id="launch">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;The $16B Alignment Problem&quot; as explored"></button>
+            <a href="/signals/vc-defense-alignment-problem" class="launch-resource">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">The $16B Alignment Problem</p>
+                <p class="launch-resource__meta">Merge Combinator analysis on whether the system can absorb the capital flowing in. Useful when your investors ask about the market.</p>
+                <p class="launch-resource__details">10 min · Signal</p>
+                
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap launch-resource-wrap--gated" data-resource-id="production-playbook" data-stage-id="launch">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Production Contract Playbook&quot; as explored"></button>
+            <a href="/access?context=builders&amp;source=launch-production-playbook" class="launch-resource launch-resource--gated">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Production Contract Playbook</p>
+                <p class="launch-resource__meta">Follow-on strategies, sole-source justification, and teaming structures. Open when the production conversation starts.</p>
+                <p class="launch-resource__details">40 min · Defense Builders</p>
+                <p class="launch-resource__gate">Defense Builders</p>
+              </div>
+            </a>
+          </div>
+          <div class="launch-resource-wrap launch-resource-wrap--gated" data-resource-id="prime-teaming" data-stage-id="launch">
+            <button class="launch-resource__check" type="button" aria-pressed="false" aria-label="Mark &quot;Prime Teaming &amp; Subcontractor Strategy&quot; as explored"></button>
+            <a href="/access?context=builders&amp;source=launch-prime-teaming" class="launch-resource launch-resource--gated">
+              <svg class="launch-resource__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <div class="launch-resource__text">
+                <p class="launch-resource__title">Prime Teaming &amp; Subcontractor Strategy</p>
+                <p class="launch-resource__meta">How to structure prime partnerships that scale instead of smother. Read before the term sheet, not after.</p>
+                <p class="launch-resource__details">35 min · Defense Builders</p>
+                <p class="launch-resource__gate">Defense Builders</p>
+              </div>
+            </a>
+          </div>
+          <!-- LAUNCH:RESOURCES:launch:END -->
         </div>
+        <div class="launch-stage__progress"><p class="launch-stage__count"></p><button type="button" class="btn btn--primary btn--small launch-advance" data-advance-from="launch" hidden></button></div>
         <div class="launch-stage-cta">
           <a href="/access?context=founder&amp;source=launch-scale" class="launch-stage-cta__card">
             First prime term sheet or first key hire on your desk? Ask someone who has signed one. &rarr;
@@ -516,12 +937,12 @@
           <nav class="launch-sidebar">
             <div class="launch-sidebar__section">
               <h3 class="launch-sidebar__heading">Stages</h3>
-              <ul class="launch-sidebar__links">
-                <li><a href="#pre-flight" class="launch-sidebar__link launch-sidebar__link--active"><span class="launch-sidebar__num">01</span> Preflight</a></li>
-                <li><a href="#spot" class="launch-sidebar__link"><span class="launch-sidebar__num">02</span> Spot</a></li>
-                <li><a href="#hook-up" class="launch-sidebar__link"><span class="launch-sidebar__num">03</span> Ready for Launch</a></li>
-                <li><a href="#tension" class="launch-sidebar__link"><span class="launch-sidebar__num">04</span> Tension</a></li>
-                <li><a href="#launch-stage" class="launch-sidebar__link"><span class="launch-sidebar__num">05</span> Launch</a></li>
+              <ul class="launch-sidebar__links" id="launchRail">
+                <li><a href="#pre-flight" class="launch-sidebar__link launch-sidebar__link--active" data-rail-stage="preflight"><span class="launch-sidebar__num">01</span> Preflight</a></li>
+                <li><a href="#spot" class="launch-sidebar__link" data-rail-stage="spot"><span class="launch-sidebar__num">02</span> Spot</a></li>
+                <li><a href="#hook-up" class="launch-sidebar__link" data-rail-stage="ready"><span class="launch-sidebar__num">03</span> Ready for Launch</a></li>
+                <li><a href="#tension" class="launch-sidebar__link" data-rail-stage="tension"><span class="launch-sidebar__num">04</span> Tension</a></li>
+                <li><a href="#launch-stage" class="launch-sidebar__link" data-rail-stage="launch"><span class="launch-sidebar__num">05</span> Launch</a></li>
               </ul>
             </div>
             <div class="launch-sidebar__section">
@@ -617,6 +1038,7 @@
 
   <script type="module" src="script.js"></script>
   <script type="module" src="js/navbar.js"></script>
+  <script type="module" src="js/curriculum.js"></script>
   <script type="module" src="js/schematics.js"></script>
 </body>
 </html>

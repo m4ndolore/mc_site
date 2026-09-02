@@ -128,31 +128,38 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
-.launch-hero__bookmark {
-  display: flex;
+#launchContinue[hidden],
+#launchTriageLink[hidden] {
+  display: none !important;
+}
+
+.launch-bookmark {
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   margin: 18px 0 0;
-  font-size: 13px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--blue);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.launch-bookmark svg { color: currentColor; flex-shrink: 0; }
+.launch-bookmark:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+.launch-hero__bookmark-note {
+  margin: 8px 0 0;
+  max-width: 420px;
   color: rgba(255, 255, 255, 0.45);
-  max-width: 560px;
+  font-size: 13px;
 }
-.launch-hero__bookmark svg { color: var(--blue); flex-shrink: 0; }
-.launch-hero__bookmark kbd {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  padding: 1px 6px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-  color: rgba(255, 255, 255, 0.6);
-}
-.light-theme .launch-hero__bookmark { color: rgba(0, 0, 0, 0.5); }
-.light-theme .launch-hero__bookmark kbd {
-  border-color: rgba(0, 0, 0, 0.25);
-  color: rgba(0, 0, 0, 0.6);
-}
+.light-theme .launch-hero__bookmark-note { color: rgba(0, 0, 0, 0.5); }
 
 /* ── Triage shortcut ── */
 .launch-triage {
@@ -320,6 +327,177 @@
 .launch-resource--external .launch-resource__title::after {
   content: ' \2197';
   color: rgba(255, 255, 255, 0.3);
+}
+
+/* ── Interactive path (checkoffs, progress, current stage) ── */
+.launch-anchor-alias {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.launch-path-status {
+  display: grid;
+  gap: 12px;
+  margin: 0 0 28px;
+  padding-left: 84px;
+}
+
+.launch-resume {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  border-radius: 2px;
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--offwhite);
+  font-size: 14px;
+}
+
+.launch-resume[hidden],
+.launch-advance[hidden] {
+  display: none !important;
+}
+
+.launch-resume__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.launch-link-button {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--blue);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.launch-progress {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.launch-progress__seg {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.launch-progress__seg.is-complete,
+.launch-progress__seg.is-active {
+  background: var(--blue);
+}
+
+.launch-progress__label {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.launch-stage.is-current {
+  border-top-color: rgba(59, 130, 246, 0.35);
+}
+
+.launch-stage.is-current .launch-stage__number {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.launch-stage.is-complete .launch-stage__number {
+  border-color: var(--operator-green);
+  color: var(--operator-green);
+}
+
+.launch-stage__progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+  padding-left: 84px;
+}
+
+.launch-stage__count {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.45);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.launch-resource-wrap {
+  display: flex;
+  align-items: stretch;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+}
+
+.launch-resource-wrap .launch-resource {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+}
+
+.launch-resource-wrap:hover,
+.launch-resource-wrap.is-engaged {
+  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.launch-resource__check {
+  flex: none;
+  width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.launch-resource__check[aria-pressed="true"] {
+  border-color: var(--blue);
+  background: var(--blue);
+  color: #fff;
+}
+
+.launch-resource__check[aria-pressed="true"]::after {
+  content: "✓";
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.launch-resource__details {
+  margin: 6px 0 0;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.launch-sidebar__link.is-complete {
+  color: var(--operator-green);
 }
 
 /* ── Stage CTA (appears in later stages) ── */
@@ -491,7 +669,9 @@
 
   .launch-stage__description,
   .launch-resources,
-  .launch-stage-cta {
+  .launch-stage-cta,
+  .launch-path-status,
+  .launch-stage__progress {
     padding-left: 0;
   }
 
@@ -504,4 +684,60 @@
   .launch-hero {
     padding-top: calc(var(--nav-height) + 44px);
   }
+}
+
+/* Light theme: launch.css uses hardcoded light-on-dark rgba that the token
+   inversion in light-theme.css cannot fix. */
+.light-theme .launch-hero__subtitle,
+.light-theme .launch-stage__subtitle,
+.light-theme .launch-stage__description,
+.light-theme .launch-stage__count,
+.light-theme .launch-progress__label,
+.light-theme .launch-resource__meta,
+.light-theme .launch-resource__details,
+.light-theme .launch-sidebar__link,
+.light-theme .launch-sidebar__heading {
+  color: var(--gray-light);
+}
+
+.light-theme .launch-stage,
+.light-theme .launch-resource-wrap,
+.light-theme .launch-resume {
+  border-color: var(--ghost-gray);
+}
+
+.light-theme .launch-resource-wrap,
+.light-theme .launch-resume {
+  background: var(--charcoal);
+}
+
+.light-theme .launch-resource-wrap:hover,
+.light-theme .launch-resource-wrap.is-engaged {
+  background: var(--slate);
+  border-color: var(--blue);
+}
+
+.light-theme .launch-resource__check {
+  border-right-color: var(--ghost-gray);
+}
+
+.light-theme .launch-progress__seg {
+  background: var(--ghost-gray);
+}
+
+.light-theme .launch-progress__seg.is-complete,
+.light-theme .launch-progress__seg.is-active {
+  background: var(--blue);
+}
+
+.light-theme .launch-sidebar__num {
+  color: var(--gray-medium);
+}
+
+.light-theme .launch-sidebar__link--active {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.light-theme .launch-stage.is-current {
+  border-top-color: var(--blue);
 }

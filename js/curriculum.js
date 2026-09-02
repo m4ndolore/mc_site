@@ -1,302 +1,229 @@
-// js/curriculum.js — progressive enhancement over the build-time-injected
-// curriculum DOM. State in localStorage; metrics via Plausible.
-//
-// HTML contract: see curriculum.html for the `.cur-*` markup this module
-// binds to. Each resource is:
-//   <div class="cur-resource" data-resource-id data-stage-id>
-//     <button class="cur-resource__check" aria-pressed>
-//     <a class="cur-resource__link" href>
-
+// Progressive enhancement for the canonical /launch mission path.
+// The storage key and event names remain unchanged so existing progress and
+// analytics continue across the /curriculum -> /launch migration.
 const STORAGE_KEY = "mc.curriculum.v1";
 const TRIAGE_KEY = "mc-founder-path-state-v1";
-const ONBOARDING_KEY = "mc-onboarding-intent-v1"; // written by js/onboarding/MCOnboarding.jsx on /access
+const ONBOARDING_KEY = "mc-onboarding-intent-v1";
 const ADVANCE_GATE = 2;
 
 const TRIAGE_TO_STAGE = {
-  "visionary-no-problem": "preflight",
-  "curious": "preflight",
-  "operator-with-problem": "spot",
-  "builder-no-problem": "spot",
-  "team-with-prototype": "ready",
-  "scaling": "tension",
+  "visionary-no-problem": "preflight", curious: "preflight",
+  "operator-with-problem": "spot", "builder-no-problem": "spot",
+  "team-with-prototype": "ready", scaling: "tension",
 };
-
-// /access step 1 readiness intents. Deeper placements are safe: the triage
-// banner always offers "Start from the beginning instead".
-const INTENT_TO_STAGE = {
-  "exploring": "spot",
-  "building": "ready",
-  "scaling": "tension",
-  "operating": "launch",
-};
-
-const TRIAGE_LABELS = {
-  "visionary-no-problem": "a visionary without a problem yet",
-  "curious": "exploring defense tech",
-  "operator-with-problem": "an operator with a problem",
-  "builder-no-problem": "a technical builder seeking a problem",
-  "team-with-prototype": "a team with a working prototype",
-  "scaling": "fundraising, scaling, or transitioning",
-  "exploring": "exploring a problem",
-  "building": "building or validating",
-  "operating": "deployed and expanding",
-};
+const INTENT_TO_STAGE = { exploring: "spot", building: "ready", scaling: "tension", operating: "launch" };
 
 function track(event, props, { beacon = false } = {}) {
-  // sendBeacon survives same-tab navigation, which cancels the script's fetch.
-  // Localhost guard mirrors the Plausible script's own dev exclusion.
+  const enriched = { ...props, surface: "launch" };
   if (beacon && navigator.sendBeacon && !/^localhost$|^127\./.test(location.hostname)) {
-    const payload = { n: event, u: location.href, d: "mergecombinator.com", r: document.referrer || null };
-    if (props) payload.p = props;
+    const payload = { n: event, u: location.href, d: "mergecombinator.com", r: document.referrer || null, p: enriched };
     navigator.sendBeacon("https://plausible.io/api/event", JSON.stringify(payload));
     return;
   }
-  const plausible = window.plausible;
-  if (typeof plausible === "function") plausible(event, props ? { props } : undefined);
+  if (typeof window.plausible === "function") window.plausible(event, { props: enriched });
 }
 
 function init() {
-  const stagesEl = document.getElementById("curStages");
-  const stageEls = [...document.querySelectorAll(".cur-stage")];
-  if (!stagesEl || stageEls.length === 0) {
-    console.error("[curriculum] missing #curStages or .cur-stage elements — enhancement skipped");
-    return;
-  }
+  const stages = [...document.querySelectorAll(".launch-stage[data-stage-id]")];
+  const resources = [...document.querySelectorAll(".launch-resource-wrap[data-resource-id]")];
+  const rail = document.getElementById("launchRail");
+  const progress = document.getElementById("launchProgress");
+  if (!stages.length || !resources.length || !rail || !progress) return;
 
-  const stageIds = stageEls.map((el) => el.dataset.stageId);
-  const progressEl = document.getElementById("curProgress");
-  progressEl.setAttribute("role", "progressbar");
+  const stageIds = stages.map((stage) => stage.dataset.stageId);
+  const stageIndex = (id) => stageIds.indexOf(id);
 
   function loadState() {
     try {
-      const s = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (s && stageIds.includes(s.currentStage)) {
+      const value = JSON.parse(localStorage.getItem(STORAGE_KEY));
+      if (value && stageIds.includes(value.currentStage)) {
         return {
-          currentStage: s.currentStage,
-          engaged: Array.isArray(s.engaged) ? s.engaged : [],
-          startedFrom: s.startedFrom || null,
-          bannerDismissed: Boolean(s.bannerDismissed),
+          currentStage: value.currentStage,
+          engaged: Array.isArray(value.engaged) ? value.engaged.filter((id) => resources.some((resource) => resource.dataset.resourceId === id)) : [],
+          startedFrom: value.startedFrom || null,
+          bannerDismissed: Boolean(value.bannerDismissed),
         };
       }
-    } catch { /* ignore */ }
+    } catch { /* use a clean state */ }
     return null;
   }
 
-  function triageStage() {
-    // Founder-path triage first (richer signal), then /access onboarding intent.
+  function mappedStart() {
     try {
-      const t = JSON.parse(localStorage.getItem(TRIAGE_KEY));
-      if (t && t.stage && TRIAGE_TO_STAGE[t.stage]) {
-        return { stage: TRIAGE_TO_STAGE[t.stage], answer: t.stage, source: "founder-path" };
-      }
-    } catch { /* ignore */ }
+      const triage = JSON.parse(localStorage.getItem(TRIAGE_KEY));
+      if (triage?.stage && TRIAGE_TO_STAGE[triage.stage]) return { stage: TRIAGE_TO_STAGE[triage.stage], answer: triage.stage, source: "founder-path" };
+    } catch { /* continue */ }
     try {
-      const o = JSON.parse(localStorage.getItem(ONBOARDING_KEY));
-      if (o && o.intent && INTENT_TO_STAGE[o.intent]) {
-        return { stage: INTENT_TO_STAGE[o.intent], answer: o.intent, source: "onboarding" };
-      }
-    } catch { /* ignore */ }
+      const onboarding = JSON.parse(localStorage.getItem(ONBOARDING_KEY));
+      if (onboarding?.intent && INTENT_TO_STAGE[onboarding.intent]) return { stage: INTENT_TO_STAGE[onboarding.intent], answer: onboarding.intent, source: "onboarding" };
+    } catch { /* continue */ }
     return null;
   }
 
   let state = loadState();
-  const returning = Boolean(state);
+  const mapped = state ? null : mappedStart();
   if (!state) {
-    const mapped = triageStage();
-    state = {
-      currentStage: mapped ? mapped.stage : stageIds[0],
-      engaged: [],
-      startedFrom: mapped ? mapped.answer : null,
-      bannerDismissed: false,
-    };
-    track("Curriculum Start", {
-      stage: state.currentStage,
-      fromTriage: String(Boolean(mapped)),
-      source: mapped ? mapped.source : "direct",
-    });
-    save(); // persist immediately so Start fires once per user, not once per visit
+    state = { currentStage: mapped?.stage || stageIds[0], engaged: [], startedFrom: mapped?.answer || null, bannerDismissed: false };
+    track("Curriculum Start", { stage: state.currentStage, fromTriage: String(Boolean(mapped)), source: mapped?.source || "direct" });
+    save();
   }
-  let viewingStage = state.currentStage;
 
   function save() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* ignore */ }
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* storage is optional */ }
   }
 
-  const idx = (id) => stageIds.indexOf(id);
-  const engagedInStage = (id) =>
-    [...document.querySelectorAll(`.cur-resource[data-stage-id="${id}"]`)]
-      .filter((el) => state.engaged.includes(el.dataset.resourceId)).length;
+  function engagedIn(stageId) {
+    return resources.filter((resource) => resource.dataset.stageId === stageId && state.engaged.includes(resource.dataset.resourceId)).length;
+  }
 
   function render() {
-    const currentIdx = idx(state.currentStage);
-    const viewIdx = idx(viewingStage);
-
-    stageEls.forEach((el, i) => el.classList.toggle("is-open", i === viewIdx));
-
-    document.querySelectorAll("#curProgress .fp-progress__seg").forEach((seg, i) => {
-      seg.classList.toggle("is-complete", i < currentIdx);
-      seg.classList.toggle("is-active", i === currentIdx);
-    });
-    const viewTitle = stageEls[viewIdx].querySelector(".cur-stage__title").textContent;
-    const currentTitle = stageEls[currentIdx].querySelector(".cur-stage__title").textContent;
-    document.getElementById("curProgressLabel").textContent =
-      `Stage ${currentIdx + 1} of ${stageIds.length} · ${currentTitle}` +
-      (viewIdx !== currentIdx ? ` (previewing ${viewTitle})` : "");
-    progressEl.setAttribute("aria-valuemin", "1");
-    progressEl.setAttribute("aria-valuemax", String(stageIds.length));
-    progressEl.setAttribute("aria-valuenow", String(currentIdx + 1));
-    progressEl.setAttribute("aria-valuetext", `Stage ${currentIdx + 1} of ${stageIds.length}: ${currentTitle}`);
-
-    document.querySelectorAll(".cur-rail__link").forEach((link) => {
-      const i = idx(link.dataset.railStage);
-      link.classList.toggle("is-complete", i < currentIdx);
-      link.classList.toggle("is-current", i === currentIdx);
-      link.classList.toggle("is-upcoming", i > currentIdx);
-    });
-
-    document.querySelectorAll(".cur-resource").forEach((el) => {
-      const engaged = state.engaged.includes(el.dataset.resourceId);
-      el.classList.toggle("is-engaged", engaged);
-      const check = el.querySelector(".cur-resource__check");
-      if (check) check.setAttribute("aria-pressed", String(engaged));
-    });
-
-    stageEls.forEach((el, i) => {
-      const id = el.dataset.stageId;
-      const n = engagedInStage(id);
-      const total = el.querySelectorAll(".cur-resource").length;
-      const countEl = el.querySelector(".cur-stage__count");
-      const btn = el.querySelector(".cur-advance");
-      countEl.textContent = `${n} of ${total} explored`;
-      const isCurrent = i === currentIdx;
-      const isLast = i === stageIds.length - 1;
-      btn.hidden = !isCurrent || isLast;
-      if (isCurrent && !isLast) {
-        const nextTitle = stageEls[i + 1].querySelector(".cur-stage__title").textContent;
-        const unlocked = n >= ADVANCE_GATE;
-        btn.disabled = !unlocked;
-        btn.textContent = unlocked
-          ? `Advance to ${nextTitle} →`
-          : `Explore ${ADVANCE_GATE - n} more to advance`;
-      }
-      if (isCurrent && isLast) {
-        countEl.textContent += " · Final stage";
+    const currentIndex = stageIndex(state.currentStage);
+    stages.forEach((stage, index) => {
+      stage.classList.toggle("is-current", index === currentIndex);
+      stage.classList.toggle("is-complete", index < currentIndex);
+      const count = engagedIn(stage.dataset.stageId);
+      const total = resources.filter((resource) => resource.dataset.stageId === stage.dataset.stageId).length;
+      const countEl = stage.querySelector(".launch-stage__count");
+      if (countEl) countEl.textContent = `${count} of ${total} explored${index === stageIds.length - 1 && index === currentIndex ? " · Final stage" : ""}`;
+      const advance = stage.querySelector(".launch-advance");
+      const isCurrent = index === currentIndex;
+      const isLast = index === stageIds.length - 1;
+      if (advance) {
+        advance.hidden = !isCurrent || isLast;
+        if (isCurrent && !isLast) {
+          advance.disabled = count < ADVANCE_GATE;
+          const nextTitle = stages[index + 1].querySelector(".launch-stage__title").textContent;
+          advance.textContent = count >= ADVANCE_GATE ? `Advance to ${nextTitle} →` : `Explore ${ADVANCE_GATE - count} more to advance`;
+        }
       }
     });
 
-    const peeking = viewIdx !== currentIdx;
-    const strip = document.getElementById("curPeekStrip");
-    strip.hidden = !peeking;
-    if (peeking) {
-      document.getElementById("curPeekText").textContent = `Your current stage is ${currentTitle}.`;
-    }
+    resources.forEach((resource) => {
+      const engaged = state.engaged.includes(resource.dataset.resourceId);
+      resource.classList.toggle("is-engaged", engaged);
+      resource.querySelector(".launch-resource__check")?.setAttribute("aria-pressed", String(engaged));
+    });
+
+    rail.querySelectorAll("[data-rail-stage]").forEach((link) => {
+      const index = stageIndex(link.dataset.railStage);
+      link.classList.toggle("launch-sidebar__link--active", index === currentIndex);
+      link.classList.toggle("is-complete", index < currentIndex);
+    });
+    progress.querySelectorAll(".launch-progress__seg").forEach((segment, index) => {
+      segment.classList.toggle("is-complete", index < currentIndex);
+      segment.classList.toggle("is-active", index === currentIndex);
+    });
+    const currentTitle = stages[currentIndex].querySelector(".launch-stage__title").textContent;
+    document.getElementById("launchProgressLabel").textContent = `Stage ${currentIndex + 1} of ${stageIds.length} · ${currentTitle}`;
+    progress.setAttribute("role", "progressbar");
+    progress.setAttribute("aria-valuemin", "1");
+    progress.setAttribute("aria-valuemax", String(stageIds.length));
+    progress.setAttribute("aria-valuenow", String(currentIndex + 1));
+    progress.setAttribute("aria-valuetext", `Stage ${currentIndex + 1} of ${stageIds.length}: ${currentTitle}`);
   }
 
-  function showBanner() {
-    if (state.bannerDismissed || returning || !state.startedFrom) return;
-    if (state.currentStage === stageIds[0]) return;
-    const banner = document.getElementById("curTriageBanner");
-    const stageTitle = stageEls[idx(state.currentStage)].querySelector(".cur-stage__title").textContent;
-    document.getElementById("curTriageBannerText").textContent =
-      `You're ${TRIAGE_LABELS[state.startedFrom] || "past the basics"} — we've started you at ${stageTitle}.`;
-    banner.hidden = false;
+  function stageTitle(id) {
+    return stages[stageIndex(id)].querySelector(".launch-stage__title").textContent;
   }
 
-  function showResumeStrip() {
-    if (!returning) return;
-    const allIds = [...document.querySelectorAll(".cur-resource")].map((el) => el.dataset.resourceId);
-    const explored = state.engaged.filter((id) => allIds.includes(id)).length;
-    if (explored === 0 && state.currentStage === stageIds[0]) return;
-    const stageTitle = stageEls[idx(state.currentStage)].querySelector(".cur-stage__title").textContent;
-    document.getElementById("curResumeText").textContent =
-      `Picking up at Stage ${idx(state.currentStage) + 1}: ${stageTitle} — ${explored} of ${allIds.length} resources explored.`;
-    document.getElementById("curResumeStrip").hidden = false;
+  function scrollToStage(id) {
+    const stage = stages[stageIndex(id)];
+    const title = stage.querySelector(".launch-stage__title");
+    title.tabIndex = -1;
+    title.focus({ preventScroll: true });
+    stage.scrollIntoView({
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
+      block: "start",
+    });
   }
 
-  stagesEl.addEventListener("click", (e) => {
-    const check = e.target.closest(".cur-resource__check");
+  function showNotices() {
+    const continueBtn = document.getElementById("launchContinue");
+    const triageLink = document.getElementById("launchTriageLink");
+    const awayFromStart = state.currentStage !== stageIds[0] || state.engaged.length > 0;
+    if (!continueBtn) return;
+    continueBtn.hidden = !awayFromStart;
+    if (awayFromStart) continueBtn.textContent = `Continue at ${stageTitle(state.currentStage)}`;
+    if (triageLink) triageLink.hidden = awayFromStart;
+  }
+
+  document.getElementById("launch-main").addEventListener("click", (event) => {
+    const check = event.target.closest(".launch-resource__check");
     if (check) {
-      const resource = check.closest(".cur-resource");
+      const resource = check.closest(".launch-resource-wrap");
       const id = resource.dataset.resourceId;
-      if (state.engaged.includes(id)) {
-        state.engaged = state.engaged.filter((r) => r !== id);
-      } else {
-        state.engaged.push(id);
-        track("Curriculum Resource Engaged", { resource: id, via: "toggle" });
-      }
-      save();
-      render();
-      return;
+      if (state.engaged.includes(id)) state.engaged = state.engaged.filter((value) => value !== id);
+      else { state.engaged.push(id); track("Curriculum Resource Engaged", { resource: id, via: "toggle" }); }
+      save(); render(); return;
     }
-
-    const link = e.target.closest(".cur-resource__link");
+    const link = event.target.closest(".launch-resource");
     if (link) {
-      const resource = link.closest(".cur-resource");
+      const resource = link.closest(".launch-resource-wrap");
       const id = resource.dataset.resourceId;
       const sameTab = link.target !== "_blank";
       track("Curriculum Resource Open", { resource: id }, { beacon: sameTab });
       if (!state.engaged.includes(id)) {
-        state.engaged.push(id);
+        state.engaged.push(id); save();
         track("Curriculum Resource Engaged", { resource: id, via: "open" }, { beacon: sameTab });
+        render();
       }
-      save();
-      render();
-      return; // navigation proceeds naturally (new tab for external links)
+      return;
     }
-
-    const adv = e.target.closest(".cur-advance");
-    if (adv && !adv.disabled) {
-      // Defense in depth: only the CURRENT stage's button may advance
-      // (a stale button on a peeked stage must not move the real state).
-      if (adv.dataset.advanceFrom !== state.currentStage) return;
+    const advance = event.target.closest(".launch-advance");
+    if (advance && !advance.disabled && advance.dataset.advanceFrom === state.currentStage) {
       const from = state.currentStage;
-      const next = stageIds[idx(from) + 1];
-      state.currentStage = next;
-      viewingStage = next;
-      track("Curriculum Advance", { from, to: next });
-      save();
-      render();
-      const title = stageEls[idx(next)].querySelector(".cur-stage__title");
-      title.setAttribute("tabindex", "-1");
-      title.focus({ preventScroll: true });
-      const behavior = matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
-      document.getElementById("cur-main").scrollIntoView({ behavior });
+      state.currentStage = stageIds[stageIndex(from) + 1];
+      save(); render(); track("Curriculum Advance", { from, to: state.currentStage });
+      const nextStage = stages[stageIndex(state.currentStage)];
+      const title = nextStage.querySelector(".launch-stage__title");
+      title.tabIndex = -1; title.focus({ preventScroll: true });
+      nextStage.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
     }
   });
 
-  document.getElementById("curRail").addEventListener("click", (e) => {
-    const link = e.target.closest(".cur-rail__link");
-    if (!link) return;
-    e.preventDefault();
-    viewingStage = link.dataset.railStage;
-    if (viewingStage !== state.currentStage) track("Curriculum Peek", { stage: viewingStage });
-    render();
+  rail.addEventListener("click", (event) => {
+    const link = event.target.closest("[data-rail-stage]");
+    if (link && link.dataset.railStage !== state.currentStage) track("Curriculum Peek", { stage: link.dataset.railStage });
+  });
+  document.getElementById("launchContinue")?.addEventListener("click", () => {
+    track("Curriculum Peek", { stage: state.currentStage, via: "continue" });
+    scrollToStage(state.currentStage);
   });
 
-  document.getElementById("curPeekReturn").addEventListener("click", () => {
-    viewingStage = state.currentStage;
-    render();
-  });
+  const bookmarkBtn = document.getElementById("launchBookmark");
+  const bookmarkLabel = document.getElementById("launchBookmarkLabel");
+  if (bookmarkBtn && bookmarkLabel) {
+    const restLabel = bookmarkLabel.textContent;
+    const mac = /Mac|iPhone|iPad/i.test(navigator.userAgent);
+    const hint = mac ? "Press ⌘D to save" : "Press Ctrl+D to save";
+    let hintTimer = 0;
+    bookmarkBtn.addEventListener("click", async () => {
+      const touch = navigator.maxTouchPoints > 0 || matchMedia("(pointer: coarse)").matches;
+      if (touch && typeof navigator.share === "function") {
+        try {
+          await navigator.share({ title: document.title, url: location.href });
+          return;
+        } catch (error) {
+          if (error && error.name === "AbortError") return;
+        }
+      }
+      bookmarkLabel.textContent = hint;
+      clearTimeout(hintTimer);
+      hintTimer = window.setTimeout(() => { bookmarkLabel.textContent = restLabel; }, 2500);
+    });
+  }
 
-  document.getElementById("curBannerDismiss").addEventListener("click", () => {
-    state.bannerDismissed = true;
-    save();
-    document.getElementById("curTriageBanner").hidden = true;
-  });
-
-  document.getElementById("curStartOver").addEventListener("click", () => {
-    state.currentStage = stageIds[0];
-    state.bannerDismissed = true;
-    viewingStage = stageIds[0];
-    save();
-    render();
-    document.getElementById("curTriageBanner").hidden = true;
-  });
-
-  stagesEl.classList.add("js-enhanced");
-  showBanner();
-  showResumeStrip();
+  document.documentElement.classList.add("launch-js");
+  showNotices();
   render();
+
+  const hashToStage = {
+    "#pre-flight": "preflight", "#stage-preflight": "preflight", "#spot": "spot", "#stage-spot": "spot",
+    "#hook-up": "ready", "#stage-ready": "ready", "#tension": "tension", "#stage-tension": "tension",
+    "#launch-stage": "launch", "#stage-launch": "launch",
+  };
+  const deepLinked = hashToStage[location.hash];
+  if (deepLinked && deepLinked !== state.currentStage) track("Curriculum Peek", { stage: deepLinked, via: "hash" });
 }
 
 init();
