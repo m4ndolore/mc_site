@@ -41,3 +41,46 @@
   --anymouse-tile-bg: var(--color-white, #ffffff);
   --anymouse-input-bg: var(--color-white, #ffffff);
 }
+
+/* ---- 3. Mobile parking spot: bottom-right corner ----
+ * The widget's default anchor (navbar bottom + gap, right edge) parks the mouse
+ * on top of the hero headline on narrow screens, where the text runs full
+ * width. Below the site's mobile breakpoint, park it bottom-right instead,
+ * clear of the hero and the thumb-reach zone's edge.
+ *
+ * `#anymouse-root` (id specificity) is needed because the widget appends its
+ * own <style> AFTER this sheet at init; a bare class rule would lose on source
+ * order. `top: auto` also neutralises the inline `--anymouse-top` the anchor
+ * sets. A drag-persisted position writes inline top/left and still wins, as
+ * intended. */
+@media (max-width: 768px) {
+  #anymouse-root {
+    top: auto;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    right: 12px;
+  }
+
+  /* Scroll-duck: the default drops the button 80px, which would push it off the
+     bottom edge from this position. Keep the shrink + fade, drop the drift. */
+  #anymouse-root .anymouse-button.hidden-scroll {
+    transform: scale(0.7);
+  }
+
+  /* The coachmark bubble opens BELOW the button by default (built for the
+     upper-right anchor). From the bottom corner, open it ABOVE and flip the
+     arrow to point down at the icon. */
+  #anymouse-root .anymouse-coachmark {
+    top: auto;
+    bottom: calc(100% + 14px);
+    transform: translateY(6px);
+  }
+  #anymouse-root .anymouse-coachmark.is-visible {
+    transform: translateY(0);
+  }
+  #anymouse-root .anymouse-coachmark::after {
+    bottom: auto;
+    top: 100%;
+    border-bottom-color: transparent;
+    border-top-color: var(--mc-charcoal, #171717);
+  }
+}
