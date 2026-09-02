@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    // FOUC prevention: apply theme before first paint
+    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mission Advantage Anywhere is a family of carry-on communications kits that keeps a dispersed team connected and reporting for the first 72 hours, over mesh, satellite or cellular, into the C2 picture the unit already watches.">
+  <meta name="keywords" content="mission advantage anywhere, contingency communications, carry-on kit, agile combat employment, PACE, MANET, TAK, Starlink Mini, dispersed operations, command post continuity, Merge Combinator">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-32.png?v=2">
+  <link rel="apple-touch-icon" href="/assets/favicon-512.png?v=2">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://mergecombinator.com/products/mission-advantage-anywhere">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Mission Advantage Anywhere — The network shows up in a backpack">
+  <meta property="og:description" content="Contingency communications for the first 72 hours. Carry-on kits that keep a dispersed team connected and reporting when the network they normally use is gone.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mergecombinator.com/products/mission-advantage-anywhere">
+  <meta property="og:image" content="https://mergecombinator.com/assets/products/mission-advantage/og-flyaway.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Mission Advantage Anywhere — Merge Combinator">
+  <meta name="twitter:description" content="Contingency communications for the first 72 hours. The network shows up in a backpack.">
+  <meta name="twitter:image" content="https://mergecombinator.com/assets/products/mission-advantage/og-flyaway.jpg">
+
+  <title>Mission Advantage Anywhere — Merge Combinator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/styles/mission-advantage.css">
+  <link rel="stylesheet" href="/styles/cta.css">
+  <link rel="stylesheet" href="/styles/light-theme.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Mission Advantage Anywhere",
+    "description": "A family of carry-on communications and reporting kits for continuity of operations in the first 24 to 72 hours. Moves traffic over mesh, satellite or cellular and puts position, status and observations onto the C2 picture the unit already watches.",
+    "brand": { "@type": "Organization", "name": "Merge Combinator, LLC" },
+    "manufacturer": { "@type": "Organization", "name": "Merge Combinator, LLC", "url": "https://mergecombinator.com" },
+    "url": "https://mergecombinator.com/products/mission-advantage-anywhere",
+    "image": "https://mergecombinator.com/assets/products/mission-advantage/og-flyaway.jpg",
+    "category": "Contingency communications",
+    "offers": [
+      { "@type": "Offer", "name": "Mobile node", "price": "2500", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+      { "@type": "Offer", "name": "Flyaway node", "price": "6000", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
+      { "@type": "Offer", "name": "Persist node", "price": "30000", "priceCurrency": "USD", "availability": "https://schema.org/PreOrder" }
+    ]
+  }
+  </script>
+</head>
+<body class="maa">
+  <div id="mc-navbar"></div>
+
+  <!-- ============================================ HERO -->
+  <section class="maa-hero">
+    <div class="maa-hero__bg"></div>
+    <div class="container maa-hero__content">
+      <div class="maa-hero__crumb">
+        <a href="/">Merge Combinator</a>
+        <span>/</span>
+        <span>Products</span>
+        <span>/</span>
+        <span>Mission Advantage Anywhere</span>
+        <span class="maa-tag">Unclassified</span>
+      </div>
+
+      <h1 class="maa-hero__title">The network shows up in a <em>backpack.</em></h1>
+
+      <div class="maa-hero__kicker">
+        <span class="maa-hero__product">Mission Advantage Anywhere</span>
+        <span class="maa-hero__sub">Contingency communications for the first 72 hours.</span>
+      </div>
+
+      <div class="maa-hero__actions">
+        <a href="/content/mission-advantage/Mission-Advantage-Anywhere.pdf" class="btn btn--primary" download>Download the product overview</a>
+        <a href="/content/mission-advantage/Mission-Advantage-Anywhere-Flyer.pdf" class="btn btn--ghost" download>Download the flyer</a>
+        <a href="mailto:advantage@mergecombinator.com" class="btn btn--ghost">advantage@mergecombinator.com</a>
+      </div>
+
+      <div class="maa-meta">
+        <div class="maa-meta__item"><div class="maa-meta__k">Builder</div><div class="maa-meta__v">Merge Combinator, LLC</div></div>
+        <div class="maa-meta__item"><div class="maa-meta__k">CAGE</div><div class="maa-meta__v">11TF7</div></div>
+        <div class="maa-meta__item"><div class="maa-meta__k">Status</div><div class="maa-meta__v">Fielding, unclassified baseline</div></div>
+        <div class="maa-meta__item"><div class="maa-meta__k">Node classes</div><div class="maa-meta__v">Mobile · Flyaway · Persist</div></div>
+        <div class="maa-meta__item"><div class="maa-meta__k">Issued</div><div class="maa-meta__v">August 2026</div></div>
+      </div>
+
+      <figure class="maa-figure maa-figure--hero">
+        <img src="/assets/products/mission-advantage/flyaway-node.webp" alt="Flyaway node packed in a single-person carry pack: the Mobile charge case with end user device and satellite messenger alongside a folded LEO terminal" width="1200" height="655" fetchpriority="high">
+        <figcaption class="maa-figure__cap">Flyaway node · single-person carry</figcaption>
+      </figure>
+
+      <p class="maa-lede"><strong>Mission Advantage Anywhere is a family of carry-on kits that keeps a dispersed team connected and reporting when the network they normally use is gone.</strong> It moves traffic over whatever path is available, whether mesh, satellite or cellular, and puts the team's position, status and observations onto the command and control picture the unit already watches.</p>
+
+      <div class="maa-stats">
+        <div class="maa-stat"><div class="maa-stat__n">0.98<small>kg</small></div><div class="maa-stat__k">Mobile node</div><div class="maa-stat__d">case, device, messenger</div></div>
+        <div class="maa-stat"><div class="maa-stat__n">2.1<small>kg</small></div><div class="maa-stat__k">Flyaway node</div><div class="maa-stat__d">team net and reach-back</div></div>
+        <div class="maa-stat"><div class="maa-stat__n">5</div><div class="maa-stat__k">Bearers</div><div class="maa-stat__d">mesh, LEO, cell, DTC, sat msg</div></div>
+        <div class="maa-stat"><div class="maa-stat__n">$2,500</div><div class="maa-stat__k">Entry node</div><div class="maa-stat__d">inside a routine purchase</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ BODY -->
+  <div class="container maa-body">
+    <aside class="maa-toc" aria-label="On this page">
+      <div class="maa-toc__label">On this page</div>
+      <ol>
+        <li><a href="#overview"><span>01</span>Product overview</a></li>
+        <li><a href="#features"><span>02</span>Key features</a></li>
+        <li><a href="#system-view"><span>03</span>System view · SV-2</a></li>
+        <li><a href="#node-classes"><span>04</span>Node classes</a></li>
+        <li><a href="#specifications"><span>05</span>General specifications</a></li>
+        <li><a href="#applications"><span>06</span>Applications</a></li>
+        <li><a href="#data"><span>07</span>Data and reporting</a></li>
+        <li><a href="#integrations"><span>08</span>Integration list</a></li>
+        <li><a href="#security"><span>09</span>Security and accreditation</a></li>
+        <li><a href="#value"><span>10</span>Value proposition</a></li>
+        <li><a href="#customers"><span>11</span>Target customers</a></li>
+        <li><a href="#talking-points"><span>12</span>Talking points</a></li>
+        <li><a href="#not"><span>13</span>What it is not</a></li>
+        <li><a href="#documents"><span>14</span>Documents</a></li>
+      </ol>
+      <div class="maa-toc__docs">
+        <a href="/content/mission-advantage/Mission-Advantage-Anywhere.pdf" download>Product overview (PDF)</a>
+        <a href="/content/mission-advantage/Mission-Advantage-Anywhere-Flyer.pdf" download>Flyer (PDF)</a>
+      </div>
+    </aside>
+
+    <main>
+      <!-- 01 -->
+      <section class="maa-section" id="overview">
+        <div class="maa-section__head"><span class="maa-section__num">01</span><h2 class="maa-section__title">Product overview</h2></div>
+        <div class="maa-prose">
+          <p>Mission Advantage Anywhere is a deployable communications and reporting kit for continuity of operations while the mission and the network adapt. Teams disperse to austere and contingency locations, relocate a command post, or operate outside the base network boundary, and for the first 24 to 72 hours they are limited to what one person can carry. <strong>The kit is what that person carries.</strong></p>
+          <p>It is delivered in three node classes that share one software layer and one data model. A Mobile node puts a single operator on the picture. A Flyaway node moves a team with a local datalink and satellite reach-back. A Persist node stays and becomes the head-end for the local net. Any combination of them forms a working network, and every node routes for every other node, so the net survives losing any one of them, including the one holding reach-back.</p>
+          <p>The kit is additive by design. Existing systems remain the authority. The kit carries traffic to them and reports the mission around itself while it does.</p>
+        </div>
+      </section>
+
+      <!-- 02 -->
+      <section class="maa-section" id="features">
+        <div class="maa-section__head"><span class="maa-section__num">02</span><h2 class="maa-section__title">Key features</h2></div>
+        <ul class="maa-list">
+          <li><strong>Three node classes, one software layer.</strong> Mobile, Flyaway and Persist scale from one operator to a standing site without changing how data reaches the C2 picture.</li>
+          <li><strong>PACE is part of the design.</strong> Primary, alternate, contingency and emergency paths are set before the mission. The kit reports which path is carrying traffic and when that changed.</li>
+          <li><strong>Peer-to-peer local net.</strong> Every node routes for every other node. No hub to lose.</li>
+          <li><strong>It reports itself.</strong> System and mission telemetry through Dead Reckon; human observation through Anymouse. The kit is instrumented, so exercises produce data instead of anecdote.</li>
+          <li><strong>Rides the systems already in place.</strong> Position and traffic land in TAK; telemetry and reporting feed Envision, MSS and Advana.</li>
+          <li><strong>Commercial and replaceable.</strong> Components are commercial off the shelf and individually substitutable. No single vendor is load-bearing.</li>
+          <li><strong>Carried, not operated, in flight.</strong> Devices stay powered off in the cockpit and all use is off-aircraft. No cockpit-use approval is required and nothing in the design depends on one.</li>
+          <li><strong>An accreditation path, stated honestly.</strong> Components have IL4 precedent and the managed service supports CUI today. The specific combination is new and carries its own review.</li>
+        </ul>
+      </section>
+
+      <!-- 03 -->
+      <section class="maa-section" id="system-view">
+        <div class="maa-section__head"><span class="maa-section__num">03</span><h2 class="maa-section__title">System view · SV-2</h2></div>
+
+        <div class="maa-sv2" role="img" aria-label="SV-2 systems resource flow. Tier 1, C2 and enterprise systems: TAK Server, Envision, MSS, Advana. Tier 2, reach-back bearers: LEO broadband, cellular LTE and 5G, satellite direct-to-cell, satellite messenger. Tier 3, edge nodes: Mobile, Flyaway, Persist. Tier 4, local net: MANET mesh, peer to peer. Roadmap bearers UHF, VHF, HF, SATURN, LoRa and Wi-Fi HaLow add at the node.">
+          <div class="maa-sv2__tier">
+            <div class="maa-sv2__tierlabel">Tier 1 · C2 and enterprise systems · the authority</div>
+            <div class="maa-sv2__row">
+              <div class="maa-sv2__box"><div class="maa-sv2__name">TAK Server</div><div class="maa-sv2__desc">position · chat · CoT</div></div>
+              <div class="maa-sv2__box"><div class="maa-sv2__name">Envision</div><div class="maa-sv2__desc">wing COP</div></div>
+              <div class="maa-sv2__box"><div class="maa-sv2__name">MSS</div><div class="maa-sv2__desc">mission support</div></div>
+              <div class="maa-sv2__box"><div class="maa-sv2__name">Advana</div><div class="maa-sv2__desc">enterprise data</div></div>
+            </div>
+          </div>
+
+          <div class="maa-sv2__flow">▲ position reports · system telemetry · human observations</div>
+
+          <div class="maa-sv2__tier">
+            <div class="maa-sv2__tierlabel">Tier 2 · Reach-back bearers</div>
+            <div class="maa-sv2__row">
+              <div class="maa-sv2__box maa-sv2__box--bearer"><div class="maa-sv2__name">LEO broadband</div><div class="maa-sv2__desc">100 GB / month</div></div>
+              <div class="maa-sv2__box maa-sv2__box--bearer"><div class="maa-sv2__name">Cellular LTE / 5G</div><div class="maa-sv2__desc">unlimited + hotspot</div></div>
+              <div class="maa-sv2__box maa-sv2__box--bearer"><div class="maa-sv2__name">Satellite direct-to-cell</div><div class="maa-sv2__desc">messaging class</div></div>
+              <div class="maa-sv2__box maa-sv2__box--bearer"><div class="maa-sv2__name">Satellite messenger</div><div class="maa-sv2__desc">position + text</div></div>
+            </div>
+          </div>
+
+          <div class="maa-sv2__flow maa-sv2__flow--dim">▲ Mobile: cell · DTC · messenger &nbsp;|&nbsp; Flyaway: all four bearers &nbsp;|&nbsp; Persist: LEO · cell, always on</div>
+
+          <div class="maa-sv2__tier">
+            <div class="maa-sv2__tierlabel">Tier 3 · Edge nodes</div>
+            <div class="maa-sv2__row maa-sv2__row--3">
+              <div class="maa-sv2__box"><div class="maa-sv2__name">Mobile</div><div class="maa-sv2__desc">one operator<br>EUD · satellite messenger · backup power<br><b>Dead Reckon · Anymouse</b></div></div>
+              <div class="maa-sv2__box"><div class="maa-sv2__name">Flyaway</div><div class="maa-sv2__desc">a team, moving<br>Mobile + team datalink · LEO terminal · mission power<br><b>Dead Reckon · Anymouse</b></div></div>
+              <div class="maa-sv2__box maa-sv2__box--persist"><div class="maa-sv2__name">Persist</div><div class="maa-sv2__desc">the node that stays<br>compute + gateway · mesh head-end · LEO · 300 W<br><b>Dead Reckon · Anymouse</b></div></div>
+            </div>
+          </div>
+
+          <div class="maa-sv2__flow maa-sv2__flow--dim">▼ ▲</div>
+
+          <div class="maa-sv2__tier">
+            <div class="maa-sv2__tierlabel">Tier 4 · Local net</div>
+            <div class="maa-sv2__row">
+              <div class="maa-sv2__box maa-sv2__box--wide"><div class="maa-sv2__name">MANET mesh, peer to peer</div><div class="maa-sv2__desc">every node routes for every other node · the local net survives losing any single node, including the one holding reach-back</div></div>
+            </div>
+          </div>
+
+          <div class="maa-sv2__tier">
+            <div class="maa-sv2__tierlabel">Roadmap · fielded today vs. roadmap</div>
+            <div class="maa-sv2__row">
+              <div class="maa-sv2__box maa-sv2__box--roadmap"><div class="maa-sv2__name">UHF / VHF / HF · SATURN · LoRa · Wi-Fi HaLow</div><div class="maa-sv2__desc">adds at the node · nothing above this line changes</div></div>
+            </div>
+          </div>
+        </div>
+
+        <p class="maa-sv2__caption"><strong>SV-2 · Systems resource flow.</strong> Modularity is vertical and connectivity is horizontal. Any node class reaches any bearer it carries, and any bearer reaches the same four enterprise systems, so adding a node or a waveform changes one tier without touching the others. The dashed line is the claim worth testing: roadmap bearers integrate at the node, and nothing above the node has to change to accept them.</p>
+      </section>
+
+      <!-- 04 -->
+      <section class="maa-section" id="node-classes">
+        <div class="maa-section__head"><span class="maa-section__num">04</span><h2 class="maa-section__title">Node classes</h2></div>
+
+        <div class="maa-grid maa-grid--3">
+          <div class="maa-card maa-node">
+            <img class="maa-node__img" src="/assets/products/mission-advantage/mobile-node.webp" alt="Mobile node: an open Pelican 1120 case holding a ruggedized end user device on the upper tray and a Garmin inReach satellite messenger charging below" width="1200" height="655" loading="lazy">
+            <div class="maa-node__body">
+              <h3 class="maa-card__title" style="margin-top:0">Mobile <small>$2,500 / node</small></h3>
+              <p>Pelican 1120 charge case. iPhone 17 Pro end user device, Garmin inReach Mini 3 Plus satellite messenger, backup power and cabling. Charges closed; issued ready to use.</p>
+            </div>
+          </div>
+          <div class="maa-card maa-node">
+            <img class="maa-node__img" src="/assets/products/mission-advantage/flyaway-node.webp" alt="Flyaway node: the Mobile case and a folded LEO terminal packed together in a single-person carry pack" width="1200" height="655" loading="lazy">
+            <div class="maa-node__body">
+              <h3 class="maa-card__title" style="margin-top:0">Flyaway <small>$6,000 / node</small></h3>
+              <p>Single-person carry. The Mobile case plus a Starlink Mini LEO terminal, power adapter and team datalink, packed to move.</p>
+            </div>
+          </div>
+          <div class="maa-card maa-node">
+            <div class="maa-node__placeholder">Configured to order</div>
+            <div class="maa-node__body">
+              <h3 class="maa-card__title" style="margin-top:0">Persist <small>$30,000 / node</small></h3>
+              <p>The node that stays. Compute and gateway, encrypted mesh head-end for the local dark net, LEO reach-back and high-capacity power in a rugged carry-on.</p>
+            </div>
+          </div>
+        </div>
+        <p class="maa-note">Photography shows indicative configurations. Contents vary by mission and by the options selected at order. Persist is configured to order and is not pictured.</p>
+
+        <div class="maa-table-wrap">
+          <table class="maa-table">
+            <thead>
+              <tr><th>Node</th><th>What it is</th><th>Carries</th><th>Bearers</th><th>ROM</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mobile</td>
+                <td>One operator on the picture. Provisioned and ready to issue.</td>
+                <td>Pelican 1120 charge case, iPhone 17 Pro, Garmin inReach Mini 3 Plus, backup power, cabling</td>
+                <td>Cellular, direct-to-cell, satellite messenger</td>
+                <td class="rom">$2,500</td>
+              </tr>
+              <tr>
+                <td>Flyaway</td>
+                <td>A team or vehicle, moving. Single-person carry.</td>
+                <td>Mobile node plus Starlink Mini LEO terminal, power adapter, team datalink, tactical pack</td>
+                <td>All four, plus local mesh</td>
+                <td class="rom">$6,000</td>
+              </tr>
+              <tr>
+                <td>Persist</td>
+                <td>The node that stays. Command communications centre in a single-person carry-on. Configured to order.</td>
+                <td>Compute and gateway, encrypted mesh head-end for the local dark net, LEO reach-back, high-capacity power</td>
+                <td>All bearers, head-end for the local net</td>
+                <td class="rom">$30,000</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 05 -->
+      <section class="maa-section" id="specifications">
+        <div class="maa-section__head"><span class="maa-section__num">05</span><h2 class="maa-section__title">General specifications</h2></div>
+        <div class="maa-prose">
+          <p>Kit figures are the sum of the components in the baseline configuration. Component figures are manufacturer published.</p>
+        </div>
+
+        <div class="maa-table-wrap">
+          <table class="maa-table maa-table--specs">
+            <thead>
+              <tr><th>Specification</th><th>Mobile</th><th>Flyaway</th><th>Persist</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Form factor</th>
+                <td>Pelican 1120 Protector Case</td>
+                <td>Mobile case and LEO terminal in a tactical pack, single-person carry</td>
+                <td>Rugged carry-on case</td>
+              </tr>
+              <tr>
+                <th scope="row">Dimensions</th>
+                <td>21.4 × 17.2 × 9.8 cm exterior<span class="mono">8.41 × 6.76 × 3.87 in</span></td>
+                <td>Driven by the 29.9 × 25.9 × 3.9 cm LEO panel and the Mobile case. Fits a 25 to 35 L pack</td>
+                <td>56 × 36 × 23 cm<span class="mono">22 × 14 × 9 in, carry-on</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Weight</th>
+                <td>0.98 kg (2.2 lb)<span class="mono">case, device, messenger</span></td>
+                <td>2.1 kg (4.6 lb) excluding pack<span class="mono">Mobile plus LEO terminal</span></td>
+                <td>11 to 25 kg (25 to 55 lb)<span class="mono">by configuration</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Power</th>
+                <td>Internal battery and power bank, USB-C. Charges with the case closed</td>
+                <td>Mobile power plus 25 to 40 W average for the LEO terminal, 12 to 48 V input</td>
+                <td>300 W bus. 12 to 36 VDC, 90 to 264 VAC, vehicle and AC input</td>
+              </tr>
+              <tr>
+                <th scope="row">Endurance</th>
+                <td>Messenger runs multi-day at standard reporting intervals on 1800 mAh. The case charges both devices closed</td>
+                <td>A 99 Wh battery supports roughly 2.5 to 4 hours of terminal-on time. Sized per mission</td>
+                <td>Accepts BB-2590 and BB-2557 batteries. Endurance scales with battery count</td>
+              </tr>
+              <tr>
+                <th scope="row">Operating temp</th>
+                <td>Messenger −20 °C to 60 °C. End user device 0 °C to 35 °C per manufacturer</td>
+                <td>LEO terminal −30 °C to 50 °C. Mobile limits apply to the devices inside</td>
+                <td>−20 °C to 50 °C</td>
+              </tr>
+              <tr>
+                <th scope="row">Ingress rating</th>
+                <td>Case IP67. Messenger IP67</td>
+                <td>LEO terminal IP67 with power cable installed. Mobile case IP67</td>
+                <td>Watertight when closed, IP67 sealed case</td>
+              </tr>
+              <tr>
+                <th scope="row">Aircraft carriage</th>
+                <td colspan="3">Carried, not operated. Devices powered off in flight; all use off-aircraft. F-22 stowage envelope is a dimensional and mass question only. No EMI or airworthiness qualification is in scope.</td>
+              </tr>
+              <tr>
+                <th scope="row">Set-up time</th>
+                <td colspan="3">Measured from case open to first report on the C2 picture, and published from the first rehearsal. This is one of the two numbers the programme reports.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Components and mass</h3>
+        <div class="maa-prose">
+          <p>Published figures for the commercial items in the baseline configuration. Each is individually substitutable.</p>
+        </div>
+        <div class="maa-table-wrap">
+          <table class="maa-table">
+            <thead>
+              <tr><th>Component</th><th>Role</th><th>Dimensions</th><th>Mass</th><th>Rating</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Pelican 1120</td><td>Charge case, Mobile node</td><td class="mono">21.4 × 17.2 × 9.8 cm</td><td class="mono">0.65 kg</td><td>IP67, crushproof, watertight</td></tr>
+              <tr><td>iPhone 17 Pro</td><td>End user device</td><td class="mono">15.0 × 7.19 × 0.88 cm</td><td class="mono">0.21 kg</td><td>IP68, 0 °C to 35 °C operating</td></tr>
+              <tr><td>Garmin inReach Mini 3 Plus</td><td>Satellite messenger</td><td class="mono">10.0 × 5.2 × 2.6 cm</td><td class="mono">0.12 kg</td><td>IP67, −20 °C to 60 °C, 1800 mAh</td></tr>
+              <tr><td>Starlink Mini</td><td>LEO broadband terminal</td><td class="mono">29.9 × 25.9 × 3.9 cm</td><td class="mono">1.10 kg</td><td>IP67, −30 °C to 50 °C, 25 to 40 W</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="maa-note">Power bank, adapter, cabling and pack are selected per mission and are not included in the kit mass figures above.</p>
+      </section>
+
+      <!-- 06 -->
+      <section class="maa-section" id="applications">
+        <div class="maa-section__head"><span class="maa-section__num">06</span><h2 class="maa-section__title">Applications</h2></div>
+        <div class="maa-grid">
+          <div class="maa-card">
+            <h3 class="maa-card__title" style="margin-top:0">Command post continuity of operations</h3>
+            <p>The kit gives a relocating command post a working net and a reporting path before permanent communications exist.</p>
+            <p><strong>Use case:</strong> A wing command post displaces to an alternate site. A Persist node establishes the local net and reach-back within the first hours; Mobile nodes keep dispersed staff on the picture while the primary path is rebuilt.</p>
+          </div>
+          <div class="maa-card">
+            <h3 class="maa-card__title" style="margin-top:0">Dispersed beddown, first 72 hours</h3>
+            <p>Aircrew and maintainers arrive at a contingency location with what one person can carry and still need to report.</p>
+            <p><strong>Use case:</strong> A team beds down at an austere airfield outside the base network boundary. Flyaway nodes carry team traffic locally and push status and position to the C2 picture until the site is connected properly.</p>
+          </div>
+          <div class="maa-card">
+            <h3 class="maa-card__title" style="margin-top:0">Flight line coordination and notification</h3>
+            <p>Where coordination between stakeholders runs on personal cell phones and legacy voice, the kit closes the notification gap.</p>
+            <p><strong>Use case:</strong> An event on the flight line requires an immediate coordinated response across organisations that do not share a net. The kit puts the same picture in front of all of them instead of relying on a chain of phone calls.</p>
+          </div>
+          <div class="maa-card">
+            <h3 class="maa-card__title" style="margin-top:0">Personnel and asset accountability</h3>
+            <p>Position and status reporting from people and equipment that would otherwise be tracked by spreadsheet and phone call.</p>
+            <p><strong>Use case:</strong> During a dispersal or a domestic response, tracking of aircraft, equipment and personnel is currently manual and degrades under stress. Nodes report continuously into the systems the command post already uses.</p>
+          </div>
+          <div class="maa-card">
+            <h3 class="maa-card__title" style="margin-top:0">Exercise instrumentation</h3>
+            <p>The kit records what happened, so a rehearsal produces measured data rather than recollection.</p>
+            <p><strong>Use case:</strong> During a major exercise, Dead Reckon records path state and system events while Anymouse captures what operators observed. The after-action product is a timeline, not a memory.</p>
+          </div>
+          <div class="maa-card">
+            <h3 class="maa-card__title" style="margin-top:0">Defence support to civil authorities</h3>
+            <p>A commercial, unclassified kit that works alongside civil agencies without requiring them to join a military network.</p>
+            <p><strong>Use case:</strong> During a wildfire or storm response, guard teams operating with state and county partners share position and status on an unclassified picture that all participants can see.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 -->
+      <section class="maa-section" id="data">
+        <div class="maa-section__head"><span class="maa-section__num">07</span><h2 class="maa-section__title">Data and reporting</h2></div>
+        <div class="maa-prose">
+          <p>The kit carries traffic, and while it does, it reports the mission around itself. Two software components ride on every node class.</p>
+        </div>
+        <div class="maa-grid" style="margin-top:20px">
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Software component</div>
+            <h3 class="maa-card__title" style="margin-top:0">Dead Reckon</h3>
+            <p>System and mission telemetry into the C2 picture. Records path state, node health and system events, and fills the integration gaps where existing tablet plug-ins do not yet reach.</p>
+          </div>
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Software component</div>
+            <h3 class="maa-card__title" style="margin-top:0">Anymouse</h3>
+            <p>Human context. Named after the anonymous aviation safety report box and built for the same reason: to capture the observation that would otherwise be lost.</p>
+          </div>
+        </div>
+
+        <h3>Where the data lands</h3>
+        <div class="maa-table-wrap" style="margin-top:0">
+          <table class="maa-table">
+            <thead><tr><th>System</th><th>What reaches it</th></tr></thead>
+            <tbody>
+              <tr><td>TAK</td><td>Team traffic, position reports, chat</td></tr>
+              <tr><td>Envision</td><td>Wing common operating picture, status and field reporting</td></tr>
+              <tr><td>MSS</td><td>Mission support reporting</td></tr>
+              <tr><td>Advana</td><td>Enterprise data and analysis</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 08 -->
+      <section class="maa-section" id="integrations">
+        <div class="maa-section__head"><span class="maa-section__num">08</span><h2 class="maa-section__title">Integration list</h2></div>
+        <div class="maa-prose">
+          <p>Current and planned component integrations. Components are commercial off the shelf and individually substitutable; no single supplier is load-bearing.</p>
+        </div>
+        <div class="maa-grid" style="margin-top:20px">
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Compute and end user device</div>
+            <ul class="maa-list maa-list--plain">
+              <li>Provisioned mobile end user device</li>
+              <li>Tablet end user device, optional</li>
+              <li>Persist compute and gateway module</li>
+            </ul>
+          </div>
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Datalink and radios</div>
+            <ul class="maa-list maa-list--plain">
+              <li>Encrypted MANET mesh head-end <span class="maa-tag maa-tag--now">Now</span></li>
+              <li>Baseline team datalink <span class="maa-tag maa-tag--now">Now</span></li>
+              <li>LoRa, Wi-Fi HaLow <span class="maa-tag maa-tag--next">Next</span></li>
+              <li>UHF / VHF / HF, SATURN <span class="maa-tag maa-tag--next">Next</span></li>
+            </ul>
+          </div>
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Satellite and cellular</div>
+            <ul class="maa-list maa-list--plain">
+              <li>LEO broadband terminal <span class="maa-tag maa-tag--now">Now</span></li>
+              <li>Commercial cellular, rotating SIM identifiers <span class="maa-tag maa-tag--now">Now</span></li>
+              <li>Satellite direct-to-cell messaging <span class="maa-tag maa-tag--now">Now</span></li>
+              <li>Satellite messenger, position and text <span class="maa-tag maa-tag--now">Now</span></li>
+            </ul>
+          </div>
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Software</div>
+            <ul class="maa-list maa-list--plain">
+              <li>Dead Reckon telemetry and integration</li>
+              <li>Anymouse observation reporting</li>
+              <li>TAK client and server integration</li>
+            </ul>
+          </div>
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Power</div>
+            <ul class="maa-list maa-list--plain">
+              <li>Integrated charge case, backup power</li>
+              <li>Common-battery mission power module</li>
+              <li>Vehicle and AC input on Persist</li>
+            </ul>
+          </div>
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Position, navigation and timing</div>
+            <ul class="maa-list maa-list--plain">
+              <li>Alternate PNT node <span class="maa-tag maa-tag--next">Next</span></li>
+              <li>Low probability of intercept paging <span class="maa-tag maa-tag--next">Next</span></li>
+              <li>Asset tracking tags <span class="maa-tag maa-tag--next">Next</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 -->
+      <section class="maa-section" id="security">
+        <div class="maa-section__head"><span class="maa-section__num">09</span><h2 class="maa-section__title">Security and accreditation posture</h2></div>
+        <div class="maa-prose">
+          <p>Stated plainly, because the answer is not "already certified" and a partner deserves to know that before an exercise rather than during one.</p>
+        </div>
+        <ul class="maa-list" style="margin-top:16px">
+          <li><strong>Components.</strong> The kit adapts established IL4 components. Several are under active review by the USAF operational test community toward IL-6, and the managed service supports CUI today.</li>
+          <li><strong>The combination is new.</strong> This specific hardware and software combination, in this use case and configuration, has not been reviewed or approved before. No authorisation is inherited and none is claimed.</li>
+          <li><strong>Device management.</strong> Devices enrol under an existing electronic flight bag mobile device management programme rather than a new one.</li>
+          <li><strong>Spectrum.</strong> Frequency authorisation for the datalink is an open item and a named engineering task, not an assumption.</li>
+          <li><strong>Classified operation.</strong> The baseline is unclassified. SECRET operation is scoped and priced separately after discovery. Start unclassified, arrive classified.</li>
+        </ul>
+      </section>
+
+      <!-- 10 -->
+      <section class="maa-section" id="value">
+        <div class="maa-section__head"><span class="maa-section__num">10</span><h2 class="maa-section__title">Value proposition</h2></div>
+        <div class="maa-prose">
+          <p><strong>Why Mission Advantage Anywhere.</strong> Communications planning fails in a predictable place: the stretch between arriving somewhere and being connected there. Dispersal, mission command under degraded conditions and distributed control all assume that stretch has already been covered. Covering it in a form one person can carry onto an aircraft is the job this kit does.</p>
+        </div>
+        <div class="maa-grid" style="margin-top:20px">
+          <div class="maa-card"><h3 class="maa-card__title" style="margin-top:0">It bridges the gap</h3><p>Continuity of operations while the mission and the network adapt, then a clean handover to whatever the site is eventually wired with.</p></div>
+          <div class="maa-card"><h3 class="maa-card__title" style="margin-top:0">It is additive</h3><p>No rip and replace, no new command and control authority. Existing systems stay the authority and the kit feeds them.</p></div>
+          <div class="maa-card"><h3 class="maa-card__title" style="margin-top:0">It produces evidence</h3><p>Two measured numbers: time to restore the net when the primary path drops, and time from an edge observation to its appearance on the C2 picture.</p></div>
+          <div class="maa-card"><h3 class="maa-card__title" style="margin-top:0">It starts small</h3><p>A single node is a real capability and a real test. Scaling from there is a quantity decision.</p></div>
+        </div>
+      </section>
+
+      <!-- 11 -->
+      <section class="maa-section" id="customers">
+        <div class="maa-section__head"><span class="maa-section__num">11</span><h2 class="maa-section__title">Target customers</h2></div>
+        <div class="maa-grid">
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Primary</div>
+            <ul class="maa-list maa-list--plain">
+              <li>Air National Guard wings and wing command posts</li>
+              <li>Air defence and homeland defence units</li>
+              <li>Units operating under agile combat employment concepts</li>
+            </ul>
+          </div>
+          <div class="maa-card">
+            <div class="maa-card__eyebrow">Secondary</div>
+            <ul class="maa-list maa-list--plain">
+              <li>Joint partners requiring cross-service reporting at the edge</li>
+              <li>State emergency management and domestic response</li>
+              <li>Integrators and primes needing an edge reporting layer under an existing programme</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 12 -->
+      <section class="maa-section" id="talking-points">
+        <div class="maa-section__head"><span class="maa-section__num">12</span><h2 class="maa-section__title">Talking points</h2></div>
+        <div class="maa-quote" style="margin-top:0"><strong>Short pitch.</strong> Mission Advantage Anywhere is a carry-on communications kit for continuity of operations while the mission and the network adapt. It gives a dispersed team a local net and a reporting path in minutes, over whatever bearer is available, and lands their position and observations on the C2 picture the unit already watches. Existing systems stay the authority, and the kit feeds them.</div>
+
+        <ol class="maa-list maa-list--numbered" style="margin-top:20px">
+          <li><strong>The gap is real and it is measurable.</strong> The first 24 to 72 hours of a beddown, and the coordination delay at home station, are both instrumented problems, not opinions.</li>
+          <li><strong>A detection that reaches nobody is not a detection.</strong> Sensing is the easiest thing to buy and the least useful thing to buy first.</li>
+          <li><strong>Additive by design.</strong> The kit claims no authority and replaces no system, which makes it approvable in months rather than years.</li>
+          <li><strong>Start with one node.</strong> The entry configuration is a real capability at a price that fits inside a routine purchase.</li>
+          <li><strong>Instrumented by default.</strong> Every exercise produces data. That data is what supports a documented requirement later.</li>
+          <li><strong>Commercial and replaceable.</strong> Components can be substituted without redesigning the system, so obsolescence is a purchase, not a programme.</li>
+          <li><strong>An honest accreditation story.</strong> We say what is approved, what is not, and what the path is. That is the part most vendors leave out.</li>
+        </ol>
+
+        <h3>One-liners</h3>
+        <ul class="maa-oneliners">
+          <li>The network shows up in a backpack.</li>
+          <li>It carries the traffic, and it reports the mission around it.</li>
+          <li>Existing systems stay the authority. We feed them.</li>
+          <li>A detection that reaches nobody is not a detection.</li>
+          <li>Use it when the beddown is in twelve hours and the network is in thirty days.</li>
+          <li>It is how the edge reaches the C2 system you already have.</li>
+          <li>Every node routes for every other node. There is no hub to lose.</li>
+        </ul>
+      </section>
+
+      <!-- 13 -->
+      <section class="maa-section" id="not">
+        <div class="maa-section__head"><span class="maa-section__num">13</span><h2 class="maa-section__title">What it is not</h2></div>
+        <ul class="maa-list maa-list--plain">
+          <li>Not a command and control system, and not a new C2 authority.</li>
+          <li>Not a counter-UAS system. It does not detect and it does not defeat.</li>
+          <li>Not a replacement for tactical radios or for a fielded programme of record.</li>
+          <li>Not accredited for classified operation today.</li>
+          <li>Not certified for cockpit use. It is carried powered off and used off-aircraft.</li>
+          <li>Not a promise of automatic failover. Path state is reported; automated failover is an engineering objective and will be described by measured behaviour.</li>
+        </ul>
+      </section>
+
+      <!-- 14 -->
+      <section class="maa-section" id="documents">
+        <div class="maa-section__head"><span class="maa-section__num">14</span><h2 class="maa-section__title">Documents</h2></div>
+        <div class="maa-docs">
+          <a class="maa-doc" href="/content/mission-advantage/Mission-Advantage-Anywhere.pdf" download>
+            <span class="maa-doc__icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2h7l4 4v12H5z"/><path d="M12 2v4h4"/><path d="M7.5 10h5M7.5 13h5"/></svg>
+            </span>
+            <span>
+              <span class="maa-doc__title">Product overview</span>
+              <span class="maa-doc__desc">Full product sheet: overview, features, SV-2 system view, node classes, specifications, applications, integrations, accreditation posture, talking points.</span>
+              <span class="maa-doc__meta">PDF · 10 pages · 385 KB · August 2026</span>
+            </span>
+          </a>
+          <a class="maa-doc" href="/content/mission-advantage/Mission-Advantage-Anywhere-Flyer.pdf" download>
+            <span class="maa-doc__icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="2" width="14" height="16"/><path d="M6 6h8M6 9.5h8M6 13h5"/></svg>
+            </span>
+            <span>
+              <span class="maa-doc__title">Flyer</span>
+              <span class="maa-doc__desc">Two-page handout: the pitch, the numbers, node classes and specifications on one sheet. Built for the Pacific.</span>
+              <span class="maa-doc__meta">PDF · 2 pages · 361 KB · August 2026</span>
+            </span>
+          </a>
+        </div>
+
+        <div class="maa-colophon">
+          <span>Merge Combinator, LLC</span>
+          <span>CAGE 11TF7</span>
+          <span>Oahu small business</span>
+          <a href="mailto:advantage@mergecombinator.com">advantage@mergecombinator.com</a>
+          <span>Unclassified · company proprietary</span>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ============================================ CTA -->
+  <section class="mc-cta">
+    <div class="mc-cta__inner">
+      <div class="mc-cta__label">Start with one node</div>
+      <h2 class="mc-cta__title">Talk to us about a node, an exercise, or <em>a joint rehearsal.</em></h2>
+      <p class="mc-cta__text">A single node is a real capability and a real test. Scaling from there is a quantity decision. Tell us where the beddown is and when the network is expected, and we will size the kit to the gap.</p>
+      <div class="mc-cta__actions">
+        <a href="mailto:advantage@mergecombinator.com?subject=Mission%20Advantage%20Anywhere" class="mc-cta__btn mc-cta__btn--primary">Email advantage@mergecombinator.com</a>
+        <a href="/access?source=mission-advantage" class="mc-cta__btn mc-cta__btn--secondary">Request access</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================ FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="/" class="footer__logo">
+            <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
+          </a>
+          <p class="footer__tagline">Venture studio for national security.</p>
+        </div>
+
+        <div class="footer__links">
+          <div class="footer__column">
+            <h4 class="footer__heading">Platform</h4>
+            <ul class="footer__list">
+              <li><a href="/programs/the-combine">The Combine</a></li>
+              <li><a href="/builders">Defense Builders</a></li>
+              <li><a href="/opportunities">Opportunities</a></li>
+              <li><a href="/merch">Merch</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Company</h4>
+            <ul class="footer__list">
+              <li><a href="/about">About</a></li>
+              <li><a href="/access">Contact</a></li>
+              <li><a href="/builders">Careers</a></li>
+            </ul>
+          </div>
+
+          <div class="footer__column">
+            <h4 class="footer__heading">Resources</h4>
+            <ul class="footer__list">
+              <li><a href="/signals">Signals</a></li>
+              <li><a href="/portfolio">Case Studies</a></li>
+              <li><a href="/knowledge">Knowledge</a></li>
+              <li><a href="/ai/overview">AI Overview</a></li>
+              <li><a href="https://docs.mergecombinator.com">Docs</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
+        <p class="footer__location">Honolulu &bull; Seattle &bull; Las Vegas</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/js/navbar.js"></script>
+  <script type="module" src="/script.js"></script>
+</body>
+</html>

@@ -87,6 +87,8 @@ export default defineConfig({
         briefs: resolve(__dirname, 'briefs.html'),
         about: resolve(__dirname, 'about.html'),
         'ai-overview': resolve(__dirname, 'ai/overview.html'),
+        // Products (unlisted in nav for now; reachable by direct link)
+        'products-mission-advantage': resolve(__dirname, 'products/mission-advantage-anywhere.html'),
         '404': resolve(__dirname, '404.html'),
         // Combine cohorts
         'combine-cohort25-1': resolve(__dirname, 'combine/cohort25-1.html'),

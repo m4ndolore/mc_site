@@ -46,9 +46,12 @@ const SUBDOMAIN_REDIRECTS = new Map([
 const SUBDOMAIN_PLACEHOLDER_REDIRECTS = new Map([
   ["wingman.mergecombinator.com", "/wingman"],
 ]);
-// Retired subdomains whose content now lives at a canonical path (301, permanent)
+// Subdomains whose content lives at a canonical path (301, permanent).
+// Retired hosts and printed product URLs (the Mission Advantage flyer carries
+// mission-advantage.mergecombinator.com) both land here.
 const SUBDOMAIN_PATH_REDIRECTS = new Map([
   ["curriculum.mergecombinator.com", "/curriculum"],
+  ["mission-advantage.mergecombinator.com", "/products/mission-advantage-anywhere"],
 ]);
 const LEGACY_PATH_REDIRECTS = new Map([
   ["/sbir", "/knowledge/sbir"],
