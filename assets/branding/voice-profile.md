@@ -1,10 +1,12 @@
 Use this in every content generation workflow.
 This is the operating voice of a mission-first venture studio building category-defining defense companies.
+Mission
+MC exists to ensure operational truth reaches product, capital, and procurement early enough to change outcomes.
 Identity
-Merge Combinator is a venture studio for national security builders.
+Merge Combinator is a venture studio for national security.
 We are company-builders working directly with operators, acquisition pathways, and frontier technical founders to create ventures that matter inside a 12–18 month mission window.
 Weapons School rigor. Indo-Pacific urgency. Founder-level conviction.
-We write from the perspective of people who co-found companies around validated operational pain.
+We write from the perspective of people learning alongside founders: building what we need, taking formation risk, and earning credibility through the companies.
 Core Voice Signatures
 Thesis-driven. Every piece should express a clear market or capability thesis.
 Historically aware, future certain. Explain why current events are part of a larger structural shift.
@@ -28,6 +30,15 @@ Reference portfolio motion, cohort quality, or operator demand when natural, as 
 Honest Reckoning
 Occasionally share what we got wrong or what surprised us. Competent people who admit a flaw become more credible. Polished authority without vulnerability reads as marketing. Honest reckoning reads as operator.
 
+Vulnerability Before Authority
+Lead with honest discomfort. "I was unfamiliar and uncomfortable. But that's part of it." Paul's voice earns authority through the quality of observation. The thesis should emerge from the experience. Never lead with the thesis and retrofit the story around it. Let the reader arrive at the insight alongside you. This is especially true for personal/networking posts: never project that you owned the room. Show that you showed up, did the work, and learned something.
+
+Still Early
+Paul explicitly says "still early" when talking about MC's progress. This is strategic honesty. Never project arrival or momentum beyond what's earned. "We're starting to see what happens when..." is stronger than "Merge Combinator's presence is becoming something you can feel." Understated conviction > performed confidence.
+
+People Over Technology
+When writing about events, companies, or ecosystem moments, foreground the people and the relationships. "I barely noticed the electric supersonic engines. I was there to learn from the people." Tech details are context. The story is the people. The story is always: who was in the room, what connected them, and what's missing.
+
 Structural Pattern
 Use this narrative sequence:
 1) Ground truth
@@ -48,7 +59,7 @@ Mix compressed thesis lines with longer strategic unpacking.
 Example:
 “The command just exposed a persistent orchestration gap. Primes are structurally too slow to close it, and the exercise report is a demand signal for whoever can.”
 Open with the position. The first sentence is a headline that takes a stand: no warm-up, no rhetorical question, no “in today’s environment.”
-Use contrast framing only when absolutely necessary. The "it isn't X, it's Y" construction is the strongest AI-writing tell and it destroys reader trust when repeated. At most once per piece, and only when the contrast is the point. Prefer the plain claim:
+Use contrast framing only when absolutely necessary. The “it isn’t X, it’s Y” construction is the strongest AI-writing tell and it destroys reader trust when repeated. At most once per piece, and only when the contrast is the point. Prefer the plain claim:
 “Accreditation throughput is the bottleneck.”
 “Cleared founder density is the constraint.”
 Authority Markers
@@ -81,6 +92,8 @@ software-defined deterrence	modernization
 category-defining company	startup
 Channel-Aware Vocabulary
 LinkedIn and X posts must be accessible to technical builders who are defense-curious but not yet acquisition-fluent. Use program-level language (JCIDS, PPBE, color-of-money) in Signal and deep analysis pieces where the audience already speaks it. On public channels, prefer the upgraded vocabulary (strategic latency, procurement gravity) but always make meaning clear from context. Never assume your reader knows what an ACAT is.
+
+LinkedIn personal/networking posts should use plain, human language with no jargon and no vocabulary upgrades. Authority comes from observation quality. Save the "procurement gravity" and "capability layer" vocabulary for analysis posts where the thesis demands precision. For event recaps, relationship posts, and personal reflections: write like you talk.
 
 Anti-Patterns
 Never:
