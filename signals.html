@@ -59,8 +59,14 @@
   <section class="feed-hero">
     <div class="container">
       <div class="feed-hero__header">
-        <span class="feed-hero__badge">Signals</span>
-        <p class="feed-hero__subtitle">Analysis, market intelligence, and operational ground truth from inside the defense ecosystem.</p>
+        <div>
+          <span class="feed-hero__badge">Signals</span>
+          <p class="feed-hero__subtitle">Analysis, market intelligence, and operational ground truth from inside the defense ecosystem.</p>
+        </div>
+        <div class="feed-rss" aria-label="Subscribe to Signals feeds">
+          <a href="/signals.rss" class="feed-rss__button" type="application/rss+xml">MC analysis RSS <span aria-hidden="true">↗</span></a>
+          <a href="https://api.mergecombinator.com/api/intel.rss" class="feed-rss__button" type="application/rss+xml">All-source intel RSS <span aria-hidden="true">↗</span></a>
+        </div>
       </div>
 
       <!-- Briefing slot -->

@@ -1,5 +1,12 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import {
+          DEFAULT_THRESHOLD,
+          SOURCE_THRESHOLDS,
+          decodeEntities,
+          isEmptyExcerpt,
+          scoreRelevance,
+} from "./intel-filter";
 
 type Bindings = {
           SBIR_API_URL: string;
@@ -8,6 +15,11 @@ type Bindings = {
           IRREGULARS_FEED_TOKEN?: string;
           OPPORTUNITY_SUBS?: KVNamespace;
           OPPORTUNITY_CACHE?: KVNamespace;
+          // Optional per-source relevance overrides, e.g.
+          // INTEL_THRESHOLD_IRREGULARS=3. Tunable via `wrangler secret put`
+          // or a [vars] entry — no code change needed to retune the feed.
+          INTEL_THRESHOLD_IRREGULARS?: string;
+          INTEL_THRESHOLD_HACKERNEWS?: string;
 };
 
 const app = new Hono<{ Bindings: Bindings }>();
@@ -899,17 +911,13 @@ function parseRssFeed(xml: string, sourceId: string): unknown[] {
           while ((match = itemRegex.exec(xml)) !== null) {
                       const block = match[1];
                       const titleMatch = block.match(/<title>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/);
-                      const title = (titleMatch?.[1] ?? "")
-                        .replace(/<[^>]+>/g, "")
-                        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-                        .replace(/&quot;/g, '"').replace(/&#039;/g, "'").replace(/&#\d+;/g, "")
-                        .trim();
+                      const title = decodeEntities(
+                        (titleMatch?.[1] ?? "").replace(/<[^>]+>/g, ""),
+                      ).trim();
                       const descMatch = block.match(/<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/);
                       const rawDesc = descMatch?.[1] ?? "";
-                      const excerpt = rawDesc
-                        .replace(/<[^>]+>/g, "")
-                        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-                        .replace(/&nbsp;/g, " ").replace(/&#\d+;/g, "")
+                      const excerpt = decodeEntities(rawDesc.replace(/<[^>]+>/g, ""))
+                        .replace(/\s+/g, " ")
                         .trim()
                         .slice(0, 300);
                       const link = block.match(/<link>([^<]*)<\/link>/)?.[1]?.trim() ?? "";
@@ -986,36 +994,33 @@ app.get("/api/intel/feed", async (c) => {
     irregularsUrl ? cachedFetch(irregularsUrl, TTL.intel) : Promise.resolve(null),
   ]);
 
-  // ExecutiveGov is already defense-only; HN and Irregulars need filtering
-  const DEFENSE_KEYWORDS = [
-    "defense", "defence", "military", "pentagon", "dod", "department of defense",
-    "national security", "nato", "indo-pacific", "pacom", "indopacom",
-    "drone", "uas", "c-uas", "cuas", "counter-drone", "unmanned",
-    "cyber", "infosec", "sigint", "osint", "intelligence",
-    "sbir", "sttr", "darpa", "diu", "afrl", "afwerx", "socom", "sofwerx",
-    "acquisition", "contracting", "far ", "dfars", "ota ",
-    "missile", "munition", "weapon", "warfighter", "warfighting",
-    "ai ", "artificial intelligence", "autonomy", "autonomous",
-    "satellite", "space force", "ussf", "space command",
-    "navy", "army", "air force", "marine", "coast guard",
-    "ukraine", "china", "russia", "taiwan", "iran",
-    "veterans", "clearance", "classified", "itar", "cmmc",
-    "electronic warfare", " ew ", "radar", "rf ", "spectrum",
-    "logistics", "supply chain", "readiness",
-  ];
+  // ExecutiveGov is defense trade press and passes through unfiltered.
+  // Irregulars and HN are scored — see src/intel-filter.ts for why this is
+  // weighted matching on word boundaries rather than a substring allowlist.
+  // Thresholds are tunable without a redeploy via INTEL_THRESHOLD_<SOURCE>.
+  const thresholdFor = (source: string): number => {
+    const override = (c.env as unknown as Record<string, string | undefined>)[
+      `INTEL_THRESHOLD_${source.toUpperCase()}`
+    ];
+    const parsed = override ? Number.parseInt(override, 10) : NaN;
+    return Number.isFinite(parsed)
+      ? parsed
+      : SOURCE_THRESHOLDS[source] ?? DEFAULT_THRESHOLD;
+  };
 
-  function isDefenseRelevant(title: string, excerpt: string): boolean {
-    const text = `${title} ${excerpt}`.toLowerCase();
-    return DEFENSE_KEYWORDS.some((kw) => text.includes(kw));
-  }
+  const keep = (source: string) => (a: IntelArticle) =>
+    scoreRelevance(a.title, a.excerpt, thresholdFor(source)).relevant;
 
   const irArticles = irXml ? (parseRssFeed(irXml, "irregulars") as IntelArticle[]) : [];
   const hnArticles = hnXml ? (parseRssFeed(hnXml, "hackernews") as IntelArticle[]) : [];
 
   const articles: IntelArticle[] = [
-    ...irArticles.filter((a) => isDefenseRelevant(a.title, a.excerpt)),
+    ...irArticles.filter(keep("irregulars")),
     ...(egXml ? (parseRssFeed(egXml, "executivegov") as IntelArticle[]) : []),
-    ...hnArticles.filter((a) => isDefenseRelevant(a.title, a.excerpt)),
+    // HN's RSS <description> is only a "Comments" link, so these items carry a
+    // title and nothing else. A card with no body reads as broken — more so on
+    // a paged surface than on the web, where you can scroll past it.
+    ...hnArticles.filter(keep("hackernews")).filter((a) => !isEmptyExcerpt(a.excerpt)),
   ];
 
   // Deduplicate by normalized title

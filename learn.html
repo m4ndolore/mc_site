@@ -2,185 +2,90 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <script>
-    // FOUC prevention: apply theme before first paint
-    (function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();
-  </script>
+  <script>(function(){var t=localStorage.getItem('mc-theme');if(!t){t=window.matchMedia&&window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark'}if(t==='light'){document.documentElement.classList.add('light-theme','no-transitions');requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('no-transitions')})})}})();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Learn from curated defense tech resources. Read foundational books, guides, and reference material on the Merge Combinator platform.">
-  <meta name="keywords" content="defense tech, learning, books, resources, national security, education">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
-  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-32.png?v=2">
-  <link rel="apple-touch-icon" href="/assets/favicon-512.png?v=2">
-
-  <!-- Canonical -->
+  <meta name="description" content="Meet reality. Earn adoption. Unlearn the rest.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="canonical" href="https://mergecombinator.com/learn">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Learn — Merge Combinator">
-  <meta property="og:description" content="Read foundational defense tech resources directly on the platform.">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png?v=2">
+  <link rel="apple-touch-icon" href="/assets/favicon-512.png?v=2">
+  <meta property="og:title" content="Learn | Merge Combinator">
+  <meta property="og:description" content="Meet reality. Earn adoption. Unlearn the rest.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://mergecombinator.com/learn">
   <meta property="og:image" content="/assets/logowhite.png">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Learn — Merge Combinator">
-  <meta name="twitter:description" content="Read foundational defense tech resources directly on the platform.">
-  <meta name="twitter:image" content="/assets/logowhite.png">
-
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "Learn — Merge Combinator",
-    "url": "https://mergecombinator.com/learn",
-    "isPartOf": { "@type": "WebSite", "name": "Merge Combinator", "url": "https://mergecombinator.com" }
-  }
-  </script>
-  <title>Learn — Merge Combinator</title>
-
-  <!-- Fonts -->
+  <meta name="twitter:title" content="Learn | Merge Combinator">
+  <meta name="twitter:description" content="Meet reality. Earn adoption. Unlearn the rest.">
+  <title>Learn | Merge Combinator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- Styles -->
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/learn.css">
   <link rel="stylesheet" href="styles/light-theme.css">
 </head>
 <body>
   <div id="mc-navbar"></div>
-
-  <!-- Hero Section -->
-  <section class="learn-hero">
-    <div class="learn-hero__bg"></div>
-    <div class="container learn-hero__content">
-      <span class="learn-hero__eyebrow">Library</span>
-      <h1 class="learn-hero__title">Learn</h1>
-      <p class="learn-hero__subtitle">
-        Foundational reading for defense builders. Browse the collection and read directly in your browser.
-      </p>
-    </div>
-  </section>
-
-  <!-- Bookshelf -->
-  <section class="bookshelf">
-    <div class="container">
-      <div class="bookshelf__grid">
-
-        <!-- Book: Valley of Death Survival Guide -->
-        <div class="book-card">
-          <div class="book-card__cover-wrap">
-            <img
-              src="/assets/learn/valley-of-death-cover.jpg"
-              alt="Valley of Death Survival Guide cover"
-              class="book-card__cover"
-              width="800"
-              height="619"
-              loading="lazy"
-              decoding="async"
-            >
-          </div>
-          <div class="book-card__info">
-            <span class="book-card__badge">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-              </svg>
-              Featured Read
-            </span>
-            <h2 class="book-card__title">Valley of Death Survival Guide</h2>
-            <p class="book-card__author">John Ferry</p>
-            <p class="book-card__description">
-              A power book guide to crossing the valley. Navigate the defense acquisition process, survive the "Valley of Death" between prototype and production, and bring critical technology to the warfighter.
-            </p>
-            <div class="book-card__meta">
-              <span class="book-card__meta-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7v10M12 7v10M16 7v10"/></svg>
-                351 pages
-              </span>
-              <span class="book-card__meta-item">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                PDF
-              </span>
-            </div>
-            <div class="book-card__actions">
-              <a href="/learn/read?src=/content/web_small.pdf" class="book-card__read-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                </svg>
-                Read Online
-              </a>
-              <a href="https://www.lulu.com/shop/john-ferry/valley-of-death-survival-guide-a-picture-book-guide-to-crossing-the-valley/hardcover/product-q62m8np.html" target="_blank" rel="noopener" class="book-card__read-btn book-card__buy-btn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-                </svg>
-                Buy Hardcover — $37.12
-              </a>
-            </div>
-          </div>
-        </div>
-
+  <main>
+    <section class="learn-hero">
+      <div class="learn-hero__bg"></div>
+      <div class="container learn-hero__content">
+        <span class="learn-hero__eyebrow">Learn</span>
+        <h1 class="learn-hero__title">Mission first.</h1>
+        <p class="learn-hero__doctrine">Meet reality. Earn adoption. Unlearn the rest.</p>
+        <p class="learn-hero__subtitle">Build what gets adopted. Keep only what solves the core problem. Launch again.</p>
+        <a href="/launch" class="learn-btn learn-btn--primary">Start with Launch <span aria-hidden="true">→</span></a>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer__grid">
-        <div class="footer__brand">
-          <a href="/" class="footer__logo">
-            <img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img">
-          </a>
-          <p class="footer__tagline">Venture studio for national security.</p>
-        </div>
+    <section class="momentum-rail" aria-label="Evidence from the public record">
+      <div class="container momentum-rail__inner">
+        <div><span class="momentum-rail__label">Momentum · public record</span><p>Contracts, capital, field work, and builder outcomes, dated and sourced.</p></div>
+        <a href="/momentum">See what happened next <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
 
-        <div class="footer__links">
-          <div class="footer__column">
-            <h4 class="footer__heading">Platform</h4>
-            <ul class="footer__list">
-              <li><a href="/programs/the-combine">The Combine</a></li>
-              <li><a href="/builders">Defense Builders</a></li>
-              <li><a href="/opportunities">Opportunities</a></li>
-              <li><a href="/merch">Merch</a></li>
-            </ul>
-          </div>
-
-          <div class="footer__column">
-            <h4 class="footer__heading">Company</h4>
-            <ul class="footer__list">
-              <li><a href="/about">About</a></li>
-              <li><a href="/about#faq">FAQ</a></li>
-              <li><a href="/access">Contact</a></li>
-              <li><a href="/builders">Careers</a></li>
-            </ul>
-          </div>
-
-          <div class="footer__column">
-            <h4 class="footer__heading">Resources</h4>
-            <ul class="footer__list">
-              <li><a href="/signals">Signals</a></li>
-              <li><a href="/portfolio">Case Studies</a></li>
-              <li><a href="/knowledge">Knowledge</a></li>
-              <li><a href="/learn">Learn</a></li>
-              <li><a href="https://docs.mergecombinator.com">Docs</a></li>
-            </ul>
-          </div>
+    <section class="learn-path">
+      <div class="container">
+        <header class="learn-section-heading"><span>Use the system</span><h2>Four places to start.</h2></header>
+        <div class="learn-path__grid">
+          <a class="learn-path__card" href="/launch"><span class="learn-path__number">01</span><h3>Launch</h3><p>Follow the path from mission to adoption.</p><span class="learn-path__link">Start the path →</span></a>
+          <a class="learn-path__card" href="/knowledge"><span class="learn-path__number">02</span><h3>Knowledge</h3><p>Use the guides when you need a better frame or method.</p><span class="learn-path__link">Open the library →</span></a>
+          <a class="learn-path__card" href="/signals"><span class="learn-path__number">03</span><h3>Signals</h3><p>Read our analysis and the sources shaping the mission.</p><span class="learn-path__link">Read the signals →</span></a>
+          <a class="learn-path__card" href="/opportunities"><span class="learn-path__number">04</span><h3>Opportunities</h3><p>Find live demand and decide where to act.</p><span class="learn-path__link">Find an opportunity →</span></a>
         </div>
       </div>
+    </section>
 
-      <div class="footer__bottom">
-        <p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p>
-        <p class="footer__location">Honolulu &bull; Seattle &bull; Las Vegas</p>
+    <section class="unlearn-feature">
+      <div class="container unlearn-feature__grid">
+        <div class="unlearn-feature__intro">
+          <span class="unlearn-feature__eyebrow">A method for unlearning</span>
+          <h2>Question. Delete. Simplify. Accelerate. Automate.</h2>
+          <p>Use the five-step design process in order. Remove bad assumptions and unnecessary work before making anything faster.</p>
+          <a href="/knowledge/first-principles-engineering" class="learn-btn learn-btn--outline">Use the 5-step process <span aria-hidden="true">→</span></a>
+        </div>
+        <ol class="unlearn-feature__steps">
+          <li><span>01</span>Question every requirement</li><li><span>02</span>Delete the part or process</li><li><span>03</span>Simplify and optimize</li><li><span>04</span>Accelerate cycle time</li><li><span>05</span>Automate</li>
+        </ol>
       </div>
-    </div>
-  </footer>
+    </section>
 
+    <section class="bookshelf" aria-labelledby="bookshelf-title">
+      <div class="container">
+        <header class="learn-section-heading"><span>Foundational reading</span><h2 id="bookshelf-title">Cross the valley.</h2></header>
+        <div class="bookshelf__grid">
+          <article class="book-card">
+            <div class="book-card__cover-wrap"><img src="/assets/learn/valley-of-death-cover.jpg" alt="Valley of Death Survival Guide cover" class="book-card__cover" width="800" height="619" loading="lazy" decoding="async"></div>
+            <div class="book-card__info"><span class="book-card__badge">Featured read</span><h2 class="book-card__title">Valley of Death Survival Guide</h2><p class="book-card__author">John Ferry</p><p class="book-card__description">A picture-book guide to navigating defense acquisition and moving critical technology from prototype to production.</p><div class="book-card__actions"><a href="/learn/read?src=/content/web_small.pdf" class="book-card__read-btn">Read online</a><a href="https://www.lulu.com/shop/john-ferry/valley-of-death-survival-guide-a-picture-book-guide-to-crossing-the-valley/hardcover/product-q62m8np.html" target="_blank" rel="noopener" class="book-card__read-btn book-card__buy-btn">Buy hardcover</a></div></div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container"><div class="footer__grid"><div class="footer__brand"><a href="/" class="footer__logo"><img src="/assets/logowhite.png" alt="Merge Combinator" class="footer__logo-img"></a><p class="footer__tagline">Venture studio for national security.</p></div><div class="footer__links"><div class="footer__column"><h4 class="footer__heading">Programs</h4><ul class="footer__list"><li><a href="/programs/the-combine">The Combine</a></li><li><a href="/programs/residency">Residency</a></li><li><a href="/builders">Builders</a></li><li><a href="/access">Join the mission</a></li></ul></div><div class="footer__column"><h4 class="footer__heading">Resources</h4><ul class="footer__list"><li><a href="/launch">Launch</a></li><li><a href="/knowledge">Knowledge</a></li><li><a href="/signals">Signals</a></li><li><a href="/opportunities">Opportunities</a></li></ul></div><div class="footer__column"><h4 class="footer__heading">Company</h4><ul class="footer__list"><li><a href="/about">About</a></li><li><a href="/momentum">Momentum</a></li><li><a href="/privacy">Privacy</a></li><li><a href="/terms">Terms</a></li></ul></div></div></div><div class="footer__bottom"><p class="footer__copyright">&copy; 2026 Merge Combinator. All rights reserved.</p><p class="footer__location">Honolulu &bull; Seattle &bull; Las Vegas</p></div></div></footer>
   <script type="module" src="js/navbar.js"></script>
 </body>
 </html>

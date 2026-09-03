@@ -122,14 +122,20 @@
   </url>
   <url>
     <loc>https://mergecombinator.com/learn</loc>
-    <lastmod>2026-08-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://mergecombinator.com/curriculum</loc>
-    <lastmod>2026-08-22</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://mergecombinator.com/launch</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mergecombinator.com/momentum</loc>
+    <lastmod>2026-09-01</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>

@@ -6,8 +6,7 @@
   ],
   "platformLinks": [
     { "href": "/programs/the-combine", "label": "The Combine" },
-    { "href": "/programs/residency", "label": "Missionized Tech Residency" },
-    { "href": "/launch", "label": "Defense Tech Toolkit" }
+    { "href": "/programs/residency", "label": "Missionized Tech Residency" }
   ],
   "footerColumns": [
     {

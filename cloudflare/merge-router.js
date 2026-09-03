@@ -48,13 +48,14 @@ const SUBDOMAIN_PLACEHOLDER_REDIRECTS = new Map([
 ]);
 // Retired subdomains whose content now lives at a canonical path (301, permanent)
 const SUBDOMAIN_PATH_REDIRECTS = new Map([
-  ["curriculum.mergecombinator.com", "/curriculum"],
+  ["curriculum.mergecombinator.com", "/launch"],
 ]);
 const LEGACY_PATH_REDIRECTS = new Map([
   ["/sbir", "/knowledge/sbir"],
   ["/contact", "/access"],
   ["/join", "/access?context=combine"],
   ["/combine", "/programs/the-combine"],
+  ["/curriculum", "/launch"],
 ]);
 
 // ────────────────────────────────────────────────────────────────────────────

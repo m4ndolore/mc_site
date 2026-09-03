@@ -8,8 +8,36 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  justify-content: space-between;
   flex-wrap: wrap;
   margin-bottom: 32px;
+}
+
+.feed-hero__header > div:first-child { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+
+.feed-rss { display: flex; gap: 8px; flex-wrap: wrap; }
+.feed-rss__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 13px;
+  border: 1px solid rgba(42, 127, 219, .45);
+  border-radius: 2px;
+  color: var(--blue);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+.feed-rss__button:hover { background: var(--blue); color: #fff; }
+
+@media (max-width: 680px) {
+  .feed-hero__header > div:first-child { align-items: flex-start; flex-direction: column; }
+  .feed-rss { width: 100%; }
+  .feed-rss__button { flex: 1; justify-content: space-between; }
 }
 
 .feed-hero__badge {
