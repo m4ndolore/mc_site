@@ -1,10 +1,10 @@
 // js/anymouse-init.js
 // Mounts the Anymouse quick-capture widget on mc_site.
 //
-// Anymouse is a reusable widget vendored from the SigmaBlox monorepo
-// (packages/anymouse). The bundle at js/lib/anymouse.js is an IIFE that sets
-// window.Anymouse; importing it here runs that side effect. To refresh the
-// widget, rebuild packages/anymouse and re-copy dist/anymouse.js into js/lib/.
+// The widget's source lives in js/anymouse/ (adopted from the retired SigmaBlox
+// monorepo's packages/anymouse; mc_site is its only host now) and Vite bundles
+// it from source. The entry module is an IIFE that sets window.Anymouse;
+// importing it here runs that side effect. Config API: js/anymouse/README.md.
 //
 // mc_site wiring:
 //   - getUser():  reuse the site's VIA/Authentik session via builders/auth.js
@@ -14,7 +14,7 @@
 //                 capture should surface Anymouse's own sign-in prompt, not
 //                 bounce the user off the page mid-note.
 
-import './lib/anymouse.js';
+import './anymouse/anymouse.js';
 import '../styles/anymouse-mc.css';
 import { checkAuth } from './builders/auth.js';
 
@@ -89,6 +89,10 @@ function start() {
     viewAllUrl: null,
     // Anchor below the shared navbar (each page renders #mc-navbar).
     anchor: { selector: '#mc-navbar', gap: 24 },
+    // Under the navbar on desktop. On phones the hero headline runs full width
+    // up there, so park it bottom-right instead (768px is styles.css's mobile
+    // breakpoint).
+    position: { mobile: 'bottom-right', mobileMaxWidth: 768 },
     captureContext: false,
   });
 }

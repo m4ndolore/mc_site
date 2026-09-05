@@ -1,0 +1,463 @@
+/* Anymouse widget styles — all classes namespaced `.anymouse-*`. State classes
+ * (hidden-scroll, is-dragging, is-engaged, is-active, has-notification) are
+ * unprefixed by design. Injected at runtime as a <style id="anymouse-styles">. */
+
+.anymouse-root {
+  position: fixed;
+  /* Corner placement. The module tags the root with data-anymouse-v
+     ("top"/"bottom") and data-anymouse-h ("left"/"right") from cfg.position;
+     the two rules below key off those. With no attributes yet, this is
+     top-right. `--anymouse-top` is set by the module from the configured
+     anchor (navbar bottom + gap); the fallback (used only if the anchor
+     selector doesn't resolve) is intentionally generous to clear a tall nav.
+     `--anymouse-edge` is the inset from the side/bottom edges (tightened on
+     small screens below). Drag persists explicit inline top/left which
+     override all of this. */
+  --anymouse-edge: 24px;
+  top: var(--anymouse-top, 120px);
+  right: var(--anymouse-edge);
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+}
+.anymouse-root[data-anymouse-h="left"] {
+  right: auto;
+  left: var(--anymouse-edge);
+}
+.anymouse-root[data-anymouse-v="bottom"] {
+  top: auto;
+  bottom: calc(var(--anymouse-edge) + env(safe-area-inset-bottom, 0px));
+}
+
+.anymouse-button {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  overflow: visible;
+  position: relative;
+}
+
+.anymouse-button.hidden-scroll {
+  transform: scale(0.7) translateY(80px);
+  opacity: 0.25;
+  pointer-events: auto;
+}
+/* From a bottom corner the 80px duck would slide the button off-screen; keep
+   the shrink + fade, drop the drift. */
+.anymouse-root[data-anymouse-v="bottom"] .anymouse-button.hidden-scroll {
+  transform: scale(0.7);
+}
+
+.anymouse-button.is-dragging {
+  cursor: grabbing;
+  opacity: 0.85;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+}
+
+.anymouse-root.anymouse-minimized .anymouse-button {
+  width: 46px;
+  height: 46px;
+  opacity: 0.7;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.anymouse-root.anymouse-minimized .anymouse-button:hover {
+  transform: scale(1) rotate(0);
+}
+
+.anymouse-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+.anymouse-button:hover .anymouse-icon {
+  animation: anymouse-wiggle 0.5s ease-in-out;
+}
+@keyframes anymouse-wiggle {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(-4deg); }
+  60%  { transform: rotate(4deg); }
+  80%  { transform: rotate(-2deg); }
+  100% { transform: rotate(0deg); }
+}
+.anymouse-button:hover .anymouse-ear { transform: translateY(-2px); }
+.anymouse-ear { transition: transform 0.2s ease; }
+
+.anymouse-button:active {
+  transform: scale(0.95);
+}
+
+.anymouse-root {
+  --anymouse-red: #ef4444;
+  --anymouse-green: #22c55e;
+  --anymouse-purple: #6366f1;
+}
+
+/* Idle breathing — resting state only */
+.anymouse-body {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: anymouse-breathe 4s ease-in-out infinite;
+}
+@keyframes anymouse-breathe {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.025); }
+}
+
+/* Pause breathing whenever not at rest. NOTE: this group must stay AFTER the .anymouse-body animation declaration so it wins on source order. */
+.anymouse-button:hover .anymouse-body,
+.anymouse-button.is-dragging .anymouse-body,
+.anymouse-button.hidden-scroll .anymouse-body,
+.anymouse-root.is-engaged .anymouse-body,
+.anymouse-root.anymouse-minimized .anymouse-body {
+  animation-play-state: paused;
+}
+
+.anymouse-button .anymouse-icon {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+  /* Soft drop shadow lifts the light icon off the dark page background */
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.55));
+}
+
+/* Icon colours — tuned for the dark theme: light outline + soft translucent
+   fill so the mouse reads crisply on #0a0a0a without being a flat white blob. */
+.anymouse-shell {
+  fill: rgba(229, 229, 229, 0.12);            /* faint light fill for body presence */
+  stroke: var(--mc-offwhite, #e5e5e5);         /* light outline */
+}
+.anymouse-ear {
+  fill: var(--mc-offwhite, #e5e5e5);           /* solid light ears — clearly visible */
+}
+.anymouse-wheel {
+  fill: var(--mc-blue, #3b82f6);               /* brand-blue scroll wheel accent */
+}
+
+/* Drag tail — hidden at rest, fades in while dragging. The `d` path is updated
+   in JS to trail behind the drag direction; transitioning `d` smooths it. */
+.anymouse-tail {
+  stroke: var(--mc-offwhite, #e5e5e5);
+  opacity: 0;
+  transition: opacity 0.18s ease, d 0.08s linear;
+}
+.anymouse-button.is-dragging .anymouse-tail { opacity: 0.85; }
+
+/* Anymouse notify dot — hidden until a notification is active */
+.anymouse-notify-dot { opacity: 0; fill: var(--mc-blue, #3b82f6); }
+
+.anymouse-notify-dot { transform-box: fill-box; transform-origin: center; }
+
+.anymouse-button.has-notification .anymouse-notify-dot {
+  opacity: 1;
+  animation: anymouse-notify-pulse 1.2s ease-in-out infinite;
+}
+.anymouse-button.has-notification .anymouse-ear--right { opacity: 0.25; }
+.anymouse-button.has-notification .anymouse-icon { animation: anymouse-notify-bounce 0.5s ease; }
+
+@keyframes anymouse-notify-pulse {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%      { transform: scale(1.25); opacity: 0.75; }
+}
+@keyframes anymouse-notify-bounce {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(-4px); }
+  100% { transform: translateY(0); }
+}
+
+/* ===== Adoption / attention layer ===== */
+
+/* Attention pulse — a brand-blue glow + gentle scale on the button. Applied by
+   JS (.anymouse-attention) and removed by JS to stop. */
+.anymouse-button.anymouse-attention {
+  animation: anymouse-attention-pulse 1.6s ease-in-out infinite;
+}
+@keyframes anymouse-attention-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2),
+                0 0 18px 4px var(--mc-blue, #3b82f6);
+  }
+}
+
+/* Coachmark / idle / contextual bubble — one shared element. For the default
+   top-right corner it sits BELOW and slightly left of the button, with an arrow
+   pointing up toward the icon; the corner variants further down flip it above
+   (bottom corners) and/or left-align it (left corners). Dark surface, light
+   text. Fades in/out via .is-visible. */
+.anymouse-coachmark {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  max-width: 600px;
+  width: max-content;
+  background: var(--mc-charcoal, #171717);
+  color: var(--mc-offwhite, #e5e5e5);
+  border: 1px solid var(--mc-slate, #262626);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  padding: 10px 30px 10px 12px;
+  font-family: Arial, sans-serif;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  z-index: 10001;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: auto;
+}
+.anymouse-coachmark.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Arrow pointing up at the icon */
+.anymouse-coachmark::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  right: 24px;
+  border: 7px solid transparent;
+  border-bottom-color: var(--mc-charcoal, #171717);
+}
+/* Bottom corners: open the bubble ABOVE the button, arrow pointing down. */
+.anymouse-root[data-anymouse-v="bottom"] .anymouse-coachmark {
+  top: auto;
+  bottom: calc(100% + 14px);
+  transform: translateY(6px);
+}
+.anymouse-root[data-anymouse-v="bottom"] .anymouse-coachmark.is-visible {
+  transform: translateY(0);
+}
+.anymouse-root[data-anymouse-v="bottom"] .anymouse-coachmark::after {
+  bottom: auto;
+  top: 100%;
+  border-bottom-color: transparent;
+  border-top-color: var(--mc-charcoal, #171717);
+}
+/* Left corners: hang the bubble and its arrow off the left edge instead. */
+.anymouse-root[data-anymouse-h="left"] .anymouse-coachmark {
+  right: auto;
+  left: 0;
+}
+.anymouse-root[data-anymouse-h="left"] .anymouse-coachmark::after {
+  right: auto;
+  left: 24px;
+}
+.anymouse-coachmark-text { display: block; }
+.anymouse-coachmark-dismiss {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--mc-ghost-gray, #525252);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+}
+.anymouse-coachmark-dismiss:hover { color: var(--mc-offwhite, #e5e5e5); }
+
+@media (max-width: 480px) {
+  .anymouse-coachmark { max-width: calc(100vw - 48px); }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .anymouse-root {
+    --anymouse-edge: 12px;
+    top: var(--anymouse-top, 90px);   /* smaller fallback: shorter mobile navbar */
+  }
+
+  .anymouse-button {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+/* ===== Quick Classify Popover ===== */
+/* The widget's DEFAULT theme is dark (matches SigmaBlox dark + MC's default
+   dark). Surface/text are driven by tokens so a host can re-skin via the
+   --anymouse-* vars; the fallbacks below are the dark palette. Light-mode
+   hosts override these (e.g. mc_site scopes overrides under .light-theme). */
+.anymouse-panel {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  margin-bottom: 12px;
+  background: var(--anymouse-surface, var(--mc-charcoal, #171717));
+  border: 1px solid var(--anymouse-border, var(--mc-slate, #2a2a2a));
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  color: var(--anymouse-text, var(--mc-offwhite, #e5e5e5));
+  width: 280px;
+  padding: 16px;
+  display: none;
+  z-index: 10000;
+}
+.anymouse-panel.open {
+  display: block;
+  animation: anymouse-popover-in 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.anymouse-panel.anymouse-panel-below { top: 100%; bottom: auto; margin-top: 12px; margin-bottom: 0; }
+.anymouse-panel.anymouse-panel-right { left: auto; right: 0; }
+
+@keyframes anymouse-popover-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.anymouse-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.anymouse-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 12px;
+  border: 1px solid var(--anymouse-border, var(--mc-slate, #2a2a2a));
+  border-radius: 12px;
+  background: var(--anymouse-tile-bg, rgba(255, 255, 255, 0.03));
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  font-family: Arial, sans-serif;
+}
+.anymouse-panel.open .anymouse-tile { animation: anymouse-tile-in 0.3s ease both; }
+.anymouse-panel.open .anymouse-tile:nth-child(1) { animation-delay: 0ms; }
+.anymouse-panel.open .anymouse-tile:nth-child(2) { animation-delay: 40ms; }
+.anymouse-panel.open .anymouse-tile:nth-child(3) { animation-delay: 80ms; }
+.anymouse-panel.open .anymouse-tile:nth-child(4) { animation-delay: 120ms; }
+@keyframes anymouse-tile-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.anymouse-tile-icon { width: 28px; height: 28px; }
+.anymouse-tile-icon svg { width: 100%; height: 100%; }
+.anymouse-tile-label { font-size: 0.9rem; font-weight: 600; }
+
+/* Per-category accent: icon/label colour + a faint diagonal gradient background
+   (matches the brand board's tinted tiles, tuned brighter for the dark theme). */
+.anymouse-tile[data-accent="blue"] {
+  color: var(--mc-blue, #3b82f6);
+  background: linear-gradient(135deg, rgba(59,130,246,0.18), rgba(59,130,246,0.04));
+}
+.anymouse-tile[data-accent="red"] {
+  color: var(--anymouse-red, #ef4444);
+  background: linear-gradient(135deg, rgba(239,68,68,0.18), rgba(239,68,68,0.04));
+}
+.anymouse-tile[data-accent="green"] {
+  color: var(--anymouse-green, #22c55e);
+  background: linear-gradient(135deg, rgba(34,197,94,0.18), rgba(34,197,94,0.04));
+}
+.anymouse-tile[data-accent="purple"] {
+  color: var(--anymouse-purple, #6366f1);
+  background: linear-gradient(135deg, rgba(99,102,241,0.18), rgba(99,102,241,0.04));
+}
+
+.anymouse-tile:hover { transform: translateY(-2px); }
+.anymouse-tile[data-accent="blue"]:hover   { background: linear-gradient(135deg, rgba(59,130,246,0.30),  rgba(59,130,246,0.08));  border-color: var(--mc-blue, #3b82f6); }
+.anymouse-tile[data-accent="red"]:hover    { background: linear-gradient(135deg, rgba(239,68,68,0.30),   rgba(239,68,68,0.08));   border-color: var(--anymouse-red, #ef4444); }
+.anymouse-tile[data-accent="green"]:hover  { background: linear-gradient(135deg, rgba(34,197,94,0.30),   rgba(34,197,94,0.08));   border-color: var(--anymouse-green, #22c55e); }
+.anymouse-tile[data-accent="purple"]:hover { background: linear-gradient(135deg, rgba(99,102,241,0.30),  rgba(99,102,241,0.08));  border-color: var(--anymouse-purple, #6366f1); }
+.anymouse-tile:active { transform: scale(0.97); }
+
+.anymouse-viewall {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  color: var(--anymouse-muted, var(--mc-ghost-gray, #8a8a8a));
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+}
+.anymouse-viewall:hover { color: var(--anymouse-text, var(--mc-offwhite, #e5e5e5)); }
+
+/* Persistent prompt bar (fast entry capture) — always visible under the tiles */
+.anymouse-capture {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  margin-top: 12px;
+}
+.anymouse-capture-input {
+  flex: 1;
+  min-height: 44px;
+  max-height: 140px;
+  padding: 10px 12px;
+  border: 1px solid var(--anymouse-border, var(--mc-slate, #2a2a2a));
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: Arial, sans-serif;
+  line-height: 1.4;
+  resize: none;
+  box-sizing: border-box;
+  background: var(--anymouse-input-bg, var(--mc-black, #0a0a0a));
+  color: var(--anymouse-text, var(--mc-offwhite, #e5e5e5));
+}
+.anymouse-capture-input::placeholder { color: var(--anymouse-muted, var(--mc-ghost-gray, #6b6b6b)); }
+.anymouse-capture-input:focus { outline: none; border-color: var(--mc-blue, #3b82f6); }
+.anymouse-capture-save {
+  flex: 0 0 auto;
+  align-self: stretch;
+  padding: 0 16px;
+  background: var(--mc-blue, #3b82f6);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: Arial, sans-serif;
+  transition: opacity 0.15s ease;
+}
+.anymouse-capture-save:hover { opacity: 0.9; }
+.anymouse-capture-save:disabled { opacity: 0.5; cursor: not-allowed; }
+.anymouse-capture-status { margin-top: 8px; font-size: 0.8rem; color: var(--anymouse-muted, var(--mc-ghost-gray, #8a8a8a)); min-height: 1em; text-align: center; }
+.anymouse-signin-link { color: var(--mc-blue, #3b82f6); font-weight: 600; text-decoration: none; }
+.anymouse-signin-link:hover { text-decoration: underline; }
+
+/* Active (selected) category tile */
+.anymouse-tile.is-active { border-width: 2px; padding: 17px 11px; }
+.anymouse-tile[data-accent="blue"].is-active   { border-color: var(--mc-blue, #3b82f6);        background: linear-gradient(135deg, rgba(59,130,246,0.30),  rgba(59,130,246,0.08)); }
+.anymouse-tile[data-accent="red"].is-active    { border-color: var(--anymouse-red, #ef4444);   background: linear-gradient(135deg, rgba(239,68,68,0.30),   rgba(239,68,68,0.08)); }
+.anymouse-tile[data-accent="green"].is-active  { border-color: var(--anymouse-green, #22c55e); background: linear-gradient(135deg, rgba(34,197,94,0.30),   rgba(34,197,94,0.08)); }
+.anymouse-tile[data-accent="purple"].is-active { border-color: var(--anymouse-purple, #6366f1);background: linear-gradient(135deg, rgba(99,102,241,0.30),  rgba(99,102,241,0.08)); }
+
+@media (max-width: 480px) {
+  .anymouse-panel { width: calc(100vw - 32px); max-width: 280px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anymouse-body,
+  .anymouse-button:hover .anymouse-icon { animation: none; }
+  .anymouse-button:hover .anymouse-ear { transform: none; }
+  .anymouse-button { transition: none; }
+  .anymouse-ear { transition: none; }
+  .anymouse-button:hover { transform: none; }
+  .anymouse-button.has-notification .anymouse-notify-dot { animation: none; }
+  .anymouse-button.has-notification .anymouse-icon { animation: none; }
+  .anymouse-panel.open,
+  .anymouse-panel.open .anymouse-tile { animation: none; }
+  .anymouse-tile:hover { transform: none; }
+  /* No drag tail under reduced motion (JS also skips updating its path) */
+  .anymouse-button.is-dragging .anymouse-tail { opacity: 0; }
+  /* Adoption: no pulse, no bubble fade (bubble still shows, just static). */
+  .anymouse-button.anymouse-attention { animation: none; }
+  .anymouse-coachmark { transition: none; transform: none; }
+}

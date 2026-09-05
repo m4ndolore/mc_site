@@ -35,8 +35,6 @@ export default [
       'cloudflare/**/node_modules/**',
       'public/**',
       '*.min.js',
-      // Vendored Anymouse widget bundle (generated from packages/anymouse).
-      'js/lib/anymouse.js',
     ],
   },
 ]
