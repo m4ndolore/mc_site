@@ -20,6 +20,126 @@
   },
   "entries": [
     {
+      "date": "2026-02-01",
+      "type": "builder",
+      "origin": "reshare",
+      "featured": false,
+      "title": "XR 2 LEAD's CEO selected as a NATO-DIANA mentor",
+      "detail": "Marryam Chaudhry named a mentor for NATO's Defense Innovation Accelerator for the North Atlantic.",
+      "source_name": "XR 2 LEAD",
+      "source_url": "https://www.xr2lead.com/marryam-chaudhry-selected-as-nato-diana-mentor-empowering-innovation-in-defense-and-security/"
+    },
+    {
+      "date": "2025-05-22",
+      "type": "press",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Lymbic AI profiled for EEG-based biometric authentication",
+      "detail": "Company profile on Neuroprint, its brainwave-based identity authentication platform.",
+      "source_name": "OODAloop",
+      "source_url": "https://oodaloop.com/company-profiles/biotech/lymbic-ai/"
+    },
+    {
+      "date": "2024-05-01",
+      "type": "builder",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Confidencial awarded AFWERX STTR Phase II contract",
+      "detail": "$1.8M contract to help the Air Force secure sensitive national-defense documents.",
+      "source_name": "PR Newswire",
+      "source_url": "https://www.prnewswire.com/news-releases/confidencial-awarded-afwerx-sttr-phase-ii-contract-to-help-the-us-air-force-enhance-data-security-of-sensitive-national-defense-documents-302132876.html"
+    },
+    {
+      "date": "2026-08-01",
+      "type": "press",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Pentastar Aviation deploys Airtrek's autonomous wingwalking robots",
+      "detail": "First aviation operator to deploy Airtrek's autonomous wingwalking robots.",
+      "source_name": "GlobalAir",
+      "source_url": "https://www.globalair.com/articles/pentastar-aviation-leads-industry-as-first-aviation-company-to-deploy-autonomous-wingwalking-robots/12596"
+    },
+    {
+      "date": "2026-01-05",
+      "type": "builder",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Zephr.xyz partners with Rx Networks to scale GNSS positioning",
+      "detail": "Partnership to scale high-precision GNSS positioning for mass-market Android devices.",
+      "source_name": "Business Wire",
+      "source_url": "https://www.morningstar.com/news/business-wire/20260105935341/rx-networks-partners-with-zephrxyz-to-scale-high-precision-gnss-for-mass-market-android-devices"
+    },
+    {
+      "date": "2026-05-01",
+      "type": "press",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Divergent Space Technologies featured on the satellite data boom",
+      "detail": "Featured for its GEOx platform, helping military users task and access commercial satellite imagery.",
+      "source_name": "SpaceNews",
+      "source_url": "https://spacenews.com/the-bottleneck-in-the-satellite-data-boom/"
+    },
+    {
+      "date": "2026-03-01",
+      "type": "builder",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Jericho Security launches Jericho Robotics",
+      "detail": "New division combining patrol robots with cyber defense for defense and enterprise customers.",
+      "source_name": "Jericho Security",
+      "source_url": "https://www.jerichosecurity.com/resources/jericho-security-launches-jericho-robotics-expanding-into-physical-ai-security"
+    },
+    {
+      "date": "2026-04-26",
+      "type": "press",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Skyline Nav AI featured for GPS-independent navigation",
+      "detail": "Feature story on its Pathfinder navigation system, built to keep operating when GPS is denied.",
+      "source_name": "Military.com",
+      "source_url": "https://www.military.com/daily-news/investigations-and-features/2026/04/26/100-billion-blackout-how-one-startup-saving-us-gps-catastrophe.html"
+    },
+    {
+      "date": "2026-02-17",
+      "type": "builder",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Safire Technology Group launches SafireAI division",
+      "detail": "New division delivering edge AI for enterprise energy intelligence.",
+      "source_name": "Business Wire",
+      "source_url": "https://www.businesswire.com/news/home/20260217081501/en/Safire-Technology-Group-Launches-SafireAI-Division-Delivering-Edge-AI-for-Enterprise-Energy-Intelligence"
+    },
+    {
+      "date": "2026-04-28",
+      "type": "builder",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Redshred partners with NobleTek on document intelligence",
+      "detail": "Reseller partnership bringing Redshred's document intelligence to aerospace, defense, and industrial enterprises.",
+      "source_name": "Business Wire",
+      "source_url": "https://www.morningstar.com/news/business-wire/20260428226240/nobletek-and-redshred-partner-to-transform-how-aerospace-defense-and-industrial-enterprises-unlock-the-value-of-their-documents"
+    },
+    {
+      "date": "2026-02-17",
+      "type": "press",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Anuma Aerospace raises $10M pre-seed for lighter-than-air aircraft",
+      "detail": "Founders discuss defense-sector ties for their lighter-than-air aircraft program.",
+      "source_name": "Grepbeat",
+      "source_url": "https://grepbeat.com/2026/02/17/anuma-aerospaces-jamie-and-diana-little-on-lighter-than-air-aircraft-defense-sector-ties-and-a-10m-pre-seed-raise/"
+    },
+    {
+      "date": "2026-07-01",
+      "type": "builder",
+      "origin": "reshare",
+      "featured": false,
+      "title": "Defense Unicorns and Paramify partner on federal compliance",
+      "detail": "Strategic partnership to give more nationally vital organizations a secure compliance foundation.",
+      "source_name": "PR Newswire",
+      "source_url": "https://www.prnewswire.com/news-releases/defense-unicorns-and-paramify-unite-to-give-more-nationally-vital-organizations-the-secure-foundation-they-need-to-succeed-302837911.html"
+    },
+    {
       "date": "2026-06-23",
       "type": "signal",
       "origin": "own",
