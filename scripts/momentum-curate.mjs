@@ -128,6 +128,7 @@ const entry = {
   date,
   type: args.type,
   origin: 'reshare',
+  featured: false,
   title,
   detail: args.detail || meta.detail || '',
   source_name: sourceName,

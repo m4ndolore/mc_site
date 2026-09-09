@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Public directory of defense technology companies evaluated by Merge Combinator. Machine-readable export — see https://mergecombinator.com/builders for the full directory.",
-    "exported": "2026-08-22",
+    "exported": "2026-09-05",
     "count": 83,
     "fields": "Public classification data only. Contact information, financials, scores, badges, and internal IDs are excluded.",
     "license": "This data is provided for informational purposes. See https://mergecombinator.com/terms for usage terms."
@@ -1113,7 +1113,7 @@
     },
     {
       "name": "Starcycle",
-      "productName": "Defense OS: Agentic AI Workflow Engine",
+      "productName": "AI Co-Founder for Small Businesses",
       "website": "starcycle.ai",
       "missionArea": "Administration",
       "warfareDomain": "Multi",
@@ -1125,7 +1125,7 @@
       "technologyArea": "Trusted AI / Autonomy",
       "pipelineStage": "alumni",
       "cohortLabel": "Cohort 25-1",
-      "description": "Problem\nRegulated, multiparty workflows (procurement, IP diligence) create cognitive load, rework, and opaque handoffs. Policy shifts outrun templates; rationale buried in email. Cycles stretch; fielding slips.\n\nSolution\nStarcycle is an AI-first, human-in-the-loop platform that turns policy into in-flow guardrails using a policy-aware KG and OODA loops—delivering first-pass packages, explainable decisions, and automated handoffs. Modular extension: Defense OS.\n\nField Validation\nProduction deployment in fintech on the same engine. Defense: operational prototypes for procurement and IP/patent diligence; pre-production on-prem/air-gapped builds available.\n\nTechnology Maturity (TRL)\nCore engine: production-proven (commercial). Defense OS: TRL 5–6. Next: limited deployment with a program office in a relevant DoD environment (toward TRL-7).\n\nStrategic Advantage\nExplainable-by-design with chain-of-custody; composable OODA atoms; versioned FAR/DFARS/ITAR/EAR; IBM & Red Hat deployments (gov clouds, on-prem, HPC); playbooks from fintech.\n\nGo-to-Market Access\nAFWERX/SBIR/DIU; primes; direct program offices; SigmaBlox.\n\nDual-Use Potential\nCPA SaaS (Q3 2025); public-sector procurement; private equity; utilities/critical infra; healthcare; enterprise GRC.\n\nTeam\nLuke Schantz (CTO), Jaclyn Sui (CEO), and founding engineers in HITL/KG automation; IBM & Red Hat ecosystem.\n\nCompetitive Landscape\nGovCon suites, RPA, and data platforms solve slices. Starcycle unifies KG + OODA + HITL for first-pass, auditable packages; deployable on-prem/air-gapped.\n\nPrimary User\nContracting specialists/KOs, PMO leads, capture managers; legal/compliance analysts.\n\nUser-Critical Problem\nNeed real-time validation, remediation, and logged custody to hit first-pass approvals and predictable timelines."
+      "description": "Problem\nEntrepreneurs get plenty of help starting a business and very little help running the complex, regulation-heavy administrative side of it, including the often-overlooked, high-stakes work of properly closing one down.\n\nSolution\nStarcycle positions itself as \"your AI co-founder\": an AI-driven platform that guides small-business owners through complex administrative workflows end-to-end, pairing automated guidance with human-in-the-loop support, including LLC dissolution, deregistration, and compliance filings when winding a business down.\n\nField Validation\nLive, publicly available product. Partnered with Warp on employee-management workflows for businesses in wind-down, and hosted a business-shutdown workshop with NYU Tandon.\n\nTeam\nCo-founded by CEO Jaclyn Siu (previously founder of Wearhou) and CTO Luke Schantz (IBM Developer Ecosystem / Red Hat background).\n\nPrimary User\nSmall-business owners and founders, particularly those restructuring or closing a company."
     },
     {
       "name": "Stitch3D",
@@ -1145,7 +1145,7 @@
     },
     {
       "name": "Sunnoo",
-      "productName": "Sunnoo Mighticon",
+      "productName": "Grid-Independent EV Charging Platform",
       "website": "sunnoo.co",
       "missionArea": "Logistics",
       "warfareDomain": "Land",
@@ -1157,7 +1157,7 @@
       "technologyArea": "Energy Resilience",
       "pipelineStage": "alumni",
       "cohortLabel": "Cohort 25-1",
-      "description": "In modern forward-operating environments, the military’s reliance on diesel generators and fuel convoys creates serious vulnerabilities. Fuel convoys are among the most dangerous missions in the field, while generators are loud, hot, and maintenance-heavy — emitting detectable signatures that expose troops to enemy targeting. With electrification increasing across drone fleets, sensor platforms, and mobile comms, the battlefield demands a new standard of portable, resilient power.\n\nSunnoo delivers that standard. Our mobile, solar-powered microgrid provides silent, thermal-signature-free energy without the need for fuel. It eliminates logistical risk, reduces downtime, and enables mission continuity in contested environments — keeping warfighters powered, protected, and operational.\n\nKey features include a 12kW expandable solar array with patented dual-axis sun tracking — delivering 42% more solar capture than static systems — plus scalable battery storage (480kWh–1,440kWh), daisy-chain expandability, and a rugged, trailer-mounted design for fast deployment. Optional cloaking technology visually blends the unit with its terrain, enhancing stealth in high-threat zones.\n\nSunnoo is validated by 20,000+ hours of component testing and DOE partnerships via Sandia Labs and New Mexico State. At TRL 6, our platform is ready to move from field pilot to deployment. We’ve submitted multiple SBIR applications and built a go-to-market roadmap focused on DoD energy resilience needs.\n\nWith dual-use potential for disaster relief and EV infrastructure, Sunnoo offers not just a cleaner energy alternative — but a safer, smarter one that aligns with the modern warfighter’s reality. Built in the U.S.A. and deployable worldwide, it’s energy engineered for survivability and strategic advantage."
+      "description": "Sunnoo is an American clean energy company building utility-patented, grid-independent EV charging infrastructure and solar optimization technology designed for rapid deployment without permitting, trenching, or utility interconnect delays.\n\nSunnoo's flagship platform combines a 6.5kW bifacial solar array with a patented dual-axis, single-motor tracking turret and configurable (24–100 kWh) battery storage, delivering Level 2 charging via two NACS connectors wherever the grid is unavailable, overtaxed, or too slow to connect.\n\nThe patented tracking turret uses 360-degree dual-axis tracking to capture 50–62% more energy than fixed arrays, with software-driven gains adding another 8–12% daily solar capture, at lower operating energy than traditional dual-motor systems.\n\nGo-to-Market: partnerships and deployment across higher education, municipalities, and commercial fleets, with manufacturing rooted in Las Cruces, New Mexico.\n\nDual-Use Potential: grid-independent, rapid-deployment power is directly relevant to disaster relief, remote operations, and other environments where fixed grid infrastructure is unavailable or compromised.\n\nTeam: led by Partner & CEO Chris Langathianos, driving company strategy, commercialization, and go-to-market partnerships."
     },
     {
       "name": "Swarmbotics AI",
