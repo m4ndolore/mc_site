@@ -106,6 +106,7 @@ export default defineConfig({
         'knowledge-compliance': resolve(__dirname, 'knowledge/compliance.html'),
         'knowledge-defense-venture-studio': resolve(__dirname, 'knowledge/defense-venture-studio.html'),
         'knowledge-first-principles': resolve(__dirname, 'knowledge/first-principles-engineering.html'),
+        'knowledge-heilmeier': resolve(__dirname, 'knowledge/heilmeier-catechism.html'),
         'knowledge-valley-of-death': resolve(__dirname, 'knowledge/valley-of-death.html'),
         'knowledge-color-of-money': resolve(__dirname, 'knowledge/color-of-money.html'),
         // Signals articles
