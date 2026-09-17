@@ -155,11 +155,11 @@ export function renderCopyEmail(sub: CatechismSubmission): RenderedEmail {
     : `Your eight answers (${sub.answeredCount} of 8)`
 
   const opener = blanks === 0
-    ? 'You answered all eight. Most people stop at three, and the ones who finish usually find question eight is the one they had never written down before.'
-    : `You answered ${sub.answeredCount} of eight. The ${blanks === 1 ? 'blank one is' : 'blanks are'} the useful part: each one is a conversation you have not had yet, usually with the person who owns the problem.`
-  const useIt = 'Two things worth doing with these this week. Send them to one person who owns the problem and ask them to mark question four. Then run question two past someone who does the job today and see whether they recognize it.'
-  const whatNow = 'A person on the team reads this within two business days. If your answers fit what we are building right now, we reply with a specific next step. If they do not, we still reply and say so. Reply to this email any time; it reaches a person, not a queue.'
-  const call = 'If you would rather talk it through, there is a free 30-minute call on the calendar.'
+    ? 'You answered all eight. That puts the whole pitch on one page, which is what the catechism is for.'
+    : `You answered ${sub.answeredCount} of eight. ${blanks === 1 ? 'The blank one is a question you cannot answer yet' : `The ${blanks} blanks are questions you cannot answer yet`}. The person who owns the problem usually has the answer, so go ask them.`
+  const useIt = 'Two next steps. Send your answers to one person who owns the problem and ask them to grade question four, who cares and what difference success makes. Then show question two, how it is done today, to someone who does that job now and ask whether it matches what they see.'
+  const whatNow = 'Merge Combinator will read this and respond if we think we can help. If we do, we will reply with a specific next step. Reply to this email if you want to add anything.'
+  const call = 'If you would rather talk it through, book 30 minutes with me.'
   const signoff = '— Paul Garcia, Merge Combinator'
 
   const textLines: string[] = []
@@ -206,7 +206,7 @@ export function renderCopyEmail(sub: CatechismSubmission): RenderedEmail {
       <p style="margin:0 0 24px;"><a href="${FIVE_STEP_URL}" style="display:inline-block;background:#3b82f6;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:10px 16px;border-radius:2px;">Pair it with the 5-Step Design Process</a></p>
       <p style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:.14em;color:#3b82f6;margin:0 0 6px;">WHAT HAPPENS NOW</p>
       <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 16px;">${escapeHtml(whatNow)}</p>
-      <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 24px;">${escapeHtml(call)} <a href="${CALL_URL}" style="color:#3b82f6;">Book 30 minutes</a>.</p>
+      <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 24px;">${escapeHtml(call)} <a href="${CALL_URL}" style="color:#3b82f6;">Book 30 minutes with Paul</a>.</p>
       <p style="font-size:14px;color:#333;margin:0 0 32px;">${escapeHtml(signoff)}</p>
       <hr style="border:none;border-top:1px solid #eee;margin:0 0 4px;" />
       <p style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:.14em;color:#999;margin:12px 0 0;">YOUR ANSWERS, AS YOU WROTE THEM</p>
