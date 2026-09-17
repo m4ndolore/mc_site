@@ -46,7 +46,7 @@ access.post('/otp/send', async (c) => {
 
   const emailResult = await sendOtpEmail(
     {
-      from: c.env.OTP_FROM_EMAIL || 'access@naluops.com',
+      from: c.env.OTP_FROM_EMAIL || 'access@mergecombinator.com',
       apiKey: c.env.RESEND_API_KEY,
       provider: c.env.RESEND_API_KEY ? 'resend' : 'mailchannels',
     },
@@ -283,7 +283,7 @@ access.post('/catechism', async (c) => {
   }
 
   const emailConfig = {
-    from: c.env.OTP_FROM_EMAIL || 'access@naluops.com',
+    from: c.env.OTP_FROM_EMAIL || 'access@mergecombinator.com',
     apiKey: c.env.RESEND_API_KEY,
     provider: (c.env.RESEND_API_KEY ? 'resend' : 'mailchannels') as 'resend' | 'mailchannels',
   }
