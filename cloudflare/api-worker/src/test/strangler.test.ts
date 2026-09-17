@@ -57,6 +57,14 @@ describe('resolveRoute', () => {
     expect(resolveRoute('POST', '/access/provision')).toBe('native')
   })
 
+  it('POST /access/catechism → native', () => {
+    expect(resolveRoute('POST', '/access/catechism')).toBe('native')
+  })
+
+  it('GET /access/catechism → proxy_legacy (wrong method)', () => {
+    expect(resolveRoute('GET', '/access/catechism')).toBe('proxy_legacy')
+  })
+
   // Proxy legacy routes
   it('GET /access/provision → proxy_legacy (wrong method)', () => {
     expect(resolveRoute('GET', '/access/provision')).toBe('proxy_legacy')

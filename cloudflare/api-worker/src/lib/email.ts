@@ -1,12 +1,29 @@
 /**
- * Email sending for OTP codes.
+ * Transactional email.
  *
- * Uses Authentik's transactional email endpoint or falls back to
- * a simple MailChannels-via-Workers approach.
- *
- * In production, this should be replaced with a proper transactional
- * email provider (e.g., Resend, Postmark, SES).
+ * Sends via Resend when RESEND_API_KEY is configured, otherwise falls back
+ * to MailChannels. `sendEmail` is the generic primitive; `sendOtpEmail`
+ * renders the verification-code message on top of it.
  */
+
+export interface EmailConfig {
+  from: string
+  apiKey?: string
+  provider: 'mailchannels' | 'resend'
+}
+
+export interface SendEmailParams {
+  to: string
+  subject: string
+  text: string
+  html: string
+  replyTo?: string
+}
+
+export interface SendResult {
+  sent: boolean
+  error?: string
+}
 
 interface SendOtpEmailParams {
   to: string
@@ -14,26 +31,26 @@ interface SendOtpEmailParams {
   name?: string
 }
 
-interface EmailConfig {
-  from: string
-  apiKey?: string
-  provider: 'mailchannels' | 'resend'
+export async function sendEmail(config: EmailConfig, params: SendEmailParams): Promise<SendResult> {
+  if (config.provider === 'resend' && config.apiKey) {
+    return sendViaResend(config.apiKey, config.from, params)
+  }
+  return sendViaMailChannels(config.from, params)
 }
 
 /**
- * Send OTP verification email via MailChannels (free for CF Workers)
- * or Resend (if configured).
+ * Send OTP verification email.
  */
 export async function sendOtpEmail(
   config: EmailConfig,
   params: SendOtpEmailParams
-): Promise<{ sent: boolean; error?: string }> {
+): Promise<SendResult> {
   const { to, code, name } = params
   const greeting = name ? `Hi ${name},` : 'Hi,'
 
   const subject = `${code} is your Merge Combinator verification code`
-  const textBody = `${greeting}\n\nYour verification code is: ${code}\n\nThis code expires in 10 minutes.\n\nIf you didn't request this, you can safely ignore this email.\n\n— Merge Combinator`
-  const htmlBody = `
+  const text = `${greeting}\n\nYour verification code is: ${code}\n\nThis code expires in 10 minutes.\n\nIf you didn't request this, you can safely ignore this email.\n\n— Merge Combinator`
+  const html = `
     <div style="font-family: -apple-system, 'Helvetica Neue', sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 20px;">
       <p style="color: #666; font-size: 15px;">${greeting}</p>
       <p style="color: #333; font-size: 15px;">Your verification code is:</p>
@@ -47,27 +64,22 @@ export async function sendOtpEmail(
     </div>
   `
 
-  if (config.provider === 'resend' && config.apiKey) {
-    return sendViaResend(config.apiKey, config.from, to, subject, textBody, htmlBody)
-  }
-
-  return sendViaMailChannels(config.from, to, subject, textBody, htmlBody)
+  return sendEmail(config, { to, subject, text, html })
 }
 
-async function sendViaMailChannels(
-  from: string, to: string, subject: string, text: string, html: string
-): Promise<{ sent: boolean; error?: string }> {
+async function sendViaMailChannels(from: string, p: SendEmailParams): Promise<SendResult> {
   try {
     const res = await fetch('https://api.mailchannels.net/tx/v1/send', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        personalizations: [{ to: [{ email: to }] }],
+        personalizations: [{ to: [{ email: p.to }] }],
         from: { email: from, name: 'Merge Combinator' },
-        subject,
+        ...(p.replyTo ? { reply_to: { email: p.replyTo } } : {}),
+        subject: p.subject,
         content: [
-          { type: 'text/plain', value: text },
-          { type: 'text/html', value: html },
+          { type: 'text/plain', value: p.text },
+          { type: 'text/html', value: p.html },
         ],
       }),
     })
@@ -81,9 +93,7 @@ async function sendViaMailChannels(
   }
 }
 
-async function sendViaResend(
-  apiKey: string, from: string, to: string, subject: string, text: string, html: string
-): Promise<{ sent: boolean; error?: string }> {
+async function sendViaResend(apiKey: string, from: string, p: SendEmailParams): Promise<SendResult> {
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -91,7 +101,14 @@ async function sendViaResend(
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ from, to, subject, text, html }),
+      body: JSON.stringify({
+        from,
+        to: p.to,
+        subject: p.subject,
+        text: p.text,
+        html: p.html,
+        ...(p.replyTo ? { reply_to: p.replyTo } : {}),
+      }),
     })
     if (!res.ok) {
       const body = await res.text()

@@ -21,6 +21,7 @@ export interface Env {
   // Email (OTP)
   OTP_FROM_EMAIL?: string
   RESEND_API_KEY?: string
+  CATECHISM_INBOX?: string
 
   // Origins
   MC_PUBLIC_URL: string
