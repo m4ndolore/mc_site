@@ -119,20 +119,127 @@ export function renderFounderPathTeamEmail(sub: FounderPathSubmission): Rendered
   return { subject, text, html }
 }
 
+/**
+ * The founder's copy. This is the first thing Merge Combinator sends a
+ * founder, so it has to earn a reply: their own words back, one honest
+ * observation for their stage, one next step, and a plain account of what
+ * happens now. No pitch, no sequence.
+ */
+interface StageNote {
+  label: string
+  observation: string
+  nextStep: string
+  nextUrl: string
+  nextLabel: string
+}
+
+const CURRICULUM = 'https://mergecombinator.com/curriculum'
+const CALL_URL = 'https://calendar.app.google/caYkEhTngEyUEgDn7'
+
+const STAGE_NOTES: Record<string, StageNote> = {
+  'visionary-no-problem': {
+    label: 'CEO without a problem yet',
+    observation: 'This is the most common way a defense company starts and the most common way one stalls. The fix is a named operator wound: one person, one command, one thing that breaks on a Tuesday.',
+    nextStep: 'Before you build anything, learn who buys and how. Start at Preflight in the curriculum.',
+    nextUrl: `${CURRICULUM}#stage-preflight`,
+    nextLabel: 'Preflight',
+  },
+  curious: {
+    label: 'Curious, not committed',
+    observation: 'Curiosity is the right starting point. The people who end up building here usually spent a few months reading before they committed, and the reading is free.',
+    nextStep: 'Start at Preflight in the curriculum. Two hours there will tell you whether this is your fight.',
+    nextUrl: `${CURRICULUM}#stage-preflight`,
+    nextLabel: 'Preflight',
+  },
+  'operator-with-problem': {
+    label: 'Operator with a problem, no team',
+    observation: 'You hold the rarest asset in this market: a problem you lived. Most technical founders are searching for exactly that and cannot find it.',
+    nextStep: 'Name the problem owner and the budget line it sits under, then start at Spot in the curriculum. That is where the team-finding paths are.',
+    nextUrl: `${CURRICULUM}#stage-spot`,
+    nextLabel: 'Spot',
+  },
+  'builder-no-problem': {
+    label: 'Technical builder looking for a problem',
+    observation: 'Velocity without a wound points at nothing. The builders who make it here found one operator with a real problem and went and sat with them before writing code.',
+    nextStep: 'Start at Spot in the curriculum. The Hacking for Defense, AFWERX, and DIU entry points are listed there.',
+    nextUrl: `${CURRICULUM}#stage-spot`,
+    nextLabel: 'Spot',
+  },
+  'team-with-prototype': {
+    label: 'Small team with a working prototype',
+    observation: 'This is where funded prototypes die. The work from here is transition: a program of record, an appropriation that can legally buy what you sell, and a champion who will not rotate out before it lands.',
+    nextStep: 'Read Crossing the Valley of Death, then start at Ready for Launch in the curriculum.',
+    nextUrl: `${CURRICULUM}#stage-ready`,
+    nextLabel: 'Ready for Launch',
+  },
+  scaling: {
+    label: 'Scaling',
+    observation: 'Program pull-through and color of money decide the next eighteen months more than product does. Most teams at this stage are one budget cycle from either a line item or a stall.',
+    nextStep: 'Read The Color of Money, then start at Tension in the curriculum.',
+    nextUrl: `${CURRICULUM}#stage-tension`,
+    nextLabel: 'Tension',
+  },
+}
+
+const DEFAULT_NOTE: StageNote = {
+  label: 'Founder',
+  observation: 'Every company that makes it here started with a named operator problem and a person who owned it. The rest is transition work.',
+  nextStep: 'Start at Preflight in the curriculum.',
+  nextUrl: `${CURRICULUM}#stage-preflight`,
+  nextLabel: 'Preflight',
+}
+
+export function stageNote(stage: string | null): StageNote {
+  return (stage && STAGE_NOTES[stage]) || DEFAULT_NOTE
+}
+
 export function renderFounderPathCopyEmail(sub: FounderPathSubmission): RenderedEmail {
-  const greeting = sub.name ? `Hi ${sub.name},` : 'Hi,'
-  const subject = 'Your Founder Path triage'
-  const intro = `${greeting}\n\nHere is the triage you built at mergecombinator.com/start. Someone on the team reads every one of these and we will be in touch within two business days. Reply to this email if you want to add anything.\n\n`
-  const outro = `\n\nWhen you are ready for the next step: https://mergecombinator.com/curriculum\n\n— Merge Combinator`
+  const note = stageNote(sub.stage)
+  const greeting = sub.name ? `${sub.name},` : 'Hi,'
+  const subject = `Your triage: ${note.label.toLowerCase()}`
+
+  const whatNow = 'A person on the team reads this within two business days. If your triage fits what we are building right now, we reply with a specific next step. If it does not, we still reply and say so. Reply to this email any time; it reaches a person, not a queue.'
+  const call = 'If you would rather talk it through, there is a free 30-minute call on the calendar.'
+  const signoff = '— Paul Garcia, Merge Combinator'
+
+  const text = [
+    greeting,
+    '',
+    `You told us you are: ${note.label}.`,
+    '',
+    note.observation,
+    '',
+    `Next step: ${note.nextStep}`,
+    note.nextUrl,
+    '',
+    'What happens now',
+    whatNow,
+    '',
+    `${call} ${CALL_URL}`,
+    '',
+    signoff,
+    '',
+    '----------------------------------------',
+    'Your triage, as you built it',
+    '',
+    reportBlock(sub),
+  ].join('\n')
+
   const html = `
-    <div style="font-family:-apple-system,'Helvetica Neue',sans-serif;max-width:640px;margin:0 auto;padding:32px 20px;">
-      <p style="font-size:15px;color:#333;">${escapeHtml(greeting)}</p>
-      <p style="font-size:15px;color:#333;line-height:1.5;">Here is the triage you built at mergecombinator.com/start. Someone on the team reads every one of these and we will be in touch within two business days. Reply to this email if you want to add anything.</p>
-      <hr style="border:none;border-top:1px solid #eee;margin:20px 0;" />
-      <pre style="font-family:'Courier New',monospace;font-size:13px;color:#111;white-space:pre-wrap;margin:0;">${escapeHtml(reportBlock(sub))}</pre>
-      <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;" />
-      <p style="font-size:12px;color:#999;margin:0;">When you are ready for the next step: <a href="https://mergecombinator.com/curriculum" style="color:#3b82f6;">the curriculum</a>.</p>
-      <p style="font-size:11px;color:#bbb;margin:16px 0 0;">Merge Combinator</p>
+    <div style="font-family:-apple-system,'Helvetica Neue',sans-serif;max-width:600px;margin:0 auto;padding:32px 20px;color:#111;">
+      <p style="font-size:15px;margin:0 0 16px;">${escapeHtml(greeting)}</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 16px;">You told us you are: <strong>${escapeHtml(note.label)}</strong>.</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 16px;">${escapeHtml(note.observation)}</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 6px;"><strong>Next step.</strong> ${escapeHtml(note.nextStep)}</p>
+      <p style="margin:0 0 24px;"><a href="${note.nextUrl}" style="display:inline-block;background:#3b82f6;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:10px 16px;border-radius:2px;">Open ${escapeHtml(note.nextLabel)}</a></p>
+      <p style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:.14em;color:#3b82f6;margin:0 0 6px;">WHAT HAPPENS NOW</p>
+      <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 16px;">${escapeHtml(whatNow)}</p>
+      <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 24px;">${escapeHtml(call)} <a href="${CALL_URL}" style="color:#3b82f6;">Book 30 minutes</a>.</p>
+      <p style="font-size:14px;color:#333;margin:0 0 32px;">${escapeHtml(signoff)}</p>
+      <hr style="border:none;border-top:1px solid #eee;margin:0 0 16px;" />
+      <p style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:.14em;color:#999;margin:0 0 10px;">YOUR TRIAGE, AS YOU BUILT IT</p>
+      <pre style="font-family:'Courier New',monospace;font-size:12.5px;color:#333;white-space:pre-wrap;margin:0;">${escapeHtml(reportBlock(sub))}</pre>
     </div>`
-  return { subject, text: intro + reportBlock(sub) + outro, html }
+
+  return { subject, text, html }
 }

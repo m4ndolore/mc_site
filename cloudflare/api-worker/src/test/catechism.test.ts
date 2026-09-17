@@ -97,14 +97,30 @@ describe('renderTeamEmail', () => {
 })
 
 describe('renderCopyEmail', () => {
-  it('addresses the founder and states what happens next', () => {
+  it('counts the blanks, says what happens next, and returns the answers', () => {
     const r = parseCatechismBody(valid)
     expect(r.ok).toBe(true)
     if (!r.ok) return
     const mail = renderCopyEmail(r.value)
-    expect(mail.subject).toBe('Your eight Heilmeier answers')
-    expect(mail.text.startsWith('Hi Ada,')).toBe(true)
-    expect(mail.text).toContain('Nothing else happens unless you ask.')
+    expect(mail.subject).toBe('Your eight answers (2 of 8)')
+    expect(mail.text.startsWith('Ada,')).toBe(true)
+    expect(mail.text).toContain('You answered 2 of eight.')
+    expect(mail.text).toContain('within two business days')
     expect(mail.text).toContain('Build an aircraft radar cannot see.')
+    expect(mail.text).toContain('first-principles-engineering')
+  })
+
+  it('congratulates a full set and singularizes one blank', () => {
+    const all: Record<string, string> = {}
+    for (let i = 1; i <= 8; i++) all[`q${i}`] = `answer ${i}`
+    const full = parseCatechismBody({ ...valid, answers: all })
+    expect(full.ok).toBe(true)
+    if (!full.ok) return
+    expect(renderCopyEmail(full.value).subject).toBe('Your eight answers, all eight')
+
+    const seven = parseCatechismBody({ ...valid, answers: { ...all, q8: '' } })
+    expect(seven.ok).toBe(true)
+    if (!seven.ok) return
+    expect(renderCopyEmail(seven.value).text).toContain('The blank one is the useful part')
   })
 })

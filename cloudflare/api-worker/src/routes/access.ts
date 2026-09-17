@@ -307,6 +307,7 @@ access.post('/catechism', async (c) => {
   const copy = renderCopyEmail(parsed.value)
   const copyResult = await sendEmail(emailConfig, {
     to: parsed.value.email,
+    replyTo: inbox,
     subject: copy.subject,
     text: copy.text,
     html: copy.html,
