@@ -76,13 +76,35 @@ describe('renderFounderPathTeamEmail', () => {
 })
 
 describe('renderFounderPathCopyEmail', () => {
-  it('repeats the two-business-day promise the page makes', () => {
-    const r = parseFounderPathBody(valid)
+  it('matches the next step to the stage and keeps the two-business-day promise', () => {
+    const r = parseFounderPathBody({ ...valid, stage: 'operator-with-problem' })
     expect(r.ok).toBe(true)
     if (!r.ok) return
     const mail = renderFounderPathCopyEmail(r.value)
-    expect(mail.subject).toBe('Your Founder Path triage')
+    expect(mail.subject).toBe('Your triage: operator with a problem, no team')
     expect(mail.text).toContain('within two business days')
+    expect(mail.text).toContain('curriculum#stage-spot')
     expect(mail.text).toContain('Stage: Operator')
+    expect(mail.text.startsWith('Ada,')).toBe(true)
+    expect(mail.html).toContain('Open Spot')
+  })
+
+  it('falls back to Preflight for an unknown stage', () => {
+    const r = parseFounderPathBody({ ...valid, stage: 'something-new', name: '' })
+    expect(r.ok).toBe(true)
+    if (!r.ok) return
+    const mail = renderFounderPathCopyEmail(r.value)
+    expect(mail.subject).toBe('Your triage: founder')
+    expect(mail.text.startsWith('Hi,')).toBe(true)
+    expect(mail.text).toContain('curriculum#stage-preflight')
+  })
+
+  it('sends prototype teams to Ready for Launch and scaling teams to Tension', () => {
+    const a = parseFounderPathBody({ ...valid, stage: 'team-with-prototype' })
+    const b = parseFounderPathBody({ ...valid, stage: 'scaling' })
+    expect(a.ok && b.ok).toBe(true)
+    if (!a.ok || !b.ok) return
+    expect(renderFounderPathCopyEmail(a.value).text).toContain('curriculum#stage-ready')
+    expect(renderFounderPathCopyEmail(b.value).text).toContain('curriculum#stage-tension')
   })
 })

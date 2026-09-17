@@ -61,6 +61,7 @@ founderPath.post('/triage', async (c) => {
   const copy = renderFounderPathCopyEmail(sub)
   const copyResult = await sendEmail(emailConfig, {
     to: sub.email,
+    replyTo: inbox,
     subject: copy.subject,
     text: copy.text,
     html: copy.html,

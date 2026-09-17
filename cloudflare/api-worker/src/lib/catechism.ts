@@ -139,11 +139,28 @@ export function renderTeamEmail(sub: CatechismSubmission): RenderedEmail {
   return { subject, text: textLines.join('\n'), html }
 }
 
-/** The copy the founder receives. */
+/**
+ * The founder's copy. First thing we send them, so it has to earn a reply:
+ * their answers back, one honest read on what the blanks mean, one next
+ * step, and a plain account of what happens now. No pitch, no sequence.
+ */
+const CALL_URL = 'https://calendar.app.google/caYkEhTngEyUEgDn7'
+const FIVE_STEP_URL = 'https://mergecombinator.com/knowledge/first-principles-engineering'
+
 export function renderCopyEmail(sub: CatechismSubmission): RenderedEmail {
-  const greeting = sub.name ? `Hi ${sub.name},` : 'Hi,'
-  const subject = 'Your eight Heilmeier answers'
-  const intro = `${greeting}\n\nHere is a copy of what you sent to Merge Combinator. Someone on the team reads every one of these. If we have something useful to say, we reply from this thread. Nothing else happens unless you ask.\n\n`
+  const greeting = sub.name ? `${sub.name},` : 'Hi,'
+  const blanks = 8 - sub.answeredCount
+  const subject = blanks === 0
+    ? 'Your eight answers, all eight'
+    : `Your eight answers (${sub.answeredCount} of 8)`
+
+  const opener = blanks === 0
+    ? 'You answered all eight. Most people stop at three, and the ones who finish usually find question eight is the one they had never written down before.'
+    : `You answered ${sub.answeredCount} of eight. The ${blanks === 1 ? 'blank one is' : 'blanks are'} the useful part: each one is a conversation you have not had yet, usually with the person who owns the problem.`
+  const useIt = 'Two things worth doing with these this week. Send them to one person who owns the problem and ask them to mark question four. Then run question two past someone who does the job today and see whether they recognize it.'
+  const whatNow = 'A person on the team reads this within two business days. If your answers fit what we are building right now, we reply with a specific next step. If they do not, we still reply and say so. Reply to this email any time; it reaches a person, not a queue.'
+  const call = 'If you would rather talk it through, there is a free 30-minute call on the calendar.'
+  const signoff = '— Paul Garcia, Merge Combinator'
 
   const textLines: string[] = []
   const htmlBlocks: string[] = []
@@ -152,23 +169,51 @@ export function renderCopyEmail(sub: CatechismSubmission): RenderedEmail {
     const a = sub.answers[q.id] || '(blank)'
     textLines.push(`${n}  ${q.label}`, a, '')
     htmlBlocks.push(
-      `<p style="margin:20px 0 4px;font-family:'Courier New',monospace;font-size:12px;color:#3b82f6;letter-spacing:.06em;">${n}</p>` +
-      `<p style="margin:0 0 6px;font-size:14px;color:#555;font-style:italic;">${escapeHtml(q.label)}</p>` +
-      `<p style="margin:0;font-size:15px;color:#111;white-space:pre-wrap;">${escapeHtml(a)}</p>`
+      `<p style="margin:18px 0 4px;font-family:'Courier New',monospace;font-size:12px;color:#3b82f6;letter-spacing:.06em;">${n}</p>` +
+      `<p style="margin:0 0 6px;font-size:13.5px;color:#666;font-style:italic;">${escapeHtml(q.label)}</p>` +
+      `<p style="margin:0;font-size:14.5px;color:#111;white-space:pre-wrap;">${escapeHtml(a)}</p>`
     )
   })
-  const outro = `The questions are George Heilmeier's, from DARPA, 1975: https://mergecombinator.com/knowledge/heilmeier-catechism\n\n— Merge Combinator`
+
+  const text = [
+    greeting,
+    '',
+    opener,
+    '',
+    useIt,
+    '',
+    `Pair the questions with the 5-Step Design Process: ${FIVE_STEP_URL}`,
+    '',
+    'What happens now',
+    whatNow,
+    '',
+    `${call} ${CALL_URL}`,
+    '',
+    signoff,
+    '',
+    '----------------------------------------',
+    'Your answers, as you wrote them',
+    '',
+    ...textLines,
+    'The questions are George Heilmeier\'s, from DARPA, 1975: https://mergecombinator.com/knowledge/heilmeier-catechism',
+  ].join('\n')
 
   const html = `
-    <div style="font-family:-apple-system,'Helvetica Neue',sans-serif;max-width:640px;margin:0 auto;padding:32px 20px;">
-      <p style="font-size:15px;color:#333;">${escapeHtml(greeting)}</p>
-      <p style="font-size:15px;color:#333;line-height:1.5;">Here is a copy of what you sent to Merge Combinator. Someone on the team reads every one of these. If we have something useful to say, we reply from this thread. Nothing else happens unless you ask.</p>
-      <hr style="border:none;border-top:1px solid #eee;margin:20px 0;" />
+    <div style="font-family:-apple-system,'Helvetica Neue',sans-serif;max-width:600px;margin:0 auto;padding:32px 20px;color:#111;">
+      <p style="font-size:15px;margin:0 0 16px;">${escapeHtml(greeting)}</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 16px;">${escapeHtml(opener)}</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 16px;">${escapeHtml(useIt)}</p>
+      <p style="margin:0 0 24px;"><a href="${FIVE_STEP_URL}" style="display:inline-block;background:#3b82f6;color:#fff;text-decoration:none;font-weight:600;font-size:14px;padding:10px 16px;border-radius:2px;">Pair it with the 5-Step Design Process</a></p>
+      <p style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:.14em;color:#3b82f6;margin:0 0 6px;">WHAT HAPPENS NOW</p>
+      <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 16px;">${escapeHtml(whatNow)}</p>
+      <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 24px;">${escapeHtml(call)} <a href="${CALL_URL}" style="color:#3b82f6;">Book 30 minutes</a>.</p>
+      <p style="font-size:14px;color:#333;margin:0 0 32px;">${escapeHtml(signoff)}</p>
+      <hr style="border:none;border-top:1px solid #eee;margin:0 0 4px;" />
+      <p style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:.14em;color:#999;margin:12px 0 0;">YOUR ANSWERS, AS YOU WROTE THEM</p>
       ${htmlBlocks.join('')}
       <hr style="border:none;border-top:1px solid #eee;margin:28px 0 12px;" />
       <p style="font-size:12px;color:#999;margin:0;">The questions are George Heilmeier's, from DARPA, 1975. <a href="https://mergecombinator.com/knowledge/heilmeier-catechism" style="color:#3b82f6;">Read the page</a>.</p>
-      <p style="font-size:11px;color:#bbb;margin:16px 0 0;">Merge Combinator</p>
     </div>`
 
-  return { subject, text: intro + textLines.join('\n') + '\n' + outro, html }
+  return { subject, text, html }
 }

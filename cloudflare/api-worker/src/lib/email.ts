@@ -31,9 +31,16 @@ interface SendOtpEmailParams {
   name?: string
 }
 
+const FROM_NAME = 'Merge Combinator'
+
+/** "Merge Combinator <access@...>" unless the address already carries a display name. */
+export function displayFrom(from: string): string {
+  return from.includes('<') ? from : `${FROM_NAME} <${from}>`
+}
+
 export async function sendEmail(config: EmailConfig, params: SendEmailParams): Promise<SendResult> {
   if (config.provider === 'resend' && config.apiKey) {
-    return sendViaResend(config.apiKey, config.from, params)
+    return sendViaResend(config.apiKey, displayFrom(config.from), params)
   }
   return sendViaMailChannels(config.from, params)
 }
@@ -74,7 +81,7 @@ async function sendViaMailChannels(from: string, p: SendEmailParams): Promise<Se
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         personalizations: [{ to: [{ email: p.to }] }],
-        from: { email: from, name: 'Merge Combinator' },
+        from: { email: from, name: FROM_NAME },
         ...(p.replyTo ? { reply_to: { email: p.replyTo } } : {}),
         subject: p.subject,
         content: [
