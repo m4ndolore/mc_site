@@ -77,13 +77,14 @@ describe('renderFounderPathTeamEmail', () => {
 
 describe('renderFounderPathCopyEmail', () => {
   it('plays back what they said, reads their stage, and gives three moves', () => {
-    const r = parseFounderPathBody({ ...valid, stage: 'operator-with-problem', constraints: ['tech-cofounder', 'problem-owner'] })
+    const r = parseFounderPathBody({ ...valid, stage: 'operator-with-problem', company: 'defense-first', constraints: ['tech-cofounder', 'problem-owner'] })
     expect(r.ok).toBe(true)
     if (!r.ok) return
     const mail = renderFounderPathCopyEmail(r.value)
     expect(mail.subject).toBe('Your triage: you own the problem')
     expect(mail.text.startsWith('Ada,')).toBe(true)
-    expect(mail.text).toContain('You are an operator who lived the problem, without a team yet; you bring operator domain expertise and technical building; you are building mission tech for warfighters, defense first.')
+    // "team" is not a page option, so only the real one is played back.
+    expect(mail.text).toContain('You are an operator who lived the problem, without a team yet; you bring operator domain expertise; you are building mission tech for warfighters, defense first.')
     expect(mail.text).toContain('You added: "Coming out of a squadron')
     expect(mail.text).toContain('rarest asset in this market')
     // Their constraints first, then a stage default to make three.
