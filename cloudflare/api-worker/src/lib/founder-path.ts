@@ -315,8 +315,8 @@ export function renderFounderPathCopyEmail(sub: FounderPathSubmission): Rendered
   const moves = pickMoves(sub)
   const greeting = sub.name ? `${sub.name},` : 'Hi,'
   const told = whatYouToldUs(sub)
-  const whatNow = 'A person on the team reads this within two business days. If your position fits what we are building right now, we reply with a specific next step. If it does not, we still reply and say so. Reply to this email any time; it reaches a person, not a queue.'
-  const call = 'If you would rather argue it out with a human, there is a free 30-minute call on the calendar.'
+  const whatNow = 'Merge Combinator will read this and respond if we think we can help. If we do, we will reply with a specific next step. Reply to this email if you want to add anything.'
+  const call = 'If you would rather talk it through, book 30 minutes with me.'
   const signoff = '— Paul Garcia, Merge Combinator'
   const inTheirWords = sub.context ? `You added: "${sub.context}"` : ''
 
@@ -362,7 +362,7 @@ export function renderFounderPathCopyEmail(sub: FounderPathSubmission): Rendered
       <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:0 0 8px;">${htmlMoves}</table>
       <p style="font-family:'Courier New',monospace;font-size:11px;letter-spacing:.14em;color:#3b82f6;margin:8px 0 6px;">WHAT HAPPENS NOW</p>
       <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 16px;">${escapeHtml(whatNow)}</p>
-      <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 24px;">${escapeHtml(call)} <a href="${CALL_URL}" style="color:#3b82f6;">Book 30 minutes</a>.</p>
+      <p style="font-size:14px;line-height:1.55;color:#333;margin:0 0 24px;">${escapeHtml(call)} <a href="${CALL_URL}" style="color:#3b82f6;">Book 30 minutes with Paul</a>.</p>
       <p style="font-size:14px;color:#333;margin:0 0 28px;">${escapeHtml(signoff)}</p>
       <hr style="border:none;border-top:1px solid #eee;margin:0 0 12px;" />
       <p style="font-size:12px;color:#999;line-height:1.5;margin:0;">Written from your answers at <a href="${SITE}/start" style="color:#999;">mergecombinator.com/start</a>. Still early here; we are learning alongside the founders we work with.</p>

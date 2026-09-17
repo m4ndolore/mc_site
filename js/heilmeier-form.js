@@ -189,8 +189,8 @@ if (form) {
       submitBtn.textContent = 'Sent';
       setStatus(
         copySent
-          ? `Sent. A copy is on its way to ${email}. If we have something useful to say, we reply to that thread.`
-          : 'Sent to the team. The copy to you did not go through, so keep these answers here for now.',
+          ? `Sent. A copy is on its way to ${email}. We will read it and reply if we think we can help.`
+          : 'Sent to Merge Combinator. The copy to you did not go through, so keep these answers here for now.',
         'ok',
       );
       clearDraft();

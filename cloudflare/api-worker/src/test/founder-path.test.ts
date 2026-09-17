@@ -91,7 +91,10 @@ describe('renderFounderPathCopyEmail', () => {
     expect(mail.text).toContain('1. Get velocity.')
     expect(mail.text).toContain('2. Name the owner.')
     expect(mail.text).toContain('3. Match the money to the stage.')
-    expect(mail.text).toContain('within two business days')
+    expect(mail.text).toContain('Merge Combinator will read this and respond if we think we can help.')
+    expect(mail.text).not.toContain('business days')
+    expect(mail.text).not.toContain('not a queue')
+    expect(mail.text).toContain('book 30 minutes with me. https://')
     // The page's internal report never reaches the founder.
     expect(mail.text).not.toContain('MERGE COMBINATOR · FOUNDER PATH TRIAGE')
     expect(mail.html).not.toContain('FOUNDER PATH TRIAGE')
