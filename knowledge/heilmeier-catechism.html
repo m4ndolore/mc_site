@@ -82,7 +82,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 120px calc(var(--padding-x) * 2) 80px;
+      padding: 120px calc(var(--padding-x) * 2) 120px;
       position: relative;
       overflow: hidden;
     }
@@ -153,9 +153,37 @@
     }
 
     .hc-hero__quote {
-      max-width: 600px;
+      max-width: 900px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .hc-hero__pitch {
       padding-left: 24px;
-      border-left: 2px solid var(--blue);
+      border-left: 2px solid var(--gray-medium);
+    }
+
+    .hc-hero__pitch--funded {
+      border-left-color: var(--blue);
+    }
+
+    .hc-hero__pitch-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-medium);
+      margin-bottom: 12px;
+    }
+
+    .hc-hero__pitch--funded .hc-hero__pitch-label {
+      color: var(--blue);
+    }
+
+    .hc-hero__pitch--funded .hc-hero__quote-text {
+      color: var(--offwhite);
     }
 
     .hc-hero__quote-text {
@@ -809,6 +837,10 @@
         margin-bottom: 28px;
       }
       .hc-hero__quote {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .hc-hero__pitch {
         padding-left: 16px;
       }
       .hc-hero__scroll { display: none; }
@@ -1203,6 +1235,7 @@
     /* Light theme */
     .light-theme .hc-hero__title { color: var(--gray-900, #1a1a1a); }
     .light-theme .hc-hero__title .thin { color: var(--gray-500, #6b7280); }
+    .light-theme .hc-hero__pitch--funded .hc-hero__quote-text { color: var(--gray-900, #1a1a1a); }
     .light-theme .hc-origin__title,
     .light-theme .hc-proof__title,
     .light-theme .hc-q__title,
@@ -1265,8 +1298,16 @@
         <span>Catechism</span>
       </h1>
       <div class="hc-hero__quote">
-        <p class="hc-hero__quote-text">Give us the money. We will do good things.</p>
-        <p class="hc-hero__quote-attr">— The pitch George Heilmeier kept hearing when he took over DARPA, 1975</p>
+        <div class="hc-hero__pitch hc-hero__pitch--rejected">
+          <p class="hc-hero__pitch-label">The pitch he heard</p>
+          <p class="hc-hero__quote-text">Give us the money. We will do good things.</p>
+          <p class="hc-hero__quote-attr">— DARPA program managers to George Heilmeier, 1975. He stopped funding it.</p>
+        </div>
+        <div class="hc-hero__pitch hc-hero__pitch--funded">
+          <p class="hc-hero__pitch-label">The pitch he funded</p>
+          <p class="hc-hero__quote-text">Build an aircraft radar cannot see. Two demonstrators, thirty million dollars, first flight in twenty months. If the model on the pole reflects more than the pole, stop.</p>
+          <p class="hc-hero__quote-attr">— The stealth program, answered through his eight questions. Contract signed April 1976.</p>
+        </div>
       </div>
     </div>
     <div class="hc-hero__scroll">
@@ -1288,10 +1329,10 @@
     <div class="hc-origin__inner">
       <div>
         <div class="hc-label">Who wrote it, and why</div>
-        <h2 class="hc-origin__title">Eight questions, written by the man who had to defend DARPA's budget.</h2>
+        <h2 class="hc-origin__title">Heilmeier wrote eight questions because Congress asked what DARPA was buying.</h2>
         <p class="hc-origin__text">George H. Heilmeier had already invented the liquid crystal display at RCA when he took over DARPA in 1975. He inherited an agency under pressure. Vietnam had ended, defense research money was shrinking, and the 1969 Mansfield Amendment required the Pentagon to show a military purpose for every research dollar. Congress wanted to know what the agency was buying.</p>
-        <p class="hc-origin__text">Heilmeier asked his own program managers first. The people requesting the largest sums could not tell him what they were going to do, what would change if it worked, or how anyone would know. The pitch, in his telling, was the one at the top of this page. <strong>Most of us have made it.</strong></p>
-        <p class="hc-origin__text">So he wrote eight questions and made them the price of admission. No program moved without answers. The stealth program answered them. So did every DARPA program after it. Fifty years on, the questions are still published on darpa.mil, and IARPA, ARPA-E, and ARPA-H screen proposals with them.</p>
+        <p class="hc-origin__text">Heilmeier asked his own program managers first. The people requesting the largest sums could not tell him what they were going to do, what would change if it worked, or how anyone would know. The pitch was the one at the top of this page: give us the money, we will do good things. <strong>Most founders have made it. So have we.</strong></p>
+        <p class="hc-origin__text">So he wrote eight questions, and no program got money without answering all eight. The stealth program answered them. So did every DARPA program after it. Fifty years on, the questions are still published on darpa.mil, and IARPA, ARPA-E, and ARPA-H screen proposals with them.</p>
         <div class="hc-origin__attrib">
           The eight questions on this page are Heilmeier's, quoted as <a href="https://www.darpa.mil/about/heilmeier-catechism" target="_blank" rel="noopener">DARPA publishes them</a>. The commentary under each is ours, written for founders answering them in front of a program office rather than a DARPA director.
         </div>
@@ -1319,8 +1360,8 @@
     <div class="hc-proof__inner">
       <div class="hc-proof__head">
         <div class="hc-label">The catechism, applied</div>
-        <h2 class="hc-proof__title">Run it on the hardest problem of the decade: <em>an aircraft radar cannot see.</em></h2>
-        <p class="hc-proof__lede">In October 1973 the Israeli Air Force lost 109 aircraft in 18 days, most of them to Soviet-built missiles and guns the United States expected to face in Europe. The aircraft were American. Two years later DARPA had a director demanding eight answers before any program moved, and a Lockheed team with a claim that sounded like fiction. Here is how that claim reads through the catechism.</p>
+        <h2 class="hc-proof__title">The stealth program, answered through the eight questions.</h2>
+        <p class="hc-proof__lede">In October 1973 the Israeli Air Force lost 109 aircraft in 18 days, most of them to Soviet-built missiles and guns the United States expected to face in Europe. The aircraft were American. Two years later DARPA had a director who required eight answers before any program got money, and a Lockheed team claiming it could build an aircraft radar could not track. Here are its eight answers.</p>
       </div>
 
       <div class="hc-answers">
@@ -1567,7 +1608,7 @@
         <div class="hc-label hc-q__eyebrow">Question 07</div>
         <h2 class="hc-q__title">Time</h2>
         <p class="hc-q__question">How long will it take?</p>
-        <p class="hc-q__text">A date on the calendar, tied to the mission window that makes the work worth doing. Contract to first flight for Have Blue was twenty months. Defense ventures live inside a twelve to eighteen month window before a champion rotates, a budget cycle turns, or a competitor fields. If your schedule spans two PPBE cycles, say so, and say what you deliver inside the first.</p>
+        <p class="hc-q__text">A date, and the mission window it has to land inside. Contract to first flight for Have Blue was twenty months. Defense ventures live inside a twelve to eighteen month window before a champion rotates, a budget cycle turns, or a competitor fields. If your schedule spans two PPBE cycles, say so, and say what you deliver inside the first.</p>
         <a class="hc-q__answer-link" href="#hc-q7">Write your answer &darr;</a>
       </div>
       <figure class="hc-q__fig mc-fig" aria-hidden="true">
@@ -1628,7 +1669,7 @@
     <div class="hc-cta__inner">
       <div class="hc-cta__label">Your turn</div>
       <h2 class="hc-cta__title">Now write your <em>own</em> eight answers.</h2>
-      <p class="hc-cta__text">Fill in what you can in the form on this page. Blank answers count; they show where the work is. When you send it, one email goes to the Merge Combinator team and a copy goes to you. Someone reads it. If we have something useful to say, we reply. Nothing else happens unless you ask.</p>
+      <p class="hc-cta__text">Fill in what you can in the form on this page. Blank answers are useful: they show which questions you still have to answer. When you send it, one email goes to Merge Combinator and a copy goes to you. We will read it and reply if we think we can help. No mailing list, no follow-up sequence.</p>
       <div class="hc-cta__actions">
         <button type="button" class="hc-cta__btn hc-cta__btn--primary" data-action="hc-goto-form">Go to the form
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -1688,7 +1729,7 @@
         <input class="hc-form__hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
       </div>
       <button type="submit" class="hc-form__submit">Send my eight answers</button>
-      <p class="hc-form__where"><strong>Where this goes.</strong> One email to the Merge Combinator team, with a copy to you. Someone reads it. If we have something useful to say, we reply to that thread. No mailing list, no account, no follow-up sequence.</p>
+      <p class="hc-form__where"><strong>Where this goes.</strong> One email to Merge Combinator, with a copy to you. We will read it and reply if we think we can help. No mailing list, no account, no follow-up sequence.</p>
       <p class="hc-form__status" role="status" aria-live="polite"></p>
     </form>
   </aside>
