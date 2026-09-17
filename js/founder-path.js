@@ -371,6 +371,7 @@ async function submitToApi() {
     name: state.contact.name || null,
     email: state.contact.email || null,
     context: state.contact.context || null,
+    report: buildReportText(),
   };
 
   const res = await fetch(API_ENDPOINT, {
@@ -388,12 +389,12 @@ async function submitToApi() {
   return res.json();
 }
 
-function copyReport() {
+function buildReportText() {
   const meta = STAGE_META[state.stage] || {};
   const unlocks = rankUnlocks().map((id, i) => `  ${i + 1}. ${UNLOCK_LIBRARY[id]?.title} — ${UNLOCK_LIBRARY[id]?.why}`).join("\n");
   const internal = pickInternal().map((id) => `  • ${REC_INTERNAL[id]?.title} — ${REC_INTERNAL[id]?.href}`).join("\n");
   const external = pickExternal().map((id) => `  • ${REC_EXTERNAL[id]?.title} — ${REC_EXTERNAL[id]?.href}`).join("\n");
-  const text = [
+  return [
     `MERGE COMBINATOR · FOUNDER PATH TRIAGE`,
     `Stage: ${meta.label}`,
     `Headline: ${meta.headline}`,
@@ -407,6 +408,10 @@ function copyReport() {
     `EXTERNAL`,
     external || "  (none — MC is the right answer)",
   ].join("\n");
+}
+
+function copyReport() {
+  const text = buildReportText();
   navigator.clipboard?.writeText(text).then(
     () => { console.info("[founder-path] report copied"); window.alert("Triage report copied."); },
     () => { console.log(text); window.alert("Couldn't copy — printed to console."); }
@@ -503,12 +508,27 @@ function boot() {
           company: state.company || "unknown",
           has_email: state.contact.email ? "yes" : "no",
         });
-        // Submit to API (best-effort — UI shows success regardless; API
-        // failures are logged so the user never sees a flaky network).
-        submitToApi().catch((e) => console.warn("[founder-path] submit failed:", e));
-        if (state.contact.email) {
-          document.getElementById("fpPostSubmit").style.display = "block";
-        }
+        // The on-screen triage never depends on the network. The "we've got
+        // it" confirmation does: it only appears once the API has accepted
+        // the lead, and a failure says so instead of promising an email.
+        const post = document.getElementById("fpPostSubmit");
+        const postTitle = post.querySelector(".fp-success__title");
+        const postSub = post.querySelector(".fp-success__sub");
+        const postIcon = post.querySelector(".fp-success__icon");
+        submitToApi().then(() => {
+          if (!state.contact.email) return;
+          postIcon.textContent = "✓";
+          postTitle.textContent = "We've got it.";
+          postSub.textContent = "A copy of your triage is on the way to your inbox. We'll be in touch within two business days.";
+          post.style.display = "block";
+        }).catch((e) => {
+          console.warn("[founder-path] submit failed:", e);
+          if (!state.contact.email) return;
+          postIcon.textContent = "!";
+          postTitle.textContent = "We could not send that.";
+          postSub.textContent = "Your triage is saved on this device and Copy report still works. Email it to build@mergecombinator.com and we will pick it up from there.";
+          post.style.display = "block";
+        });
       } else if (action === "restart") {
         localStorage.removeItem(STORAGE_KEY);
         location.reload();

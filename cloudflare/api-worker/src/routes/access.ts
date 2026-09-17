@@ -315,10 +315,26 @@ access.post('/catechism', async (c) => {
     console.error('Catechism copy email failed:', copyResult.error)
   }
 
+  // Lead ledger: one row per email per surface. Non-fatal; the email is the
+  // delivery path, this is the queryable record.
+  let recorded = false
+  try {
+    const { prisma } = getDb(c.env.HYPERDRIVE)
+    await prisma.waitlistEntry.upsert({
+      where: { email_surface: { email: parsed.value.email, surface: 'heilmeier' } },
+      create: { email: parsed.value.email, surface: 'heilmeier', source: parsed.value.source },
+      update: {},
+    })
+    recorded = true
+  } catch (e) {
+    console.error('Catechism lead record failed:', e)
+  }
+
   return c.json(ok({
     received: true,
     answered: parsed.value.answeredCount,
     copySent: copyResult.sent,
+    recorded,
   }, { request_id: requestId }), 201)
 })
 

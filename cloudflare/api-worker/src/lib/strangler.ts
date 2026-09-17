@@ -18,6 +18,7 @@ const NATIVE_ROUTES: Array<{ method: string; pattern: RegExp }> = [
   { method: 'POST', pattern: /^\/builders\/share-links\/[^/]+\/revoke$/ },
   { method: 'POST', pattern: /^\/access\/provision$/ },
   { method: 'POST', pattern: /^\/access\/catechism$/ },
+  { method: 'POST', pattern: /^\/founder-path\/triage$/ },
   { method: 'GET', pattern: /^\/problems$/ },
   { method: 'GET', pattern: /^\/problems\/[^/]+$/ },
   { method: 'POST', pattern: /^\/problems$/ },
