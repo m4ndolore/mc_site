@@ -37,7 +37,7 @@ founderPath.post('/triage', async (c) => {
   }
 
   const emailConfig = {
-    from: c.env.OTP_FROM_EMAIL || 'access@naluops.com',
+    from: c.env.OTP_FROM_EMAIL || 'access@mergecombinator.com',
     apiKey: c.env.RESEND_API_KEY,
     provider: (c.env.RESEND_API_KEY ? 'resend' : 'mailchannels') as 'resend' | 'mailchannels',
   }
