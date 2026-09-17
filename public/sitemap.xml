@@ -97,6 +97,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://mergecombinator.com/knowledge/heilmeier-catechism</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://mergecombinator.com/knowledge/valley-of-death</loc>
     <lastmod>2026-09-05</lastmod>
     <changefreq>monthly</changefreq>
