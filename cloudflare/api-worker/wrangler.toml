@@ -9,6 +9,7 @@ zone_name = "mergecombinator.com"
 
 [vars]
 MC_PUBLIC_URL = "https://mergecombinator.com"
+CATECHISM_INBOX = "build@mergecombinator.com"
 VIA_ISSUER_URL = "https://via.mergecombinator.com"
 OIDC_ISSUER_ALLOWLIST = "https://via.mergecombinator.com/application/o/defense-builders/"
 OIDC_AUDIENCE = "guild-oidc"
@@ -35,6 +36,7 @@ id = "fb55bae8fde3462aa18bc369517d9e36"
 
 [env.staging.vars]
 MC_PUBLIC_URL = "https://mergecombinator.com"
+CATECHISM_INBOX = "build@mergecombinator.com"
 VIA_ISSUER_URL = "https://via.mergecombinator.com"
 OIDC_ISSUER_ALLOWLIST = "https://via.mergecombinator.com/application/o/defense-builders/"
 OIDC_AUDIENCE = "guild-oidc"

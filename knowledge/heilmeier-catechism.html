@@ -505,21 +505,29 @@
       max-width: 1200px;
       margin: 0 auto;
       display: grid;
-      grid-template-columns: auto minmax(0, 1fr) minmax(200px, 300px);
+      grid-template-columns: minmax(0, 1fr) minmax(200px, 280px);
       gap: 48px;
       align-items: center;
+      position: relative;
+      z-index: 1;
     }
 
-    /* Giant number */
+    /* Giant number: a watermark behind the content, never a grid column */
     .hc-q__num {
+      position: absolute;
+      top: 50%;
+      left: -12px;
+      transform: translateY(-50%);
       font-family: var(--font-primary);
-      font-size: clamp(140px, 20vw, 280px);
+      font-size: clamp(160px, 18vw, 260px);
       font-weight: 900;
       line-height: 0.85;
       color: var(--blue);
       opacity: 0.03;
       letter-spacing: -0.05em;
       user-select: none;
+      pointer-events: none;
+      z-index: 0;
       transition: opacity 0.6s;
     }
 
@@ -599,20 +607,26 @@
       justify-self: end;
     }
 
-    /* Alternate layout: figure left, number right */
+    /* Alternate layout: figure left, watermark number right */
     .hc-q--alt .hc-q__inner {
-      grid-template-columns: minmax(200px, 300px) minmax(0, 1fr) auto;
+      grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
     }
-    .hc-q--alt .hc-q__num { order: 2; }
+    .hc-q--alt .hc-q__num {
+      left: auto;
+      right: -12px;
+    }
     .hc-q--alt .hc-q__fig {
       order: -1;
       justify-self: start;
+    }
+    .hc-q--alt .hc-q__content {
+      justify-self: end;
     }
 
     /* --- Progress indicator --- */
     .hc-progress {
       position: fixed;
-      right: 24px;
+      left: 24px;
       top: 50%;
       transform: translateY(-50%);
       display: flex;
@@ -646,7 +660,7 @@
     /* --- CTA Footer --- */
     .hc-cta {
       padding: 120px calc(var(--padding-x) * 2) 140px;
-      text-align: center;
+      text-align: left;
       position: relative;
       overflow: hidden;
     }
@@ -661,8 +675,8 @@
     }
 
     .hc-cta__inner {
-      max-width: 680px;
-      margin: 0 auto;
+      max-width: 640px;
+      margin: 0;
       position: relative;
     }
 
@@ -678,8 +692,7 @@
       gap: 10px;
       margin-bottom: 24px;
     }
-    .hc-cta__label::before,
-    .hc-cta__label::after {
+    .hc-cta__label::before {
       content: '';
       width: 28px;
       height: 2px;
@@ -706,13 +719,13 @@
       font-size: 16px;
       color: var(--gray-light);
       line-height: 1.7;
-      max-width: 540px;
-      margin: 0 auto 40px;
+      max-width: 560px;
+      margin: 0 0 36px;
     }
 
     .hc-cta__actions {
       display: flex;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       gap: 14px;
       flex-wrap: wrap;
@@ -735,6 +748,8 @@
     .hc-cta__btn--primary {
       background: var(--blue);
       color: #fff;
+      border: none;
+      cursor: pointer;
     }
     .hc-cta__btn--primary:hover { background: #2563eb; }
     .hc-cta__btn--primary svg { transition: transform 0.2s; }
@@ -763,18 +778,16 @@
 
     /* --- Tablet: figure drops below content --- */
     @media (min-width: 769px) and (max-width: 1080px) {
-      .hc-q__inner { grid-template-columns: auto 1fr; }
-      .hc-q__fig {
-        grid-column: 2;
+      .hc-q__inner,
+      .hc-q--alt .hc-q__inner { grid-template-columns: 1fr; }
+      .hc-q__fig,
+      .hc-q--alt .hc-q__fig {
+        order: 3;
         justify-self: start;
         width: 230px;
         margin-top: 8px;
       }
-      .hc-q--alt .hc-q__inner { grid-template-columns: 1fr auto; }
-      .hc-q--alt .hc-q__fig {
-        order: 3;
-        grid-column: 1;
-      }
+      .hc-q--alt .hc-q__content { justify-self: start; }
       .hc-origin__inner {
         grid-template-columns: 1fr;
         gap: 48px;
@@ -843,8 +856,8 @@
       }
       .hc-q__num {
         font-size: 90px;
-        position: absolute;
         top: 32px;
+        left: auto;
         right: 20px;
         opacity: 0;
         transform: translateX(20px);
@@ -856,7 +869,7 @@
       }
 
       .hc-q--alt .hc-q__inner { grid-template-columns: 1fr; }
-      .hc-q--alt .hc-q__content { order: 0; }
+      .hc-q--alt .hc-q__content { order: 0; justify-self: start; }
 
       .hc-q__fig,
       .hc-q--alt .hc-q__fig {
@@ -901,6 +914,271 @@
         margin-bottom: 40px;
       }
     }
+
+    /* --- Two-column layout: reading column + sticky answer form --- */
+    .hc-layout {
+      display: flex;
+      gap: 56px;
+      align-items: flex-start;
+      padding: 0 calc(var(--padding-x) * 2);
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .hc-layout__main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hc-layout__main > section {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .hc-layout__main .hc-divider {
+      left: 0;
+      right: 0;
+    }
+
+    .hc-layout__sidebar {
+      width: 320px;
+      flex-shrink: 0;
+      position: sticky;
+      top: calc(var(--nav-height, 64px) + 24px);
+      margin-top: 120px;
+      max-height: calc(100vh - var(--nav-height, 64px) - 48px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scroll-behavior: smooth;
+    }
+
+    .hc-form {
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 24px 22px 22px;
+      position: relative;
+      background: var(--black, #0a0a0a);
+    }
+    .hc-form::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 22px;
+      width: 48px;
+      height: 2px;
+      background: var(--blue);
+    }
+
+    .hc-form__heading {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--offwhite);
+      margin: 0 0 4px;
+    }
+
+    .hc-form__hint {
+      font-size: 12.5px;
+      color: var(--gray-medium);
+      line-height: 1.5;
+      margin: 0 0 18px;
+    }
+
+    .hc-form__list {
+      list-style: none;
+      margin: 0 -12px;
+      padding: 0;
+      display: grid;
+      gap: 6px;
+    }
+
+    .hc-form__item {
+      padding: 10px 12px;
+      border-left: 2px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .hc-form__item.is-active {
+      border-left-color: var(--blue);
+      background: rgba(59,130,246,0.05);
+    }
+
+    .hc-form__label {
+      display: block;
+      font-size: 13px;
+      color: var(--gray-light);
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+    .hc-form__num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--blue);
+      margin-right: 8px;
+    }
+
+    .hc-form textarea,
+    .hc-form input {
+      width: 100%;
+      box-sizing: border-box;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 2px;
+      color: var(--offwhite);
+      font-family: var(--font-primary);
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 8px 10px;
+      resize: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .hc-form textarea { min-height: 42px; overflow: hidden; }
+    .hc-form textarea:focus,
+    .hc-form input:focus {
+      outline: none;
+      border-color: var(--blue);
+      background: rgba(59,130,246,0.06);
+    }
+    .hc-form textarea::placeholder,
+    .hc-form input::placeholder { color: var(--gray-medium); }
+
+    .hc-form__contact {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: grid;
+      gap: 10px;
+    }
+    .hc-form__contact label {
+      display: grid;
+      gap: 4px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-medium);
+    }
+
+    .hc-form__hp {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+    }
+
+    .hc-form__submit {
+      margin-top: 16px;
+      width: 100%;
+      padding: 13px 20px;
+      border: none;
+      border-radius: 2px;
+      background: var(--blue);
+      color: #fff;
+      font-family: var(--font-primary);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .hc-form__submit:hover { background: #2563eb; }
+    .hc-form__submit:disabled { opacity: 0.6; cursor: default; }
+
+    .hc-form__where {
+      margin: 16px 0 0;
+      font-size: 12.5px;
+      color: var(--gray-medium);
+      line-height: 1.55;
+    }
+    .hc-form__where strong {
+      color: var(--gray-light);
+      font-weight: 600;
+    }
+
+    .hc-form__status {
+      margin: 12px 0 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--gray-light);
+    }
+    .hc-form__status:empty { display: none; }
+    .hc-form__status[data-kind="ok"] { color: var(--operator-green, #22c55e); }
+    .hc-form__status[data-kind="error"] { color: var(--status-red, #ef4444); }
+
+    .hc-form__copy {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px 16px;
+      background: transparent;
+      border: 1px solid var(--ghost-gray);
+      border-radius: 2px;
+      color: var(--offwhite);
+      font-family: var(--font-primary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .hc-form__copy:hover { border-color: var(--blue); color: var(--blue); }
+
+    .hc-form.is-sent textarea,
+    .hc-form.is-sent input { opacity: 0.7; }
+
+    /* Phone-width jump links inside each question; hidden when the rail is beside the text */
+    .hc-q__answer-link { display: none; }
+
+    @media (max-width: 1024px) {
+      .hc-layout {
+        flex-direction: column;
+        gap: 0;
+        padding: 0 24px;
+      }
+      .hc-layout__sidebar {
+        width: 100%;
+        position: static;
+        margin-top: 0;
+        margin-bottom: 80px;
+        max-height: none;
+        overflow: visible;
+      }
+      .hc-form__item.is-active {
+        border-left-color: transparent;
+        background: transparent;
+      }
+      .hc-form__list { margin: 0; }
+      .hc-form__item { padding: 10px 0; }
+      .hc-form textarea { min-height: 72px; }
+      .hc-q__answer-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--blue);
+        text-decoration: none;
+      }
+    }
+
+    .light-theme .hc-form { background: #fff; border-color: rgba(0,0,0,0.12); }
+    .light-theme .hc-form__heading { color: var(--gray-900, #1a1a1a); }
+    .light-theme .hc-form__label { color: var(--gray-700, #4a4a4a); }
+    .light-theme .hc-form textarea,
+    .light-theme .hc-form input {
+      background: rgba(0,0,0,0.02);
+      border-color: rgba(0,0,0,0.15);
+      color: var(--gray-900, #1a1a1a);
+    }
+    .light-theme .hc-form textarea:focus,
+    .light-theme .hc-form input:focus { background: rgba(59,130,246,0.05); }
+    .light-theme .hc-form__contact { border-top-color: rgba(0,0,0,0.08); }
+    .light-theme .hc-form__where strong { color: var(--gray-700, #4a4a4a); }
+    .light-theme .hc-form__status { color: var(--gray-700, #4a4a4a); }
+    .light-theme .hc-form__copy { color: #1a1a1a; border-color: rgba(0,0,0,0.25); }
+    .light-theme .hc-form__item.is-active { background: rgba(59,130,246,0.06); }
 
     /* --- Entrance --- */
     @keyframes hc-heroIn {
@@ -987,8 +1265,8 @@
         <span>Catechism</span>
       </h1>
       <div class="hc-hero__quote">
-        <p class="hc-hero__quote-text">What are you trying to do? Articulate your objectives using absolutely no jargon.</p>
-        <p class="hc-hero__quote-attr">— George H. Heilmeier, Director of DARPA, question one</p>
+        <p class="hc-hero__quote-text">Give us the money. We will do good things.</p>
+        <p class="hc-hero__quote-attr">— The pitch George Heilmeier kept hearing when he took over DARPA, 1975</p>
       </div>
     </div>
     <div class="hc-hero__scroll">
@@ -1002,6 +1280,9 @@
     </div>
   </section>
 
+  <div class="hc-layout">
+  <div class="hc-layout__main">
+
   <!-- Origin -->
   <section class="hc-origin" id="origin">
     <div class="hc-origin__inner">
@@ -1009,7 +1290,7 @@
         <div class="hc-label">Who wrote it, and why</div>
         <h2 class="hc-origin__title">Eight questions, written by the man who had to defend DARPA's budget.</h2>
         <p class="hc-origin__text">George H. Heilmeier had already invented the liquid crystal display at RCA when he took over DARPA in 1975. He inherited an agency under pressure. Vietnam had ended, defense research money was shrinking, and the 1969 Mansfield Amendment required the Pentagon to show a military purpose for every research dollar. Congress wanted to know what the agency was buying.</p>
-        <p class="hc-origin__text">Heilmeier asked his own program managers first. The people requesting the largest sums could not tell him what they were going to do, what would change if it worked, or how anyone would know. He later summarized the pitch he kept hearing as: <strong>give us the money, we will do good things.</strong></p>
+        <p class="hc-origin__text">Heilmeier asked his own program managers first. The people requesting the largest sums could not tell him what they were going to do, what would change if it worked, or how anyone would know. The pitch, in his telling, was the one at the top of this page. <strong>Most of us have made it.</strong></p>
         <p class="hc-origin__text">So he wrote eight questions and made them the price of admission. No program moved without answers. The stealth program answered them. So did every DARPA program after it. Fifty years on, the questions are still published on darpa.mil, and IARPA, ARPA-E, and ARPA-H screen proposals with them.</p>
         <div class="hc-origin__attrib">
           The eight questions on this page are Heilmeier's, quoted as <a href="https://www.darpa.mil/about/heilmeier-catechism" target="_blank" rel="noopener">DARPA publishes them</a>. The commentary under each is ours, written for founders answering them in front of a program office rather than a DARPA director.
@@ -1110,6 +1391,7 @@
         <h2 class="hc-q__title">Objective</h2>
         <p class="hc-q__question">What are you trying to do? Articulate your objectives using absolutely no jargon.</p>
         <p class="hc-q__text">Write the sentence a squadron commander would repeat to their boss without looking at your slide. If it needs "AI-enabled", "multi-domain", or "next-generation" to survive, the objective is missing. Heilmeier's test was a program manager explaining to a congressional staffer why the money should move. Yours is a mission owner explaining to a program executive officer why the requirement should. Same sentence.</p>
+        <a class="hc-q__answer-link" href="#hc-q1">Write your answer &darr;</a>
       </div>
       <figure class="hc-q__fig mc-fig" aria-hidden="true">
         <svg viewBox="0 0 260 240">
@@ -1138,6 +1420,7 @@
         <h2 class="hc-q__title">Current practice</h2>
         <p class="hc-q__question">How is it done today, and what are the limits of current practice?</p>
         <p class="hc-q__text">Name the incumbent workflow, the people who run it, and the exact point where it stops working. "Manual" and "legacy" are jargon in disguise. The 1975 answer was specific: jammers, low-level ingress, and Wild Weasel crews trading aircraft for missile sites. If you cannot describe today's method with respect, you have not seen it up close, and the operator reading your deck will know.</p>
+        <a class="hc-q__answer-link" href="#hc-q2">Write your answer &darr;</a>
       </div>
       <figure class="hc-q__fig mc-fig" aria-hidden="true">
         <svg viewBox="0 0 260 240">
@@ -1169,6 +1452,7 @@
         <h2 class="hc-q__title">Approach</h2>
         <p class="hc-q__question">What is new in your approach and why do you think it will be successful?</p>
         <p class="hc-q__text">Two questions in one, and founders usually answer only the first. State the mechanism that changes the outcome, then state the evidence that the mechanism works: a pole test, a field trial, an exercise result, a deployment. Lockheed did not walk in and say "stealth". They said radar return falls by orders of magnitude when you shape the airframe with these equations, and here is the range data.</p>
+        <a class="hc-q__answer-link" href="#hc-q3">Write your answer &darr;</a>
       </div>
       <figure class="hc-q__fig mc-fig" aria-hidden="true">
         <svg viewBox="0 0 260 240">
@@ -1196,6 +1480,7 @@
         <h2 class="hc-q__title">Who cares</h2>
         <p class="hc-q__question">Who cares? If you are successful, what difference will it make?</p>
         <p class="hc-q__text">Name the person, the command, and the budget line that changes if you succeed. Enthusiasm from operators is a signal. Money moves when a program office with a validated requirement owns the outcome. For stealth the answer was every pilot ordered into a missile belt, and that answer held up eighteen years later over Baghdad. If your "who cares" is a market size, you have answered a different question.</p>
+        <a class="hc-q__answer-link" href="#hc-q4">Write your answer &darr;</a>
       </div>
       <figure class="hc-q__fig mc-fig" aria-hidden="true">
         <svg viewBox="0 0 260 240">
@@ -1222,6 +1507,7 @@
         <h2 class="hc-q__title">Risks</h2>
         <p class="hc-q__question">What are the risks?</p>
         <p class="hc-q__text">List the ways this fails, in order of likelihood, and say what you will do about each. Technical risk is the easy part. Transition risk, color-of-money risk, authority-to-operate drag, and a champion rotating out are what kill funded prototypes. Heilmeier's original wording paired risks with payoffs. Keep that pairing: a risk register with no matching payoff is a reason to stop.</p>
+        <a class="hc-q__answer-link" href="#hc-q5">Write your answer &darr;</a>
       </div>
       <figure class="hc-q__fig mc-fig" aria-hidden="true">
         <svg viewBox="0 0 260 240">
@@ -1250,6 +1536,7 @@
         <h2 class="hc-q__title">Cost</h2>
         <p class="hc-q__question">How much will it cost?</p>
         <p class="hc-q__text">A number, with what it buys. Have Blue was two aircraft for about thirty million dollars, and everyone in the room knew the split between DARPA, the Air Force, and Lockheed. A range is acceptable. "It depends" is a failed answer. Cost also has a color: state which appropriation pays, because a Phase II SBIR and a procurement line cannot buy the same thing.</p>
+        <a class="hc-q__answer-link" href="#hc-q6">Write your answer &darr;</a>
       </div>
       <figure class="hc-q__fig mc-fig" aria-hidden="true">
         <svg viewBox="0 0 260 240">
@@ -1281,6 +1568,7 @@
         <h2 class="hc-q__title">Time</h2>
         <p class="hc-q__question">How long will it take?</p>
         <p class="hc-q__text">A date on the calendar, tied to the mission window that makes the work worth doing. Contract to first flight for Have Blue was twenty months. Defense ventures live inside a twelve to eighteen month window before a champion rotates, a budget cycle turns, or a competitor fields. If your schedule spans two PPBE cycles, say so, and say what you deliver inside the first.</p>
+        <a class="hc-q__answer-link" href="#hc-q7">Write your answer &darr;</a>
       </div>
       <figure class="hc-q__fig mc-fig" aria-hidden="true">
         <svg viewBox="0 0 260 240">
@@ -1314,6 +1602,7 @@
         <h2 class="hc-q__title">Exams</h2>
         <p class="hc-q__question">What are the mid-term and final "exams" to check for success?</p>
         <p class="hc-q__text">Define the test that would make you stop, and put a date on it. The midterm for stealth was a full-scale model on a pole at White Sands in March 1976. The final was a flying demonstrator against Air Force radars. Both were pass-or-cancel gates, agreed before the money moved. Investors call these milestones. Heilmeier called them exams because you can fail them.</p>
+        <a class="hc-q__answer-link" href="#hc-q8">Write your answer &darr;</a>
       </div>
       <figure class="hc-q__fig mc-fig" aria-hidden="true">
         <svg viewBox="0 0 260 240">
@@ -1337,20 +1626,74 @@
   <!-- CTA -->
   <section class="hc-cta">
     <div class="hc-cta__inner">
-      <div class="hc-cta__label">Answer them for your venture</div>
+      <div class="hc-cta__label">Your turn</div>
       <h2 class="hc-cta__title">Now write your <em>own</em> eight answers.</h2>
-      <p class="hc-cta__text">Stuck on question two because you have never watched the incumbent process run? That is the most common gap we see, and the one operators forgive least. Send us your eight answers and we will mark them the way a program office would.</p>
+      <p class="hc-cta__text">Fill in what you can in the form on this page. Blank answers count; they show where the work is. When you send it, one email goes to the Merge Combinator team and a copy goes to you. Someone reads it. If we have something useful to say, we reply. Nothing else happens unless you ask.</p>
       <div class="hc-cta__actions">
-        <a href="/access?source=knowledge-heilmeier" class="hc-cta__btn hc-cta__btn--primary">Request Access
+        <button type="button" class="hc-cta__btn hc-cta__btn--primary" data-action="hc-goto-form">Go to the form
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M3 8h10M13 8L8 3M13 8l-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-        </a>
+        </button>
         <a href="/knowledge/first-principles-engineering" class="hc-cta__btn hc-cta__btn--secondary">Pair it with the 5-Step Process</a>
       </div>
       <p class="hc-cta__updated">September 2026 · <a href="/about">About the studio</a></p>
     </div>
   </section>
+
+  </div><!-- /.hc-layout__main -->
+
+  <aside class="hc-layout__sidebar" aria-label="Your eight answers">
+    <form class="hc-form" id="hcForm" novalidate>
+      <h2 class="hc-form__heading">Your eight answers</h2>
+      <p class="hc-form__hint">Fill in as you read. Drafts save on this device, nowhere else.</p>
+      <ol class="hc-form__list">
+        <li class="hc-form__item" data-q="q1">
+          <label class="hc-form__label" for="hc-q1"><span class="hc-form__num">01</span><span class="hc-form__label-text">What are you trying to do?</span></label>
+          <textarea id="hc-q1" name="q1" rows="1" placeholder="One sentence. No jargon."></textarea>
+        </li>
+        <li class="hc-form__item" data-q="q2">
+          <label class="hc-form__label" for="hc-q2"><span class="hc-form__num">02</span><span class="hc-form__label-text">How is it done today, and where does that stop working?</span></label>
+          <textarea id="hc-q2" name="q2" rows="1" placeholder="Who does it now, how, and the point where it breaks."></textarea>
+        </li>
+        <li class="hc-form__item" data-q="q3">
+          <label class="hc-form__label" for="hc-q3"><span class="hc-form__num">03</span><span class="hc-form__label-text">What is new, and why will it work?</span></label>
+          <textarea id="hc-q3" name="q3" rows="1" placeholder="The mechanism, then the evidence."></textarea>
+        </li>
+        <li class="hc-form__item" data-q="q4">
+          <label class="hc-form__label" for="hc-q4"><span class="hc-form__num">04</span><span class="hc-form__label-text">Who cares, and what changes if you succeed?</span></label>
+          <textarea id="hc-q4" name="q4" rows="1" placeholder="The person, the command, the budget line."></textarea>
+        </li>
+        <li class="hc-form__item" data-q="q5">
+          <label class="hc-form__label" for="hc-q5"><span class="hc-form__num">05</span><span class="hc-form__label-text">What are the risks?</span></label>
+          <textarea id="hc-q5" name="q5" rows="1" placeholder="How it fails, most likely first."></textarea>
+        </li>
+        <li class="hc-form__item" data-q="q6">
+          <label class="hc-form__label" for="hc-q6"><span class="hc-form__num">06</span><span class="hc-form__label-text">How much will it cost?</span></label>
+          <textarea id="hc-q6" name="q6" rows="1" placeholder="A number, and what it buys."></textarea>
+        </li>
+        <li class="hc-form__item" data-q="q7">
+          <label class="hc-form__label" for="hc-q7"><span class="hc-form__num">07</span><span class="hc-form__label-text">How long will it take?</span></label>
+          <textarea id="hc-q7" name="q7" rows="1" placeholder="A date."></textarea>
+        </li>
+        <li class="hc-form__item" data-q="q8">
+          <label class="hc-form__label" for="hc-q8"><span class="hc-form__num">08</span><span class="hc-form__label-text">What are the midterm and final exams?</span></label>
+          <textarea id="hc-q8" name="q8" rows="1" placeholder="The test that would make you stop, and when."></textarea>
+        </li>
+      </ol>
+      <div class="hc-form__contact">
+        <label>Name <input name="name" type="text" autocomplete="name" placeholder="Optional"></label>
+        <label>Email <input name="email" type="email" autocomplete="email" placeholder="Where the copy goes" required></label>
+        <label>Company or team <input name="organization" type="text" autocomplete="organization" placeholder="Optional"></label>
+        <input class="hc-form__hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      </div>
+      <button type="submit" class="hc-form__submit">Send my eight answers</button>
+      <p class="hc-form__where"><strong>Where this goes.</strong> One email to the Merge Combinator team, with a copy to you. Someone reads it. If we have something useful to say, we reply to that thread. No mailing list, no account, no follow-up sequence.</p>
+      <p class="hc-form__status" role="status" aria-live="polite"></p>
+    </form>
+  </aside>
+
+  </div><!-- /.hc-layout -->
 
   <!-- Progress dots -->
   <nav class="hc-progress" id="progress">
@@ -1413,6 +1756,7 @@
 
   <script type="module" src="/js/navbar.js"></script>
   <script type="module" src="/script.js"></script>
+  <script type="module" src="/js/heilmeier-form.js"></script>
   <script>
     const sections = document.querySelectorAll('.hc-hero, .hc-origin, .hc-proof, .hc-q');
     const dots = document.querySelectorAll('.hc-progress__dot');

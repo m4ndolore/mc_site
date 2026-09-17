@@ -5,7 +5,8 @@ import { verifyTurnstile } from '../lib/turnstile'
 import { provisionUser, ProvisionError } from '../lib/authentik'
 import { createOnboardingProfile } from '../repos/guild/onboarding'
 import { createOtpChallenge, verifyOtp } from '../lib/otp'
-import { sendOtpEmail } from '../lib/email'
+import { sendEmail, sendOtpEmail } from '../lib/email'
+import { parseCatechismBody, renderCopyEmail, renderTeamEmail } from '../lib/catechism'
 import { getDb } from '../lib/db'
 import { companiesToPublicDtos } from '../lib/public-company'
 
@@ -247,6 +248,94 @@ access.post('/provision', async (c) => {
   }, {
     request_id: requestId,
   }), 201)
+})
+
+// ── Heilmeier Catechism answers (one email to the team, a copy to the sender) ─
+access.post('/catechism', async (c) => {
+  const requestId = c.get('requestId')
+  let raw: unknown
+
+  try {
+    raw = await c.req.json()
+  } catch {
+    return c.json(err('INVALID_INPUT', 'Invalid JSON body', { request_id: requestId }), 400)
+  }
+
+  const parsed = parseCatechismBody(raw)
+  if (!parsed.ok) {
+    if (parsed.code === 'SPAM') {
+      // Honeypot tripped. Acknowledge without sending so bots learn nothing.
+      return c.json(ok({ received: true }, { request_id: requestId }), 201)
+    }
+    return c.json(err('INVALID_INPUT', parsed.message, { request_id: requestId }), 400)
+  }
+
+  const turnstileToken = (raw as Record<string, unknown>)['cf-turnstile-response']
+  if (c.env.TURNSTILE_SECRET_KEY && typeof turnstileToken === 'string' && turnstileToken) {
+    const remoteIp = c.req.header('CF-Connecting-IP') ?? undefined
+    const turnstile = await verifyTurnstile(turnstileToken, c.env.TURNSTILE_SECRET_KEY, remoteIp)
+    if (!turnstile.valid) {
+      return c.json(err('TURNSTILE_FAILED', 'Bot verification failed', {
+        request_id: requestId,
+        errors: turnstile.errors,
+      }), 403)
+    }
+  }
+
+  const emailConfig = {
+    from: c.env.OTP_FROM_EMAIL || 'access@naluops.com',
+    apiKey: c.env.RESEND_API_KEY,
+    provider: (c.env.RESEND_API_KEY ? 'resend' : 'mailchannels') as 'resend' | 'mailchannels',
+  }
+  const inbox = c.env.CATECHISM_INBOX || 'build@mergecombinator.com'
+
+  const team = renderTeamEmail(parsed.value)
+  const teamResult = await sendEmail(emailConfig, {
+    to: inbox,
+    replyTo: parsed.value.email,
+    subject: team.subject,
+    text: team.text,
+    html: team.html,
+  })
+  if (!teamResult.sent) {
+    console.error('Catechism team email failed:', teamResult.error)
+    return c.json(err('EMAIL_FAILED', 'Could not deliver your answers. Nothing was sent.', {
+      request_id: requestId,
+    }), 502)
+  }
+
+  const copy = renderCopyEmail(parsed.value)
+  const copyResult = await sendEmail(emailConfig, {
+    to: parsed.value.email,
+    subject: copy.subject,
+    text: copy.text,
+    html: copy.html,
+  })
+  if (!copyResult.sent) {
+    console.error('Catechism copy email failed:', copyResult.error)
+  }
+
+  // Lead ledger: one row per email per surface. Non-fatal; the email is the
+  // delivery path, this is the queryable record.
+  let recorded = false
+  try {
+    const { prisma } = getDb(c.env.HYPERDRIVE)
+    await prisma.waitlistEntry.upsert({
+      where: { email_surface: { email: parsed.value.email, surface: 'heilmeier' } },
+      create: { email: parsed.value.email, surface: 'heilmeier', source: parsed.value.source },
+      update: {},
+    })
+    recorded = true
+  } catch (e) {
+    console.error('Catechism lead record failed:', e)
+  }
+
+  return c.json(ok({
+    received: true,
+    answered: parsed.value.answeredCount,
+    copySent: copyResult.sent,
+    recorded,
+  }, { request_id: requestId }), 201)
 })
 
 // ── Lightweight waitlist capture (no OTP, no provisioning) ──────────────────
