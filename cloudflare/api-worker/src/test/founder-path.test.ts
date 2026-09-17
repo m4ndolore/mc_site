@@ -76,35 +76,59 @@ describe('renderFounderPathTeamEmail', () => {
 })
 
 describe('renderFounderPathCopyEmail', () => {
-  it('matches the next step to the stage and keeps the two-business-day promise', () => {
-    const r = parseFounderPathBody({ ...valid, stage: 'operator-with-problem' })
+  it('plays back what they said, reads their stage, and gives three moves', () => {
+    const r = parseFounderPathBody({ ...valid, stage: 'operator-with-problem', company: 'defense-first', constraints: ['tech-cofounder', 'problem-owner'] })
     expect(r.ok).toBe(true)
     if (!r.ok) return
     const mail = renderFounderPathCopyEmail(r.value)
-    expect(mail.subject).toBe('Your triage: operator with a problem, no team')
-    expect(mail.text).toContain('within two business days')
-    expect(mail.text).toContain('curriculum#stage-spot')
-    expect(mail.text).toContain('Stage: Operator')
+    expect(mail.subject).toBe('Your triage: you own the problem')
     expect(mail.text.startsWith('Ada,')).toBe(true)
-    expect(mail.html).toContain('Open Spot')
+    // "team" is not a page option, so only the real one is played back.
+    expect(mail.text).toContain('You are an operator who lived the problem, without a team yet; you bring operator domain expertise; you are building mission tech for warfighters, defense first.')
+    expect(mail.text).toContain('You added: "Coming out of a squadron')
+    expect(mail.text).toContain('rarest asset in this market')
+    // Their constraints first, then a stage default to make three.
+    expect(mail.text).toContain('1. Get velocity.')
+    expect(mail.text).toContain('2. Name the owner.')
+    expect(mail.text).toContain('3. Match the money to the stage.')
+    expect(mail.text).toContain('within two business days')
+    // The page's internal report never reaches the founder.
+    expect(mail.text).not.toContain('MERGE COMBINATOR · FOUNDER PATH TRIAGE')
+    expect(mail.html).not.toContain('FOUNDER PATH TRIAGE')
+    expect(mail.html).toContain('Missionized Tech Residency')
   })
 
-  it('falls back to Preflight for an unknown stage', () => {
-    const r = parseFounderPathBody({ ...valid, stage: 'something-new', name: '' })
+  it('falls back sensibly for an unknown stage and no name', () => {
+    const r = parseFounderPathBody({ ...valid, stage: 'something-new', name: '', constraints: [], brings: [], company: undefined, context: undefined })
     expect(r.ok).toBe(true)
     if (!r.ok) return
     const mail = renderFounderPathCopyEmail(r.value)
-    expect(mail.subject).toBe('Your triage: founder')
+    expect(mail.subject).toBe('Your triage')
     expect(mail.text.startsWith('Hi,')).toBe(true)
-    expect(mail.text).toContain('curriculum#stage-preflight')
+    expect(mail.text).toContain('You are a founder.')
+    expect(mail.text).toContain('1. Find the wound.')
+    expect(mail.text).not.toContain('You added:')
   })
 
-  it('sends prototype teams to Ready for Launch and scaling teams to Tension', () => {
-    const a = parseFounderPathBody({ ...valid, stage: 'team-with-prototype' })
-    const b = parseFounderPathBody({ ...valid, stage: 'scaling' })
+  it('uses stage defaults when no constraints were picked', () => {
+    const a = parseFounderPathBody({ ...valid, stage: 'team-with-prototype', constraints: [] })
+    const b = parseFounderPathBody({ ...valid, stage: 'scaling', constraints: [] })
     expect(a.ok && b.ok).toBe(true)
     if (!a.ok || !b.ok) return
-    expect(renderFounderPathCopyEmail(a.value).text).toContain('curriculum#stage-ready')
-    expect(renderFounderPathCopyEmail(b.value).text).toContain('curriculum#stage-tension')
+    const ma = renderFounderPathCopyEmail(a.value).text
+    const mb = renderFounderPathCopyEmail(b.value).text
+    expect(ma).toContain('funded prototypes die')
+    expect(ma).toContain('1. Get five operators to say it in their own words.')
+    expect(mb).toContain('color of the money')
+    expect(mb).toContain('knowledge/color-of-money')
+  })
+
+  it('caps at three moves and ignores unknown constraints', () => {
+    const r = parseFounderPathBody({ ...valid, constraints: ['capital', 'cohort', 'validation', 'acquisition', 'made-up'] })
+    expect(r.ok).toBe(true)
+    if (!r.ok) return
+    const text = renderFounderPathCopyEmail(r.value).text
+    expect(text).toContain('3. Get five operators')
+    expect(text).not.toContain('4. ')
   })
 })
