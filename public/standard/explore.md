@@ -80,10 +80,10 @@ first where it is permitted to do so.
 
 ## 5. Nobody gains anything new
 
-Each of us keeps everything we brought, and keeps what we produce under section
-1. Neither party is assigning, licensing, or transferring any intellectual
-property, data, or rights under this agreement. If we decide to create something
-jointly, we will paper that before we create it.
+Each of us keeps everything we brought, and keeps what we produce under
+section 1. Neither party is assigning, licensing, or transferring any
+intellectual property, data, or rights under this agreement. If we decide to
+create something jointly, we will paper that before we create it.
 
 ## 6. No exclusivity
 
@@ -169,6 +169,7 @@ frozen AcroForm PDF can express it. Unused rows render blank.
   table, section 2 review date, section 3 gate criteria. Added the note that MC's
   vehicle and a fiscal sponsor cover both stages without forming an entity.
   Blanks written as named merge-field tokens, with the signature and date
-  fields added to the field table. No term changed.
+  fields added to the field table. No term changed. Section 5 rewrapped so a
+  line no longer starts with "1.", which markdown rendered as a list.
 - **1.0** (2026-09-17) Initial draft. Mutual NDA, no exclusivity, no equity,
   90-day term.
