@@ -51,6 +51,15 @@ jobs:
       - name: Enforce performance budgets
         run: npm run check:performance
 
+      # public/standard/ is a vendored copy of github.com/mergecombinator/standard
+      # at the tag in standard.ref. It is legal text, so it must equal the tag
+      # byte for byte. A hand edit here, or a ref bump without a sync, fails.
+      - name: Merge Standard sync tests
+        run: npm run standard:test
+
+      - name: Merge Standard matches pinned release
+        run: npm run standard:check
+
       - name: Router unit tests
         run: node cloudflare/test-router.mjs --unit
 
