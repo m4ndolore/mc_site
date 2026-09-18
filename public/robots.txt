@@ -30,4 +30,5 @@ Sitemap: https://mergecombinator.com/sitemap.xml
 # AI indexing guidance:
 # https://mergecombinator.com/llms.txt
 # https://mergecombinator.com/llms-full.txt
+# https://mergecombinator.com/standard/llms.txt
 # https://mergecombinator.com/ai/overview

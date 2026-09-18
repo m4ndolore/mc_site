@@ -1,0 +1,31 @@
+# The Merge Standard
+
+> Free, published agreements for forming ventures, from Merge Combinator. Three documents carry a partnership from first conversation to company: Explore (30 days, mutual confidentiality plus one named deliverable per party), Pursue (6 months, roles and formation triggers, no equity), and Form (the company, equity once, against splits published in advance). The documents are identical for everyone and are not negotiated. Changes are proposed in public issues and land in the next version.
+
+Status: drafts. None of these documents has been reviewed by counsel. Each document carries its version and status in its first heading block. They are templates provided as is, with no warranty, and are not legal advice.
+
+Every URL below returns plain markdown as `text/plain` with open CORS. No file download and no authentication.
+
+## Documents
+
+- [Explore Agreement](https://mergecombinator.com/standard/explore.md): Stage 01. One page, 30 days, no equity. Mutual confidentiality, no exclusivity, one named deliverable per party, a review date, and the three conditions for moving to Pursue. Blanks are named tokens such as `{{counterparty_name}}`, listed in the field table at the bottom.
+- [Pursue Agreement](https://mergecombinator.com/standard/pursue.md): Stage 02. Two pages, 6 months, no equity. Names roles from the taxonomy and defines what must be true before a company is formed.
+- [Form Agreement](https://mergecombinator.com/standard/form.md): Stage 03. Not written yet. The file states the three open decisions it is waiting on and what it will contain.
+
+## Reference
+
+- [Role Taxonomy](https://mergecombinator.com/standard/roles.md): The six roles a party picks from in Pursue and Form. You pick a role. You do not draft one.
+- [Venture Pipeline and Gates](https://mergecombinator.com/standard/pipeline.md): The stages from idea to scalable venture and the evidence required to pass each gate. Gates are evidence, not dates.
+
+## For agents filling in a draft
+
+- Read the field table at the bottom of the Explore Agreement. Replace each `{{token}}` with a value. Leave the six signature tokens alone, since the parties fill those when they sign.
+- The deliverables table in section 1 is fixed at three rows: one for Merge Combinator and two for the counterparty. Leave the third row blank if unused.
+- `review_date` is the effective date plus 30 days.
+- Do not change any other text. Merge Combinator does not sign modified copies. A proposed change belongs in an issue.
+
+## Source
+
+- [Repository](https://github.com/mergecombinator/standard): Source, versions, and the archive of superseded versions.
+- [Propose a change](https://github.com/mergecombinator/standard/issues/new/choose): Public change proposals.
+- [License](https://github.com/mergecombinator/standard/blob/main/LICENSE): Text is CC BY 4.0. The names are reserved, see TRADEMARK.md in the repository.

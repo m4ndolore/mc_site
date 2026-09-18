@@ -28,3 +28,13 @@
   Access-Control-Allow-Origin: https://console.mergecombinator.com
   Access-Control-Allow-Methods: GET, OPTIONS
   Access-Control-Allow-Headers: Content-Type
+
+# The Merge Standard: raw markdown for people and agents.
+# Pages would serve .md as text/markdown, which Safari downloads. Plain text
+# renders in place everywhere. Open CORS so browser-based agents can fetch it.
+# Source: github.com/mergecombinator/standard, vendored by scripts/sync-standard.mjs
+/standard/*
+  Content-Type: text/plain; charset=utf-8
+  X-Content-Type-Options: nosniff
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300, must-revalidate

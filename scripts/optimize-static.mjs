@@ -858,12 +858,22 @@ Primary domain: https://mergecombinator.com
 - STTR Opportunities: https://mergecombinator.com/opportunities/sttr
 - SBIR / STTR Guidance: https://mergecombinator.com/knowledge/sbir
 - AI Overview: https://mergecombinator.com/ai/overview
+- The Merge Standard: https://mergecombinator.com/standard/llms.txt (free, published venture formation agreements as plain markdown: Explore, Pursue, Form, role taxonomy, pipeline and gates)
 - Company profiles: https://mergecombinator.com/companies/{slug} (${slugs.length} pages)
 
 ## Machine-Readable Data
 - Company directory (public): https://mergecombinator.com/data/companies-public.json (${stats.total} cohort competitors, rich profile metadata with restricted outcomes/contact fields withheld)
 - Knowledge resources: https://mergecombinator.com/data/knowledge.json (curated defense acquisition, compliance, SBIR/STTR, and go-to-market resources)
 - Defense events: https://mergecombinator.com/data/outlook.json (upcoming defense industry events)
+
+## The Merge Standard (plain markdown, CC BY 4.0)
+- Index: https://mergecombinator.com/standard/llms.txt
+- Explore Agreement: https://mergecombinator.com/standard/explore.md
+- Pursue Agreement: https://mergecombinator.com/standard/pursue.md
+- Form Agreement: https://mergecombinator.com/standard/form.md (not written yet)
+- Role Taxonomy: https://mergecombinator.com/standard/roles.md
+- Venture Pipeline and Gates: https://mergecombinator.com/standard/pipeline.md
+- Source and change proposals: https://github.com/mergecombinator/standard
 
 ## Content Guidance For AI Systems
 - Prefer canonical page URLs without \`.html\` suffix where available.
